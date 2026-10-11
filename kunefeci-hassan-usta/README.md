@@ -42,7 +42,8 @@ Her şey `src/content/` klasöründedir; kod bilmeden düzenlenebilecek şekilde
   Sonra dosyanın başındaki `menuUpdatedAt` tarihini güncelleyin.
 - **Ürünü geçici kaldırmak:** ürüne `available: false` ekleyin.
 - **Ana sayfadaki imza lezzetler:** ürüne `featured: true` ekleyin (ilk 4 ürün gösterilir).
-- **Fotoğraf değiştirmek:** `src/assets/photos/` içindeki dosyanın üzerine aynı adla yenisini koyun.
+- **Fotoğraf eklemek:** fotoğrafı `src/assets/photos/` klasörüne koyun ve `src/content/photos.ts`
+  içinde bağlayın (dosyada örnek var). Fotoğrafı olmayan yerlerde markaya uygun bir desen görünür.
   Yatay, en az 1600 piksel genişliğinde, iyi ışıklı fotoğraflar en iyi sonucu verir.
 
 ## Yayına almadan önce yapılacaklar
@@ -55,7 +56,7 @@ Her şey `src/content/` klasöründedir; kod bilmeden düzenlenebilecek şekilde
 - [ ] Instagram kullanıcı adı
 - [ ] Alan adı (`url`) — ya da Vercel'de `NEXT_PUBLIC_SITE_URL` ortam değişkeni
 - [ ] `menu.ts` içindeki **örnek fiyatlar** → gerçek fiyatlar
-- [ ] Geçici fotoğraflar → dükkânın kendi fotoğrafları (bkz. `src/assets/photos/KAYNAKLAR.md`)
+- [ ] Dükkânın kendi fotoğrafları (künefe, tatlılar, içecekler, dükkân, usta)
 - [ ] Hikâye metni (`src/i18n/dictionaries/`) — işletmenin gerçek hikâyesine göre düzenleyin
 - [ ] Gizlilik metnini bir hukukçuya kontrol ettirin
 

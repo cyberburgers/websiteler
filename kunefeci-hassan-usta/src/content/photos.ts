@@ -1,9 +1,15 @@
 import type { StaticImageData } from "next/image";
 
 /**
- * FOTOĞRAFLAR — dosyalar src/assets/photos/ klasöründedir.
- * Kendi fotoğrafınızı koymak için aynı adla dosyanın üzerine yazmanız yeterli.
- * Fotoğrafı olmayan ürünlerde markaya uygun bir desen gösterilir.
+ * FOTOĞRAFLAR — dosyaları src/assets/photos/ klasörüne koyup aşağıda bağlayın:
+ *
+ *   import hero from "@/assets/photos/hero.jpg";
+ *   import kunefe1 from "@/assets/photos/kunefe-1.jpg";
+ *   export const photos: Partial<Record<PhotoKey, StaticImageData>> = { hero, kunefe1 };
+ *
+ * "hero" ana sayfanın büyük fotoğrafıdır. Menüde hangi ürünün hangi fotoğrafı
+ * kullandığı src/content/menu.ts içindeki `image` alanında yazar.
+ * Fotoğrafı olmayan yerlerde markaya uygun bir desen gösterilir.
  */
 export type PhotoKey =
   | "hero"
