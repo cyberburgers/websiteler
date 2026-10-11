@@ -63,7 +63,7 @@ export default async function MenuPage({ params }: PageProps<"/[locale]/menu">) 
               <span aria-hidden="true" className="h-px w-10 bg-sari-300/60" />
               {dict.menu.eyebrow}
             </p>
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-3 sm:mt-5 lg:gap-x-8">
+            <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-3 sm:mt-5 sm:justify-start lg:gap-x-8">
               <h1
                 aria-label={dict.menu.title}
                 className="font-display text-[clamp(3.25rem,13vw,9.5rem)] font-medium leading-[0.9] tracking-[-0.03em] text-krem-50 print:text-6xl print:text-lacivert-900"
@@ -80,7 +80,7 @@ export default async function MenuPage({ params }: PageProps<"/[locale]/menu">) 
                   ))}
                 </span>
               </h1>
-              <WheelTrigger label={dict.wheel.trigger} className="animate-pop print-hidden [animation-delay:650ms]" />
+              <WheelTrigger label={dict.wheel.trigger} className="print-hidden" />
             </div>
             <p className="animate-rise mt-3 max-w-xl text-[15px] leading-relaxed text-krem-100/75 [animation-delay:350ms] sm:mt-6 sm:text-lg md:text-xl print:text-base print:text-lacivert-800">
               {dict.menu.lead}
