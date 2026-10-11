@@ -51,19 +51,25 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             {dict.hero.eyebrow}
           </p>
           <h1 className="font-display mt-7 text-[clamp(3rem,7.4vw,6.4rem)] font-medium leading-[0.96] tracking-[-0.025em] text-krem-50">
-            <span className="animate-rise block [animation-delay:90ms]">{dict.hero.titleA}</span>
-            <span className="animate-rise block italic text-karamel-300 [animation-delay:180ms]">
-              {dict.hero.titleB}
-            </span>
-            <span className="animate-rise block [animation-delay:270ms]">{dict.hero.titleC}</span>
+            {[dict.hero.titleA, dict.hero.titleB, dict.hero.titleC].map((line, i) => (
+              // Each line is masked so it rises from behind its own baseline; the padding keeps ş, y, ğ unclipped.
+              <span key={line} className="-mb-[0.14em] block overflow-hidden pb-[0.14em] pe-[0.12em]">
+                <span
+                  className={`animate-line-up block ${i === 1 ? "italic text-karamel-300" : ""}`}
+                  style={{ animationDelay: `${100 + i * 120}ms` }}
+                >
+                  {line}
+                </span>
+              </span>
+            ))}
           </h1>
           <p className="animate-rise mt-8 max-w-xl text-lg leading-relaxed text-krem-100/75 [animation-delay:360ms] md:text-xl">
             {dict.hero.lead}
           </p>
           <div className="animate-rise mt-10 flex flex-wrap gap-3 [animation-delay:450ms]">
-            <Link href={localePath(locale, "/menu")} className={buttonStyles.primary}>
+            <Link href={localePath(locale, "/menu")} className={`group ${buttonStyles.primary}`}>
               {dict.actions.seeMenu}
-              <ArrowRight className="size-5" aria-hidden="true" />
+              <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </Link>
             <a href={links.directions} target="_blank" rel="noopener noreferrer" className={buttonStyles.ghostDark}>
               <Navigation className="size-[18px]" aria-hidden="true" />
@@ -79,12 +85,18 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           </div>
         </div>
 
-        <div className="animate-rise relative mx-auto w-full max-w-[33rem] [animation-delay:200ms] lg:max-w-[38rem]">
+        <div className="relative mx-auto w-full max-w-[33rem] lg:max-w-[38rem]">
           <div className="relative aspect-square text-sari-300/70">
-            <RingText text={dict.hero.ring} />
-            <div className="absolute inset-[10%] rounded-full bg-gradient-to-b from-karamel-300 to-karamel-700 p-[3.2%] shadow-[0_50px_90px_-30px_rgba(0,0,0,.75)]">
+            <div className="animate-fade-in absolute inset-0 [animation-delay:500ms] [animation-duration:1.2s]">
+              <RingText text={dict.hero.ring} />
+            </div>
+            <div className="animate-dish-in absolute inset-[10%] rounded-full bg-gradient-to-b from-karamel-300 to-karamel-700 p-[3.2%] shadow-[0_50px_90px_-30px_rgba(0,0,0,.75)]">
               <div className="relative size-full overflow-hidden rounded-full ring-2 ring-lacivert-900/40">
                 <Photo photo="hero" alt={dict.hero.imageAlt} sizes="(min-width: 1024px) 34rem, 80vw" preload fill />
+                <span
+                  aria-hidden="true"
+                  className="animate-sheen pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,transparent_38%,rgba(255,250,235,.32)_50%,transparent_62%)] bg-[length:260%_100%] bg-[position:170%_0]"
+                />
               </div>
             </div>
             <svg
@@ -110,14 +122,14 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               ))}
             </svg>
 
-            <div className="absolute -end-1 top-[7%] grid size-24 rotate-12 place-items-center rounded-full bg-fistik-500 p-3 text-center text-[11px] font-extrabold uppercase leading-tight tracking-wider text-krem-50 shadow-xl ring-4 ring-lacivert-900 sm:size-28 sm:text-xs">
+            <div className="animate-pop absolute -end-1 top-[7%] grid size-24 rotate-12 [animation-delay:1s] place-items-center rounded-full bg-fistik-500 p-3 text-center text-[11px] font-extrabold uppercase leading-tight tracking-wider text-krem-50 shadow-xl ring-4 ring-lacivert-900 sm:size-28 sm:text-xs">
               {dict.hero.sticker}
             </div>
 
             {signature && (
               <Link
                 href={`${localePath(locale, "/menu")}#${signature.id}`}
-                className="group absolute bottom-[4%] start-0 flex items-center gap-4 rounded-3xl bg-krem-50 py-3 pe-5 ps-3 text-lacivert-900 shadow-[0_24px_50px_-18px_rgba(0,0,0,.6)] transition hover:-translate-y-1 sm:start-[-4%]"
+                className="animate-rise group absolute bottom-[4%] start-0 flex items-center gap-4 [animation-delay:800ms] rounded-3xl bg-krem-50 py-3 pe-5 ps-3 text-lacivert-900 shadow-[0_24px_50px_-18px_rgba(0,0,0,.6)] transition hover:-translate-y-1 sm:start-[-4%]"
               >
                 <span className="relative size-14 shrink-0 overflow-hidden rounded-2xl">
                   <Photo photo="hero" alt="" sizes="56px" fill />

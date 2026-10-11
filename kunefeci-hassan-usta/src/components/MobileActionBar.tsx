@@ -13,7 +13,7 @@ export function MobileActionBar({ locale, dict }: { locale: Locale; dict: Dictio
   return (
     <nav
       aria-label={dict.nav.primary}
-      className="print-hidden fixed inset-x-3 bottom-3 z-40 md:hidden"
+      className="print-hidden animate-bar-in fixed inset-x-3 bottom-3 z-40 md:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="flex gap-1 rounded-[1.4rem] bg-lacivert-900/95 p-1.5 text-krem-100 shadow-[0_18px_40px_-12px_rgba(16,17,42,.6)] ring-1 ring-krem-50/10 backdrop-blur-lg">

@@ -117,7 +117,7 @@ export function SiteHeader({ locale, logo, homeHref, nav, labels, phoneHref, pho
       <div
         id="mobile-nav"
         hidden={!open}
-        className="pattern-star fixed inset-0 h-[100dvh] overflow-y-auto bg-lacivert-900 pb-10 pt-28 lg:hidden"
+        className="pattern-star animate-fade-in fixed inset-0 h-[100dvh] overflow-y-auto bg-lacivert-900 pb-10 pt-28 lg:hidden"
       >
         <div className="container-page flex min-h-full flex-col">
           <nav aria-label={labels.primary}>

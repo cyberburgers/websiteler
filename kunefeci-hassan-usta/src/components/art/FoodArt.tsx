@@ -789,7 +789,7 @@ export function FoodArt({ kind, fill = false, className = "" }: { kind: ArtKind;
         viewBox={bleed ? "18 18 364 364" : "-12 -12 424 424"}
         preserveAspectRatio="xMidYMid meet"
         aria-hidden="true"
-        className={`absolute inset-0 size-full ${bleed ? "" : "p-[5%]"}`}
+        className={`absolute inset-0 size-full transition-transform duration-[1.4s] ease-[var(--ease-out-expo)] group-hover:rotate-[9deg] ${bleed ? "" : "p-[5%]"}`}
       >
         {arts[kind]()}
       </svg>

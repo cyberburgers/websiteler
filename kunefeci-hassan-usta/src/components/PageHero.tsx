@@ -14,7 +14,9 @@ export function PageHero({ eyebrow, title, children }: { eyebrow: string; title:
           {eyebrow}
         </p>
         <h1 className="font-display mt-5 max-w-4xl text-balance text-[clamp(2.75rem,7vw,5.5rem)] font-medium leading-[0.98] tracking-[-0.025em] text-krem-50">
-          {title}
+          <span className="-mb-[0.14em] block overflow-hidden pb-[0.14em]">
+            <span className="animate-line-up block [animation-delay:100ms]">{title}</span>
+          </span>
         </h1>
         {children}
       </div>

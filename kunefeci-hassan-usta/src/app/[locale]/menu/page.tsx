@@ -61,14 +61,23 @@ export default async function MenuPage({ params }: PageProps<"/[locale]/menu">) 
               <span aria-hidden="true" className="h-px w-10 bg-sari-300/60" />
               {dict.menu.eyebrow}
             </p>
-            <h1 className="font-display mt-5 text-[clamp(4rem,13vw,9.5rem)] font-medium leading-[0.9] tracking-[-0.03em] text-krem-50 print:text-6xl print:text-lacivert-900">
-              {dict.menu.title}
+            <h1
+              aria-label={dict.menu.title}
+              className="font-display mt-5 text-[clamp(4rem,13vw,9.5rem)] font-medium leading-[0.9] tracking-[-0.03em] text-krem-50 print:text-6xl print:text-lacivert-900"
+            >
+              <span aria-hidden="true" className="-mb-[0.12em] block overflow-hidden pb-[0.12em]">
+                {[...dict.menu.title].map((char, i) => (
+                  <span key={i} className="animate-line-up inline-block" style={{ animationDelay: `${80 + i * 70}ms` }}>
+                    {char}
+                  </span>
+                ))}
+              </span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-krem-100/75 md:text-xl print:text-base print:text-lacivert-800">
+            <p className="animate-rise mt-6 max-w-xl text-lg leading-relaxed text-krem-100/75 [animation-delay:350ms] md:text-xl print:text-base print:text-lacivert-800">
               {dict.menu.lead}
             </p>
           </div>
-          <div className="flex flex-col items-start gap-4 lg:items-end lg:pb-3 lg:text-end">
+          <div className="animate-rise flex flex-col items-start gap-4 [animation-delay:450ms] lg:items-end lg:pb-3 lg:text-end">
             <div className="flex gap-6 lg:gap-8">
               <div>
                 <p className="font-display text-4xl text-sari-300 print:text-lacivert-900">{categories.length}</p>

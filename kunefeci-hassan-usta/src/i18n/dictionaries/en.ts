@@ -53,6 +53,14 @@ const en: Dictionary = {
     sticker: "Made to order",
     ring: "KÜNEFECİ HASSAN USTA • ŞANLIURFA • SERVED HOT • ",
   },
+  ticker: [
+    "Made to order",
+    "Loads of pistachio",
+    "Urfa butter",
+    "Unsalted Urfa cheese",
+    "Warm syrup",
+    "Künefe by the tray",
+  ],
   signature: {
     eyebrow: "The master's picks",
     title: "Our signatures",

@@ -41,7 +41,7 @@ function AllergenDots({ item }: { item: MenuViewItem }) {
 
 function ItemCard({ item, onOpen }: { item: MenuViewItem; onOpen: (item: MenuViewItem) => void }) {
   return (
-    <li id={item.id} className="scroll-mt-40 md:scroll-mt-44">
+    <li id={item.id} className="reveal scroll-mt-40 md:scroll-mt-44">
       <button
         type="button"
         onClick={() => onOpen(item)}
@@ -296,7 +296,7 @@ export function MenuExplorer({ categories, labels }: Props) {
             aria-labelledby={`baslik-${category.id}`}
             className="scroll-mt-36 border-t border-lacivert-800/10 pt-14 first:border-t-0 md:scroll-mt-40 md:pt-20 print:break-before-auto print:pt-6"
           >
-            <header className="mb-8 flex items-end justify-between gap-6 md:mb-10">
+            <header className="reveal mb-8 flex items-end justify-between gap-6 md:mb-10">
               <div>
                 <span className="font-brand text-2xl text-karamel-500">{String(index + 1).padStart(2, "0")}</span>
                 <h2
@@ -342,7 +342,7 @@ export function MenuExplorer({ categories, labels }: Props) {
           if (e.target === e.currentTarget) dialogRef.current?.close();
         }}
         aria-labelledby="urun-baslik"
-        className="menu-sheet mb-0 mt-auto max-h-[90dvh] w-full max-w-none overflow-y-auto rounded-t-[2rem] bg-krem-50 p-0 text-lacivert-800 md:my-auto md:max-w-xl md:rounded-[2rem]"
+        className="menu-sheet mx-auto mb-0 mt-auto max-h-[90dvh] w-full max-w-none overflow-y-auto rounded-t-[2rem] bg-krem-50 p-0 text-lacivert-800 md:my-auto md:max-w-xl md:rounded-[2rem]"
       >
         {selected && (
           <article>

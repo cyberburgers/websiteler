@@ -51,6 +51,14 @@ const tr = {
     sticker: "Siparişle hazırlanır",
     ring: "KÜNEFECİ HASSAN USTA • ŞANLIURFA • SICAK SICAK • ",
   },
+  ticker: [
+    "Siparişle hazırlanır",
+    "Bol Antep fıstığı",
+    "Urfa sadeyağı",
+    "Tuzsuz Urfa peyniri",
+    "Sıcak şerbet",
+    "Tepsi künefe",
+  ],
   signature: {
     eyebrow: "Ustanın seçkisi",
     title: "İmza lezzetlerimiz",

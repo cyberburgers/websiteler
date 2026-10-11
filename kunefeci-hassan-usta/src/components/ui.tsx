@@ -28,7 +28,7 @@ export function SectionHeading({
       >
         <span
           aria-hidden="true"
-          className={`kadayif-rule w-10 ${tone === "dark" ? "opacity-70 brightness-200" : ""}`}
+          className={`kadayif-rule rule-draw w-10 ${tone === "dark" ? "opacity-70 brightness-200" : ""}`}
         />
         {eyebrow}
       </p>
