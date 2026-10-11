@@ -50,3 +50,19 @@ export function openState(date: Date): OpenState {
   }
   return { open: false, opens: null };
 }
+
+/** Consecutive days with the same hours folded into one line: "Pazartesi – Perşembe  10:00 – 00:00". */
+export function groupedHours(dayNames: string[], closedLabel: string): { days: string; hours: string }[] {
+  const groups: { start: number; end: number; hours: string }[] = [];
+  for (let day = 1; day <= 7; day++) {
+    const h = hoursFor(day);
+    const hours = h ? `${h.open} – ${h.close}` : closedLabel;
+    const last = groups.at(-1);
+    if (last && last.hours === hours && last.end === day - 1) last.end = day;
+    else groups.push({ start: day, end: day, hours });
+  }
+  return groups.map((g) => ({
+    days: g.start === g.end ? dayNames[g.start - 1] : `${dayNames[g.start - 1]} – ${dayNames[g.end - 1]}`,
+    hours: g.hours,
+  }));
+}

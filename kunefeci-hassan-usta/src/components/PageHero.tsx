@@ -9,7 +9,7 @@ export function PageHero({ eyebrow, title, children }: { eyebrow: string; title:
         className="absolute -end-32 -top-24 -z-10 size-[36rem] rounded-full bg-serbet-500/20 blur-[120px]"
       />
       <div className="container-page">
-        <p className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-sari-300">
+        <p className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] sm:tracking-[0.24em] text-sari-300">
           <span aria-hidden="true" className="h-px w-10 bg-sari-300/60" />
           {eyebrow}
         </p>

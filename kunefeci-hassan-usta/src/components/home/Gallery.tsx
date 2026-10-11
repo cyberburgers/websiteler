@@ -29,7 +29,7 @@ export function Gallery({ dict }: { dict: Dictionary }) {
               className={`reveal group relative overflow-hidden rounded-[1.75rem] bg-krem-200 ${tile.span}`}
             >
               <Photo
-                src={photos[tile.key]}
+                photo={tile.key}
                 alt=""
                 sizes="(min-width: 768px) 25vw, 50vw"
                 className="transition-transform duration-[1.4s] ease-[var(--ease-out-expo)] group-hover:scale-[1.06]"

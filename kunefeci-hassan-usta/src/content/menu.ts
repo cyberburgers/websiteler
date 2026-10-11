@@ -113,7 +113,7 @@ export const menu: MenuCategory[] = [
         },
         prices: [{ amount: 290 }],
         allergens: ["gluten", "sut", "kabuklu"],
-        image: "dondurma",
+        image: "kunefe4",
       },
       {
         id: "tepsi-kunefe",
@@ -128,7 +128,7 @@ export const menu: MenuCategory[] = [
         ],
         allergens: ["gluten", "sut", "kabuklu"],
         tags: ["siparis"],
-        image: "yapim",
+        image: "tepsi",
       },
     ],
   },

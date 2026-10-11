@@ -15,7 +15,7 @@ export function LanguageSwitcher({ current, label, tone }: { current: Locale; la
   return (
     <nav aria-label={label}>
       <ul
-        className={`flex items-center gap-0.5 rounded-full p-1 ring-1 transition-colors ${tone === "dark" ? "ring-krem-50/20" : "ring-lacivert-800/15"}`}
+        className={`inline-flex items-center gap-0.5 rounded-full p-1 ring-1 transition-colors ${tone === "dark" ? "ring-krem-50/20" : "ring-lacivert-800/15"}`}
       >
         {locales.map((locale) => {
           const isCurrent = locale === current;

@@ -1,5 +1,7 @@
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import type { ReactNode } from "react";
+import { FoodArt } from "@/components/art/FoodArt";
+import { photoArt, photos, type PhotoKey } from "@/content/photos";
 
 export function SectionHeading({
   eyebrow,
@@ -20,7 +22,7 @@ export function SectionHeading({
   return (
     <div className={`${centered ? "mx-auto text-center" : ""} max-w-3xl ${className}`}>
       <p
-        className={`flex items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] ${centered ? "justify-center" : ""} ${
+        className={`flex items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] sm:tracking-[0.24em] ${centered ? "justify-center" : ""} ${
           tone === "dark" ? "text-sari-300" : "text-karamel-600"
         }`}
       >
@@ -63,31 +65,46 @@ export function PhotoPlaceholder({ className = "", label }: { className?: string
   );
 }
 
+/**
+ * A photo slot: the real photo when one has been added, otherwise the dish illustration.
+ * `fill` crops round dishes to their rim, for circular frames.
+ */
 export function Photo({
-  src,
+  photo,
   alt,
   sizes,
   className = "",
   preload,
+  fill,
 }: {
-  src?: StaticImageData;
+  photo?: PhotoKey;
   alt: string;
   sizes: string;
   className?: string;
   preload?: boolean;
+  fill?: boolean;
 }) {
-  if (!src) return <PhotoPlaceholder label={alt} />;
-  return (
-    <Image
-      src={src}
-      alt={alt}
-      fill
-      sizes={sizes}
-      placeholder="blur"
-      preload={preload}
-      className={`object-cover ${className}`}
-    />
-  );
+  const src = photo ? photos[photo] : undefined;
+  if (src) {
+    return (
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes={sizes}
+        placeholder="blur"
+        preload={preload}
+        className={`object-cover ${className}`}
+      />
+    );
+  }
+  const art = photo ? photoArt[photo] : undefined;
+  if (art) return <FoodArt kind={art} fill={fill} className={className} />;
+  return <PhotoPlaceholder label={alt} />;
+}
+
+export function hasPhoto(photo?: PhotoKey): boolean {
+  return Boolean(photo && photos[photo]);
 }
 
 const buttonBase =

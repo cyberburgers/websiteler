@@ -3,7 +3,6 @@ import { ArrowRight, MapPin, Navigation } from "lucide-react";
 import { OpenStatus } from "@/components/OpenStatus";
 import { Photo, buttonStyles } from "@/components/ui";
 import { menu, tags } from "@/content/menu";
-import { photos } from "@/content/photos";
 import { links, site } from "@/content/site";
 import { localePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
@@ -47,7 +46,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
 
       <div className="container-page grid items-center gap-16 pb-28 pt-40 md:pt-48 lg:min-h-[min(100svh,1000px)] lg:grid-cols-[1.05fr_1fr] lg:gap-8 lg:pb-32 lg:pt-36">
         <div className="relative z-10">
-          <p className="animate-rise flex items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-sari-300">
+          <p className="animate-rise flex items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] sm:tracking-[0.24em] text-sari-300">
             <span aria-hidden="true" className="h-px w-10 bg-sari-300/60" />
             {dict.hero.eyebrow}
           </p>
@@ -85,9 +84,31 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             <RingText text={dict.hero.ring} />
             <div className="absolute inset-[10%] rounded-full bg-gradient-to-b from-karamel-300 to-karamel-700 p-[3.2%] shadow-[0_50px_90px_-30px_rgba(0,0,0,.75)]">
               <div className="relative size-full overflow-hidden rounded-full ring-2 ring-lacivert-900/40">
-                <Photo src={photos.hero} alt={dict.hero.imageAlt} sizes="(min-width: 1024px) 34rem, 80vw" preload />
+                <Photo photo="hero" alt={dict.hero.imageAlt} sizes="(min-width: 1024px) 34rem, 80vw" preload fill />
               </div>
             </div>
+            <svg
+              viewBox="0 0 120 100"
+              aria-hidden="true"
+              className="pointer-events-none absolute left-1/2 top-[12%] h-[30%] w-[36%] -translate-x-1/2 blur-[1.5px]"
+            >
+              {[
+                ["M34 96C24 76 44 66 34 46C26 30 40 18 36 4", "0s"],
+                ["M60 96C50 74 70 62 60 42C52 26 66 14 62 2", "1.2s"],
+                ["M86 96C76 78 96 66 86 48C78 32 92 20 88 6", "2.4s"],
+              ].map(([d, delay]) => (
+                <path
+                  key={delay}
+                  d={d}
+                  className="animate-steam opacity-0"
+                  style={{ animationDelay: delay }}
+                  stroke="#fffdf6"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                  fill="none"
+                />
+              ))}
+            </svg>
 
             <div className="absolute -end-1 top-[7%] grid size-24 rotate-12 place-items-center rounded-full bg-fistik-500 p-3 text-center text-[11px] font-extrabold uppercase leading-tight tracking-wider text-krem-50 shadow-xl ring-4 ring-lacivert-900 sm:size-28 sm:text-xs">
               {dict.hero.sticker}
@@ -99,7 +120,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 className="group absolute bottom-[4%] start-0 flex items-center gap-4 rounded-3xl bg-krem-50 py-3 pe-5 ps-3 text-lacivert-900 shadow-[0_24px_50px_-18px_rgba(0,0,0,.6)] transition hover:-translate-y-1 sm:start-[-4%]"
               >
                 <span className="relative size-14 shrink-0 overflow-hidden rounded-2xl">
-                  <Photo src={photos.hero} alt="" sizes="56px" />
+                  <Photo photo="hero" alt="" sizes="56px" fill />
                 </span>
                 <span>
                   <span className="block text-[11px] font-bold uppercase tracking-[0.16em] text-karamel-600">

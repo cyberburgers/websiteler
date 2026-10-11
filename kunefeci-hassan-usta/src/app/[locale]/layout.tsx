@@ -19,7 +19,7 @@ const berkshire = Berkshire_Swash({
 
 const fraunces = Fraunces({
   subsets: ["latin", "latin-ext"],
-  axes: ["SOFT"],
+  axes: ["SOFT", "opsz"],
   style: ["normal", "italic"],
   variable: "--font-fraunces",
 });

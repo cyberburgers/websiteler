@@ -37,6 +37,7 @@ const tr = {
     closed: "Şu an kapalı",
     closes: "Kapanış",
     opens: "Açılış",
+    dayOff: "Kapalı",
     today: "Bugün",
   },
   days: ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"],

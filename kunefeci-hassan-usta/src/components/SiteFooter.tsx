@@ -2,10 +2,10 @@ import Link from "next/link";
 import { MapPin, Phone } from "lucide-react";
 import { InstagramIcon, WhatsAppIcon } from "./BrandIcons";
 import { Logo } from "./Logo";
-import { HoursList } from "./OpenStatus";
 import { links, site } from "@/content/site";
 import { localePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
+import { groupedHours } from "@/lib/hours";
 
 async function CopyrightYear() {
   "use cache";
@@ -96,14 +96,19 @@ export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary 
 
           <div>
             <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-sari-300">{dict.visit.hours}</h2>
-            <div className="mt-3">
-              <HoursList days={dict.days} labels={dict.status} />
-            </div>
+            <ul className="mt-5 space-y-3">
+              {groupedHours(dict.days, dict.status.dayOff).map((g) => (
+                <li key={g.days} className="flex flex-col">
+                  <span className="text-sm text-krem-100/55">{g.days}</span>
+                  <span className="font-semibold tabular-nums text-krem-50">{g.hours}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
         <p
-          className="font-brand mt-20 select-none text-center text-[clamp(2.75rem,10vw,8.5rem)] leading-none text-krem-50/[0.06]"
+          className="font-brand mt-20 select-none whitespace-nowrap text-center text-[clamp(2rem,8.2vw,7.4rem)] leading-none text-krem-50/[0.07]"
           aria-hidden="true"
         >
           Künefeci Hassan Usta

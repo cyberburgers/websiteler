@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { Search, SearchX, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { PhotoPlaceholder } from "@/components/ui";
+import { Photo } from "@/components/ui";
 import { foldForSearch } from "@/lib/format";
 import { TagBadge, allergenIcons } from "./icons";
 import type { MenuLabels, MenuViewCategory, MenuViewItem } from "./types";
@@ -68,18 +67,12 @@ function ItemCard({ item, onOpen }: { item: MenuViewItem; onOpen: (item: MenuVie
           </span>
         </span>
         <span className="relative size-28 shrink-0 overflow-hidden rounded-[1.25rem] bg-krem-200 sm:size-32 md:order-1 md:aspect-[4/3] md:size-auto md:w-full md:rounded-[1.4rem] print:hidden">
-          {item.image ? (
-            <Image
-              src={item.image}
-              alt={item.name}
-              fill
-              sizes="(min-width: 1024px) 26rem, (min-width: 768px) 45vw, 8rem"
-              placeholder="blur"
-              className="object-cover transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-[1.05]"
-            />
-          ) : (
-            <PhotoPlaceholder />
-          )}
+          <Photo
+            photo={item.photo}
+            alt={item.name}
+            sizes="(min-width: 1024px) 26rem, (min-width: 768px) 45vw, 8rem"
+            className="transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-[1.05]"
+          />
         </span>
       </button>
     </li>
@@ -353,25 +346,18 @@ export function MenuExplorer({ categories, labels }: Props) {
       >
         {selected && (
           <article>
-            <div className="relative aspect-[16/10] overflow-hidden bg-krem-200">
-              {selected.image ? (
-                <Image
-                  src={selected.image}
-                  alt={selected.name}
-                  fill
-                  sizes="(min-width: 768px) 36rem, 100vw"
-                  placeholder="blur"
-                  className="object-cover"
-                />
-              ) : (
-                <PhotoPlaceholder />
+            <div
+              className={`relative overflow-hidden ${selected.photo ? "aspect-[16/10] bg-krem-200" : "h-16 border-b border-lacivert-800/10"}`}
+            >
+              {selected.photo && (
+                <Photo photo={selected.photo} alt={selected.name} sizes="(min-width: 768px) 36rem, 100vw" />
               )}
-              <span className="absolute left-1/2 top-3 h-1.5 w-12 -translate-x-1/2 rounded-full bg-krem-50/80 md:hidden" />
+              <span className="absolute left-1/2 top-3 h-1.5 w-12 -translate-x-1/2 rounded-full bg-lacivert-800/15 md:hidden" />
               <button
                 type="button"
                 onClick={() => dialogRef.current?.close()}
                 aria-label={labels.close}
-                className="absolute end-4 top-4 grid size-11 place-items-center rounded-full bg-krem-50/90 text-lacivert-900 shadow-lg backdrop-blur transition hover:bg-krem-50"
+                className="absolute end-3 top-3 grid size-11 place-items-center rounded-full bg-krem-50/90 text-lacivert-900 shadow-lg backdrop-blur transition hover:bg-krem-50"
               >
                 <X className="size-5" />
               </button>

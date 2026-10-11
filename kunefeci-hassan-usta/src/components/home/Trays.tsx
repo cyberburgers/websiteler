@@ -1,7 +1,6 @@
 import { Phone, Users } from "lucide-react";
 import { WhatsAppIcon } from "@/components/BrandIcons";
 import { Photo, buttonStyles } from "@/components/ui";
-import { photos } from "@/content/photos";
 import { links } from "@/content/site";
 import type { Dictionary } from "@/i18n/dictionaries";
 
@@ -30,7 +29,9 @@ export function Trays({ dict }: { dict: Dictionary }) {
           </svg>
 
           <div className="relative p-8 sm:p-12 lg:p-16">
-            <p className="text-xs font-bold uppercase tracking-[0.24em] text-lacivert-900/70">{dict.trays.eyebrow}</p>
+            <p className="text-xs font-bold uppercase tracking-[0.16em] sm:tracking-[0.24em] text-lacivert-900/70">
+              {dict.trays.eyebrow}
+            </p>
             <h2 className="font-display mt-5 text-balance text-[clamp(2.25rem,4.6vw,3.6rem)] font-medium leading-[1.04] tracking-[-0.015em]">
               {dict.trays.title}
             </h2>
@@ -58,7 +59,7 @@ export function Trays({ dict }: { dict: Dictionary }) {
 
           <div className="relative min-h-80 lg:min-h-full">
             <Photo
-              src={photos.kunefe2 ?? photos.hero}
+              photo="tepsi"
               alt=""
               sizes="(min-width: 1024px) 36rem, 100vw"
               className="lg:[mask-image:linear-gradient(to_right,transparent,black_30%)]"

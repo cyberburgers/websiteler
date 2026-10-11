@@ -1,5 +1,5 @@
-import type { StaticImageData } from "next/image";
 import type { Allergen, Tag } from "@/content/menu";
+import type { PhotoKey } from "@/content/photos";
 
 /** Menu data already localized and price-formatted on the server, ready for the client explorer. */
 export type MenuViewItem = {
@@ -9,7 +9,7 @@ export type MenuViewItem = {
   prices: { label?: string; formatted: string }[];
   allergens: { id: Allergen; label: string }[];
   tags: { id: Tag; label: string }[];
-  image?: StaticImageData;
+  photo?: PhotoKey;
   /** Accent-folded text in every language, so "kunefe" or "pistachio" finds the right item. */
   search: string;
 };

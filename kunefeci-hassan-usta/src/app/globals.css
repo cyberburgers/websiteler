@@ -129,6 +129,12 @@
   background-size: 88px 88px;
 }
 
+/* Same star in caramel, for cream backgrounds behind dish illustrations. */
+@utility pattern-star-light {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='88' viewBox='0 0 88 88'%3E%3Cg fill='none' stroke='%23ad7236' stroke-opacity='.09' stroke-width='1'%3E%3Cpath d='M26 26h36v36H26z'/%3E%3Cpath d='M44 18.5 69.5 44 44 69.5 18.5 44z'/%3E%3Ccircle cx='44' cy='44' r='6'/%3E%3Cpath d='M0 0l12 12M88 0 76 12M0 88l12-12M88 88 76 76'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 88px 88px;
+}
+
 /* Thin wavy strands, like tel kadayıf, used as a divider. */
 @utility kadayif-rule {
   height: 10px;
@@ -182,6 +188,27 @@
 @utility animate-rise {
   @media (prefers-reduced-motion: no-preference) {
     animation: rise 0.9s var(--ease-out-expo) both;
+  }
+}
+
+/* Steam rising off the hot künefe in the hero. */
+@keyframes steam {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scaleY(0.9);
+  }
+  35% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-46px) scaleY(1.1);
+  }
+}
+
+@utility animate-steam {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: steam 3.6s ease-out infinite;
   }
 }
 

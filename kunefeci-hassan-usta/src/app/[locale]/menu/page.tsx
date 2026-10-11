@@ -5,7 +5,6 @@ import { PrintButton } from "@/components/menu/PrintButton";
 import { allergenIcons } from "@/components/menu/icons";
 import type { MenuViewCategory } from "@/components/menu/types";
 import { allergens, availableMenu, menuUpdatedAt, tags, type Allergen } from "@/content/menu";
-import { photos } from "@/content/photos";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { foldForSearch, formatDate, formatPrice } from "@/lib/format";
@@ -32,7 +31,7 @@ function buildView(locale: Locale): MenuViewCategory[] {
       prices: item.prices.map((p) => ({ label: p.label?.[locale], formatted: formatPrice(p.amount, locale) })),
       allergens: item.allergens.map((a) => ({ id: a, label: allergens[a][locale] })),
       tags: (item.tags ?? []).map((t) => ({ id: t, label: tags[t][locale] })),
-      image: item.image ? photos[item.image] : undefined,
+      photo: item.image,
       search: foldForSearch(
         [...locales.map((l) => item.name[l]), item.description[locale], category.name[locale]].join(" "),
       ),
@@ -58,7 +57,7 @@ export default async function MenuPage({ params }: PageProps<"/[locale]/menu">) 
         />
         <div className="container-page flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-sari-300 print:text-karamel-700">
+            <p className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] sm:tracking-[0.24em] text-sari-300 print:text-karamel-700">
               <span aria-hidden="true" className="h-px w-10 bg-sari-300/60" />
               {dict.menu.eyebrow}
             </p>

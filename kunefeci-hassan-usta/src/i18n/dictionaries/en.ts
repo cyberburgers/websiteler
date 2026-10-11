@@ -39,6 +39,7 @@ const en: Dictionary = {
     closed: "Closed now",
     closes: "Closes",
     opens: "Opens",
+    dayOff: "Closed",
     today: "Today",
   },
   days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
