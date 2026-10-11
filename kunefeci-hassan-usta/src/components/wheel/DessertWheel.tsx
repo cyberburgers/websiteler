@@ -126,29 +126,18 @@ function MiniWheel({ className }: { className?: string }) {
 /** Fired by any trigger on the page; the one wheel dialog in the layout listens for it. */
 const OPEN_EVENT = "tatli-carki:ac";
 
-/** The "Kararsız mısın?" pill that lives in the header, right by the menu link. */
-export function WheelTrigger({
-  label,
-  tone,
-  className = "",
-}: {
-  label: string;
-  tone: "light" | "dark";
-  className?: string;
-}) {
+/** The "Kararsız mısın?" pill that sits beside the big "Menü" title on the menu page. */
+export function WheelTrigger({ label, className = "" }: { label: string; className?: string }) {
   return (
     <button
       type="button"
       aria-haspopup="dialog"
+      data-wheel-trigger=""
       onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}
-      className={`group inline-flex shrink-0 items-center gap-2 rounded-full py-1 pe-3.5 ps-1 text-[13px] font-bold transition-colors max-[359px]:pe-1 ${
-        tone === "light"
-          ? "bg-sari-300/45 text-lacivert-800 ring-1 ring-karamel-400/35 hover:bg-sari-300/70"
-          : "bg-krem-50/[0.07] text-sari-300 ring-1 ring-sari-300/25 hover:bg-krem-50/[0.13]"
-      } ${className}`}
+      className={`group inline-flex shrink-0 items-center gap-2 rounded-full bg-krem-50/[0.07] py-1 pe-4 ps-1 text-sm font-bold text-sari-300 ring-1 ring-sari-300/25 transition-colors hover:bg-krem-50/[0.13] lg:gap-3 lg:py-1.5 lg:pe-5 lg:ps-1.5 lg:text-base ${className}`}
     >
-      <MiniWheel className="size-8 shrink-0 animate-[spin_9s_linear_infinite] group-hover:animate-[spin_1.6s_linear_infinite] motion-reduce:animate-none" />
-      <span className="whitespace-nowrap max-[359px]:sr-only">{label}</span>
+      <MiniWheel className="size-9 shrink-0 animate-[spin_9s_linear_infinite] group-hover:animate-[spin_1.6s_linear_infinite] motion-reduce:animate-none lg:size-11" />
+      <span className="whitespace-nowrap">{label}</span>
     </button>
   );
 }

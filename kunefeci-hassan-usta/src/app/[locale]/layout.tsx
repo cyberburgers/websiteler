@@ -5,12 +5,10 @@ import { Logo } from "@/components/Logo";
 import { MobileActionBar } from "@/components/MobileActionBar";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
-import { DessertWheel } from "@/components/wheel/DessertWheel";
 import { links, site } from "@/content/site";
 import { isLocale, localePath, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pageMetadata } from "@/lib/seo";
-import { wheelSlices } from "@/lib/wheel";
 import "../globals.css";
 
 const berkshire = Berkshire_Swash({
@@ -91,12 +89,10 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
           phoneHref={links.tel}
           phoneDisplay={site.phoneDisplay}
           whatsappHref={links.whatsapp(dict.actions.whatsappText)}
-          wheelLabel={dict.wheel.trigger}
         />
         <main id="icerik">{children}</main>
         <SiteFooter locale={locale} dict={dict} />
         <MobileActionBar locale={locale} dict={dict} />
-        <DessertWheel slices={wheelSlices(locale)} labels={dict.wheel} />
       </body>
     </html>
   );

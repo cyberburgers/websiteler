@@ -4,12 +4,14 @@ import { MenuExplorer } from "@/components/menu/MenuExplorer";
 import { PrintButton } from "@/components/menu/PrintButton";
 import { allergenIcons } from "@/components/menu/icons";
 import type { MenuViewCategory } from "@/components/menu/types";
+import { DessertWheel, WheelTrigger } from "@/components/wheel/DessertWheel";
 import { allergens, availableMenu, menuUpdatedAt, tags, type Allergen } from "@/content/menu";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { foldForSearch, formatDate, formatPrice } from "@/lib/format";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd, menuJsonLd } from "@/lib/structured-data";
+import { wheelSlices } from "@/lib/wheel";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/menu">): Promise<Metadata> {
   const { locale } = await params;
@@ -61,18 +63,25 @@ export default async function MenuPage({ params }: PageProps<"/[locale]/menu">) 
               <span aria-hidden="true" className="h-px w-10 bg-sari-300/60" />
               {dict.menu.eyebrow}
             </p>
-            <h1
-              aria-label={dict.menu.title}
-              className="font-display text-[clamp(3.25rem,13vw,9.5rem)] sm:mt-5 font-medium leading-[0.9] tracking-[-0.03em] text-krem-50 print:text-6xl print:text-lacivert-900"
-            >
-              <span aria-hidden="true" className="-mb-[0.12em] block overflow-hidden pb-[0.12em]">
-                {[...dict.menu.title].map((char, i) => (
-                  <span key={i} className="animate-line-up inline-block" style={{ animationDelay: `${80 + i * 70}ms` }}>
-                    {char}
-                  </span>
-                ))}
-              </span>
-            </h1>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-3 sm:mt-5 lg:gap-x-8">
+              <h1
+                aria-label={dict.menu.title}
+                className="font-display text-[clamp(3.25rem,13vw,9.5rem)] font-medium leading-[0.9] tracking-[-0.03em] text-krem-50 print:text-6xl print:text-lacivert-900"
+              >
+                <span aria-hidden="true" className="-mb-[0.12em] block overflow-hidden pb-[0.12em]">
+                  {[...dict.menu.title].map((char, i) => (
+                    <span
+                      key={i}
+                      className="animate-line-up inline-block"
+                      style={{ animationDelay: `${80 + i * 70}ms` }}
+                    >
+                      {char}
+                    </span>
+                  ))}
+                </span>
+              </h1>
+              <WheelTrigger label={dict.wheel.trigger} className="animate-pop print-hidden [animation-delay:650ms]" />
+            </div>
             <p className="animate-rise mt-3 max-w-xl text-[15px] leading-relaxed text-krem-100/75 [animation-delay:350ms] sm:mt-6 sm:text-lg md:text-xl print:text-base print:text-lacivert-800">
               {dict.menu.lead}
             </p>
@@ -101,6 +110,8 @@ export default async function MenuPage({ params }: PageProps<"/[locale]/menu">) 
         </div>
         <div aria-hidden="true" className="scallop absolute inset-x-0 -bottom-px print:hidden" />
       </section>
+
+      <DessertWheel slices={wheelSlices(locale)} labels={dict.wheel} />
 
       <MenuExplorer
         categories={categories}

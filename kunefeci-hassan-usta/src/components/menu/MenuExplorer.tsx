@@ -211,7 +211,7 @@ export function MenuExplorer({ categories, labels }: Props) {
     <div className="grain bg-krem-100 pb-16 md:pb-24">
       <div
         ref={toolbarRef}
-        className="print-hidden sticky top-16 z-30 border-b border-lacivert-800/10 bg-krem-100/95 md:top-20 md:bg-krem-100/90 md:backdrop-blur-xl"
+        className="under-header print-hidden sticky top-16 z-30 border-b border-lacivert-800/10 bg-krem-100/95 md:top-20 md:bg-krem-100/90 md:backdrop-blur-xl"
       >
         <div className="container-page flex flex-col gap-3 py-3 md:flex-row md:items-center md:gap-5">
           <label className={`relative md:block md:w-80 md:shrink-0 ${searchOpen || query ? "block" : "hidden"}`}>
