@@ -764,6 +764,11 @@ const arts: Record<ArtKind, () => React.ReactNode> = {
   mirra: () => <Mirra />,
 };
 
+/** The bare drawing (an SVG group in a 400×400 space), for placing inside another SVG. */
+export function ArtGroup({ kind }: { kind: ArtKind }) {
+  return <>{arts[kind]()}</>;
+}
+
 /** Round dishes seen from above can be cropped to the rim, e.g. inside a circular frame. */
 const roundKinds = new Set<ArtKind>([
   "fistik",

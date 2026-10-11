@@ -19,6 +19,8 @@ export type Price = { amount: number; label?: Text };
 export type MenuItem = {
   id: string;
   name: Text;
+  /** Kısa ad — çark gibi dar yerlerde kullanılır. Yazılmazsa normal ad kullanılır. */
+  shortName?: Text;
   description: Text;
   prices: Price[];
   allergens: Allergen[];
@@ -57,6 +59,7 @@ export const menu: MenuCategory[] = [
       {
         id: "hassan-usta-ozel",
         name: { tr: "Hassan Usta Özel", en: "Hassan Usta Special" },
+        shortName: { tr: "Hassan Usta Özel", en: "Usta's Special" },
         description: {
           tr: "Ustanın imzası: çifte fıstık, kaymak ve bir top Maraş dondurmasıyla taçlanan künefe.",
           en: "The master's signature: künefe crowned with double pistachio, kaymak and a scoop of Maraş ice cream.",
@@ -83,6 +86,7 @@ export const menu: MenuCategory[] = [
       {
         id: "fistikli-kunefe",
         name: { tr: "Bol Fıstıklı Künefe", en: "Pistachio-Loaded Künefe" },
+        shortName: { tr: "Fıstıklı Künefe", en: "Pistachio Künefe" },
         description: {
           tr: "Klasik künefemizin üzeri bolca dövme Antep fıstığıyla kaplanır.",
           en: "Our classic künefe, generously covered in crushed Antep pistachios.",
@@ -96,6 +100,7 @@ export const menu: MenuCategory[] = [
       {
         id: "kaymakli-kunefe",
         name: { tr: "Kaymaklı Künefe", en: "Künefe with Kaymak" },
+        shortName: { tr: "Kaymaklı Künefe", en: "Kaymak Künefe" },
         description: {
           tr: "Sıcak künefenin yanında soğuk, ağızda dağılan taze kaymak.",
           en: "Hot künefe served with cold, silky clotted cream (kaymak).",
@@ -107,6 +112,7 @@ export const menu: MenuCategory[] = [
       {
         id: "dondurmali-kunefe",
         name: { tr: "Dondurmalı Künefe", en: "Künefe with Ice Cream" },
+        shortName: { tr: "Dondurmalı Künefe", en: "Ice Cream Künefe" },
         description: {
           tr: "Sıcak künefe ve sakızlı Maraş dondurması: sıcak-soğuk uyumunun en lezzetli hâli.",
           en: "Hot künefe with mastic-scented Maraş ice cream — the perfect hot-and-cold pairing.",
@@ -226,6 +232,7 @@ export const menu: MenuCategory[] = [
       {
         id: "firin-sutlac",
         name: { tr: "Fırın Sütlaç", en: "Baked Rice Pudding" },
+        shortName: { tr: "Fırın Sütlaç", en: "Rice Pudding" },
         description: {
           tr: "Üstü fırında kızaran, soğuk servis edilen ev usulü sütlaç.",
           en: "Home-style rice pudding with a caramelised top, served chilled.",

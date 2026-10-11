@@ -59,6 +59,18 @@ const tr = {
     "Sıcak şerbet",
     "Tepsi künefe",
   ],
+  wheel: {
+    trigger: "Kararsız mısın?",
+    open: "Tatlı çarkını aç",
+    title: "Çarkı çevir, tatlını seç",
+    hint: "Çarkı parmağınla tutup hızlıca savur ya da ortadaki düğmeye bas.",
+    faster: "Biraz daha hızlı çevir!",
+    spin: "Çevir",
+    again: "Tekrar çevir",
+    picked: "Çark senin için seçti",
+    seeMenu: "Menüde gör",
+    close: "Kapat",
+  },
   signature: {
     eyebrow: "Ustanın seçkisi",
     title: "İmza lezzetlerimiz",
