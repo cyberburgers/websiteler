@@ -4,7 +4,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { isLocale, localeMeta, locales, type Locale } from "@/i18n/config";
 
-export function LanguageSwitcher({ current, label, tone }: { current: Locale; label: string; tone: "dark" | "light" }) {
+export function LanguageSwitcher({
+  current,
+  label,
+  tone,
+  size = "md",
+}: {
+  current: Locale;
+  label: string;
+  tone: "dark" | "light";
+  size?: "md" | "lg";
+}) {
   const pathname = usePathname();
   const segments = pathname.split("/");
   const rest = isLocale(segments[1] ?? "") ? segments.slice(2).join("/") : segments.slice(1).join("/");
@@ -27,7 +37,7 @@ export function LanguageSwitcher({ current, label, tone }: { current: Locale; la
                 lang={locale}
                 aria-current={isCurrent ? "true" : undefined}
                 title={localeMeta[locale].label}
-                className={`grid h-7 min-w-9 place-items-center rounded-full px-2 text-xs font-bold tracking-wide transition-colors ${isCurrent ? active : idle}`}
+                className={`grid place-items-center rounded-full font-bold tracking-wide transition-colors ${size === "lg" ? "h-11 min-w-14 px-4 text-sm" : "h-7 min-w-9 px-2 text-xs"} ${isCurrent ? active : idle}`}
               >
                 {localeMeta[locale].short}
               </Link>

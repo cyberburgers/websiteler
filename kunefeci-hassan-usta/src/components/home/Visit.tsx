@@ -71,7 +71,7 @@ export function Visit({ dict }: { dict: Dictionary }) {
             href={links.mapsSearch}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-krem-100/70 underline-offset-4 hover:text-krem-50 hover:underline"
+            className="inline-flex items-center gap-2 py-2 text-sm font-semibold text-krem-100/70 underline-offset-4 hover:text-krem-50 hover:underline"
           >
             {dict.actions.openInMaps}
             <ExternalLink className="size-3.5" aria-hidden="true" />

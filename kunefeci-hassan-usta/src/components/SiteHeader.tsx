@@ -33,10 +33,28 @@ export function SiteHeader({ locale, logo, homeHref, nav, labels, phoneHref, pho
   );
   const [open, setOpen] = useState(false);
 
+  // Tuck the header away while reading down the page; bring it back on any upward scroll.
+  useEffect(() => {
+    const root = document.documentElement;
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (Math.abs(y - lastY) < 8) return;
+      root.dataset.header = y > lastY && y > 320 ? "hidden" : "shown";
+      lastY = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      delete root.dataset.header;
+    };
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     const root = document.documentElement;
     root.style.overflow = "hidden";
+    root.dataset.header = "shown";
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
     return () => {
@@ -50,7 +68,7 @@ export function SiteHeader({ locale, logo, homeHref, nav, labels, phoneHref, pho
 
   return (
     <header
-      className={`print-hidden fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-500 ${
+      className={`site-header print-hidden fixed inset-x-0 top-0 z-50 ${
         solid
           ? "bg-krem-100/85 shadow-[0_1px_0_rgba(35,38,74,.08),0_12px_32px_-18px_rgba(35,38,74,.35)] backdrop-blur-xl"
           : "bg-transparent"
@@ -117,7 +135,7 @@ export function SiteHeader({ locale, logo, homeHref, nav, labels, phoneHref, pho
       <div
         id="mobile-nav"
         hidden={!open}
-        className="pattern-star animate-fade-in fixed inset-0 h-[100dvh] overflow-y-auto bg-lacivert-900 pb-10 pt-28 lg:hidden"
+        className="pattern-star animate-fade-in fixed inset-0 h-[100dvh] overflow-y-auto bg-lacivert-900 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-28 lg:hidden"
       >
         <div className="container-page flex min-h-full flex-col">
           <nav aria-label={labels.primary}>
@@ -137,7 +155,7 @@ export function SiteHeader({ locale, logo, homeHref, nav, labels, phoneHref, pho
             </ul>
           </nav>
           <div className="mt-auto space-y-5 pt-10">
-            <LanguageSwitcher current={locale} label={labels.language} tone="dark" />
+            <LanguageSwitcher current={locale} label={labels.language} tone="dark" size="lg" />
             <div className="grid grid-cols-2 gap-3">
               <a
                 href={phoneHref}

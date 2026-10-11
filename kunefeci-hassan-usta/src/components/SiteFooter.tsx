@@ -56,10 +56,10 @@ export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary 
 
           <div>
             <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-sari-300">{dict.footer.explore}</h2>
-            <ul className="mt-5 space-y-3">
+            <ul className="mt-3 space-y-0.5">
               {nav.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="text-krem-100/80 transition hover:text-krem-50">
+                  <Link href={item.href} className="inline-block py-2 text-krem-100/80 transition hover:text-krem-50">
                     {item.label}
                   </Link>
                 </li>
@@ -86,7 +86,7 @@ export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary 
                 </a>
               </li>
               <li>
-                <a href={links.tel} className="flex gap-3 hover:text-krem-50">
+                <a href={links.tel} className="-my-2 flex gap-3 py-2 hover:text-krem-50">
                   <Phone className="mt-0.5 size-5 shrink-0 text-karamel-300" aria-hidden="true" />
                   <span>{site.phoneDisplay}</span>
                 </a>
@@ -122,7 +122,7 @@ export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary 
             <span>{dict.footer.photoNote}</span>
             <Link
               href={localePath(locale, "/gizlilik")}
-              className="underline-offset-4 hover:text-krem-50 hover:underline"
+              className="-my-2 inline-block py-2 underline-offset-4 hover:text-krem-50 hover:underline"
             >
               {dict.footer.privacy}
             </Link>

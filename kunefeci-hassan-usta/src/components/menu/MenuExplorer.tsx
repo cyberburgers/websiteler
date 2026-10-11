@@ -45,7 +45,7 @@ function ItemCard({ item, onOpen }: { item: MenuViewItem; onOpen: (item: MenuVie
       <button
         type="button"
         onClick={() => onOpen(item)}
-        className="group flex h-full w-full gap-4 rounded-[1.75rem] bg-krem-50 p-3 text-start shadow-[0_1px_0_rgba(35,38,74,.04),0_24px_48px_-36px_rgba(35,38,74,.55)] ring-1 ring-lacivert-800/[0.07] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_1px_0_rgba(35,38,74,.04),0_30px_60px_-34px_rgba(35,38,74,.6)] hover:ring-karamel-300/60 md:flex-col print:break-inside-avoid print:p-0 print:shadow-none print:ring-0"
+        className="group flex h-full w-full gap-4 rounded-[1.75rem] bg-krem-50 p-3 text-start active:scale-[0.98] shadow-[0_1px_0_rgba(35,38,74,.04),0_24px_48px_-36px_rgba(35,38,74,.55)] ring-1 ring-lacivert-800/[0.07] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_1px_0_rgba(35,38,74,.04),0_30px_60px_-34px_rgba(35,38,74,.6)] hover:ring-karamel-300/60 md:flex-col print:break-inside-avoid print:p-0 print:shadow-none print:ring-0"
       >
         <span className="flex min-w-0 flex-1 flex-col ps-2 pt-1.5 md:order-2 md:px-3 md:pb-2 md:pt-1">
           {item.tags.length > 0 && (
@@ -85,7 +85,7 @@ function ItemRow({ item, onOpen }: { item: MenuViewItem; onOpen: (item: MenuView
       <button
         type="button"
         onClick={() => onOpen(item)}
-        className="group -mx-3 block w-[calc(100%+1.5rem)] rounded-2xl px-3 py-4 text-start transition hover:bg-krem-200/50 print:break-inside-avoid"
+        className="group -mx-3 block w-[calc(100%+1.5rem)] rounded-2xl px-3 py-4 text-start transition hover:bg-krem-200/50 active:bg-krem-200/70 print:break-inside-avoid"
       >
         <span className="flex items-baseline">
           <span className="font-display text-xl font-medium text-lacivert-800 transition-colors group-hover:text-karamel-700">
@@ -120,6 +120,7 @@ export function MenuExplorer({ categories, labels }: Props) {
   const chipBarRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
+  const drag = useRef<{ startY: number; dy: number } | null>(null);
 
   const needle = foldForSearch(query.trim());
   const visible = useMemo(
@@ -180,6 +181,27 @@ export function MenuExplorer({ categories, labels }: Props) {
     if (offset < 0) window.scrollBy({ top: offset, behavior: "instant" });
   };
 
+  const sheetTouch = {
+    onTouchStart: (e: React.TouchEvent<HTMLDialogElement>) => {
+      if (e.currentTarget.scrollTop > 0) return;
+      drag.current = { startY: e.touches[0].clientY, dy: 0 };
+    },
+    onTouchMove: (e: React.TouchEvent<HTMLDialogElement>) => {
+      if (!drag.current) return;
+      const dy = Math.max(0, e.touches[0].clientY - drag.current.startY);
+      drag.current.dy = dy;
+      e.currentTarget.style.transition = "none";
+      e.currentTarget.style.translate = `0 ${dy}px`;
+    },
+    onTouchEnd: (e: React.TouchEvent<HTMLDialogElement>) => {
+      const dragged = drag.current?.dy ?? 0;
+      drag.current = null;
+      e.currentTarget.style.transition = "";
+      e.currentTarget.style.translate = "";
+      if (dragged > 110) e.currentTarget.close();
+    },
+  };
+
   const jumpTo = (id: string) => {
     setActive(id);
     document.getElementById(`kategori-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -189,7 +211,7 @@ export function MenuExplorer({ categories, labels }: Props) {
     <div className="grain bg-krem-100 pb-16 md:pb-24">
       <div
         ref={toolbarRef}
-        className="print-hidden sticky top-16 z-30 border-b border-lacivert-800/10 bg-krem-100/90 backdrop-blur-xl md:top-20"
+        className="under-header print-hidden sticky top-16 z-30 border-b border-lacivert-800/10 bg-krem-100/95 md:top-20 md:bg-krem-100/90 md:backdrop-blur-xl"
       >
         <div className="container-page flex flex-col gap-3 py-3 md:flex-row md:items-center md:gap-5">
           <label className={`relative md:block md:w-80 md:shrink-0 ${searchOpen || query ? "block" : "hidden"}`}>
@@ -294,9 +316,9 @@ export function MenuExplorer({ categories, labels }: Props) {
             key={category.id}
             id={`kategori-${category.id}`}
             aria-labelledby={`baslik-${category.id}`}
-            className="scroll-mt-36 border-t border-lacivert-800/10 pt-14 first:border-t-0 md:scroll-mt-40 md:pt-20 print:break-before-auto print:pt-6"
+            className="scroll-mt-36 border-t border-lacivert-800/10 pt-10 first:border-t-0 first:pt-7 md:scroll-mt-40 md:pt-20 md:first:pt-14 print:break-before-auto print:pt-6"
           >
-            <header className="reveal mb-8 flex items-end justify-between gap-6 md:mb-10">
+            <header className="reveal mb-5 flex items-end justify-between gap-6 md:mb-10">
               <div>
                 <span className="font-brand text-2xl text-karamel-500">{String(index + 1).padStart(2, "0")}</span>
                 <h2
@@ -306,7 +328,9 @@ export function MenuExplorer({ categories, labels }: Props) {
                   {category.name}
                 </h2>
                 {category.description && (
-                  <p className="mt-3 max-w-xl text-[17px] text-lacivert-800/65">{category.description}</p>
+                  <p className="mt-2 max-w-xl text-[15px] text-lacivert-800/65 md:mt-3 md:text-[17px]">
+                    {category.description}
+                  </p>
                 )}
               </div>
             </header>
@@ -342,6 +366,7 @@ export function MenuExplorer({ categories, labels }: Props) {
           if (e.target === e.currentTarget) dialogRef.current?.close();
         }}
         aria-labelledby="urun-baslik"
+        {...sheetTouch}
         className="menu-sheet mx-auto mb-0 mt-auto max-h-[90dvh] w-full max-w-none overflow-y-auto rounded-t-[2rem] bg-krem-50 p-0 text-lacivert-800 md:my-auto md:max-w-xl md:rounded-[2rem]"
       >
         {selected && (

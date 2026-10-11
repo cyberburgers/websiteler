@@ -50,20 +50,20 @@ export default async function MenuPage({ params }: PageProps<"/[locale]/menu">) 
     <>
       <JsonLd data={menuJsonLd(locale)} />
 
-      <section className="pattern-star relative isolate overflow-hidden bg-lacivert-900 pb-20 pt-36 text-krem-100 md:pb-24 md:pt-48 print:bg-transparent print:pb-4 print:pt-0 print:text-lacivert-900">
+      <section className="pattern-star relative isolate overflow-hidden bg-lacivert-900 pb-12 pt-[6.5rem] text-krem-100 sm:pb-20 sm:pt-36 md:pb-24 md:pt-48 print:bg-transparent print:pb-4 print:pt-0 print:text-lacivert-900">
         <div
           aria-hidden="true"
           className="absolute -end-32 -top-24 -z-10 size-[36rem] rounded-full bg-serbet-500/20 blur-[120px] print:hidden"
         />
-        <div className="container-page flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+        <div className="container-page flex flex-col gap-4 sm:gap-10 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] sm:tracking-[0.24em] text-sari-300 print:text-karamel-700">
+            <p className="hidden items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] text-sari-300 sm:flex sm:tracking-[0.24em] print:text-karamel-700">
               <span aria-hidden="true" className="h-px w-10 bg-sari-300/60" />
               {dict.menu.eyebrow}
             </p>
             <h1
               aria-label={dict.menu.title}
-              className="font-display mt-5 text-[clamp(4rem,13vw,9.5rem)] font-medium leading-[0.9] tracking-[-0.03em] text-krem-50 print:text-6xl print:text-lacivert-900"
+              className="font-display text-[clamp(3.25rem,13vw,9.5rem)] sm:mt-5 font-medium leading-[0.9] tracking-[-0.03em] text-krem-50 print:text-6xl print:text-lacivert-900"
             >
               <span aria-hidden="true" className="-mb-[0.12em] block overflow-hidden pb-[0.12em]">
                 {[...dict.menu.title].map((char, i) => (
@@ -73,12 +73,12 @@ export default async function MenuPage({ params }: PageProps<"/[locale]/menu">) 
                 ))}
               </span>
             </h1>
-            <p className="animate-rise mt-6 max-w-xl text-lg leading-relaxed text-krem-100/75 [animation-delay:350ms] md:text-xl print:text-base print:text-lacivert-800">
+            <p className="animate-rise mt-3 max-w-xl text-[15px] leading-relaxed text-krem-100/75 [animation-delay:350ms] sm:mt-6 sm:text-lg md:text-xl print:text-base print:text-lacivert-800">
               {dict.menu.lead}
             </p>
           </div>
           <div className="animate-rise flex flex-col items-start gap-4 [animation-delay:450ms] lg:items-end lg:pb-3 lg:text-end">
-            <div className="flex gap-6 lg:gap-8">
+            <div className="hidden gap-6 sm:flex lg:gap-8">
               <div>
                 <p className="font-display text-4xl text-sari-300 print:text-lacivert-900">{categories.length}</p>
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-krem-100/55">
@@ -91,10 +91,10 @@ export default async function MenuPage({ params }: PageProps<"/[locale]/menu">) 
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-krem-100/55">{dict.menu.dishes}</p>
               </div>
             </div>
-            <p className="text-sm text-krem-100/60 print:text-lacivert-800">
+            <p className="text-xs text-krem-100/60 sm:text-sm print:text-lacivert-800">
               {dict.menu.priceNote} · {dict.menu.updated}: {formatDate(menuUpdatedAt, locale)}
             </p>
-            <div className="print-hidden">
+            <div className="print-hidden hidden md:block">
               <PrintButton label={dict.menu.print} />
             </div>
           </div>

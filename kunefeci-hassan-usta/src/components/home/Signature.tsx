@@ -19,7 +19,7 @@ export function Signature({ locale, dict }: { locale: Locale; dict: Dictionary }
             <p className="text-[17px] leading-relaxed text-lacivert-800/70">{dict.signature.lead}</p>
             <Link
               href={menuHref}
-              className="group mt-4 inline-flex items-center gap-2 font-bold text-karamel-700 underline-offset-[6px] hover:underline"
+              className="group mt-2 inline-flex items-center gap-2 py-2 font-bold text-karamel-700 underline-offset-[6px] hover:underline"
             >
               {dict.actions.fullMenu}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
@@ -33,7 +33,7 @@ export function Signature({ locale, dict }: { locale: Locale; dict: Dictionary }
             const photo = hasPhoto(item.image);
             return (
               <li key={item.id} className="reveal w-[78%] shrink-0 snap-start sm:w-auto">
-                <Link href={`${menuHref}#${item.id}`} className="group block">
+                <Link href={`${menuHref}#${item.id}`} className="group block transition-transform active:scale-[0.98]">
                   <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-krem-200 shadow-[0_30px_60px_-35px_rgba(35,38,74,.55)]">
                     <Photo
                       photo={item.image}

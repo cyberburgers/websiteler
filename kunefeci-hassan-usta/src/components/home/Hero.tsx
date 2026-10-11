@@ -44,13 +44,13 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         className="absolute -bottom-72 -start-40 -z-10 size-[40rem] rounded-full bg-lacivert-600/50 blur-[120px]"
       />
 
-      <div className="container-page grid items-center gap-16 pb-28 pt-40 md:pt-48 lg:min-h-[min(100svh,1000px)] lg:grid-cols-[1.05fr_1fr] lg:gap-8 lg:pb-32 lg:pt-36">
+      <div className="container-page grid items-center gap-7 pb-24 pt-24 sm:gap-16 sm:pb-28 sm:pt-40 md:pt-48 lg:min-h-[min(100svh,1000px)] lg:grid-cols-[1.05fr_1fr] lg:gap-8 lg:pb-32 lg:pt-36">
         <div className="relative z-10">
-          <p className="animate-rise flex items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] sm:tracking-[0.24em] text-sari-300">
-            <span aria-hidden="true" className="h-px w-10 bg-sari-300/60" />
+          <p className="animate-rise flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.12em] text-sari-300 sm:text-xs sm:tracking-[0.24em]">
+            <span aria-hidden="true" className="hidden h-px w-10 bg-sari-300/60 sm:block" />
             {dict.hero.eyebrow}
           </p>
-          <h1 className="font-display mt-7 text-[clamp(3rem,7.4vw,6.4rem)] font-medium leading-[0.96] tracking-[-0.025em] text-krem-50">
+          <h1 className="font-display mt-4 text-[clamp(2.75rem,7.4vw,6.4rem)] sm:mt-7 font-medium leading-[0.96] tracking-[-0.025em] text-krem-50">
             {[dict.hero.titleA, dict.hero.titleB, dict.hero.titleC].map((line, i) => (
               // Each line is masked so it rises from behind its own baseline; the padding keeps ş, y, ğ unclipped.
               <span key={line} className="-mb-[0.14em] block overflow-hidden pb-[0.14em] pe-[0.12em]">
@@ -63,20 +63,22 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               </span>
             ))}
           </h1>
-          <p className="animate-rise mt-8 max-w-xl text-lg leading-relaxed text-krem-100/75 [animation-delay:360ms] md:text-xl">
+          <p className="animate-rise mt-5 max-w-xl text-base leading-relaxed text-krem-100/75 [animation-delay:360ms] sm:mt-8 sm:text-lg md:text-xl">
             {dict.hero.lead}
           </p>
-          <div className="animate-rise mt-10 flex flex-wrap gap-3 [animation-delay:450ms]">
-            <Link href={localePath(locale, "/menu")} className={`group ${buttonStyles.primary}`}>
+          <div className="animate-rise mt-7 flex flex-wrap gap-3 [animation-delay:450ms] sm:mt-10">
+            <Link href={localePath(locale, "/menu")} className={`group w-full sm:w-auto ${buttonStyles.primary}`}>
               {dict.actions.seeMenu}
               <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </Link>
-            <a href={links.directions} target="_blank" rel="noopener noreferrer" className={buttonStyles.ghostDark}>
-              <Navigation className="size-[18px]" aria-hidden="true" />
-              {dict.actions.directions}
-            </a>
+            <span className="hidden sm:contents">
+              <a href={links.directions} target="_blank" rel="noopener noreferrer" className={buttonStyles.ghostDark}>
+                <Navigation className="size-[18px]" aria-hidden="true" />
+                {dict.actions.directions}
+              </a>
+            </span>
           </div>
-          <div className="animate-rise mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-krem-100/70 [animation-delay:540ms]">
+          <div className="animate-rise mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-krem-100/70 [animation-delay:540ms] sm:mt-10">
             <OpenStatus labels={dict.status} />
             <span className="flex items-center gap-2">
               <MapPin className="size-4 text-karamel-300" aria-hidden="true" />
@@ -85,7 +87,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-[33rem] lg:max-w-[38rem]">
+        <div className="relative order-first mx-auto w-full max-w-[min(17.5rem,33svh)] sm:max-w-[26rem] md:max-w-[33rem] lg:order-none lg:max-w-[38rem]">
           <div className="relative aspect-square text-sari-300/70">
             <div className="animate-fade-in absolute inset-0 [animation-delay:500ms] [animation-duration:1.2s]">
               <RingText text={dict.hero.ring} />
@@ -95,7 +97,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 <Photo photo="hero" alt={dict.hero.imageAlt} sizes="(min-width: 1024px) 34rem, 80vw" preload fill />
                 <span
                   aria-hidden="true"
-                  className="animate-sheen pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,transparent_38%,rgba(255,250,235,.32)_50%,transparent_62%)] bg-[length:260%_100%] bg-[position:170%_0]"
+                  className="animate-sheen pointer-events-none absolute inset-y-0 left-0 w-[55%] bg-[linear-gradient(105deg,transparent,rgba(255,250,235,.32),transparent)]"
                 />
               </div>
             </div>
@@ -122,14 +124,14 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               ))}
             </svg>
 
-            <div className="animate-pop absolute -end-1 top-[7%] grid size-24 rotate-12 [animation-delay:1s] place-items-center rounded-full bg-fistik-500 p-3 text-center text-[11px] font-extrabold uppercase leading-tight tracking-wider text-krem-50 shadow-xl ring-4 ring-lacivert-900 sm:size-28 sm:text-xs">
+            <div className="animate-pop absolute -end-1 top-[7%] grid size-[4.75rem] rotate-12 [animation-delay:1s] place-items-center rounded-full bg-fistik-500 p-2 text-center text-[9px] font-extrabold uppercase leading-tight tracking-wider text-krem-50 shadow-xl ring-4 ring-lacivert-900 sm:size-28 sm:p-3 sm:text-xs">
               {dict.hero.sticker}
             </div>
 
             {signature && (
               <Link
                 href={`${localePath(locale, "/menu")}#${signature.id}`}
-                className="animate-rise group absolute bottom-[4%] start-0 flex items-center gap-4 [animation-delay:800ms] rounded-3xl bg-krem-50 py-3 pe-5 ps-3 text-lacivert-900 shadow-[0_24px_50px_-18px_rgba(0,0,0,.6)] transition hover:-translate-y-1 sm:start-[-4%]"
+                className="animate-rise group absolute bottom-[4%] start-0 hidden items-center sm:flex gap-4 [animation-delay:800ms] rounded-3xl bg-krem-50 py-3 pe-5 ps-3 text-lacivert-900 shadow-[0_24px_50px_-18px_rgba(0,0,0,.6)] transition hover:-translate-y-1 sm:start-[-4%]"
               >
                 <span className="relative size-14 shrink-0 overflow-hidden rounded-2xl">
                   <Photo photo="hero" alt="" sizes="56px" fill />
