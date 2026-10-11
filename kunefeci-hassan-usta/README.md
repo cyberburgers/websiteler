@@ -1,6 +1,6 @@
 # Künefeci Hassan Usta — Web Sitesi
 
-Şanlıurfa'daki Künefeci Hassan Usta için üç dilli (Türkçe, İngilizce, Arapça) web sitesi.
+Şanlıurfa'daki Künefeci Hassan Usta için iki dilli (Türkçe, İngilizce) web sitesi.
 Önceliği menü olan, telefonda hızlı açılan, Google'da işletme bilgileri doğru görünen bir site.
 
 **Teknoloji:** Next.js 16 · React 19 · Tailwind CSS 4 · TypeScript
@@ -14,7 +14,7 @@
 | `/tr/gizlilik` | Gizlilik ve KVKK aydınlatma metni |
 | `/tr/qr` | Masalara konacak yazdırılabilir QR kartı (Google'a kapalı) |
 
-`/en/...` İngilizce, `/ar/...` Arapça (sağdan sola) sürümlerdir. Önek olmadan gelen her adres
+`/en/...` İngilizce sürümdür. Önek olmadan gelen her adres
 Türkçeye yönlenir; yani QR kodu `site.com/menu` adresine gidebilir.
 
 ## Çalıştırma
@@ -36,7 +36,7 @@ Her şey `src/content/` klasöründedir; kod bilmeden düzenlenebilecek şekilde
 | `src/content/menu.ts` | Kategoriler, ürünler, fiyatlar, alerjenler, etiketler |
 | `src/content/photos.ts` | Hangi fotoğrafın nerede kullanılacağı |
 | `src/content/privacy.ts` | Gizlilik / KVKK metni |
-| `src/i18n/dictionaries/` | Sitedeki tüm yazılar (tr, en, ar) |
+| `src/i18n/dictionaries/` | Sitedeki tüm yazılar (tr, en) |
 
 - **Fiyat değiştirmek:** `menu.ts` içinde ürünün `amount` değerini değiştirin (`220` = ₺220).
   Sonra dosyanın başındaki `menuUpdatedAt` tarihini güncelleyin.
@@ -57,7 +57,6 @@ Her şey `src/content/` klasöründedir; kod bilmeden düzenlenebilecek şekilde
 - [ ] `menu.ts` içindeki **örnek fiyatlar** → gerçek fiyatlar
 - [ ] Geçici fotoğraflar → dükkânın kendi fotoğrafları (bkz. `src/assets/photos/KAYNAKLAR.md`)
 - [ ] Hikâye metni (`src/i18n/dictionaries/`) — işletmenin gerçek hikâyesine göre düzenleyin
-- [ ] Arapça metinleri anadili Arapça olan birine okutun
 - [ ] Gizlilik metnini bir hukukçuya kontrol ettirin
 
 ## Yayına alma (Vercel)

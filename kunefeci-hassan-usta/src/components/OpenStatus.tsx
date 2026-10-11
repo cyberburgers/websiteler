@@ -55,9 +55,7 @@ export function HoursList({ days, labels }: { days: string[]; labels: Labels }) 
                 </span>
               )}
             </span>
-            <span dir="ltr" className="tabular-nums">
-              {hours ? `${hours.open} – ${hours.close}` : "—"}
-            </span>
+            <span className="tabular-nums">{hours ? `${hours.open} – ${hours.close}` : "—"}</span>
           </li>
         );
       })}

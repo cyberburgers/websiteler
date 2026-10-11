@@ -27,5 +27,5 @@ export function foldForSearch(value: string): string {
     .toLocaleLowerCase("tr")
     .replace(/ı/g, "i")
     .normalize("NFD")
-    .replace(/[̀-ًͯ-ٟ]/g, "");
+    .replace(/[\u0300-\u036f]/g, "");
 }

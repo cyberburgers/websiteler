@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Berkshire_Swash, Cairo, Fraunces, Manrope } from "next/font/google";
+import { Berkshire_Swash, Fraunces, Manrope } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Logo } from "@/components/Logo";
 import { MobileActionBar } from "@/components/MobileActionBar";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { links, site } from "@/content/site";
-import { isLocale, localeMeta, localePath, locales } from "@/i18n/config";
+import { isLocale, localePath, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pageMetadata } from "@/lib/seo";
 import "../globals.css";
@@ -27,12 +27,6 @@ const fraunces = Fraunces({
 const manrope = Manrope({
   subsets: ["latin", "latin-ext"],
   variable: "--font-manrope",
-});
-
-const cairo = Cairo({
-  subsets: ["arabic", "latin"],
-  variable: "--font-cairo",
-  preload: false,
 });
 
 export function generateStaticParams() {
@@ -70,11 +64,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
   ];
 
   return (
-    <html
-      lang={locale}
-      dir={localeMeta[locale].dir}
-      className={`${berkshire.variable} ${fraunces.variable} ${manrope.variable} ${cairo.variable} antialiased`}
-    >
+    <html lang={locale} className={`${berkshire.variable} ${fraunces.variable} ${manrope.variable} antialiased`}>
       <body className="min-h-dvh">
         <a
           href="#icerik"

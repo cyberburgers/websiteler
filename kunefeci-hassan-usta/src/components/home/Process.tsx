@@ -20,10 +20,7 @@ export function Process({ dict }: { dict: Dictionary }) {
                 aria-hidden="true"
                 className="absolute -end-6 -top-6 size-28 rounded-full border border-dashed border-sari-300/20 transition-transform duration-700 group-hover:rotate-45"
               />
-              <span
-                className="font-brand float-start me-4 block text-5xl leading-none text-sari-300 sm:float-none sm:me-0 sm:text-6xl"
-                dir="ltr"
-              >
+              <span className="font-brand float-start me-4 block text-5xl leading-none text-sari-300 sm:float-none sm:me-0 sm:text-6xl">
                 {i + 1}
               </span>
               <h3 className="font-display mt-1 text-2xl font-medium text-krem-50 sm:mt-6">{step.title}</h3>

@@ -82,9 +82,7 @@ export function Visit({ dict }: { dict: Dictionary }) {
             <div className="mt-4 grid gap-3 sm:grid-cols-3">
               <a href={links.tel} className={contactLink}>
                 <Phone className="size-5 text-karamel-300" aria-hidden="true" />
-                <span dir="ltr" className="text-sm font-semibold">
-                  {site.phoneDisplay}
-                </span>
+                <span className="text-sm font-semibold">{site.phoneDisplay}</span>
               </a>
               <a
                 href={links.whatsapp(dict.actions.whatsappText)}
@@ -97,9 +95,7 @@ export function Visit({ dict }: { dict: Dictionary }) {
               </a>
               <a href={links.instagram} target="_blank" rel="noopener noreferrer" className={contactLink}>
                 <InstagramIcon className="size-5 text-karamel-300" />
-                <span className="truncate text-sm font-semibold" dir="ltr">
-                  @{site.instagram}
-                </span>
+                <span className="truncate text-sm font-semibold">@{site.instagram}</span>
               </a>
             </div>
           </div>

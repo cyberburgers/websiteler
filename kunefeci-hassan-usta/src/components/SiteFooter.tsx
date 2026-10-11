@@ -88,7 +88,7 @@ export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary 
               <li>
                 <a href={links.tel} className="flex gap-3 hover:text-krem-50">
                   <Phone className="mt-0.5 size-5 shrink-0 text-karamel-300" aria-hidden="true" />
-                  <span dir="ltr">{site.phoneDisplay}</span>
+                  <span>{site.phoneDisplay}</span>
                 </a>
               </li>
             </ul>

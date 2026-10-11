@@ -12,12 +12,7 @@ import { formatPrice } from "@/lib/format";
 /** Rotating brand text around the hero photo, like the rim of the round sign. */
 function RingText({ text }: { text: string }) {
   return (
-    <svg
-      viewBox="0 0 200 200"
-      direction="ltr"
-      aria-hidden="true"
-      className="absolute inset-0 size-full animate-spin-slow"
-    >
+    <svg viewBox="0 0 200 200" aria-hidden="true" className="absolute inset-0 size-full animate-spin-slow">
       <defs>
         <path id="hero-ring" d="M100,100 m-90,0 a90,90 0 1,1 180,0 a90,90 0 1,1 -180,0" />
       </defs>
@@ -69,7 +64,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           <div className="animate-rise mt-10 flex flex-wrap gap-3 [animation-delay:450ms]">
             <Link href={localePath(locale, "/menu")} className={buttonStyles.primary}>
               {dict.actions.seeMenu}
-              <ArrowRight className="size-5 rtl:rotate-180" aria-hidden="true" />
+              <ArrowRight className="size-5" aria-hidden="true" />
             </Link>
             <a href={links.directions} target="_blank" rel="noopener noreferrer" className={buttonStyles.ghostDark}>
               <Navigation className="size-[18px]" aria-hidden="true" />

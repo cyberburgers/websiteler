@@ -14,7 +14,7 @@ type Props = {
  */
 export function Logo({ className, id = "logo", title = site.name }: Props) {
   return (
-    <svg viewBox="8 96 468 360" role="img" aria-label={title} className={className} style={{ direction: "ltr" }}>
+    <svg viewBox="8 96 468 360" role="img" aria-label={title} className={className}>
       <defs>
         <radialGradient id={`${id}-fill`} cx="42%" cy="36%" r="72%">
           <stop offset="0" stopColor="#fcf6d2" />

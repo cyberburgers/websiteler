@@ -41,19 +41,9 @@
   --animate-spin-slow: spin 40s linear infinite;
 }
 
-/* Arabic swaps both families for Cairo; the logo keeps its Latin brand font. */
-:root {
-  --app-sans: var(--font-manrope);
-  --app-display: var(--font-fraunces);
-}
-:root:lang(ar) {
-  --app-sans: var(--font-cairo);
-  --app-display: var(--font-cairo);
-}
-
 @theme inline {
-  --font-sans: var(--app-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--app-display), ui-serif, Georgia, serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-brand: var(--font-berkshire), var(--font-fraunces), serif;
 }
 
@@ -85,16 +75,6 @@
   /* Fraunces' soft cut gives headings a hand-made, warm feel. */
   .font-display {
     font-variation-settings: "SOFT" 100;
-  }
-  :lang(ar) .font-display {
-    font-variation-settings: normal;
-  }
-  :lang(ar) .italic {
-    font-style: normal;
-  }
-  /* Letter-spacing breaks the joins between Arabic letters. */
-  :lang(ar) [class*="tracking-"] {
-    letter-spacing: 0 !important;
   }
 }
 

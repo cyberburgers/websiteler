@@ -41,12 +41,12 @@ export default async function QrPage({ params }: PageProps<"/[locale]/qr">) {
         <article className="w-[90mm] rounded-[6mm] bg-krem-50 p-[8mm] text-center text-lacivert-800 shadow-2xl ring-1 ring-karamel-300/60 print:shadow-none">
           <Logo id="qr-logo" className="mx-auto w-[42mm]" />
           <p className="font-display mt-[4mm] text-[6mm] leading-tight">Menüyü görmek için okutun</p>
-          <p className="mt-[1mm] text-[3.2mm] text-lacivert-800/70">Scan for the menu · امسح لعرض القائمة</p>
+          <p className="mt-[1mm] text-[3.2mm] text-lacivert-800/70">Scan for the menu</p>
           <div
             className="mx-auto mt-[5mm] w-[48mm] [&>svg]:h-auto [&>svg]:w-full"
             dangerouslySetInnerHTML={{ __html: svg }}
           />
-          <p className="mt-[4mm] text-[3mm] font-semibold tracking-wide text-karamel-700" dir="ltr">
+          <p className="mt-[4mm] text-[3mm] font-semibold tracking-wide text-karamel-700">
             {menuUrl.replace(/^https?:\/\//, "")}
           </p>
         </article>

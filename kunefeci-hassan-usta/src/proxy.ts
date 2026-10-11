@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { defaultLocale, isLocale } from "@/i18n/config";
 
-// Every page lives under a language prefix (/tr, /en, /ar). Anything without
+// Every page lives under a language prefix (/tr, /en). Anything without
 // one — including printed QR codes pointing at /menu — goes to Turkish.
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;

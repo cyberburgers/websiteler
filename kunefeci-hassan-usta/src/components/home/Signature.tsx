@@ -23,10 +23,7 @@ export function Signature({ locale, dict }: { locale: Locale; dict: Dictionary }
               className="group mt-4 inline-flex items-center gap-2 font-bold text-karamel-700 underline-offset-[6px] hover:underline"
             >
               {dict.actions.fullMenu}
-              <ArrowRight
-                className="size-4 transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1"
-                aria-hidden="true"
-              />
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </Link>
           </div>
         </div>
@@ -50,9 +47,7 @@ export function Signature({ locale, dict }: { locale: Locale; dict: Dictionary }
                         {tags[tag][locale]}
                       </span>
                     )}
-                    <span className="font-brand absolute bottom-3 start-5 text-5xl text-krem-50/85" dir="ltr">
-                      0{i + 1}
-                    </span>
+                    <span className="font-brand absolute bottom-3 start-5 text-5xl text-krem-50/85">0{i + 1}</span>
                     <span className="absolute bottom-5 end-5 rounded-full bg-sari-300 px-4 py-2 text-[15px] font-extrabold text-lacivert-900 shadow-lg">
                       {formatPrice(item.prices[0].amount, locale)}
                     </span>

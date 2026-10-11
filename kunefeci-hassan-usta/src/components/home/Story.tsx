@@ -33,7 +33,7 @@ export function Story({ dict }: { dict: Dictionary }) {
           <p className="mt-8 text-lg leading-relaxed text-lacivert-800/80">{dict.story.p1}</p>
           <p className="mt-5 text-lg leading-relaxed text-lacivert-800/80">{dict.story.p2}</p>
           <figure className="mt-10 rounded-[2rem] bg-krem-200/60 p-7 ring-1 ring-karamel-300/40">
-            <Quote className="size-8 text-karamel-400 rtl:-scale-x-100" aria-hidden="true" />
+            <Quote className="size-8 text-karamel-400" aria-hidden="true" />
             <blockquote className="font-display mt-3 text-2xl italic leading-snug text-karamel-700 md:text-[1.7rem]">
               {dict.story.quote}
             </blockquote>

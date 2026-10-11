@@ -61,7 +61,7 @@ export function Trays({ dict }: { dict: Dictionary }) {
               src={photos.kunefe2 ?? photos.hero}
               alt=""
               sizes="(min-width: 1024px) 36rem, 100vw"
-              className="lg:[mask-image:linear-gradient(to_right,transparent,black_30%)] rtl:lg:[mask-image:linear-gradient(to_left,transparent,black_30%)]"
+              className="lg:[mask-image:linear-gradient(to_right,transparent,black_30%)]"
             />
           </div>
         </div>

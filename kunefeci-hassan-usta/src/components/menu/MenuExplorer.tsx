@@ -158,7 +158,7 @@ export function MenuExplorer({ categories, labels }: Props) {
     return () => observer.disconnect();
   }, [visible]);
 
-  // Keep the active chip centred in the horizontally scrolling bar (works in RTL too).
+  // Keep the active chip centred in the horizontally scrolling bar.
   useEffect(() => {
     const bar = chipBarRef.current;
     const chip = bar?.querySelector<HTMLElement>(`[data-chip="${active}"]`);
@@ -305,9 +305,7 @@ export function MenuExplorer({ categories, labels }: Props) {
           >
             <header className="mb-8 flex items-end justify-between gap-6 md:mb-10">
               <div>
-                <span className="font-brand text-2xl text-karamel-500" dir="ltr">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
+                <span className="font-brand text-2xl text-karamel-500">{String(index + 1).padStart(2, "0")}</span>
                 <h2
                   id={`baslik-${category.id}`}
                   className="font-display mt-1 text-[clamp(2rem,4.5vw,3.25rem)] font-medium leading-none tracking-[-0.015em] text-lacivert-800"

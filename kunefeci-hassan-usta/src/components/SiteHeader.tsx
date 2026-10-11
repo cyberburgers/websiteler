@@ -97,7 +97,7 @@ export function SiteHeader({ locale, logo, homeHref, nav, labels, phoneHref, pho
             }`}
           >
             <Phone className="size-4" aria-hidden="true" />
-            <span dir="ltr">{phoneDisplay}</span>
+            <span>{phoneDisplay}</span>
           </a>
           <button
             type="button"

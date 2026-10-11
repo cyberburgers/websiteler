@@ -1,4 +1,4 @@
-export const locales = ["tr", "en", "ar"] as const;
+export const locales = ["tr", "en"] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = "tr";
 
@@ -10,16 +10,14 @@ type LocaleMeta = {
   /** Name of the language in that language, for the switcher. */
   label: string;
   short: string;
-  dir: "ltr" | "rtl";
-  /** BCP 47 tag used for Intl formatting. Arabic keeps Latin digits for prices. */
+  /** BCP 47 tag used for Intl formatting. */
   intl: string;
   ogLocale: string;
 };
 
 export const localeMeta: Record<Locale, LocaleMeta> = {
-  tr: { label: "Türkçe", short: "TR", dir: "ltr", intl: "tr-TR", ogLocale: "tr_TR" },
-  en: { label: "English", short: "EN", dir: "ltr", intl: "en-GB", ogLocale: "en_GB" },
-  ar: { label: "العربية", short: "ع", dir: "rtl", intl: "ar-u-nu-latn", ogLocale: "ar_AR" },
+  tr: { label: "Türkçe", short: "TR", intl: "tr-TR", ogLocale: "tr_TR" },
+  en: { label: "English", short: "EN", intl: "en-GB", ogLocale: "en_GB" },
 };
 
 /** Builds a locale-prefixed path: localePath("en", "/menu") -> "/en/menu". */
