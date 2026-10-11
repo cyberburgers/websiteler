@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { Menu as MenuIcon, Phone, X } from "lucide-react";
-import { useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
+import { Fragment, useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { WhatsAppIcon } from "./BrandIcons";
+import { WheelTrigger } from "./wheel/DessertWheel";
 import type { Locale } from "@/i18n/config";
 
 type NavItem = { href: string; label: string };
@@ -18,6 +19,7 @@ type Props = {
   phoneHref: string;
   phoneDisplay: string;
   whatsappHref: string;
+  wheelLabel: string;
 };
 
 function subscribeScroll(onChange: () => void) {
@@ -25,7 +27,17 @@ function subscribeScroll(onChange: () => void) {
   return () => window.removeEventListener("scroll", onChange);
 }
 
-export function SiteHeader({ locale, logo, homeHref, nav, labels, phoneHref, phoneDisplay, whatsappHref }: Props) {
+export function SiteHeader({
+  locale,
+  logo,
+  homeHref,
+  nav,
+  labels,
+  phoneHref,
+  phoneDisplay,
+  whatsappHref,
+  wheelLabel,
+}: Props) {
   const scrolled = useSyncExternalStore(
     subscribeScroll,
     () => window.scrollY > 24,
@@ -33,28 +45,10 @@ export function SiteHeader({ locale, logo, homeHref, nav, labels, phoneHref, pho
   );
   const [open, setOpen] = useState(false);
 
-  // Tuck the header away while reading down the page; bring it back on any upward scroll.
-  useEffect(() => {
-    const root = document.documentElement;
-    let lastY = window.scrollY;
-    const onScroll = () => {
-      const y = window.scrollY;
-      if (Math.abs(y - lastY) < 8) return;
-      root.dataset.header = y > lastY && y > 320 ? "hidden" : "shown";
-      lastY = y;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      delete root.dataset.header;
-    };
-  }, []);
-
   useEffect(() => {
     if (!open) return;
     const root = document.documentElement;
     root.style.overflow = "hidden";
-    root.dataset.header = "shown";
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
     return () => {
@@ -87,22 +81,31 @@ export function SiteHeader({ locale, logo, homeHref, nav, labels, phoneHref, pho
 
         <nav aria-label={labels.primary} className="hidden lg:block">
           <ul className="flex items-center gap-1">
-            {nav.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={`rounded-full px-4 py-2 text-[15px] font-semibold transition-colors ${
-                    solid ? "text-lacivert-800 hover:bg-lacivert-800/[0.06]" : "text-krem-100 hover:bg-krem-50/10"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              </li>
+            {nav.map((item, i) => (
+              <Fragment key={item.href}>
+                <li>
+                  <Link
+                    href={item.href}
+                    className={`rounded-full px-4 py-2 text-[15px] font-semibold transition-colors ${
+                      solid ? "text-lacivert-800 hover:bg-lacivert-800/[0.06]" : "text-krem-100 hover:bg-krem-50/10"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+                {/* The dessert wheel sits right after the menu link, the first item. */}
+                {i === 0 && (
+                  <li className="me-2">
+                    <WheelTrigger label={wheelLabel} tone={tone} className="text-sm" />
+                  </li>
+                )}
+              </Fragment>
             ))}
           </ul>
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3">
+          <WheelTrigger label={wheelLabel} tone={tone} className="lg:hidden" />
           <div className="hidden sm:block">
             <LanguageSwitcher current={locale} label={labels.language} tone={tone} />
           </div>

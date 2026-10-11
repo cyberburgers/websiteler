@@ -91,6 +91,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
           phoneHref={links.tel}
           phoneDisplay={site.phoneDisplay}
           whatsappHref={links.whatsapp(dict.actions.whatsappText)}
+          wheelLabel={dict.wheel.trigger}
         />
         <main id="icerik">{children}</main>
         <SiteFooter locale={locale} dict={dict} />

@@ -63,7 +63,6 @@ const en: Dictionary = {
   ],
   wheel: {
     trigger: "Can't decide?",
-    open: "Open the dessert wheel",
     title: "Spin the wheel, find your dessert",
     hint: "Grab the wheel and give it a flick, or press the button in the middle.",
     faster: "Give it a stronger spin!",

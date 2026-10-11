@@ -61,7 +61,6 @@ const tr = {
   ],
   wheel: {
     trigger: "Kararsız mısın?",
-    open: "Tatlı çarkını aç",
     title: "Çarkı çevir, tatlını seç",
     hint: "Çarkı parmağınla tutup hızlıca savur ya da ortadaki düğmeye bas.",
     faster: "Biraz daha hızlı çevir!",

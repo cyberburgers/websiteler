@@ -17,7 +17,6 @@ export type WheelSlice = {
 
 export type WheelLabels = {
   trigger: string;
-  open: string;
   title: string;
   hint: string;
   faster: string;
@@ -124,11 +123,40 @@ function MiniWheel({ className }: { className?: string }) {
   );
 }
 
+/** Fired by any trigger on the page; the one wheel dialog in the layout listens for it. */
+const OPEN_EVENT = "tatli-carki:ac";
+
+/** The "Kararsız mısın?" pill that lives in the header, right by the menu link. */
+export function WheelTrigger({
+  label,
+  tone,
+  className = "",
+}: {
+  label: string;
+  tone: "light" | "dark";
+  className?: string;
+}) {
+  return (
+    <button
+      type="button"
+      aria-haspopup="dialog"
+      onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}
+      className={`group inline-flex shrink-0 items-center gap-2 rounded-full py-1 pe-3.5 ps-1 text-[13px] font-bold transition-colors max-[359px]:pe-1 ${
+        tone === "light"
+          ? "bg-sari-300/45 text-lacivert-800 ring-1 ring-karamel-400/35 hover:bg-sari-300/70"
+          : "bg-krem-50/[0.07] text-sari-300 ring-1 ring-sari-300/25 hover:bg-krem-50/[0.13]"
+      } ${className}`}
+    >
+      <MiniWheel className="size-8 shrink-0 animate-[spin_9s_linear_infinite] group-hover:animate-[spin_1.6s_linear_infinite] motion-reduce:animate-none" />
+      <span className="whitespace-nowrap max-[359px]:sr-only">{label}</span>
+    </button>
+  );
+}
+
 type Confetto = { id: number; dx: number; dy: number; r: number; color: string; delay: number };
 
 export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels: WheelLabels }) {
   const [open, setOpen] = useState(false);
-  const [peek, setPeek] = useState(true);
   const [result, setResult] = useState<WheelSlice | null>(null);
   const [hint, setHint] = useState(labels.hint);
   const [confetti, setConfetti] = useState<Confetto[]>([]);
@@ -144,10 +172,10 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
   const seg = 360 / slices.length;
   const sliceAtPointer = () => Math.floor(mod(-angle.current + seg / 2, 360) / seg) % slices.length;
 
-  // Show the "Kararsız mısın?" label for a moment, then tuck it away.
   useEffect(() => {
-    const timer = window.setTimeout(() => setPeek(false), 6500);
-    return () => window.clearTimeout(timer);
+    const onOpen = () => setOpen(true);
+    window.addEventListener(OPEN_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_EVENT, onOpen);
   }, []);
 
   useEffect(() => {
@@ -197,8 +225,9 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
     cancelAnimationFrame(frame.current);
     setResult(null);
     setConfetti([]);
-    let v = Math.max(-3.4, Math.min(3.4, velocity));
-    const friction = 0.0016 + Math.random() * 0.0007;
+    let v = Math.max(-3.2, Math.min(3.2, velocity));
+    // Low friction: a spin runs for roughly five to six and a half seconds before it settles.
+    const friction = 0.0009 + Math.random() * 0.0003;
     let last = performance.now();
     const step = (now: number) => {
       const dt = Math.min(now - last, 40);
@@ -206,7 +235,7 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
       angle.current += v * dt;
       v *= Math.exp(-friction * dt);
       render();
-      if (Math.abs(v) > 0.012) frame.current = requestAnimationFrame(step);
+      if (Math.abs(v) > 0.009) frame.current = requestAnimationFrame(step);
       else finish();
     };
     frame.current = requestAnimationFrame(step);
@@ -255,33 +284,15 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
       return;
     }
     // Even a lazy flick should give a satisfying couple of turns.
-    coast(Math.sign(v) * Math.min(3.4, Math.max(1.1, Math.abs(v) * 2.2)));
+    coast(Math.sign(v) * Math.min(3.2, Math.max(1.4, Math.abs(v) * 2.2)));
   };
 
-  const spinButton = () => coast((1.9 + Math.random() * 1.3) * (Math.random() < 0.15 ? -1 : 1));
+  const spinButton = () => coast((2 + Math.random()) * (Math.random() < 0.15 ? -1 : 1));
 
   const close = () => dialogRef.current?.close();
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        onMouseEnter={() => setPeek(true)}
-        onMouseLeave={() => setPeek(false)}
-        aria-label={labels.open}
-        className="print-hidden animate-tab-in group fixed right-0 top-[36%] z-40 flex items-center rounded-l-full bg-lacivert-900/95 py-1.5 pl-1.5 text-krem-50 shadow-[0_14px_34px_-14px_rgba(16,17,42,.75)] ring-1 ring-sari-300/30 backdrop-blur md:top-1/2"
-      >
-        <MiniWheel className="size-10 shrink-0 animate-[spin_9s_linear_infinite] group-hover:animate-[spin_1.6s_linear_infinite]" />
-        <span
-          className={`overflow-hidden whitespace-nowrap text-[13px] font-bold text-sari-300 transition-[max-width,opacity,padding] duration-500 ease-[var(--ease-out-expo)] ${
-            peek ? "max-w-40 px-3 opacity-100" : "max-w-0 px-1 opacity-0"
-          }`}
-        >
-          {labels.trigger}
-        </span>
-      </button>
-
       <dialog
         ref={dialogRef}
         onClose={() => {

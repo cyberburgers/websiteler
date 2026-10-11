@@ -268,17 +268,6 @@
   }
 }
 
-@keyframes tab-in {
-  from {
-    transform: translateX(110%);
-  }
-}
-@utility animate-tab-in {
-  @media (prefers-reduced-motion: no-preference) {
-    animation: tab-in 0.9s var(--ease-out-expo) 1.8s both;
-  }
-}
-
 @keyframes bar-in {
   from {
     transform: translateY(140%);
@@ -317,24 +306,11 @@
   }
 }
 
-/* Phones/tablets: the header tucks away while scrolling down and returns on the way up. */
 .site-header {
   transition:
-    translate 0.45s var(--ease-out-expo),
     background-color 0.5s,
     box-shadow 0.5s,
     backdrop-filter 0.5s;
-}
-.under-header {
-  transition: top 0.45s var(--ease-out-expo);
-}
-@media (max-width: 63.99rem) {
-  html[data-header="hidden"] .site-header {
-    translate: 0 calc(-100% - 2.5rem);
-  }
-  html[data-header="hidden"] .under-header {
-    top: 0;
-  }
 }
 
 /* Steam rising off the hot künefe in the hero. */
