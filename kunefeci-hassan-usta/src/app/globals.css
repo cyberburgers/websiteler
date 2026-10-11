@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+/*
+ * Marka renkleri tabeladaki logodan alınmıştır:
+ * lacivert yazı, krem-sarı daire, karamel çerçeve.
+ * Fıstık yeşili ve şerbet turuncusu ürünlerden gelen yardımcı renklerdir.
+ */
+@theme {
+  --color-lacivert-950: #10112a;
+  --color-lacivert-900: #181a3a;
+  --color-lacivert-800: #23264a;
+  --color-lacivert-700: #31356a;
+  --color-lacivert-600: #464b86;
+  --color-lacivert-400: #8c90c0;
+
+  --color-krem-50: #fffdf6;
+  --color-krem-100: #fbf6e7;
+  --color-krem-200: #f4ebcd;
+  --color-krem-300: #e8dbad;
+
+  --color-sari-200: #f7efc0;
+  --color-sari-300: #f1e6a0;
+  --color-sari-400: #e6d576;
+
+  --color-karamel-300: #e0b479;
+  --color-karamel-400: #cb9452;
+  --color-karamel-500: #ad7236;
+  --color-karamel-600: #8f5a28;
+  --color-karamel-700: #6f441e;
+
+  --color-fistik-300: #c4d68c;
+  --color-fistik-400: #a2ba57;
+  --color-fistik-500: #7e9838;
+  --color-fistik-600: #5f7628;
+
+  --color-serbet-400: #f0b452;
+  --color-serbet-500: #dd9530;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-spin-slow: spin 40s linear infinite;
+}
+
+/* Arabic swaps both families for Cairo; the logo keeps its Latin brand font. */
+:root {
+  --app-sans: var(--font-manrope);
+  --app-display: var(--font-fraunces);
+}
+:root:lang(ar) {
+  --app-sans: var(--font-cairo);
+  --app-display: var(--font-cairo);
+}
+
+@theme inline {
+  --font-sans: var(--app-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--app-display), ui-serif, Georgia, serif;
+  --font-brand: var(--font-berkshire), var(--font-fraunces), serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6.5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-krem-100);
+    color: var(--color-lacivert-800);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-sari-300);
+    color: var(--color-lacivert-900);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-serbet-500);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* Fraunces' soft cut gives headings a hand-made, warm feel. */
+  .font-display {
+    font-variation-settings: "SOFT" 100;
+  }
+  :lang(ar) .font-display {
+    font-variation-settings: normal;
+  }
+  :lang(ar) .italic {
+    font-style: normal;
+  }
+  /* Letter-spacing breaks the joins between Arabic letters. */
+  :lang(ar) [class*="tracking-"] {
+    letter-spacing: 0 !important;
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @variant sm {
+    padding-inline: 1.5rem;
+  }
+  @variant lg {
+    padding-inline: 2rem;
+  }
+}
+
+/* Scalloped edge between sections, like the rim of a künefe tray. */
+@utility scallop {
+  height: 14px;
+  background: radial-gradient(circle at 14px 0, transparent 13.5px, var(--scallop, var(--color-krem-100)) 14px) repeat-x;
+  background-size: 28px 14px;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Paper grain over the cream background, like a printed menu. */
+@utility grain {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .43 0 0 0 0 .33 0 0 0 0 .2 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/*
+ * Selçuklu yıldızı deseni — Şanlıurfa'nın taş işçiliğine selam.
+ * Lacivert bölümlerin arka planında çok hafif görünür.
+ */
+@utility pattern-star {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='88' viewBox='0 0 88 88'%3E%3Cg fill='none' stroke='%23f1e6a0' stroke-opacity='.075' stroke-width='1'%3E%3Cpath d='M26 26h36v36H26z'/%3E%3Cpath d='M44 18.5 69.5 44 44 69.5 18.5 44z'/%3E%3Ccircle cx='44' cy='44' r='6'/%3E%3Cpath d='M0 0l12 12M88 0 76 12M0 88l12-12M88 88 76 76'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 88px 88px;
+}
+
+/* Thin wavy strands, like tel kadayıf, used as a divider. */
+@utility kadayif-rule {
+  height: 10px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='10' viewBox='0 0 40 10'%3E%3Cpath d='M0 5c5 0 5-4 10-4s5 4 10 4 5-4 10-4 5 4 10 4' fill='none' stroke='%23ad7236' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+/* Dotted leaders between an item and its price, as on a printed menu. */
+@utility leader {
+  flex: 1 1 auto;
+  min-width: 1.5rem;
+  margin-inline: 0.5rem;
+  border-bottom: 2px dotted color-mix(in oklab, var(--color-karamel-500) 45%, transparent);
+  transform: translateY(-0.35em);
+}
+
+/* Scroll-driven reveal; browsers without support simply show the content. */
+@utility reveal {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility animate-rise {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: rise 0.9s var(--ease-out-expo) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+.menu-sheet[open] {
+  animation: sheet-in 0.5s var(--ease-out-expo);
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+}
+
+dialog::backdrop {
+  background: color-mix(in oklab, var(--color-lacivert-950) 70%, transparent);
+  backdrop-filter: blur(4px);
+}
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  .print-hidden {
+    display: none !important;
+  }
+}
