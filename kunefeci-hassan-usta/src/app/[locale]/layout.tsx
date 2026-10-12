@@ -5,6 +5,7 @@ import { Logo } from "@/components/Logo";
 import { MobileActionBar } from "@/components/MobileActionBar";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
+import { Splash } from "@/components/Splash";
 import { links, site } from "@/content/site";
 import { isLocale, localePath, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -58,8 +59,14 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
   const home = localePath(locale);
 
   return (
-    <html lang={locale} className={`${berkshire.variable} ${fraunces.variable} ${manrope.variable} antialiased`}>
+    <html
+      lang={locale}
+      className={`${berkshire.variable} ${fraunces.variable} ${manrope.variable} antialiased`}
+      // The splash script adds a class to <html> before React hydrates.
+      suppressHydrationWarning
+    >
       <body className="min-h-dvh">
+        <Splash />
         <a
           href="#icerik"
           className="fixed start-4 top-4 z-[60] -translate-y-24 rounded-full bg-sari-300 px-5 py-3 font-bold text-lacivert-900 shadow-lg transition focus:translate-y-0"

@@ -13,6 +13,9 @@
 | `/tr/gizlilik` | Gizlilik ve KVKK aydınlatma metni |
 | `/tr/qr` | Masalara konacak yazdırılabilir QR kartı (Google'a kapalı) |
 
+Site açılırken bir an işletmenin logosu görünür (her ziyarette bir kez; sayfa yenilenince tekrar
+çıkmaz). Logo dosyası `src/assets/brand/logo.png`, açılış `src/components/Splash.tsx` içindedir.
+
 `/en/...` İngilizce sürümdür. Önek olmadan gelen her adres Türkçeye yönlenir.
 Eski `/menu` adresleri (ör. basılmış bir QR kodu) ana sayfaya, yani menüye yönlenir.
 

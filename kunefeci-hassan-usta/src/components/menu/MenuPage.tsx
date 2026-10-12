@@ -70,7 +70,7 @@ export function MenuPage({ locale }: { locale: Locale }) {
                     <span
                       key={i}
                       className="animate-line-up inline-block"
-                      style={{ animationDelay: `${80 + i * 70}ms` }}
+                      style={{ animationDelay: `calc(var(--intro-delay, 0s) + ${80 + i * 70}ms)` }}
                     >
                       {char}
                     </span>
@@ -79,10 +79,10 @@ export function MenuPage({ locale }: { locale: Locale }) {
               </h1>
               <WheelTrigger label={dict.wheel.trigger} className="print-hidden" />
             </div>
-            <p className="animate-rise mt-3 max-w-xl text-[15px] leading-relaxed text-krem-100/75 [animation-delay:350ms] sm:mt-6 sm:text-lg md:text-xl print:text-base print:text-lacivert-800">
+            <p className="animate-rise mt-3 max-w-xl text-[15px] leading-relaxed text-krem-100/75 [animation-delay:calc(var(--intro-delay,0s)_+_350ms)] sm:mt-6 sm:text-lg md:text-xl print:text-base print:text-lacivert-800">
               {dict.menu.lead}
             </p>
-            <div className="print-hidden animate-rise mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-krem-100/70 [animation-delay:420ms] sm:mt-6">
+            <div className="print-hidden animate-rise mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-krem-100/70 [animation-delay:calc(var(--intro-delay,0s)_+_420ms)] sm:mt-6">
               <OpenStatus labels={dict.status} />
               <span className="flex items-center gap-2">
                 <MapPin className="size-4 text-karamel-300" aria-hidden="true" />
@@ -90,7 +90,7 @@ export function MenuPage({ locale }: { locale: Locale }) {
               </span>
             </div>
           </div>
-          <div className="animate-rise hidden flex-col items-start gap-4 [animation-delay:450ms] sm:flex lg:items-end lg:pb-3 lg:text-end">
+          <div className="animate-rise hidden flex-col items-start gap-4 [animation-delay:calc(var(--intro-delay,0s)_+_450ms)] sm:flex lg:items-end lg:pb-3 lg:text-end">
             <div className="hidden gap-6 sm:flex lg:gap-8">
               <div>
                 <p className="font-display text-4xl text-sari-300 print:text-lacivert-900">{categories.length}</p>

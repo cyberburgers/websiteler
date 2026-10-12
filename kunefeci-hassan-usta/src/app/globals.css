@@ -206,7 +206,7 @@
 }
 @utility animate-bar-in {
   @media (prefers-reduced-motion: no-preference) {
-    animation: bar-in 0.9s var(--ease-out-expo) 0.6s both;
+    animation: bar-in 0.9s var(--ease-out-expo) calc(var(--intro-delay, 0s) + 0.6s) both;
   }
 }
 
@@ -227,6 +227,49 @@
   }
   html[data-header="hidden"] .under-header {
     top: 0;
+  }
+}
+
+/* Opening: the logo settles in, holds for a beat, then lifts away as the menu rises behind it. */
+html:not(.splash-seen) {
+  --intro-delay: 1.35s;
+}
+html.splash-seen .splash {
+  display: none;
+}
+.splash {
+  animation: splash-out 0.55s var(--ease-out-expo) 1.3s forwards;
+}
+.splash-logo {
+  animation:
+    splash-logo-in 1s var(--ease-out-expo) 0.1s both,
+    splash-logo-out 0.55s ease-in 1.3s forwards;
+}
+.splash-glow {
+  animation: splash-glow 1.4s ease-out both;
+}
+@keyframes splash-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes splash-logo-in {
+  from {
+    opacity: 0;
+    scale: 0.86;
+    filter: blur(8px);
+  }
+}
+@keyframes splash-logo-out {
+  to {
+    scale: 1.06;
+  }
+}
+@keyframes splash-glow {
+  from {
+    opacity: 0;
+    scale: 0.6;
   }
 }
 
