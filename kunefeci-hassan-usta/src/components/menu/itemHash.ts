@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from "react";
 
 /**
- * The open dish lives in the address bar (#hassan-usta-ozel): the link can be shared, and Back closes
+ * The open dish lives in the address bar (#fistikli-kunefe): the link can be shared, and Back closes
  * the sheet instead of leaving the page.
  */
 const HASH_EVENT = "menu-urun:degisti";

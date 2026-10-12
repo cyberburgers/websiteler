@@ -8,7 +8,8 @@ type Update = (change: (draft: SiteContent) => void) => void;
 
 export function HighlightsEditor({ content, update }: { content: SiteContent; update: Update }) {
   const notice = content.notice ?? { tr: "", en: "" };
-  const signature = content.menu.flatMap((c) => c.items).find((i) => i.tags?.includes("imza"));
+  const shown = content.menu.flatMap((c) => c.items).filter((i) => i.available !== false);
+  const signature = shown.find((i) => i.tags?.includes("imza")) ?? shown.find((i) => i.tags?.includes("populer")) ?? shown[0];
 
   return (
     <div className="space-y-4">

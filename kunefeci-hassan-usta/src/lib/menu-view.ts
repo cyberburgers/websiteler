@@ -65,10 +65,9 @@ export function categoryPath(locale: Locale, categoryId: string, itemId?: string
 
 export { fill } from "./format";
 
-/** The "master's pick": the dish chosen in the panel, else the signature dish, else the first one. */
+/** The "master's pick": the dish chosen in the panel, else a signature dish, else a most-loved one, else the first. */
 export function featuredItem(categories: MenuViewCategory[], featuredId?: string): MenuViewItem | undefined {
   const items = categories.flatMap((c) => c.items);
-  return (
-    items.find((i) => i.id === featuredId) ?? items.find((i) => i.tags.some((t) => t.id === "imza")) ?? items[0]
-  );
+  const tagged = (tag: string) => items.find((i) => i.tags.some((t) => t.id === tag));
+  return items.find((i) => i.id === featuredId) ?? tagged("imza") ?? tagged("populer") ?? items[0];
 }

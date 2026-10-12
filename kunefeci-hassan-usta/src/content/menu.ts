@@ -59,19 +59,6 @@ export const defaultMenu: MenuCategory[] = [
     image: "katKunefe",
     items: [
       {
-        id: "hassan-usta-ozel",
-        name: { tr: "Hassan Usta Özel", en: "Hassan Usta Special" },
-        shortName: { tr: "Hassan Usta Özel", en: "Usta's Special" },
-        description: {
-          tr: "Ustanın imzası: çifte fıstık, kaymak ve bir top Maraş dondurmasıyla taçlanan künefe.",
-          en: "The master's signature: künefe crowned with double pistachio, kaymak and a scoop of Maraş ice cream.",
-        },
-        prices: [{ amount: 340 }],
-        allergens: ["gluten", "sut", "kabuklu"],
-        tags: ["imza"],
-        image: "hero",
-      },
-      {
         id: "kunefe",
         name: { tr: "Künefe", en: "Classic Künefe" },
         description: {
