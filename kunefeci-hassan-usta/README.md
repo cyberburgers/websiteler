@@ -11,7 +11,7 @@ Site, masadaki QR kodla açılan bir menü gibi çalışır.
 
 | Adres | İçerik |
 | --- | --- |
-| `/tr` | Ana sayfa: dükkân fotoğraflı karşılama, arama, hızlı filtreler, ustanın önerisi, kategori kutuları ve tatlı çarkı |
+| `/tr` | Ana sayfa: dükkân fotoğraflı karşılama, arama, hızlı filtreler, ustanın önerisi, tatlı çarkı ve altında menüdeki bütün ürünler (kategori düğmeleriyle) |
 | `/tr/menu/kunefeler` | Bir kategorinin ürünleri: büyük kartlar ya da liste. Ürüne dokununca ayrıntı penceresi açılır |
 | `/tr/menu/kunefeler#kunefe` | Ürünün ayrıntısı doğrudan açık gelir (paylaşılan bağlantılar böyle görünür) |
 | `/tr/ara` | Menüde arama ve filtreler: Fıstıklı, Sıcak, Soğuk, ₺250 altı, Paylaşmalık (Google'a kapalı) |

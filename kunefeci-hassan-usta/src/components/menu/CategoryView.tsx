@@ -1,11 +1,12 @@
 "use client";
 
 import { ArrowRight, LayoutList, RectangleHorizontal } from "lucide-react";
-import { useRef, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
 import { WhatsAppIcon } from "@/components/BrandIcons";
 import { Photo } from "@/components/ui";
 import { TagBadge } from "./icons";
 import { ItemSheet, type SheetLabels, type WaiterLabels } from "./ItemSheet";
+import { closeItem, openItem, useItemHash } from "./itemHash";
 import { AllergenIcons, ItemLine, lineClass } from "./parts";
 import type { MenuViewCategory, MenuViewItem } from "./types";
 
@@ -52,22 +53,6 @@ function saveView(view: View) {
   window.dispatchEvent(new Event(VIEW_EVENT));
 }
 
-/** The open dish lives in the address bar (#hassan-usta-ozel), so it can be shared and Back closes it. */
-const HASH_EVENT = "menu-urun:degisti";
-
-function subscribeHash(onChange: () => void) {
-  window.addEventListener("popstate", onChange);
-  window.addEventListener("hashchange", onChange);
-  window.addEventListener(HASH_EVENT, onChange);
-  return () => {
-    window.removeEventListener("popstate", onChange);
-    window.removeEventListener("hashchange", onChange);
-    window.removeEventListener(HASH_EVENT, onChange);
-  };
-}
-
-const readHash = () => decodeURIComponent(window.location.hash.slice(1));
-
 function ItemCard({
   item,
   onOpen,
@@ -82,7 +67,7 @@ function ItemCard({
   const single = item.prices.length === 1;
   const onOrder = item.tags.some((t) => t.id === "siparis");
   return (
-    <li id={item.id} className="reveal scroll-mt-40">
+    <li id={item.id} className="reveal">
       <div className="h-full rounded-[26px] bg-krem-100 p-2 text-lacivert-800 shadow-[0_24px_48px_-36px_rgba(0,0,0,.8)]">
         <button type="button" onClick={onOpen} aria-haspopup="dialog" className="group block w-full text-start">
           <span className="relative block h-[228px] overflow-hidden rounded-[20px] bg-krem-200 md:h-[240px]">
@@ -150,25 +135,7 @@ function ItemCard({
 export function CategoryView({ category, pairing, trayHref, labels, waiter }: Props) {
   const storedView = useSyncExternalStore(subscribeView, readView, () => "cards" as View);
   const view: View = category.layout === "list" ? "list" : storedView;
-  const hash = useSyncExternalStore(subscribeHash, readHash, () => "");
-  // True while the open sheet has its own history entry, so closing it can simply go Back.
-  const pushed = useRef(false);
-
-  const open = (id: string) => {
-    window.history.pushState(null, "", `#${id}`);
-    pushed.current = true;
-    window.dispatchEvent(new Event(HASH_EVENT));
-  };
-
-  const dismiss = () => {
-    if (pushed.current) {
-      pushed.current = false;
-      window.history.back();
-      return;
-    }
-    window.history.replaceState(null, "", window.location.pathname + window.location.search);
-    window.dispatchEvent(new Event(HASH_EVENT));
-  };
+  const hash = useItemHash();
 
   const selected = category.items.find((i) => i.id === hash) ?? null;
   const sheetPairing = category.layout === "cards" ? pairing : [];
@@ -205,16 +172,16 @@ export function CategoryView({ category, pairing, trayHref, labels, waiter }: Pr
       {view === "cards" ? (
         <ul className="mt-3.5 grid grid-cols-1 gap-3.5 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
           {category.items.map((item) => (
-            <ItemCard key={item.id} item={item} onOpen={() => open(item.id)} trayHref={trayHref} labels={labels} />
+            <ItemCard key={item.id} item={item} onOpen={() => openItem(item.id)} trayHref={trayHref} labels={labels} />
           ))}
         </ul>
       ) : (
         <ul className={`grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-3 ${category.layout === "cards" ? "mt-3.5" : ""}`}>
           {category.items.map((item) => (
-            <li key={item.id} id={item.id} className="scroll-mt-40">
+            <li key={item.id} id={item.id}>
               <button
                 type="button"
-                onClick={() => open(item.id)}
+                onClick={() => openItem(item.id)}
                 aria-haspopup="dialog"
                 className={`${lineClass} ${category.layout === "list" ? "min-h-[68px] ps-4" : ""}`}
               >
@@ -230,7 +197,8 @@ export function CategoryView({ category, pairing, trayHref, labels, waiter }: Pr
         pairing={sheetPairing}
         labels={labels}
         waiter={waiter}
-        onDismiss={dismiss}
+        tray={{ href: trayHref, label: labels.trayAsk }}
+        onDismiss={closeItem}
       />
     </>
   );

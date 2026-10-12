@@ -126,20 +126,28 @@ function MiniWheel({ className }: { className?: string }) {
 /** Fired by any trigger on the page; the one wheel dialog in the layout listens for it. */
 const OPEN_EVENT = "tatli-carki:ac";
 
-/** The last tile on the home page: a slowly turning wheel that opens the game. */
-export function WheelTile({ title, action, className = "" }: { title: string; action: string; className?: string }) {
+/** "Kararsız mısın?" strip under the master's pick: a slowly turning wheel that opens the game. */
+export function WheelBanner({ title, action, className = "" }: { title: string; action: string; className?: string }) {
   return (
     <button
       type="button"
       aria-haspopup="dialog"
       data-wheel-trigger=""
       onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}
-      className={`group flex flex-col items-center justify-center gap-2.5 overflow-hidden rounded-[26px] bg-[radial-gradient(circle_at_50%_35%,#2a2d5a,#1b1d3f)] text-sari-300 ring-1 ring-inset ring-sari-300/25 transition hover:ring-sari-300/50 active:scale-[.98] ${className}`}
+      className={`group flex w-full items-center gap-3.5 rounded-3xl bg-[radial-gradient(circle_at_15%_50%,#2a2d5a,#1b1d3f)] p-2.5 pe-4 text-start text-sari-300 ring-1 ring-inset ring-sari-300/25 transition hover:ring-sari-300/50 active:scale-[.99] ${className}`}
     >
-      <MiniWheel className="size-[84px] animate-[spin_14s_linear_infinite] group-hover:animate-[spin_1.6s_linear_infinite] motion-reduce:animate-none md:size-24" />
-      <span className="text-center">
-        <span className="font-display block text-[19px] font-semibold leading-[1.05] md:text-[22px]">{title}</span>
-        <span className="mt-1 block text-xs text-krem-100/70">{action}</span>
+      <MiniWheel className="size-14 shrink-0 animate-[spin_14s_linear_infinite] group-hover:animate-[spin_1.6s_linear_infinite] motion-reduce:animate-none" />
+      <span className="min-w-0 flex-1">
+        <span className="font-display block text-[19px] font-semibold leading-tight">{title}</span>
+        <span className="mt-0.5 block text-xs text-krem-100/70">{action}</span>
+      </span>
+      <span
+        aria-hidden="true"
+        className="grid size-9 shrink-0 place-items-center rounded-full bg-sari-300 text-lacivert-925 transition-transform group-hover:translate-x-0.5"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="size-4">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
       </span>
     </button>
   );

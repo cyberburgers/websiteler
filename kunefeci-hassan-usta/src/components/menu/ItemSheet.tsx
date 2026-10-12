@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Check, Share, Smartphone, X } from "lucide-react";
 import { useEffect, useRef, useState, type TouchEvent } from "react";
+import { WhatsAppIcon } from "@/components/BrandIcons";
 import { Photo } from "@/components/ui";
 import { useTable } from "@/lib/table";
 import { TagBadge, allergenIcons } from "./icons";
@@ -27,11 +28,13 @@ type Props = {
   pairing: { item: MenuViewItem; href: string }[];
   labels: SheetLabels;
   waiter: WaiterLabels;
+  /** "Ask about a tray on WhatsApp", shown for dishes made to order. */
+  tray?: { href: string; label: string };
   /** Called when the guest closes the sheet (button, backdrop, swipe or Esc). */
   onDismiss: () => void;
 };
 
-export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
+export function ItemSheet({ item, pairing, labels, waiter, tray, onDismiss }: Props) {
   const sheetRef = useRef<HTMLDialogElement>(null);
   const waiterRef = useRef<HTMLDialogElement>(null);
   const drag = useRef<{ startY: number; dy: number } | null>(null);
@@ -164,6 +167,18 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
                 )}
               </div>
               <p className="mt-2 text-[15px] leading-relaxed text-lacivert-800/75">{item.description}</p>
+
+              {tray && item.tags.some((t) => t.id === "siparis") && (
+                <a
+                  href={tray.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 flex h-12 items-center justify-center gap-2 rounded-2xl bg-[#25d366] text-sm font-extrabold text-[#0b3d1f] transition hover:brightness-105"
+                >
+                  <WhatsAppIcon className="size-[18px]" />
+                  {tray.label}
+                </a>
+              )}
 
               {item.prices.length > 1 && (
                 <div className="mt-4 grid grid-cols-2 gap-2">

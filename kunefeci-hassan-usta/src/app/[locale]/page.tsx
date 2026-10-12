@@ -1,31 +1,34 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Search } from "lucide-react";
-import { CategoryTiles } from "@/components/home/CategoryTiles";
 import { TableChip } from "@/components/home/TableChip";
+import { HomeMenu } from "@/components/menu/HomeMenu";
 import { TagBadge, filterIcons } from "@/components/menu/icons";
+import { OpenItemLink } from "@/components/menu/OpenItemLink";
 import { filterIds, type FilterId } from "@/components/menu/types";
 import { OpenStatus } from "@/components/OpenStatus";
 import { Photo } from "@/components/ui";
-import { DessertWheel } from "@/components/wheel/DessertWheel";
+import { DessertWheel, WheelBanner } from "@/components/wheel/DessertWheel";
+import { links } from "@/content/site";
 import { isLocale, localePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { fill } from "@/lib/format";
-import { categoryPath, menuView } from "@/lib/menu-view";
+import { categoryPath, menuView, pairingItems } from "@/lib/menu-view";
 import { JsonLd, menuJsonLd, restaurantJsonLd } from "@/lib/structured-data";
 import { wheelSlices } from "@/lib/wheel";
 
-/** Each quick filter keeps a little of its own colour, like the chips in the mock-up. */
+/** Each quick filter keeps a little of its own colour: pistachio green, syrup amber. */
 const filterTone: Partial<Record<FilterId, string>> = {
-  fistikli: "bg-fistik-400/[0.16] text-fistik-300",
+  fistikli: "bg-fistik-300 text-lacivert-925",
   sicak: "bg-karamel-400/[0.16] text-karamel-300",
 };
 
-/** The menu's front page: welcome card, search, the master's pick and the category tiles. */
+/** The menu's front page: welcome card, search, the master's pick, then every dish on the menu. */
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
+  const waiterDict = getDictionary("tr");
   const categories = menuView(locale);
   const items = categories.flatMap((c) => c.items);
   const featured = items.find((i) => i.tags.some((t) => t.id === "imza")) ?? items[0];
@@ -95,8 +98,8 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             <p className="mt-6 text-[11px] font-extrabold uppercase tracking-[0.2em] text-sari-300">
               {dict.home.recommended}
             </p>
-            <Link
-              href={categoryPath(locale, featured.categoryId, featured.id)}
+            <OpenItemLink
+              id={featured.id}
               className="group mt-2.5 flex items-center gap-3.5 rounded-3xl bg-krem-100 p-2.5 text-lacivert-800 transition hover:-translate-y-0.5 lg:flex-1"
             >
               <span className="relative size-28 shrink-0 overflow-hidden rounded-[18px] bg-krem-200 lg:size-44">
@@ -121,29 +124,43 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
                   {featured.prices[0].formatted}
                 </span>
               </span>
-            </Link>
+            </OpenItemLink>
+            <WheelBanner title={dict.wheel.trigger} action={dict.home.spin} className="mt-3" />
           </div>
         </div>
 
-        <section aria-labelledby="kategoriler" className="mt-7 md:mt-12">
+        <section aria-labelledby="menu-baslik" className="mt-8 md:mt-12">
           <div className="flex items-baseline justify-between gap-4">
-            <h2 id="kategoriler" className="font-display text-[28px] font-medium text-krem-50 md:text-4xl">
-              {dict.home.categories}
+            <h2 id="menu-baslik" className="font-display text-[28px] font-medium text-krem-50 md:text-4xl">
+              {dict.menu.title}
             </h2>
             <span className="text-[12.5px] text-krem-100/55">
               {fill(dict.home.summary, { categories: categories.length, items: items.length })}
             </span>
           </div>
-          <div className="mt-3.5">
-            <CategoryTiles
+          <div className="mt-2">
+            <HomeMenu
               categories={categories}
-              locale={locale}
+              pairing={pairingItems(categories).map((item) => ({
+                item,
+                href: categoryPath(locale, item.categoryId, item.id),
+              }))}
+              trayHref={links.whatsapp(dict.category.trayText)}
               labels={{
+                tabs: dict.home.categories,
                 dishes: dict.home.dishes,
                 drinks: dict.home.drinks,
-                wheelTitle: dict.wheel.trigger,
-                wheelAction: dict.home.spin,
+                trayAsk: dict.category.trayAsk,
+                close: dict.menu.close,
+                price: dict.menu.price,
+                contains: dict.menu.contains,
+                noAllergens: dict.menu.noAllergens,
+                pairing: dict.item.pairing,
+                showWaiter: dict.item.showWaiter,
+                share: dict.item.share,
+                copied: dict.item.copied,
               }}
+              waiter={{ title: waiterDict.item.waiterTitle, table: waiterDict.home.table }}
             />
           </div>
         </section>

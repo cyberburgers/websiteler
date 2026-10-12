@@ -302,11 +302,11 @@ html:has(dialog[open]) {
     translate: 0 48px;
   }
 }
-/* Dessert wheel: grows out of its tile at the bottom of the category grid. */
+/* Dessert wheel: grows out of its strip under the master's pick. */
 .wheel-sheet {
   opacity: 0;
   scale: 0.35;
-  transform-origin: 75% 85%;
+  transform-origin: 50% 70%;
   transition:
     opacity 0.35s ease,
     scale 0.6s var(--ease-out-expo),

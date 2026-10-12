@@ -65,11 +65,15 @@ export function ItemLine({
   item,
   words = [],
   thumb = true,
+  size = "md",
 }: {
   item: MenuViewItem;
   words?: string[];
   thumb?: boolean;
+  /** "lg": bigger photo and two lines of description, for the menu on the home page. */
+  size?: "md" | "lg";
 }) {
+  const lg = size === "lg";
   const detail =
     item.prices.length > 1
       ? item.prices.map((p) => `${p.label} ${p.formatted}`).join(" · ")
@@ -77,15 +81,23 @@ export function ItemLine({
   return (
     <>
       {thumb && (
-        <span className="relative size-[62px] shrink-0 overflow-hidden rounded-[14px] bg-lacivert-800">
-          <Photo photo={item.photo} alt="" sizes="62px" />
+        <span
+          className={`relative shrink-0 overflow-hidden bg-lacivert-800 ${lg ? "size-[84px] rounded-2xl" : "size-[62px] rounded-[14px]"}`}
+        >
+          <Photo photo={item.photo} alt="" sizes={lg ? "84px" : "62px"} />
         </span>
       )}
       <span className="min-w-0 flex-1">
-        <span className="font-display block text-[17px] font-semibold leading-snug text-krem-50">
+        <span
+          className={`font-display block font-semibold leading-snug text-krem-50 ${lg ? "text-lg" : "text-[17px]"}`}
+        >
           {highlight(item.name, words)}
         </span>
-        <span className="mt-0.5 line-clamp-1 text-[12.5px] text-krem-100/60">{highlight(detail, words)}</span>
+        <span
+          className={`mt-0.5 text-[12.5px] text-krem-100/60 ${lg ? "line-clamp-2 leading-snug" : "line-clamp-1"}`}
+        >
+          {highlight(detail, words)}
+        </span>
       </span>
       <span className="shrink-0 text-[15px] font-extrabold tabular-nums text-sari-300">{fromPrice(item)}</span>
     </>
