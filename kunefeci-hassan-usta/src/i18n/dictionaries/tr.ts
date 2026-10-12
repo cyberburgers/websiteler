@@ -106,10 +106,6 @@ const tr = {
     lead: "Nişan, mevlit, ofis ikramı ya da misafir sofrası… Bir gün önceden haber verin, tepsinizi sıcak sıcak hazır edelim.",
     note: "4 ve 6 kişilik tepsiler · Paket servis için uygun",
   },
-  gallery: {
-    eyebrow: "Tezgâhtan",
-    title: "Şerbetin, fıstığın, ateşin renkleri",
-  },
   visit: {
     eyebrow: "Ziyaret",
     title: "Sıcak künefe sizi bekliyor",

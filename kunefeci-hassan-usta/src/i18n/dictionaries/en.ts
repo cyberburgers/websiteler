@@ -108,10 +108,6 @@ const en: Dictionary = {
     lead: "Engagements, family gatherings, office treats or guests at home… Let us know a day ahead and we'll have your tray ready, piping hot.",
     note: "Trays for 4 and 6 · Available for takeaway",
   },
-  gallery: {
-    eyebrow: "From the counter",
-    title: "The colours of syrup, pistachio and fire",
-  },
   visit: {
     eyebrow: "Visit",
     title: "Hot künefe is waiting for you",

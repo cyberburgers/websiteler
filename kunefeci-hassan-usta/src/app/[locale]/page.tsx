@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { Gallery } from "@/components/home/Gallery";
 import { Hero } from "@/components/home/Hero";
 import { Process } from "@/components/home/Process";
 import { Signature } from "@/components/home/Signature";
@@ -25,7 +24,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <Story dict={dict} />
       <Process dict={dict} />
       <Trays dict={dict} />
-      <Gallery dict={dict} />
       <Visit dict={dict} />
     </>
   );
