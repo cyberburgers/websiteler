@@ -9,6 +9,7 @@ const en: Dictionary = {
   },
   nav: {
     admin: "Staff sign-in",
+    adminShort: "Staff",
     skip: "Skip to content",
   },
   actions: {
@@ -113,7 +114,7 @@ const en: Dictionary = {
     note: "Note",
     notePlaceholder: "E.g. light on the syrup",
     total: "Total",
-    payHint: "You pay at the table or at the counter.",
+    payHint: "We bring it to your table. You pay at the table or at the counter.",
     send: "Send order",
     sending: "Sending…",
     sentTitle: "Order received",
@@ -129,6 +130,13 @@ const en: Dictionary = {
     error: "The order couldn't be sent. Please tell your waiter what you'd like.",
     close: "Close",
     done: "OK",
+    introTable: "Table {n}",
+    introTitle: "Order from your table",
+    introStep1: "Pick with “Add”",
+    introStep2: "Send your order",
+    introStep3: "We bring it over",
+    introNote: "No takeaway or delivery. Pay at the table or the counter.",
+    introOk: "Got it",
   },
   footer: {
     follow: "Follow us on Instagram",

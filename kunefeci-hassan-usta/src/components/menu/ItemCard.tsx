@@ -16,12 +16,15 @@ import type { MenuViewItem } from "./types";
  */
 export function ItemCard({
   item,
+  wide = { md: false, lg: false },
   onOpen,
   detailsLabel,
   soldOutLabel,
   priority = false,
 }: {
   item: MenuViewItem;
+  /** Stretch over two columns on tablets (md) or laptops (lg), with a landscape photo; see wideCard. */
+  wide?: { md: boolean; lg: boolean };
   onOpen: () => void;
   detailsLabel: string;
   soldOutLabel: string;
@@ -32,15 +35,19 @@ export function ItemCard({
   const out = item.soldOut;
   const ordering = useOrdering();
   const orderable = Boolean(ordering?.canOrder && !out && ordering.catalog[item.id]);
+  // Written out in full so Tailwind finds every class.
+  const span = `${wide.md ? "md:col-span-2" : ""} ${wide.lg ? "lg:col-span-2" : wide.md ? "lg:col-span-1" : ""}`;
+  const shape = `${wide.md ? "md:aspect-[2/1]" : ""} ${wide.lg ? "lg:aspect-[2/1]" : wide.md ? "lg:aspect-square" : ""}`;
+  const sizes = `${wide.lg ? "(min-width: 1024px) 48rem" : "(min-width: 1024px) 24rem"}, ${wide.md ? "(min-width: 768px) 90vw" : "(min-width: 768px) 45vw"}, 100vw`;
   return (
-    <li id={item.id} className="reveal scroll-mt-36">
+    <li id={item.id} className={`reveal scroll-mt-36 ${span}`}>
       <div className="flex h-full flex-col rounded-[28px] bg-krem-100 p-2.5 text-zumrut-800 shadow-[0_28px_50px_-34px_rgba(0,0,0,.9)]">
         <button type="button" onClick={onOpen} aria-haspopup="dialog" className="group block w-full flex-1 text-start">
-          <span className="relative block aspect-square overflow-hidden rounded-[22px] bg-krem-200">
+          <span className={`relative block aspect-square overflow-hidden rounded-[22px] bg-krem-200 ${shape}`}>
             <Photo
               photo={item.photo}
               alt={item.name}
-              sizes="(min-width: 1024px) 24rem, (min-width: 768px) 45vw, 100vw"
+              sizes={sizes}
               preload={priority}
               className="transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]"
             />

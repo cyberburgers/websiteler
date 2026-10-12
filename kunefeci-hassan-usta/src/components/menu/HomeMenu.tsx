@@ -10,6 +10,17 @@ import type { MenuViewCategory } from "./types";
 
 type Labels = SheetLabels & { tabs: string; details: string };
 
+/**
+ * Which dish cards stretch over two columns, so a category never ends on a half-empty row: two columns
+ * from tablet width, three from laptop width. Five dishes on a laptop: the first is wide, then three.
+ * Four: first and last wide (2+1, 1+2). Always the first or last dish, so the order stays as set.
+ */
+export function wideCard(count: number, index: number) {
+  const md = count > 1 && count % 2 === 1 && index === 0;
+  const lg = count > 1 && ((count % 3 === 2 && index === 0) || (count % 3 === 1 && (index === 0 || index === count - 1)));
+  return { md, lg };
+}
+
 type Props = {
   categories: MenuViewCategory[];
   /** The menu's own address (/tr): dishes suggested in a sheet link to /tr#their-id. */
@@ -131,10 +142,11 @@ export function HomeMenu({ categories, homeHref, labels, waiter }: Props) {
           {category.description && <p className="mt-1 text-sm text-krem-100/65">{category.description}</p>}
           {category.layout === "cards" ? (
             <ul className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
-              {category.items.map((item) => (
+              {category.items.map((item, index) => (
                 <ItemCard
                   key={item.id}
                   item={item}
+                  wide={wideCard(category.items.length, index)}
                   onOpen={() => openItem(item.id)}
                   detailsLabel={labels.details}
                   soldOutLabel={labels.soldOut}

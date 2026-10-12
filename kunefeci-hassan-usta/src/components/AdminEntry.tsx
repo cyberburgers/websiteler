@@ -1,15 +1,15 @@
 "use client";
 
-import { LockKeyhole, X } from "lucide-react";
+import { KeyRound, LockKeyhole, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { LoginForm } from "@/components/admin/LoginForm";
 
 /**
- * The staff's way into the panel: a small button at the top right. It opens the sign-in over the menu,
- * which blurs behind it; already signed in, it goes straight to the panel.
+ * The staff's way into the panel: a quiet glass pill at the top right, "Yönetici" with a key. It opens the
+ * sign-in over the menu, which blurs behind it; already signed in, it goes straight to the panel.
  */
-export function AdminEntry({ label, className }: { label: string; className: string }) {
+export function AdminEntry({ label, text, className = "" }: { label: string; text: string; className?: string }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [going, setGoing] = useState(false);
   const router = useRouter();
@@ -32,8 +32,19 @@ export function AdminEntry({ label, className }: { label: string; className: str
 
   return (
     <>
-      <button type="button" onClick={open} aria-label={label} aria-haspopup="dialog" data-yonetici="" className={className}>
-        <LockKeyhole className="size-[18px]" aria-hidden="true" />
+      <button
+        type="button"
+        onClick={open}
+        aria-label={label}
+        aria-haspopup="dialog"
+        data-yonetici=""
+        className={`group inline-flex h-10 shrink-0 items-center gap-2 rounded-full bg-zumrut-950/50 pe-1 ps-1 text-[13px] font-bold text-krem-100/90 ring-1 ring-inset ring-krem-50/[0.12] backdrop-blur-md transition hover:bg-zumrut-950/75 hover:text-krem-50 hover:ring-fistik-300/40 active:scale-95 min-[360px]:pe-3.5 md:h-11 md:pe-4 ${className}`}
+      >
+        <span className="grid size-8 place-items-center rounded-full bg-krem-50/[0.08] text-karamel-300 ring-1 ring-inset ring-karamel-300/25 transition-colors group-hover:bg-fistik-300 group-hover:text-zumrut-925 group-hover:ring-transparent md:size-9">
+          <KeyRound className="size-4" strokeWidth={2.25} aria-hidden="true" />
+        </span>
+        {/* On the narrowest phones the word would touch the logo; the key alone is enough there. */}
+        <span className="hidden min-[360px]:inline">{text}</span>
       </button>
       <dialog
         ref={dialogRef}

@@ -35,4 +35,11 @@ export type OrderLabels = {
   error: string;
   close: string;
   done: string;
+  introTable: string;
+  introTitle: string;
+  introStep1: string;
+  introStep2: string;
+  introStep3: string;
+  introNote: string;
+  introOk: string;
 };

@@ -9,7 +9,7 @@ import { AdminEntry } from "./AdminEntry";
 type Props = {
   logo: ReactNode;
   homeHref: string;
-  labels: { back: string; admin: string };
+  labels: { back: string; admin: string; adminShort: string };
 };
 
 function subscribeScroll(onChange: () => void) {
@@ -72,7 +72,7 @@ export function SiteHeader({ logo, homeHref, labels }: Props) {
           {logo}
         </Link>
 
-        <AdminEntry label={labels.admin} className={`${roundButton} ms-auto`} />
+        <AdminEntry label={labels.admin} text={labels.adminShort} className="ms-auto" />
       </div>
     </header>
   );

@@ -101,7 +101,7 @@ export function TableDock({
               <span>
                 <span className="block text-[15px] font-extrabold leading-tight">{ordering.labels.viewBasket}</span>
                 <span className="block text-xs font-bold tabular-nums text-zumrut-950/70">
-                  {formatPrice(total, ordering.locale)}
+                  {tableText} · {formatPrice(total, ordering.locale)}
                 </span>
               </span>
             </button>

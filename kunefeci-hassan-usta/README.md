@@ -20,7 +20,7 @@ ya da WhatsApp düğmeleri yoktur; sayfanın altında yalnızca Instagram, adres
 | `/yonetim` | Yönetici paneli: menü, fiyatlar, fotoğraflar, saatler, iletişim (şifreli, Google'a kapalı) |
 | `/garson?k=…` | Kasadaki tablet için garson ekranı: çağrılar ve siparişler (adresi panelde) |
 
-Üstte ortada logo, sağda küçük kilitli **yönetici girişi** düğmesi durur (ana sayfa dışında solda geri düğmesi);
+Üstte ortada logo, sağda anahtarlı **Yönetici** düğmesi durur (ana sayfa dışında solda geri düğmesi);
 dil ve arama düğmesi yoktur. Yönetici düğmesi şifre penceresini menünün üstünde, arkası bulanık açar; giriş
 yapılmışsa doğrudan panele geçer.
 
@@ -33,8 +33,13 @@ geri tuşuyla kapanır.
 **Masa numarası:** `/tr/qr?masa=7` adresi 7 numaralı masanın kartını, `/tr/qr?masa=1-12` on iki
 kartı birden basar. Kart okutulunca menü açılır, karşılama kartında ve alttaki çubukta "Masa 7" yazar.
 
-Site ilk açıldığında bir an işletmenin logosu görünür; aynı telefonda bir ay boyunca tekrar çıkmaz
-(QR yeniden okutulsa ya da sayfa yenilense de). Logo dosyası `src/assets/brand/logo.png`; açılışta kullanılan küçük kopyası
+**Geniş ekran:** telefonda karşılama yazısı dükkân fotoğrafının üstündedir. Tablet ve bilgisayarda fotoğraf
+solda yazısız ve bütün durur; sağ sütunun başında karşılama, altında arama, filtreler ve çark. Menüde bir
+kategorinin son satırı yarım kalmasın diye ilk (gerekirse son) ürün iki sütun genişliğinde gösterilir;
+sıra panelde verildiği gibi kalır.
+
+Site her açıldığında (QR okutulunca, yeni sekmede, sayfa yenilenince) iki saniyeden kısa bir açılış
+oynar: işletmenin logosu ve etrafında çizilen ince altın halka. Site içinde gezerken tekrar çıkmaz. Logo dosyası `src/assets/brand/logo.png`; açılışta kullanılan küçük kopyası
 `src/app/splash-logo.css`, açılış `src/components/Splash.tsx` içindedir.
 
 `/en/...` İngilizce sürümdür. Sayfada dil düğmesi yok: önek olmadan gelen adresler (masa QR'ları dahil)
@@ -65,9 +70,14 @@ bir sunucuda Redis gerekmez.
 
 Yalnızca masa QR kartıyla açılan menüde çalışır; masa dışından bakan için site değişmez.
 
+Masada sipariş vermek herkesin alışık olduğu bir şey değil; “Ekle” eve sipariş sanılmasın diye menünün
+başında **Masanızdan sipariş verin** kartı çıkar: “Ekle” ile seçin → siparişi gönderin → masanıza gelsin;
+“Paket ya da eve servis yok. Ödeme masada veya kasada.” **Anladım** denince ya da ilk sipariş
+gönderilince o ziyaret boyunca bir daha çıkmaz.
+
 1. Kartlarda “Ayrıntı” yerine **+ Ekle** çıkar; eklenince **− 2 +** olur. Boy seçilen ürünlerde (Porsiyon /
    1 kg) **+ Seç** ürün penceresini açar.
-2. Alttaki çubukta garson tuşunun yanına **Sepeti gör** gelir (adet ve tutar). Sepet sayfalar arasında
+2. Alttaki çubukta garson tuşunun yanına **Siparişi gör** gelir (adet, masa ve tutar). Sepet sayfalar arasında
    gezerken kaybolmaz.
 3. Sepette adet değiştirilir, kısa bir not yazılır (ör. “şerbeti az olsun”), **Siparişi gönder**.
 4. Sipariş garson ekranına ve açık paneldeki kartlara sesli düşer: kalemler, not, tutar.
@@ -94,7 +104,7 @@ npm run lint
 
 ## Yönetici paneli (`/yonetim`)
 
-Menü ve işletme bilgileri kod bilmeden, telefondan değiştirilir. Sitenin sağ üstündeki kilit düğmesiyle
+Menü ve işletme bilgileri kod bilmeden, telefondan değiştirilir. Sitenin sağ üstündeki **Yönetici** düğmesiyle
 ya da doğrudan `https://alanadiniz.com/yonetim` adresiyle girilir.
 
 | Bölüm | Neler değişir? |
