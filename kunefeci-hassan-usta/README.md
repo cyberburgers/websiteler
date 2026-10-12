@@ -42,9 +42,11 @@ Her şey `src/content/` klasöründedir; kod bilmeden düzenlenebilecek şekilde
   Sonra dosyanın başındaki `menuUpdatedAt` tarihini güncelleyin.
 - **Ürünü geçici kaldırmak:** ürüne `available: false` ekleyin.
 - **Ana sayfadaki imza lezzetler:** ürüne `featured: true` ekleyin (ilk 4 ürün gösterilir).
-- **Fotoğraf eklemek:** fotoğrafı `src/assets/photos/` klasörüne koyun ve `src/content/photos.ts`
-  içinde bağlayın (dosyada örnek var). Fotoğrafı olmayan yerlerde markaya uygun bir desen görünür.
-  Yatay, en az 1600 piksel genişliğinde, iyi ışıklı fotoğraflar en iyi sonucu verir.
+- **Fotoğraf değiştirmek:** şu an sitede Pexels/Unsplash'tan alınmış temsili fotoğraflar var
+  (kaynaklar: `src/assets/photos/KAYNAKLAR.md`). Dükkânın kendi fotoğrafını `src/assets/photos/`
+  içindeki dosyanın üstüne aynı adla kaydetmek yeterli (örneğin `kunefe1.jpg`). Ana sayfadaki
+  yuvarlak fotoğraf `hero.jpg`'dir; kare ve tatlı ortada olmalı. En az 1400 piksel, iyi ışıklı
+  fotoğraflar en iyi sonucu verir.
 
 ## Yayına almadan önce yapılacaklar
 

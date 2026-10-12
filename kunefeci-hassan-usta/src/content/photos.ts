@@ -1,16 +1,36 @@
 import type { StaticImageData } from "next/image";
 import type { ArtKind } from "@/components/art/FoodArt";
+import baklava from "@/assets/photos/baklava.jpg";
+import burma from "@/assets/photos/burma.jpg";
+import cay from "@/assets/photos/cay.jpg";
+import dondurma from "@/assets/photos/dondurma.jpg";
+import fistik from "@/assets/photos/fistik.jpg";
+import hero from "@/assets/photos/hero.jpg";
+import kahve from "@/assets/photos/kahve.jpg";
+import katmer from "@/assets/photos/katmer.jpg";
+import kunefe1 from "@/assets/photos/kunefe1.jpg";
+import kunefe2 from "@/assets/photos/kunefe2.jpg";
+import kunefe3 from "@/assets/photos/kunefe3.jpg";
+import kunefe4 from "@/assets/photos/kunefe4.jpg";
+import mirra from "@/assets/photos/mirra.jpg";
+import sillik from "@/assets/photos/sillik.jpg";
+import sobiyet from "@/assets/photos/sobiyet.jpg";
+import sutlac from "@/assets/photos/sutlac.jpg";
+import tel from "@/assets/photos/tel.jpg";
+import tepsi from "@/assets/photos/tepsi.jpg";
+import urfa from "@/assets/photos/urfa.jpg";
+import yapim from "@/assets/photos/yapim.jpg";
 
 /**
- * FOTOĞRAFLAR — dosyaları src/assets/photos/ klasörüne koyup aşağıda bağlayın:
+ * FOTOĞRAFLAR — src/assets/photos/ klasöründeki dosyalar.
  *
- *   import hero from "@/assets/photos/hero.jpg";
- *   import kunefe1 from "@/assets/photos/kunefe-1.jpg";
- *   export const photos: Partial<Record<PhotoKey, StaticImageData>> = { hero, kunefe1 };
+ * Şimdilik Pexels ve Unsplash'tan alınmış, ücretsiz kullanılabilen temsili
+ * fotoğraflar duruyor (kaynak listesi: src/assets/photos/KAYNAKLAR.md).
+ * Dükkânın kendi fotoğrafları çekilince aynı adla dosyanın üstüne kaydetmek yeterli.
  *
- * "hero" ana sayfanın büyük fotoğrafıdır. Menüde hangi ürünün hangi fotoğrafı
- * kullandığı src/content/menu.ts içindeki `image` alanında yazar.
- * Fotoğrafı olmayan yerlerde aşağıdaki `photoArt` listesindeki çizim gösterilir.
+ * "hero" ana sayfanın büyük, yuvarlak fotoğrafıdır; kare ve ortalı olmalı.
+ * Menüde hangi ürünün hangi fotoğrafı kullandığı src/content/menu.ts içindeki
+ * `image` alanında yazar.
  */
 export type PhotoKey =
   | "hero"
@@ -34,9 +54,30 @@ export type PhotoKey =
   | "mirra"
   | "urfa";
 
-export const photos: Partial<Record<PhotoKey, StaticImageData>> = {};
+export const photos: Partial<Record<PhotoKey, StaticImageData>> = {
+  hero,
+  kunefe1,
+  kunefe2,
+  kunefe3,
+  kunefe4,
+  tepsi,
+  yapim,
+  tel,
+  fistik,
+  baklava,
+  burma,
+  sobiyet,
+  katmer,
+  sillik,
+  dondurma,
+  sutlac,
+  cay,
+  kahve,
+  mirra,
+  urfa,
+};
 
-/** Fotoğraf eklenene kadar her yerde gösterilen çizim. */
+/** Çizimler: tatlı çarkının dilimlerinde ve fotoğrafı silinen yerlerde gösterilir. */
 export const photoArt: Record<PhotoKey, ArtKind | undefined> = {
   hero: "kunefe-ozel",
   kunefe1: "kunefe",

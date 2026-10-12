@@ -53,14 +53,6 @@ const en: Dictionary = {
     sticker: "Made to order",
     ring: "KÜNEFECİ HASSAN USTA • ŞANLIURFA • SERVED HOT • ",
   },
-  ticker: [
-    "Made to order",
-    "Loads of pistachio",
-    "Urfa butter",
-    "Unsalted Urfa cheese",
-    "Warm syrup",
-    "Künefe by the tray",
-  ],
   wheel: {
     trigger: "Can't decide?",
     title: "Spin the wheel, find your dessert",
@@ -84,23 +76,6 @@ const en: Dictionary = {
     p2: "At Hassan Usta's counter the rule is simple: good ingredients, the right fire and a method that is never cut short. It is a craft that comes from Şanlıurfa's food culture, served with the same care on every plate.",
     quote: "Künefe doesn't wait — it's eaten the moment it leaves the fire.",
     imageAlt: "A künefe tray being prepared",
-    pillarsTitle: "Four ingredients, one method",
-    pillars: [
-      { title: "Kadayıf", text: "Fine, fresh shredded pastry, rubbed strand by strand with butter." },
-      { title: "Urfa cheese", text: "Desalted soft cheese that stretches as it melts." },
-      { title: "Urfa butter", text: "Şanlıurfa's famous clarified butter — the aroma of künefe." },
-      { title: "Antep pistachio", text: "From the orchards of the southeast, crushed fresh and generously." },
-    ],
-  },
-  process: {
-    eyebrow: "From fire to table",
-    title: "Every künefe takes four steps, made just for you",
-    steps: [
-      { title: "Prepare", text: "The kadayıf is rubbed with butter and spread thinly in the tray." },
-      { title: "Cheese", text: "Unsalted Urfa cheese goes between two layers of kadayıf." },
-      { title: "Fire", text: "The tray turns over the fire until golden underneath and melted inside." },
-      { title: "Syrup", text: "Warm syrup and crushed pistachio, then straight to your table." },
-    ],
   },
   trays: {
     eyebrow: "Gatherings",

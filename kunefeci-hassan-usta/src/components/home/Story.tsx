@@ -1,9 +1,7 @@
-import { Droplet, Milk, Nut, Quote, Wheat } from "lucide-react";
+import { Quote } from "lucide-react";
 import { Photo, SectionHeading } from "@/components/ui";
 import { site } from "@/content/site";
 import type { Dictionary } from "@/i18n/dictionaries";
-
-const pillarIcons = [Wheat, Milk, Droplet, Nut];
 
 export function Story({ dict }: { dict: Dictionary }) {
   return (
@@ -34,27 +32,6 @@ export function Story({ dict }: { dict: Dictionary }) {
             </blockquote>
           </figure>
         </div>
-      </div>
-
-      <div className="container-page mt-28">
-        <div aria-hidden="true" className="kadayif-rule opacity-50" />
-        <h3 className="font-display mt-14 text-center text-3xl font-medium text-lacivert-800 md:text-4xl">
-          {dict.story.pillarsTitle}
-        </h3>
-        <ul className="mt-14 grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
-          {dict.story.pillars.map((pillar, i) => {
-            const Icon = pillarIcons[i] ?? Wheat;
-            return (
-              <li key={pillar.title} className="reveal text-center">
-                <div className="mx-auto grid size-16 place-items-center sm:size-20 rounded-full bg-gradient-to-b from-krem-100 to-krem-200 text-karamel-600 ring-1 ring-karamel-300/60">
-                  <Icon className="size-8" strokeWidth={1.5} aria-hidden="true" />
-                </div>
-                <h4 className="font-display mt-5 text-lg font-medium text-lacivert-800 sm:text-xl">{pillar.title}</h4>
-                <p className="mx-auto mt-2 max-w-60 text-[15px] leading-relaxed text-lacivert-800/65">{pillar.text}</p>
-              </li>
-            );
-          })}
-        </ul>
       </div>
     </section>
   );
