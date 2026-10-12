@@ -45,7 +45,7 @@ export default async function CategoryPage({ params }: PageProps<"/[locale]/menu
     <>
       <section className="relative isolate flex h-[19rem] items-end overflow-hidden md:h-[24rem]">
         <div aria-hidden="true" className="absolute inset-0 -z-10">
-          <Photo photo={category.photo} alt="" sizes="100vw" preload />
+          <Photo photo={category.photo} alt="" sizes="100vw" preload className="animate-settle" />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(29,49,38,.78),rgba(29,49,38,.2)_38%,rgba(29,49,38,.96))]" />
         </div>
         <div className="container-page max-w-6xl pb-5 md:pb-8">

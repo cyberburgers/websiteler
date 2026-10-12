@@ -127,7 +127,7 @@ export function WaiterCall({
         <span
           className={`relative grid size-11 shrink-0 place-items-center rounded-full text-zumrut-950 ${seen ? "bg-krem-50" : "bg-fistik-300"}`}
         >
-          {pending && <span className="absolute inset-0 animate-ping rounded-full bg-fistik-300/60" />}
+          {pending && <span className="absolute inset-0 animate-halo rounded-full bg-fistik-300/60" />}
           {seen ? (
             <Check className="relative size-5" strokeWidth={3} aria-hidden="true" />
           ) : (
@@ -216,7 +216,7 @@ export function WaiterCall({
                 {seen ? (
                   <Check className="size-9" strokeWidth={3} aria-hidden="true" />
                 ) : (
-                  <BellRing className="size-9 animate-[wiggle_1.2s_ease-in-out_infinite]" aria-hidden="true" />
+                  <BellRing className="size-9 animate-bell" aria-hidden="true" />
                 )}
               </span>
               <p className="mt-4 text-[15px] leading-relaxed text-zumrut-800/75">

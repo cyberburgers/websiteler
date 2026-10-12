@@ -32,7 +32,7 @@ export function OpenStatus({
       role="status"
     >
       <span className="relative flex size-2.5">
-        {state.open && <span className="absolute inset-0 animate-ping rounded-full bg-fistik-400 opacity-60" />}
+        {state.open && <span className="absolute inset-0 animate-halo rounded-full bg-fistik-400 opacity-60" />}
         <span className={`relative size-2.5 rounded-full ${state.open ? "bg-fistik-400" : "bg-karamel-400"}`} />
       </span>
       <span>{state.open ? labels.open : labels.closed}</span>

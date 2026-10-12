@@ -89,7 +89,7 @@ export function usePanelCalls(staffKey: string | null) {
                   }`}
                 >
                   <Icon
-                    className={`${making ? "size-5" : "size-6"} ${!order && !bill ? "animate-[wiggle_1.2s_ease-in-out_infinite]" : ""}`}
+                    className={`${making ? "size-5" : "size-6"} ${!order && !bill ? "animate-bell" : ""}`}
                     aria-hidden="true"
                   />
                 </span>

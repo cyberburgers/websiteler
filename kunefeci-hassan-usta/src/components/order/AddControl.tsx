@@ -41,7 +41,7 @@ export function AddControl({
         }}
         aria-label={`${item.name}: ${sizes ? labels.choose : labels.add}`}
         data-ekle={item.id}
-        className={`inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full pe-4 ps-3 text-sm font-extrabold transition active:scale-95 ${filled}`}
+        className={`animate-pop-in inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full pe-4 ps-3 text-sm font-extrabold transition active:scale-95 ${filled}`}
       >
         <Plus className="size-4" strokeWidth={2.75} aria-hidden="true" />
         {sizes ? labels.choose : labels.add}
@@ -53,7 +53,7 @@ export function AddControl({
   return (
     <span
       data-adet={item.id}
-      className={`inline-flex h-10 shrink-0 items-center rounded-full ${tone === "light" ? "bg-zumrut-800 text-krem-50" : "bg-fistik-300 text-zumrut-950"}`}
+      className={`animate-pop-in inline-flex h-10 shrink-0 items-center rounded-full ${tone === "light" ? "bg-zumrut-800 text-krem-50" : "bg-fistik-300 text-zumrut-950"}`}
     >
       <button type="button" onClick={() => setQty(item.id, 0, qty - 1)} aria-label={`${item.name}: ${labels.less}`} className={step}>
         <Minus className="size-4" strokeWidth={2.75} aria-hidden="true" />

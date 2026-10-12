@@ -94,7 +94,7 @@ export function TableDock({
             >
               <span
                 key={count}
-                className="grid size-11 shrink-0 animate-[bump_.35s_ease-out] place-items-center rounded-full bg-zumrut-950 text-base font-extrabold tabular-nums text-fistik-300"
+                className="grid size-11 shrink-0 animate-[bump_.45s_var(--ease-out-quint)] place-items-center rounded-full bg-zumrut-950 text-base font-extrabold tabular-nums text-fistik-300"
               >
                 {count}
               </span>
@@ -117,7 +117,7 @@ export function TableDock({
             >
               <span className="relative grid size-11 shrink-0 place-items-center rounded-full bg-krem-50 text-zumrut-950">
                 {sent?.status === "bekliyor" && (
-                  <span className="absolute inset-0 animate-ping rounded-full bg-krem-50/50" />
+                  <span className="absolute inset-0 animate-halo rounded-full bg-krem-50/50" />
                 )}
                 <status.Icon className="relative size-5" strokeWidth={2.5} aria-hidden="true" />
               </span>

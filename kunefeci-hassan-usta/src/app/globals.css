@@ -37,7 +37,13 @@
   --color-serbet-400: #f0b452;
   --color-serbet-500: #dd9530;
 
+  /* Motion: one small set of curves everywhere, so everything moves the same way. */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-quart: cubic-bezier(0.5, 0, 0.75, 0);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  /* The curve iOS uses for its bottom sheets. */
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
 
 }
 
@@ -157,9 +163,9 @@ html.panel body {
 @utility reveal {
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
-      animation: reveal-up linear both;
+      animation: reveal-up var(--ease-out-quint) both;
       animation-timeline: view();
-      animation-range: entry 0% cover 22%;
+      animation-range: entry 4% cover 24%;
     }
   }
 }
@@ -167,7 +173,7 @@ html.panel body {
 @keyframes reveal-up {
   from {
     opacity: 0;
-    transform: translateY(28px);
+    transform: translateY(24px) scale(0.985);
   }
   to {
     opacity: 1;
@@ -192,6 +198,49 @@ html.panel body {
   }
 }
 
+/* A hero photo that eases back from a slight zoom as the page opens. */
+@keyframes settle {
+  from {
+    scale: 1.08;
+  }
+}
+@utility animate-settle {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: settle 1.8s var(--ease-out-quint) var(--intro-delay, 0s) both;
+  }
+}
+
+/* A control that replaces another (+ Ekle -> − 1 +) arrives instead of snapping in. */
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    scale: 0.9;
+  }
+}
+@utility animate-pop-in {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: pop-in 0.3s var(--ease-out-quint) both;
+  }
+}
+
+/* A calm pulse round a live dot ("open now", "waiting for the waiter"), slower and softer than a ping. */
+@keyframes halo {
+  0% {
+    scale: 1;
+    opacity: 0.55;
+  }
+  75%,
+  100% {
+    scale: 2.4;
+    opacity: 0;
+  }
+}
+@utility animate-halo {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: halo 2.4s var(--ease-out-quint) infinite;
+  }
+}
+
 /* ---- Motion -------------------------------------------------------------
  * Every animation sits behind prefers-reduced-motion: no-preference, and the
  * resting state is always the visible one.
@@ -209,16 +258,26 @@ html.panel body {
   }
 }
 
-/* The bell on the waiter-call screen gives a little shake while waiting. */
+/* The bell gives a short, small ring now and then while a call waits. */
 @keyframes wiggle {
-  0%, 60%, 100% {
+  0%,
+  36%,
+  100% {
     rotate: 0deg;
   }
-  15%, 45% {
-    rotate: -14deg;
+  6%,
+  22% {
+    rotate: -10deg;
   }
+  14%,
   30% {
-    rotate: 14deg;
+    rotate: 10deg;
+  }
+}
+@utility animate-bell {
+  @media (prefers-reduced-motion: no-preference) {
+    transform-origin: 50% 15%;
+    animation: wiggle 2.6s ease-in-out infinite;
   }
 }
 
@@ -240,8 +299,8 @@ html[data-garson] footer {
 
 /* The basket count on the bar at the bottom, when something is added. */
 @keyframes bump {
-  40% {
-    scale: 1.22;
+  35% {
+    scale: 1.14;
   }
 }
 
@@ -278,36 +337,181 @@ html[data-garson] footer {
   }
 }
 
-/* Opening: the logo settles in, holds for a beat, then lifts away as the menu rises behind it. */
+/* ---- Opening (Splash.tsx) ---------------------------------------------------
+ * 0–0.95s  the logo comes into focus while a thin gold ring is drawn round it
+ * 0.55s    "Şanlıurfa" settles under it
+ * 0.85s    a light passes once over the badge
+ * 1.4s     the logo steps back and the panel lifts away like a curtain, its curved lower edge
+ *          sweeping up the screen while the menu rises behind it (--intro-delay, 1.5s)
+ */
 html:not(.splash-seen) {
-  --intro-delay: 1.35s;
+  --intro-delay: 1.5s;
 }
 html.splash-seen .splash {
   display: none;
 }
 .splash {
-  animation: splash-out 0.55s var(--ease-out-expo) 1.3s forwards;
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  /* Taller than the screen, with a curved lower edge that only shows once it starts to lift. */
+  height: calc(100lvh + 12vh);
+  border-bottom-left-radius: 50% 12vh;
+  border-bottom-right-radius: 50% 12vh;
+  background: radial-gradient(110% 65% at 50% 40%, var(--color-zumrut-900), var(--color-zumrut-950) 72%);
+  box-shadow: 0 30px 70px -10px rgb(0 0 0 / 0.6);
+  animation: splash-lift 0.85s var(--ease-in-out-quart) 1.45s forwards;
+}
+.splash-pattern {
+  position: absolute;
+  inset: 0;
+  animation: splash-fade 1.4s ease-out both;
+}
+.splash-stage {
+  position: relative;
+  display: flex;
+  height: 100dvh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.75rem;
+  animation: splash-step-back 0.55s var(--ease-in-quart) 1.35s forwards;
+}
+.splash-glow {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  width: min(140vw, 40rem);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(224 180 121 / 0.2), rgb(224 180 121 / 0.06) 55%, transparent);
+  animation: splash-glow 1.3s var(--ease-out-quint) both;
+}
+.splash-mark {
+  position: relative;
+  isolation: isolate;
+  width: min(62vw, 18.5rem);
+}
+.splash-ring {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+.splash-ring circle {
+  stroke: var(--color-karamel-300);
+  stroke-opacity: 0.75;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: splash-ring 1.2s var(--ease-in-out-quart) 0.2s forwards;
 }
 .splash-logo {
-  animation:
-    splash-logo-in 0.8s var(--ease-out-expo) both,
-    splash-logo-out 0.55s ease-in 1.3s forwards;
+  position: relative;
+  animation: splash-focus 0.95s var(--ease-out-quint) 0.05s both;
 }
-@keyframes splash-out {
+.splash-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 40%, rgb(255 253 246 / 0.85) 50%, transparent 60%) no-repeat;
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  mix-blend-mode: overlay;
+  opacity: 0;
+  animation: splash-sheen 0.8s var(--ease-in-out-quart) 0.85s;
+}
+.splash-place {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding-inline-start: 0.42em;
+  font: 700 11px/1 var(--font-sans);
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-karamel-300) 85%, transparent);
+  animation: splash-place 0.9s var(--ease-out-quint) 0.55s both;
+}
+.splash-place span {
+  display: block;
+  height: 1px;
+  width: 1.75rem;
+  background: currentColor;
+  opacity: 0.5;
+  animation: splash-rule 0.9s var(--ease-out-quint) 0.65s both;
+}
+@keyframes splash-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes splash-glow {
+  from {
+    opacity: 0;
+    scale: 0.7;
+  }
+}
+@keyframes splash-focus {
+  from {
+    opacity: 0;
+    scale: 1.08;
+    filter: blur(14px) drop-shadow(0 14px 24px rgb(0 0 0 / 0));
+  }
+  45% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+    filter: blur(0) drop-shadow(0 14px 24px rgb(0 0 0 / 0.4));
+  }
+}
+@keyframes splash-ring {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes splash-sheen {
+  from {
+    opacity: 1;
+    background-position: 100% 0;
+  }
+  to {
+    opacity: 1;
+    background-position: 0% 0;
+  }
+}
+@keyframes splash-place {
+  from {
+    opacity: 0;
+    letter-spacing: 0.75em;
+    translate: 0 6px;
+  }
+}
+@keyframes splash-rule {
+  from {
+    scale: 0 1;
+  }
+}
+@keyframes splash-step-back {
   to {
     opacity: 0;
+    scale: 0.96;
+    translate: 0 -3vh;
+  }
+}
+@keyframes splash-lift {
+  to {
+    translate: 0 calc(-100% - 6rem);
     visibility: hidden;
   }
 }
-@keyframes splash-logo-in {
-  from {
-    opacity: 0;
-    scale: 0.9;
+@media (prefers-reduced-motion: reduce) {
+  .splash {
+    display: none;
   }
-}
-@keyframes splash-logo-out {
-  to {
-    scale: 1.06;
+  html:not(.splash-seen) {
+    --intro-delay: 0s;
   }
 }
 
@@ -328,45 +532,87 @@ html:has(dialog[open]) {
   overflow: hidden;
 }
 
-/* The item sheet slides in and out; browsers without @starting-style simply snap. */
+/* Bottom sheets (dish, basket, waiter call) slide up from the edge of the screen like a phone's own
+ * sheets, and drop away a little faster. On wider screens they are a centred card that eases in.
+ * Browsers without @starting-style simply snap. */
 .menu-sheet {
-  opacity: 0;
-  translate: 0 48px;
+  translate: 0 100%;
   transition:
-    opacity 0.3s ease,
-    translate 0.55s var(--ease-out-expo),
+    translate 0.32s var(--ease-in-quart),
+    overlay 0.32s allow-discrete,
+    display 0.32s allow-discrete;
+}
+.menu-sheet[open] {
+  translate: 0 0;
+  transition:
+    translate 0.55s var(--ease-sheet),
     overlay 0.55s allow-discrete,
     display 0.55s allow-discrete;
 }
-.menu-sheet[open] {
-  opacity: 1;
-  translate: 0 0;
-}
 @starting-style {
   .menu-sheet[open] {
-    opacity: 0;
-    translate: 0 48px;
+    translate: 0 100%;
   }
 }
-/* Dessert wheel: grows out of its strip under the master's pick. */
+@media (min-width: 48rem) {
+  .menu-sheet {
+    opacity: 0;
+    translate: 0 20px;
+    scale: 0.98;
+    transition:
+      opacity 0.2s ease,
+      translate 0.25s var(--ease-in-quart),
+      scale 0.25s var(--ease-in-quart),
+      overlay 0.25s allow-discrete,
+      display 0.25s allow-discrete;
+  }
+  .menu-sheet[open] {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    transition:
+      opacity 0.3s ease,
+      translate 0.5s var(--ease-out-quint),
+      scale 0.5s var(--ease-out-quint),
+      overlay 0.5s allow-discrete,
+      display 0.5s allow-discrete;
+  }
+  @starting-style {
+    .menu-sheet[open] {
+      opacity: 0;
+      translate: 0 20px;
+      scale: 0.98;
+    }
+  }
+}
+/* Dessert wheel: comes forward from just behind the page. */
 .wheel-sheet {
   opacity: 0;
-  scale: 0.35;
-  transform-origin: 50% 70%;
+  scale: 0.92;
+  translate: 0 16px;
   transition:
-    opacity 0.35s ease,
-    scale 0.6s var(--ease-out-expo),
-    overlay 0.6s allow-discrete,
-    display 0.6s allow-discrete;
+    opacity 0.25s ease,
+    scale 0.3s var(--ease-in-quart),
+    translate 0.3s var(--ease-in-quart),
+    overlay 0.3s allow-discrete,
+    display 0.3s allow-discrete;
 }
 .wheel-sheet[open] {
   opacity: 1;
   scale: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.35s ease,
+    scale 0.6s var(--ease-out-quint),
+    translate 0.6s var(--ease-out-quint),
+    overlay 0.6s allow-discrete,
+    display 0.6s allow-discrete;
 }
 @starting-style {
   .wheel-sheet[open] {
     opacity: 0;
-    scale: 0.35;
+    scale: 0.92;
+    translate: 0 16px;
   }
 }
 
