@@ -476,7 +476,7 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
                   className={`flex gap-3 p-3 ${hidden ? "bg-krem-100/70" : soldOut ? "bg-amber-50/80" : ""}`}
                 >
                   <span
-                    className={`relative size-14 shrink-0 overflow-hidden rounded-xl bg-krem-200 ${hidden || soldOut ? "opacity-50 grayscale" : ""}`}
+                    className={`relative size-14 shrink-0 overflow-hidden rounded-xl bg-krem-200 ${hidden ? "opacity-50" : ""}`}
                   >
                     {item.image && <Photo photo={item.image} alt="" sizes="56px" />}
                   </span>

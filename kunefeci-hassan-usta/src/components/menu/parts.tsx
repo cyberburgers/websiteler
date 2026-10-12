@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { AddControl } from "@/components/order/AddControl";
 import { Photo } from "@/components/ui";
 import { foldForSearch } from "@/lib/format";
 import { allergenIcons } from "./icons";
@@ -81,13 +82,11 @@ export function ItemLine({
     <>
       {thumb && (
         <span className="relative size-[62px] shrink-0 overflow-hidden rounded-[14px] bg-zumrut-800">
-          <Photo photo={item.photo} alt="" sizes="62px" className={out ? "opacity-45 grayscale" : ""} />
+          <Photo photo={item.photo} alt="" sizes="62px" />
         </span>
       )}
       <span className="min-w-0 flex-1">
-        <span
-          className={`font-display block text-[17px] font-semibold leading-snug ${out ? "text-krem-50/55" : "text-krem-50"}`}
-        >
+        <span className="font-display block text-[17px] font-semibold leading-snug text-krem-50">
           {highlight(item.name, words)}
         </span>
         <span className="mt-0.5 line-clamp-1 text-[12.5px] text-krem-100/60">{highlight(detail, words)}</span>
@@ -106,7 +105,7 @@ export const lineClass =
 
 /**
  * A drink on the menu: no photo, but the name and price large and what it is written in full underneath.
- * Several sizes are listed under it, each with its price.
+ * Several sizes are listed under it, each with its price. At a table, "+ Ekle" sits under the price.
  */
 export function DrinkLine({
   item,
@@ -120,45 +119,35 @@ export function DrinkLine({
   const single = item.prices.length === 1;
   const out = item.soldOut;
   return (
-    <button
-      type="button"
-      aria-haspopup="dialog"
-      onClick={onOpen}
-      className="block w-full rounded-[22px] bg-krem-50/[0.07] px-5 py-4 text-start ring-1 ring-inset ring-krem-50/[0.06] transition-colors hover:bg-krem-50/[0.11] active:bg-krem-50/[0.13]"
-    >
-      <span className="flex items-start justify-between gap-4">
-        <span
-          className={`font-display text-[21px] font-semibold leading-snug ${out ? "text-krem-50/55" : "text-krem-50"}`}
-        >
-          {item.name}
-        </span>
+    <div className="flex items-start gap-3 rounded-[22px] bg-krem-50/[0.07] px-5 py-4 ring-1 ring-inset ring-krem-50/[0.06] transition-colors hover:bg-krem-50/[0.11]">
+      <button type="button" aria-haspopup="dialog" onClick={onOpen} className="block min-w-0 flex-1 text-start">
+        <span className="font-display block text-[21px] font-semibold leading-snug text-krem-50">{item.name}</span>
+        {item.description && (
+          <span className="mt-1 block text-[14.5px] leading-relaxed text-krem-100/70">{item.description}</span>
+        )}
+        {!single && (
+          <span className="mt-2 block space-y-1">
+            {item.prices.map((p) => (
+              <span key={p.label} className="flex items-baseline text-sm">
+                <span className="font-semibold text-krem-100/75">{p.label}</span>
+                <span aria-hidden="true" className="leader opacity-60" />
+                <span className="font-extrabold tabular-nums text-fistik-300">{p.formatted}</span>
+              </span>
+            ))}
+          </span>
+        )}
+      </button>
+      <span className="flex shrink-0 flex-col items-end gap-2.5 pt-0.5">
         {out ? (
           <SoldOutPill label={soldOutLabel} />
         ) : (
           single && (
-            <span className="shrink-0 pt-0.5 text-lg font-extrabold tabular-nums text-fistik-300">
-              {item.prices[0].formatted}
-            </span>
+            <span className="text-lg font-extrabold tabular-nums text-fistik-300">{item.prices[0].formatted}</span>
           )
         )}
+        <AddControl item={item} onChoose={onOpen} tone="dark" />
       </span>
-      {item.description && (
-        <span className={`mt-1 block text-[14.5px] leading-relaxed ${out ? "text-krem-100/45" : "text-krem-100/70"}`}>
-          {item.description}
-        </span>
-      )}
-      {!single && (
-        <span className={`mt-2 block space-y-1 ${out ? "opacity-45" : ""}`}>
-          {item.prices.map((p) => (
-            <span key={p.label} className="flex items-baseline text-sm">
-              <span className="font-semibold text-krem-100/75">{p.label}</span>
-              <span aria-hidden="true" className="leader opacity-60" />
-              <span className="font-extrabold tabular-nums text-fistik-300">{p.formatted}</span>
-            </span>
-          ))}
-        </span>
-      )}
-    </button>
+    </div>
   );
 }
 
@@ -172,14 +161,12 @@ export function SoldOutPill({ label }: { label: string }) {
   );
 }
 
-/** Over a dish's photo when it has run out today: the photo dims and the label sits in the middle. */
-export function SoldOutVeil({ label }: { label: string }) {
+/** On a dish's photo, where its tags would be, when it has run out today. */
+export function SoldOutBadge({ label }: { label: string }) {
   return (
-    <span className="absolute inset-0 grid place-items-center bg-zumrut-950/45">
-      <span className="inline-flex items-center gap-2 rounded-full bg-krem-50 px-4 py-2 text-[15px] font-extrabold text-zumrut-900 shadow-[0_12px_30px_-10px_rgba(0,0,0,.7)]">
-        <span aria-hidden="true" className="size-2 rounded-full bg-karamel-500" />
-        {label}
-      </span>
+    <span className="absolute start-3 top-3 inline-flex items-center gap-2 rounded-full bg-zumrut-950/85 px-3.5 py-1.5 text-sm font-extrabold text-krem-50 shadow-[0_8px_20px_-8px_rgba(0,0,0,.6)] backdrop-blur">
+      <span aria-hidden="true" className="size-2 rounded-full bg-karamel-400" />
+      {label}
     </span>
   );
 }

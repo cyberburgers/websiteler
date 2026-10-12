@@ -14,6 +14,8 @@ export type SiteContent = {
   featuredId?: string;
   /** A short note shown at the top of the home page (holiday hours and the like). Empty: no note. */
   notice?: Text;
+  /** False: guests at a table can only call the waiter, not order from the menu. On unless turned off. */
+  tableOrders?: boolean;
   menuUpdatedAt: string;
   /** When the panel last saved; the panel uses it to spot two people editing at once. */
   savedAt?: string;

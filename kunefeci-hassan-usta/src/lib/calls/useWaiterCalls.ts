@@ -2,7 +2,22 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-export type OpenCall = { id: string; table: string; kind: "garson" | "hesap"; at: number };
+export type OpenCall = {
+  id: string;
+  table: string;
+  kind: "garson" | "hesap" | "siparis";
+  at: number;
+  /** An order that has been accepted and is being made. */
+  seenAt?: number;
+  lines?: { name: string; option?: string; qty: number; amount: number }[];
+  note?: string;
+  total?: number;
+};
+
+/** Waiting for someone first (calls and new orders, oldest first), then orders being made. */
+export function byUrgency(calls: OpenCall[]): OpenCall[] {
+  return [...calls].sort((a, b) => Number(Boolean(a.seenAt)) - Number(Boolean(b.seenAt)) || a.at - b.at);
+}
 
 const POLL_MS = 3000;
 /** An unanswered call rings again this often, in case nobody heard it the first time. */
@@ -67,7 +82,7 @@ export function useWaiterCalls(staffKey: string | null) {
         if (stopped) return;
         const ids = new Set(data.calls.map((c) => c.id));
         const fresh = known.current !== null && data.calls.some((c) => !known.current!.has(c.id));
-        const stillWaiting = data.calls.length > 0 && Date.now() - lastRing.current > RING_AGAIN_MS;
+        const stillWaiting = data.calls.some((c) => !c.seenAt) && Date.now() - lastRing.current > RING_AGAIN_MS;
         if (fresh || (known.current !== null && stillWaiting)) ring();
         known.current = ids;
         setCalls(data.calls);
@@ -104,15 +119,23 @@ export function useWaiterCalls(staffKey: string | null) {
     if (test) chime(audio.current);
   }, []);
 
+  /**
+   * "Tamam" on a call, "Onayla" on a new order (it stays, as being made) or "Teslim edildi" on an order.
+   * The screen changes at once; the server is told in the background.
+   */
   const answer = useCallback(
-    async (id: string) => {
-      setCalls((list) => list.filter((c) => c.id !== id));
-      known.current?.delete(id);
+    async (id: string, action: "gor" | "teslim" = "gor") => {
+      setCalls((list) =>
+        list.flatMap((c) => {
+          if (c.id !== id) return [c];
+          return c.kind === "siparis" && action === "gor" ? [{ ...c, seenAt: Date.now() }] : [];
+        }),
+      );
       try {
         await fetch("/api/garson/cagrilar", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ k: staffKey, id }),
+          body: JSON.stringify({ k: staffKey, id, action }),
         });
       } catch {
         // If it didn't reach the server, the call comes back on the next check and can be tapped again.

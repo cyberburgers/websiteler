@@ -3,7 +3,6 @@
 import { BellRing, Check, Loader2, ReceiptText, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { callWaiterAction } from "@/lib/calls/actions";
-import { useTable } from "@/lib/table";
 
 type Labels = {
   button: string;
@@ -26,6 +25,8 @@ type Labels = {
   done: string;
 };
 
+export type WaiterLabels = Labels;
+
 type Kind = "garson" | "hesap";
 type Phase = "choose" | "sending" | "sent" | "failed";
 type Status = "bekliyor" | "goruldu";
@@ -35,27 +36,25 @@ const WATCH_MS = 5 * 60 * 1000;
 const SEEN_SHOWN_MS = 45 * 1000;
 
 /**
- * "Garson çağır": a button that floats at the bottom of the menu, where the thumb rests.
- * It only appears when the menu was opened from a table's QR card, so the waiter knows where to go.
+ * "Garson çağır" in the bar at the bottom of a table's menu (see TableDock), and the sheet it opens.
+ * `compact`: just the bell, when the basket or an order needs the room next to it.
  */
-export function WaiterCall({ enabled, labels, tableLabel }: { enabled: boolean; labels: Labels; tableLabel: string }) {
-  const table = useTable();
+export function WaiterCall({
+  table,
+  labels,
+  tableLabel,
+  compact,
+}: {
+  table: string;
+  labels: Labels;
+  tableLabel: string;
+  compact: boolean;
+}) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [phase, setPhase] = useState<Phase>("choose");
   const [message, setMessage] = useState("");
   const [call, setCall] = useState<{ id: string; kind: Kind; at: number } | null>(null);
   const [status, setStatus] = useState<Status | null>(null);
-  const visible = enabled && Boolean(table);
-
-  // Room at the bottom of the page so the button never hides the last lines.
-  useEffect(() => {
-    if (!visible) return;
-    const root = document.documentElement;
-    root.dataset.garson = "";
-    return () => {
-      delete root.dataset.garson;
-    };
-  }, [visible]);
 
   // While a call is open, ask now and then whether a waiter has seen it.
   useEffect(() => {
@@ -89,8 +88,6 @@ export function WaiterCall({ enabled, labels, tableLabel }: { enabled: boolean; 
     return () => window.clearTimeout(timer);
   }, [status]);
 
-  if (!visible || !table) return null;
-
   const tableText = tableLabel.replace("{n}", table);
 
   const open = () => {
@@ -119,30 +116,31 @@ export function WaiterCall({ enabled, labels, tableLabel }: { enabled: boolean; 
 
   return (
     <>
-      <div className="print-hidden pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-[calc(0.9rem+env(safe-area-inset-bottom))] md:justify-end md:px-8 md:pb-8">
-        <button
-          type="button"
-          onClick={open}
-          aria-haspopup="dialog"
-          data-garson-cagir=""
-          className="animate-bar-in pointer-events-auto flex items-center gap-3 rounded-full bg-zumrut-950/90 py-2 pe-5 ps-2 text-start shadow-[0_18px_44px_-14px_rgba(0,0,0,.85)] ring-1 ring-fistik-300/30 backdrop-blur-xl transition hover:ring-fistik-300/60 active:scale-[.97]"
+      <button
+        type="button"
+        onClick={open}
+        aria-haspopup="dialog"
+        aria-label={compact ? `${fabText} · ${tableText}` : undefined}
+        data-garson-cagir=""
+        className={`flex items-center gap-3 rounded-full bg-zumrut-950/90 p-2 text-start shadow-[0_18px_44px_-14px_rgba(0,0,0,.85)] ring-1 ring-fistik-300/30 backdrop-blur-xl transition hover:ring-fistik-300/60 active:scale-[.97] ${compact ? "" : "pe-5"}`}
+      >
+        <span
+          className={`relative grid size-11 shrink-0 place-items-center rounded-full text-zumrut-950 ${seen ? "bg-krem-50" : "bg-fistik-300"}`}
         >
-          <span
-            className={`relative grid size-11 shrink-0 place-items-center rounded-full text-zumrut-950 ${seen ? "bg-krem-50" : "bg-fistik-300"}`}
-          >
-            {pending && <span className="absolute inset-0 animate-ping rounded-full bg-fistik-300/60" />}
-            {seen ? (
-              <Check className="relative size-5" strokeWidth={3} aria-hidden="true" />
-            ) : (
-              <BellRing className="relative size-5" aria-hidden="true" />
-            )}
-          </span>
+          {pending && <span className="absolute inset-0 animate-ping rounded-full bg-fistik-300/60" />}
+          {seen ? (
+            <Check className="relative size-5" strokeWidth={3} aria-hidden="true" />
+          ) : (
+            <BellRing className="relative size-5" aria-hidden="true" />
+          )}
+        </span>
+        {!compact && (
           <span>
             <span className="block text-[15px] font-extrabold leading-tight text-krem-50">{fabText}</span>
             <span className="block text-xs font-semibold text-fistik-200/80">{tableText}</span>
           </span>
-        </button>
-      </div>
+        )}
+      </button>
 
       <dialog
         ref={dialogRef}

@@ -69,6 +69,7 @@ export const contentSchema = z
     menu: z.array(category).max(30),
     featuredId: id.optional(),
     notice: optionalBilingual(160).optional(),
+    tableOrders: z.boolean().optional(),
     menuUpdatedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     savedAt: z.string().optional(),
   })

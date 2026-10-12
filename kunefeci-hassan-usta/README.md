@@ -19,22 +19,25 @@ ya da WhatsApp düğmeleri yoktur; sayfanın altında yalnızca Instagram, adres
 | `/tr/gizlilik` | Gizlilik ve KVKK aydınlatma metni |
 | `/tr/qr` | Masalara konacak yazdırılabilir QR kartları (Google'a kapalı) |
 | `/yonetim` | Yönetici paneli: menü, fiyatlar, fotoğraflar, saatler, iletişim (şifreli, Google'a kapalı) |
-| `/garson?k=…` | Kasadaki tablet için garson ekranı (adresi panelde) |
+| `/garson?k=…` | Kasadaki tablet için garson ekranı: çağrılar ve siparişler (adresi panelde) |
 
-**Ürün penceresi:** fotoğraf, fiyat, alerjenler, "Yanında iyi gider" (çay, mırra), **Garsona göster**
-(ürünün Türkçe adını ve masa numarasını büyük yazıyla gösterir; yabancı misafirler için) ve Paylaş.
-Telefonda aşağı kaydırarak ya da geri tuşuyla kapanır.
+Üstte yalnızca logo durur (ana sayfa dışında bir de geri düğmesi); dil ve arama düğmesi yoktur.
+
+**Ürün penceresi:** fotoğraf, fiyat, alerjenler, "Yanında iyi gider" (çay, mırra) ve Paylaş. Masada
+**Siparişe ekle** (boy seçimiyle: Porsiyon / 1 kg); masa dışında ya da sipariş kapalıyken **Garsona göster**
+(ürünün Türkçe adını büyük yazıyla gösterir; yabancı misafirler için). Telefonda aşağı kaydırarak ya da
+geri tuşuyla kapanır.
 
 **Masa numarası:** `/tr/qr?masa=7` adresi 7 numaralı masanın kartını, `/tr/qr?masa=1-12` on iki
-kartı birden basar. Kart okutulunca menü açılır, karşılama kartında ve "Garsona göster" ekranında
-"Masa 7" yazar.
+kartı birden basar. Kart okutulunca menü açılır, karşılama kartında ve alttaki çubukta "Masa 7" yazar.
 
 Site açılırken bir an işletmenin logosu görünür (her ziyarette bir kez; sayfa yenilenince tekrar
 çıkmaz). Logo dosyası `src/assets/brand/logo.png`; açılışta kullanılan küçük kopyası
 `src/app/splash-logo.css`, açılış `src/components/Splash.tsx` içindedir.
 
-`/en/...` İngilizce sürümdür. Önek olmadan gelen her adres Türkçeye yönlenir.
-Eski `/menu` adresleri (ör. basılmış bir QR kodu) ana sayfaya yönlenir.
+`/en/...` İngilizce sürümdür. Sayfada dil düğmesi yok: önek olmadan gelen adresler (masa QR'ları dahil)
+telefonun diline göre açılır; Türkçe telefon `/tr`, diğer diller `/en`. Eski `/menu` adresleri
+(ör. basılmış bir QR kodu) ana sayfaya yönlenir.
 
 ## Garson çağırma
 
@@ -52,8 +55,30 @@ sesli düşer. Garson “Tamam, gidiyorum”a basınca müşterinin telefonunda 
 
 **Kurulum (Vercel'de bir kez):** Vercel → proje → **Storage → Marketplace → Upstash (Redis)** → projeye
 bağlayın (ücretsiz paket bir dükkân için yeter). Vercel `KV_REST_API_URL` ve `KV_REST_API_TOKEN`
-ayarlarını kendisi ekler; sonra **Redeploy**. Bu yapılmadan tuş görünmez. Vercel dışında tek bir sunucuda
-Redis gerekmez.
+ayarlarını kendisi ekler; sonra **Redeploy**. Bu yapılmadan tuş ve sipariş görünmez. Vercel dışında tek
+bir sunucuda Redis gerekmez.
+
+## Masadan sipariş
+
+Yalnızca masa QR kartıyla açılan menüde çalışır; masa dışından bakan için site değişmez.
+
+1. Kartlarda “Ayrıntı” yerine **+ Ekle** çıkar; eklenince **− 2 +** olur. Boy seçilen ürünlerde (Porsiyon /
+   1 kg) **+ Seç** ürün penceresini açar.
+2. Alttaki çubukta garson tuşunun yanına **Sepeti gör** gelir (adet ve tutar). Sepet sayfalar arasında
+   gezerken kaybolmaz.
+3. Sepette adet değiştirilir, kısa bir not yazılır (ör. “şerbeti az olsun”), **Siparişi gönder**.
+4. Sipariş garson ekranına ve açık paneldeki kartlara sesli düşer: kalemler, not, tutar.
+   **Onayla** → müşterinin telefonunda “Hazırlanıyor”; **Teslim edildi** → “Afiyet olsun!”.
+
+- Fiyatlar sunucuda menüden hesaplanır; telefondan gelen fiyat kullanılmaz. “Bugün yok” denen ya da
+  gizlenen ürün sipariş edilemez (sepetten çıkarılır, müşteriye söylenir).
+- Ödeme her zamanki gibi masada ya da kasada alınır; sitede ödeme yok.
+- Aynı masadan 20 saniyede bir sipariş; bir masada en çok 6 açık sipariş. Teslim edilmeyen sipariş 3 saat
+  sonra ekrandan kalkar.
+- Panel → **Garson** → “Müşteriler masadan sipariş verebilsin” ile kapatılır; kapalıyken yalnızca garson
+  çağırma kalır.
+- Masa numarası QR'dan gelir ve kontrol edilemez: biri adresi elle değiştirirse başka masa adına sipariş
+  verebilir. Garson masaya gittiğinde anlaşılır; küçük bir dükkân için kabul edilebilir.
 
 ## Çalıştırma
 
@@ -72,7 +97,7 @@ Menü ve işletme bilgileri kod bilmeden, telefondan değiştirilir. Adres: `htt
 | --- | --- |
 | **Menü** | Fiyatlar (doğrudan kutudan), **Bugün yok** düğmesi (ürün menüde kalır, "Bugün yok" yazar, ertesi sabah 05:00'te kendiliğinden geri gelir), ürünü menüden gizleme/gösterme, yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler; kategori ekleme, silme, sıralama, kapak fotoğrafı |
 | **Duyuru** | Ana sayfanın üstündeki kısa not (ör. bayram kapanışı) |
-| **Garson** | Garson ekranının adresi ve karekodu, masa kartlarına bağlantı (çağrılar panel açıkken her sekmede sesli gelir) |
+| **Garson** | Masadan sipariş açık/kapalı, garson ekranının adresi ve karekodu, masa kartlarına bağlantı (çağrılar ve siparişler panel açıkken her sekmede sesli gelir) |
 | **İşletme bilgileri** | Telefon (Google için), Instagram, adres, harita konumu, çalışma saatleri |
 
 Değişiklikler alttaki **Kaydet** ile kaydedilir ve sitede hemen görünür. İngilizce alanlar boş

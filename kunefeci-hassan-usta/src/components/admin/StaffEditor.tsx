@@ -2,12 +2,24 @@
 
 import { Check, Copy, ExternalLink, QrCode } from "lucide-react";
 import { useState } from "react";
-import { Section, buttonClass } from "./fields";
+import type { SiteContent } from "@/lib/content";
+import { Section, Toggle, buttonClass } from "./fields";
 
 export type StaffSetup = { key: string; url: string; qrSvg: string; enabled: boolean };
 
-/** Where the owner finds the waiter screen's address and a QR code to open it on the counter tablet. */
-export function StaffEditor({ staff }: { staff: StaffSetup }) {
+/**
+ * Table service: ordering on or off, where the waiter screen is (address and QR code for the counter
+ * tablet), and how calls and orders reach this panel.
+ */
+export function StaffEditor({
+  staff,
+  content,
+  update,
+}: {
+  staff: StaffSetup;
+  content: SiteContent;
+  update: (change: (draft: SiteContent) => void) => void;
+}) {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     try {
@@ -29,19 +41,42 @@ export function StaffEditor({ staff }: { staff: StaffSetup }) {
       )}
 
       <Section
+        title="Masadan sipariş"
+        hint="Masa QR kartıyla açılan menüde ürünlerin yanında “Ekle” çıkar. Müşteri sepetini gönderir; sipariş garson ekranına ve bu panele sesli düşer."
+      >
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white p-3 ring-1 ring-zumrut-800/10">
+          <Toggle
+            checked={content.tableOrders !== false}
+            onChange={(on) => update((d) => void (on ? delete d.tableOrders : (d.tableOrders = false)))}
+            label="Müşteriler masadan sipariş verebilsin"
+            showLabel
+          />
+        </div>
+        <ul className="mt-3 list-disc space-y-1 ps-5 text-sm leading-relaxed text-zumrut-900/75">
+          <li>
+            Sipariş gelince <b>Onayla</b>: müşterinin telefonunda “Hazırlanıyor” yazar. Masaya götürünce{" "}
+            <b>Teslim edildi</b>.
+          </li>
+          <li>Fiyatlar menüden hesaplanır; “Bugün yok” denen ürün sipariş edilemez.</li>
+          <li>Ödeme her zamanki gibi masada ya da kasada alınır.</li>
+          <li>Kapalıyken müşteri yalnızca garson çağırabilir. Değişiklik için alttan Kaydet.</li>
+        </ul>
+      </Section>
+
+      <Section
         title="Bu panelde"
-        hint="Panel açıkken çağrılar burada da gelir: üstte “Masa 7 · Garson istiyor” çıkar ve cihaz öter."
+        hint="Panel açıkken çağrılar ve siparişler burada da gelir: üstte “Masa 7 · Sipariş” çıkar ve cihaz öter."
       >
         <p className="text-sm leading-relaxed text-zumrut-900/75">
           Sesin çıkması için panelde herhangi bir yere bir kez dokunmanız yeterli; üstteki düğme <b>“Ses açık”</b> olur.
-          “Tamam”a basınca müşterinin telefonunda “Garson çağrınızı gördü” yazar. Telefon kilitlenirse ya da panel
-          kapatılırsa ses gelmez; dükkânda sürekli açık duracak bir cihaz için aşağıdaki garson ekranını kullanın.
+          Telefon kilitlenirse ya da panel kapatılırsa ses gelmez; dükkânda sürekli açık duracak bir cihaz için aşağıdaki
+          garson ekranını kullanın.
         </p>
       </Section>
 
       <Section
         title="Garson ekranı"
-        hint="Kasadaki tablette ya da telefonda açık durur. Müşteri “Garson çağır”a basınca sesli uyarı verir; garson “Tamam”a basınca müşterinin telefonunda “Garson çağrınızı gördü” yazar."
+        hint="Kasadaki tablette ya da telefonda açık durur. Çağrı ya da sipariş gelince sesli uyarı verir; siparişler kalemleri, notu ve tutarıyla görünür."
       >
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
           <div

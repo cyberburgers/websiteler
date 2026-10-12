@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Check, Share, Smartphone, X } from "lucide-react";
+import { Check, Plus, Share, Smartphone, X } from "lucide-react";
 import { useEffect, useRef, useState, type TouchEvent } from "react";
+import { useOrdering } from "@/components/order/OrderProvider";
 import { Photo } from "@/components/ui";
+import { addOne, qtyOf, useCart } from "@/lib/order/cart";
 import { useTable } from "@/lib/table";
 import { TagBadge, allergenIcons } from "./icons";
 import type { MenuViewItem } from "./types";
@@ -40,6 +42,11 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
   const openFor = useRef<string | null>(null);
   const [copied, setCopied] = useState(false);
   const table = useTable();
+  const ordering = useOrdering();
+  const cart = useCart();
+  // The size picked for ordering (Porsiyon / 1 kg), remembered for the dish it was picked on.
+  const [choice, setChoice] = useState<{ id: string; option: number } | null>(null);
+  const [addedFor, setAddedFor] = useState<string | null>(null);
 
   useEffect(() => {
     const sheet = sheetRef.current;
@@ -109,6 +116,17 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
 
   const others = pairing.filter((p) => p.item.id !== item?.id && !p.item.soldOut);
   const out = item?.soldOut ?? false;
+  const orderable = Boolean(item && ordering?.canOrder && !out && ordering.catalog[item.id]);
+  const option = item && choice?.id === item.id ? choice.option : 0;
+  const pickable = orderable && (item?.prices.length ?? 0) > 1;
+
+  const add = () => {
+    if (!item) return;
+    addOne(item.id, option);
+    navigator.vibrate?.(15);
+    setAddedFor(item.id);
+    window.setTimeout(() => setAddedFor((current) => (current === item.id ? null : current)), 1600);
+  };
 
   return (
     <>
@@ -134,12 +152,7 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
               className={`relative shrink-0 overflow-hidden ${item.photo ? "h-[min(18rem,38dvh)] bg-krem-200" : "h-16 border-b border-zumrut-800/10"}`}
             >
               {item.photo && (
-                <Photo
-                  photo={item.photo}
-                  alt={item.name}
-                  sizes="(min-width: 768px) 32rem, 100vw"
-                  className={out ? "grayscale-[.7]" : ""}
-                />
+                <Photo photo={item.photo} alt={item.name} sizes="(min-width: 768px) 32rem, 100vw" />
               )}
               <span
                 aria-hidden="true"
@@ -169,7 +182,7 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
                 </h2>
                 {item.prices.length === 1 && (
                   <span
-                    className={`shrink-0 rounded-full px-3.5 py-1.5 text-lg font-extrabold tabular-nums ${out ? "bg-zumrut-800/10 text-zumrut-800/45" : "bg-zumrut-800 text-fistik-300"}`}
+                    className="shrink-0 rounded-full bg-zumrut-800 px-3.5 py-1.5 text-lg font-extrabold tabular-nums text-fistik-300"
                   >
                     {item.prices[0].formatted}
                   </span>
@@ -187,16 +200,40 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
               <p className="mt-2 text-[15px] leading-relaxed text-zumrut-800/75">{item.description}</p>
 
               {item.prices.length > 1 && (
-                <div className="mt-4 grid grid-cols-2 gap-2">
-                  {item.prices.map((p) => (
-                    <div
-                      key={p.label}
-                      className="flex h-14 flex-col items-center justify-center rounded-2xl bg-krem-50 ring-1 ring-zumrut-800/10"
-                    >
-                      <span className="text-xs font-semibold text-zumrut-800/65">{p.label}</span>
-                      <span className="text-[17px] font-extrabold tabular-nums text-karamel-600">{p.formatted}</span>
-                    </div>
-                  ))}
+                <div className="mt-4 grid grid-cols-2 gap-2" role={pickable ? "radiogroup" : undefined}>
+                  {item.prices.map((p, i) =>
+                    pickable ? (
+                      <button
+                        key={p.label}
+                        type="button"
+                        role="radio"
+                        aria-checked={option === i}
+                        onClick={() => setChoice({ id: item.id, option: i })}
+                        className={`flex h-14 flex-col items-center justify-center rounded-2xl transition ${
+                          option === i
+                            ? "bg-zumrut-800 text-krem-50 ring-2 ring-zumrut-800"
+                            : "bg-krem-50 ring-1 ring-zumrut-800/10 hover:ring-zumrut-800/30"
+                        }`}
+                      >
+                        <span className={`text-xs font-semibold ${option === i ? "text-krem-100/80" : "text-zumrut-800/65"}`}>
+                          {p.label}
+                        </span>
+                        <span
+                          className={`text-[17px] font-extrabold tabular-nums ${option === i ? "text-fistik-300" : "text-karamel-600"}`}
+                        >
+                          {p.formatted}
+                        </span>
+                      </button>
+                    ) : (
+                      <div
+                        key={p.label}
+                        className="flex h-14 flex-col items-center justify-center rounded-2xl bg-krem-50 ring-1 ring-zumrut-800/10"
+                      >
+                        <span className="text-xs font-semibold text-zumrut-800/65">{p.label}</span>
+                        <span className="text-[17px] font-extrabold tabular-nums text-karamel-600">{p.formatted}</span>
+                      </div>
+                    ),
+                  )}
                 </div>
               )}
 
@@ -251,9 +288,29 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
 
             <div className="sticky bottom-0 flex gap-2 bg-gradient-to-b from-krem-100/0 via-krem-100 via-30% to-krem-100 px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3 md:px-6">
               {out ? (
-                <p className="flex h-[54px] flex-1 items-center justify-center rounded-[18px] bg-zumrut-800/10 text-[15px] font-extrabold text-zumrut-800/55">
+                <p className="flex h-[54px] flex-1 items-center justify-center gap-2 rounded-[18px] bg-krem-200 text-[15px] font-extrabold text-zumrut-900">
+                  <span aria-hidden="true" className="size-2 rounded-full bg-karamel-500" />
                   {labels.soldOut}
                 </p>
+              ) : orderable && ordering ? (
+                <button
+                  type="button"
+                  onClick={add}
+                  data-siparise-ekle=""
+                  className="flex h-[54px] flex-1 items-center justify-center gap-2 rounded-[18px] bg-zumrut-800 text-[15px] font-extrabold text-krem-50 transition hover:bg-zumrut-700 active:scale-[.98]"
+                >
+                  {addedFor === item.id ? (
+                    <>
+                      <Check className="size-[18px] text-fistik-300" strokeWidth={3} aria-hidden="true" />
+                      {ordering.labels.added} · {qtyOf(cart, item.id, option)}
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="size-[18px] text-fistik-300" strokeWidth={2.75} aria-hidden="true" />
+                      {ordering.labels.addToOrder} · {item.prices[option]?.formatted}
+                    </>
+                  )}
+                </button>
               ) : (
                 <button
                   type="button"

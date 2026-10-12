@@ -238,6 +238,13 @@ html[data-garson] footer {
   }
 }
 
+/* The basket count on the bar at the bottom, when something is added. */
+@keyframes bump {
+  40% {
+    scale: 1.22;
+  }
+}
+
 /* A waiter call dropping in at the top of the panel. */
 @keyframes drop-in {
   from {

@@ -4,12 +4,15 @@ import { Logo } from "@/components/Logo";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Splash } from "@/components/Splash";
-import { WaiterCall } from "@/components/WaiterCall";
+import { OrderProvider } from "@/components/order/OrderProvider";
+import { TableDock } from "@/components/order/TableDock";
+import { availableMenu } from "@/content/menu";
 import { site } from "@/content/site";
 import { isLocale, localePath, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { callsEnabled } from "@/lib/calls/store";
 import { getContent } from "@/lib/content";
+import { orderCatalog } from "@/lib/order/catalog";
 import { pageMetadata } from "@/lib/seo";
 import { fontVariables } from "../fonts";
 import "../globals.css";
@@ -42,7 +45,8 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
   const home = localePath(locale);
-  const { info } = await getContent();
+  const content = await getContent();
+  const { info } = content;
 
   return (
     <html
@@ -64,9 +68,16 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
           homeHref={home}
           labels={{ back: dict.category.back }}
         />
-        <main id="icerik">{children}</main>
-        <SiteFooter locale={locale} dict={dict} info={info} />
-        <WaiterCall enabled={callsEnabled()} labels={dict.call} tableLabel={dict.home.table} />
+        <OrderProvider
+          enabled={callsEnabled() && content.tableOrders !== false}
+          catalog={orderCatalog(locale, availableMenu(content.menu))}
+          labels={dict.order}
+          locale={locale}
+        >
+          <main id="icerik">{children}</main>
+          <SiteFooter locale={locale} dict={dict} info={info} />
+          <TableDock callsOn={callsEnabled()} callLabels={dict.call} tableLabel={dict.home.table} />
+        </OrderProvider>
       </body>
     </html>
   );

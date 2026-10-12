@@ -168,7 +168,7 @@ export function AdminApp({ initial, writable, staff, today }: Props) {
           </>
         )}
         {tab === "duyuru" && <HighlightsEditor content={content} update={update} />}
-        {tab === "garson" && staff && <StaffEditor staff={staff} />}
+        {tab === "garson" && staff && <StaffEditor staff={staff} content={content} update={update} />}
         {tab === "isletme" && <InfoEditor content={content} update={update} />}
       </main>
 
