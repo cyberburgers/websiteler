@@ -225,7 +225,7 @@ export function ItemSheet({ item, pairing, labels, waiter, tray, onDismiss }: Pr
                       <Link
                         key={drink.id}
                         href={href}
-                        className="flex items-center gap-2.5 rounded-2xl bg-krem-50 p-[7px] shadow-[0_1px_0_rgba(22,90,61,.06)] ring-1 ring-zumrut-800/[0.06] transition hover:ring-karamel-300"
+                        className="flex items-center gap-2.5 rounded-2xl bg-krem-50 p-[7px] shadow-[0_1px_0_rgba(11,107,76,.06)] ring-1 ring-zumrut-800/[0.06] transition hover:ring-karamel-300"
                       >
                         <span className="relative size-11 shrink-0 overflow-hidden rounded-xl bg-krem-200">
                           <Photo photo={drink.photo} alt="" sizes="44px" />

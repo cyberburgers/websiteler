@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 /*
- * Tema: zümrüt yeşili zemin, canlı fıstık yeşili vurgular.
+ * Tema: kuyumcu yeşili (derin zümrüt) zemin, canlı fıstık yeşili vurgular.
  * Krem ve karamel tabeladaki logodan, şerbet turuncusu ürünlerden gelir.
  * Logonun kendisi tabeladaki gibi lacivert-sarı kalır.
  */
 @theme {
-  --color-zumrut-950: #062d1d;
+  --color-zumrut-950: #003a29;
   /* Page background of the menu. */
-  --color-zumrut-925: #0b3d28;
-  --color-zumrut-900: #0f4830;
-  --color-zumrut-800: #165a3d;
-  --color-zumrut-700: #206f4e;
-  --color-zumrut-600: #2e8a63;
-  --color-zumrut-400: #77c5a4;
+  --color-zumrut-925: #004d36;
+  --color-zumrut-900: #005a3f;
+  --color-zumrut-800: #0b6b4c;
+  --color-zumrut-700: #148058;
+  --color-zumrut-600: #23996b;
+  --color-zumrut-400: #82d7b1;
 
   --color-krem-50: #fffdf6;
   --color-krem-100: #fbf6e7;
@@ -55,7 +55,6 @@
   }
 
   body {
-    background-color: var(--color-zumrut-925);
     color: var(--color-krem-100);
     font-family: var(--font-sans);
     text-rendering: optimizeLegibility;
@@ -83,6 +82,12 @@
   .font-display {
     font-variation-settings: "SOFT" 100;
   }
+}
+
+/* Outside @layer on purpose: an embedding page's own body colour must not win over the theme. */
+html,
+body {
+  background-color: var(--color-zumrut-925);
 }
 
 @utility container-page {

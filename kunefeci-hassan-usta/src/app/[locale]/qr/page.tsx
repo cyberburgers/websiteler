@@ -29,7 +29,7 @@ async function TableCard({ table }: { table: number | null }) {
     type: "svg",
     margin: 0,
     errorCorrectionLevel: "M",
-    color: { dark: "#165a3d", light: "#00000000" },
+    color: { dark: "#0b6b4c", light: "#00000000" },
   });
   return (
     <article className="relative flex h-[128mm] w-[90mm] break-inside-avoid flex-col items-center overflow-hidden rounded-[6mm] bg-zumrut-900 px-[8mm] pb-[6mm] pt-[8mm] text-krem-100 shadow-2xl [print-color-adjust:exact] print:shadow-none">
