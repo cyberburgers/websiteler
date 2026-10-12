@@ -75,7 +75,6 @@ const tr = {
       fistikli: "Fıstıklı",
       sicak: "Sıcak",
       soguk: "Soğuk",
-      ucuz: "₺250 altı",
       paylasmalik: "Paylaşmalık",
     },
   },

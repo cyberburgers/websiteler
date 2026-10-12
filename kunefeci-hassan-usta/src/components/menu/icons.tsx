@@ -7,7 +7,6 @@ import {
   MapPin,
   Nut,
   Snowflake,
-  TurkishLira,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -27,7 +26,6 @@ export const filterIcons: Record<FilterId, LucideIcon> = {
   fistikli: Nut,
   sicak: Flame,
   soguk: Snowflake,
-  ucuz: TurkishLira,
   paylasmalik: Users,
 };
 

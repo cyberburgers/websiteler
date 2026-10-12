@@ -14,7 +14,7 @@ ya da WhatsApp düğmeleri yoktur; sayfanın altında yalnızca Instagram, adres
 | --- | --- |
 | `/tr` | Menü tek sayfadır: dükkân fotoğraflı karşılama, hızlı filtreler, tatlı çarkı ve altında bütün ürünler. Üstteki kategori düğmeleri sayfayı o kategorinin başlığına kaydırır; ürüne dokununca ayrıntı penceresi açılır |
 | `/tr#kunefe` | Ürünün ayrıntısı doğrudan açık gelir (paylaşılan bağlantılar, arama sonuçları, tatlı çarkı ve "Yanında iyi gider" buraya götürür) |
-| `/tr/ara` | Menüde arama ve filtreler: Fıstıklı, Sıcak, Soğuk, ₺250 altı, Paylaşmalık. Ana sayfada arama çubuğu yok; filtre düğmeleri buraya açılır (Google'a kapalı) |
+| `/tr/ara` | Menüde arama ve filtreler: Fıstıklı, Sıcak, Soğuk, Paylaşmalık. Ana sayfada arama çubuğu yok; filtre düğmeleri buraya açılır (Google'a kapalı) |
 | `/tr/gizlilik` | Gizlilik ve KVKK aydınlatma metni |
 | `/tr/qr` | Masalara konacak yazdırılabilir QR kartları (Google'a kapalı) |
 | `/yonetim` | Yönetici paneli: menü, fiyatlar, fotoğraflar, saatler, iletişim (şifreli, Google'a kapalı) |

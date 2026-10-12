@@ -9,14 +9,12 @@ const COLD_CATEGORIES = ["sutlu-ve-dondurma", "soguk-icecekler"];
 const isHot = (c: MenuCategory) => HOT_CATEGORIES.includes(c.id) || foldForSearch(c.name.tr).includes("sicak");
 const isCold = (c: MenuCategory) =>
   COLD_CATEGORIES.includes(c.id) || /soguk|dondurma/.test(foldForSearch(c.name.tr));
-const CHEAP_UNDER = 250;
 
 function filtersFor(item: MenuItem, category: MenuCategory): FilterId[] {
   const out: FilterId[] = [];
   if (foldForSearch(`${item.name.tr} ${item.description.tr}`).includes("fistik")) out.push("fistikli");
   if (isHot(category) || item.tags?.includes("sicak")) out.push("sicak");
   if (isCold(category)) out.push("soguk");
-  if (Math.min(...item.prices.map((p) => p.amount)) < CHEAP_UNDER) out.push("ucuz");
   if (item.prices.length > 1 || item.tags?.includes("siparis")) out.push("paylasmalik");
   return out;
 }

@@ -1,7 +1,7 @@
 import type { Tag } from "@/content/menu";
 
 /** The quick filters on the home page and the search page. */
-export const filterIds = ["fistikli", "sicak", "soguk", "ucuz", "paylasmalik"] as const;
+export const filterIds = ["fistikli", "sicak", "soguk", "paylasmalik"] as const;
 export type FilterId = (typeof filterIds)[number];
 
 /** Menu data already localized and price-formatted on the server, ready for the client. */

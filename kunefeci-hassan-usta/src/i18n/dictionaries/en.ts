@@ -77,7 +77,6 @@ const en: Dictionary = {
       fistikli: "Pistachio",
       sicak: "Hot",
       soguk: "Cold",
-      ucuz: "Under ₺250",
       paylasmalik: "To share",
     },
   },
