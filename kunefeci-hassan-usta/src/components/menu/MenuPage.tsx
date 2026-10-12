@@ -1,6 +1,5 @@
 import { MapPin } from "lucide-react";
 import { OpenStatus } from "@/components/OpenStatus";
-import { Photo } from "@/components/ui";
 import { MenuExplorer } from "@/components/menu/MenuExplorer";
 import { PrintButton } from "@/components/menu/PrintButton";
 import { allergenIcons } from "@/components/menu/icons";
@@ -46,10 +45,6 @@ export function MenuPage({ locale }: { locale: Locale }) {
       <JsonLd data={menuJsonLd(locale)} />
 
       <section className="pattern-star relative isolate overflow-hidden bg-lacivert-900 pb-12 pt-[6.5rem] text-krem-100 sm:pb-20 sm:pt-36 md:pb-24 md:pt-48 print:bg-transparent print:pb-4 print:pt-0 print:text-lacivert-900">
-        <div aria-hidden="true" className="absolute inset-0 -z-10 print:hidden">
-          <Photo photo="yapim" alt="" sizes="100vw" preload className="object-[50%_62%] opacity-35" />
-          <div className="absolute inset-0 bg-gradient-to-b from-lacivert-900/80 via-lacivert-900/85 to-lacivert-900" />
-        </div>
         <div
           aria-hidden="true"
           className="absolute -end-32 -top-24 -z-10 size-[36rem] rounded-full bg-serbet-500/20 blur-[120px] print:hidden"

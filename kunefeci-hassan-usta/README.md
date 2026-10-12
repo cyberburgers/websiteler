@@ -14,7 +14,8 @@
 | `/tr/qr` | Masalara konacak yazdırılabilir QR kartı (Google'a kapalı) |
 
 Site açılırken bir an işletmenin logosu görünür (her ziyarette bir kez; sayfa yenilenince tekrar
-çıkmaz). Logo dosyası `src/assets/brand/logo.png`, açılış `src/components/Splash.tsx` içindedir.
+çıkmaz). Logo dosyası `src/assets/brand/logo.png`; açılışta kullanılan küçük kopyası
+`src/app/splash-logo.css`, açılış `src/components/Splash.tsx` içindedir.
 
 `/en/...` İngilizce sürümdür. Önek olmadan gelen her adres Türkçeye yönlenir.
 Eski `/menu` adresleri (ör. basılmış bir QR kodu) ana sayfaya, yani menüye yönlenir.
@@ -45,8 +46,7 @@ Her şey `src/content/` klasöründedir; kod bilmeden düzenlenebilecek şekilde
 - **Ürünü geçici kaldırmak:** ürüne `available: false` ekleyin.
 - **Fotoğraf değiştirmek:** şu an sitede Pexels/Unsplash'tan alınmış temsili fotoğraflar var
   (kaynaklar: `src/assets/photos/KAYNAKLAR.md`). Dükkânın kendi fotoğrafını `src/assets/photos/`
-  içindeki dosyanın üstüne aynı adla kaydetmek yeterli (örneğin `kunefe1.jpg`). Menünün en
-  üstündeki koyu bandın arkasında soluk duran fotoğraf `yapim.jpg`'dir (dükkânın önü).
+  içindeki dosyanın üstüne aynı adla kaydetmek yeterli (örneğin `kunefe1.jpg`).
   En az 1400 piksel, iyi ışıklı fotoğraflar en iyi sonucu verir.
 
 ## Yayına almadan önce yapılacaklar

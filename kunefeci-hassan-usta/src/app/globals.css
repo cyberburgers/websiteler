@@ -242,11 +242,8 @@ html.splash-seen .splash {
 }
 .splash-logo {
   animation:
-    splash-logo-in 1s var(--ease-out-expo) 0.1s both,
+    splash-logo-in 0.8s var(--ease-out-expo) both,
     splash-logo-out 0.55s ease-in 1.3s forwards;
-}
-.splash-glow {
-  animation: splash-glow 1.4s ease-out both;
 }
 @keyframes splash-out {
   to {
@@ -257,19 +254,12 @@ html.splash-seen .splash {
 @keyframes splash-logo-in {
   from {
     opacity: 0;
-    scale: 0.86;
-    filter: blur(8px);
+    scale: 0.9;
   }
 }
 @keyframes splash-logo-out {
   to {
     scale: 1.06;
-  }
-}
-@keyframes splash-glow {
-  from {
-    opacity: 0;
-    scale: 0.6;
   }
 }
 

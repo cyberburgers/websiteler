@@ -11,6 +11,7 @@ import { isLocale, localePath, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pageMetadata } from "@/lib/seo";
 import "../globals.css";
+import "../splash-logo.css";
 
 const berkshire = Berkshire_Swash({
   weight: "400",
