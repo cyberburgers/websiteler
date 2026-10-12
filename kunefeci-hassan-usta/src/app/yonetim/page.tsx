@@ -39,5 +39,5 @@ async function staffSetup() {
     errorCorrectionLevel: "M",
     color: { dark: "#142319", light: "#00000000" },
   });
-  return { url, qrSvg, enabled: callsEnabled() };
+  return { key, url, qrSvg, enabled: callsEnabled() };
 }

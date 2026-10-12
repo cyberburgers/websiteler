@@ -1,86 +1,13 @@
 "use client";
 
 import { BellRing, Check, ReceiptText, Volume2, VolumeX, WifiOff } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
-
-type Call = { id: string; table: string; kind: "garson" | "hesap"; at: number };
-
-const POLL_MS = 3000;
-/** An unanswered call rings again this often, in case nobody heard it the first time. */
-const RING_AGAIN_MS = 60 * 1000;
-/** After this a call card turns amber: someone has been waiting too long. */
-const LATE_MS = 2 * 60 * 1000;
-
-/** A short two-note chime made in the browser, so no sound file is needed. */
-function chime(context: AudioContext | null) {
-  if (!context) return;
-  const start = context.currentTime;
-  for (const [i, freq] of [988, 740].entries()) {
-    const osc = context.createOscillator();
-    const gain = context.createGain();
-    osc.type = "sine";
-    osc.frequency.value = freq;
-    const t = start + i * 0.28;
-    gain.gain.setValueAtTime(0.0001, t);
-    gain.gain.exponentialRampToValueAtTime(0.5, t + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
-    osc.connect(gain).connect(context.destination);
-    osc.start(t);
-    osc.stop(t + 0.65);
-  }
-}
-
-function since(at: number, now: number): string {
-  const minutes = Math.floor((now - at) / 60000);
-  if (minutes < 1) return "Az önce";
-  return `${minutes} dk önce`;
-}
+import { useEffect, useRef } from "react";
+import { LATE_MS, since, useWaiterCalls } from "@/lib/calls/useWaiterCalls";
 
 /** The counter tablet: every open waiter call as a big card, with a chime when a new one arrives. */
 export function StaffScreen({ staffKey }: { staffKey: string }) {
-  const [calls, setCalls] = useState<Call[]>([]);
-  const [now, setNow] = useState(0);
-  const [online, setOnline] = useState(true);
-  const [soundOn, setSoundOn] = useState(false);
-  const audio = useRef<AudioContext | null>(null);
-  const known = useRef<Set<string> | null>(null);
-  const lastRing = useRef(0);
+  const { calls, now, online, soundOn, setSound, ring, answer } = useWaiterCalls(staffKey);
   const wakeLock = useRef<WakeLockSentinel | null>(null);
-
-  const ring = useCallback(() => {
-    lastRing.current = Date.now();
-    chime(audio.current);
-    navigator.vibrate?.([120, 80, 120]);
-  }, []);
-
-  // Ask for the open calls every few seconds.
-  useEffect(() => {
-    let stopped = false;
-    const poll = async () => {
-      try {
-        const res = await fetch(`/api/garson/cagrilar?k=${encodeURIComponent(staffKey)}`, { cache: "no-store" });
-        if (!res.ok) throw new Error(String(res.status));
-        const data = (await res.json()) as { calls: Call[]; now: number };
-        if (stopped) return;
-        const ids = new Set(data.calls.map((c) => c.id));
-        const fresh = known.current !== null && data.calls.some((c) => !known.current!.has(c.id));
-        const stillWaiting = data.calls.length > 0 && Date.now() - lastRing.current > RING_AGAIN_MS;
-        if (fresh || (known.current !== null && stillWaiting)) ring();
-        known.current = ids;
-        setCalls(data.calls);
-        setNow(data.now);
-        setOnline(true);
-      } catch {
-        if (!stopped) setOnline(false);
-      }
-    };
-    void poll();
-    const timer = window.setInterval(poll, POLL_MS);
-    return () => {
-      stopped = true;
-      window.clearInterval(timer);
-    };
-  }, [staffKey, ring]);
 
   // The tab title shows how many tables are waiting, even when another app is in front.
   useEffect(() => {
@@ -108,27 +35,7 @@ export function StaffScreen({ staffKey }: { staffKey: string }) {
     };
   }, [soundOn]);
 
-  const start = async () => {
-    // Browsers only let a page make sound after someone has tapped it.
-    audio.current ??= new AudioContext();
-    await audio.current.resume();
-    chime(audio.current);
-    setSoundOn(true);
-  };
-
-  const answer = async (id: string) => {
-    setCalls((list) => list.filter((c) => c.id !== id));
-    known.current?.delete(id);
-    try {
-      await fetch("/api/garson/cagrilar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ k: staffKey, id }),
-      });
-    } catch {
-      // If it didn't reach the server, the call comes back on the next check and can be tapped again.
-    }
-  };
+  const start = () => setSound(true);
 
   return (
     <main className="min-h-dvh px-4 pb-10 pt-5 sm:px-8">

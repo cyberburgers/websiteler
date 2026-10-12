@@ -4,6 +4,7 @@ import { AlertTriangle, CheckCircle2, ExternalLink, LogOut, QrCode } from "lucid
 import { useEffect, useState, useTransition } from "react";
 import { logoutAction, saveContentAction } from "@/app/yonetim/actions";
 import type { SiteContent } from "@/lib/content";
+import { usePanelCalls } from "./CallAlerts";
 import { buttonClass } from "./fields";
 import { HighlightsEditor } from "./HighlightsEditor";
 import { InfoEditor } from "./InfoEditor";
@@ -44,6 +45,7 @@ export function AdminApp({ initial, writable, staff }: Props) {
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
   const [saving, startSaving] = useTransition();
   const dirty = JSON.stringify(content) !== saved;
+  const calls = usePanelCalls(staff?.enabled ? staff.key : null);
 
   // Leaving with unsaved changes asks first.
   useEffect(() => {
@@ -97,6 +99,7 @@ export function AdminApp({ initial, writable, staff }: Props) {
             </p>
           </div>
           <nav className="flex flex-wrap items-center gap-1.5 text-sm font-bold">
+            {calls.toggle}
             <a href="/tr" target="_blank" rel="noopener" className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-white/10 px-3">
               Siteyi aç <ExternalLink className="size-3.5" aria-hidden="true" />
             </a>
@@ -127,6 +130,8 @@ export function AdminApp({ initial, writable, staff }: Props) {
           ))}
         </div>
       </header>
+
+      {calls.alerts}
 
       <main className="mx-auto max-w-3xl px-3 pt-4 sm:px-4">
         {!writable && (

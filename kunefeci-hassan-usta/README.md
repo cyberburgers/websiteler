@@ -46,6 +46,9 @@ sesli düşer. Garson “Tamam, gidiyorum”a basınca müşterinin telefonunda 
 - Aynı masa 40 saniyede bir çağırabilir; cevaplanmayan çağrı 2 dakikada sarıya döner, dakikada bir yeniden öter.
 - Garson ekranının adresi ve tabletle okutulacak karekodu: panel → **Garson**. Adres panel şifresinden
   üretilir; şifre değişirse adres de değişir. Personel bu adresle menüyü değiştiremez.
+- Yönetici paneli açıkken çağrılar panelde de görünür: üstte “Masa 7 · Garson istiyor” kartı çıkar ve
+  cihaz öter (panelde bir kez dokunmak sesi açar). Telefon kilitliyken ya da panel kapalıyken ses gelmez;
+  sürekli açık duracak cihaz için garson ekranını kullanın.
 
 **Kurulum (Vercel'de bir kez):** Vercel → proje → **Storage → Marketplace → Upstash (Redis)** → projeye
 bağlayın (ücretsiz paket bir dükkân için yeter). Vercel `KV_REST_API_URL` ve `KV_REST_API_TOKEN`
@@ -69,7 +72,7 @@ Menü ve işletme bilgileri kod bilmeden, telefondan değiştirilir. Adres: `htt
 | --- | --- |
 | **Menü** | Fiyatlar (doğrudan kutudan), ürünü gizleme/gösterme ("bugün yok"), yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler; kategori ekleme, silme, sıralama, kapak fotoğrafı |
 | **Duyuru** | Ana sayfanın üstündeki kısa not (ör. bayram kapanışı) |
-| **Garson** | Garson ekranının adresi ve karekodu, masa kartlarına bağlantı |
+| **Garson** | Garson ekranının adresi ve karekodu, masa kartlarına bağlantı (çağrılar panel açıkken her sekmede sesli gelir) |
 | **İşletme bilgileri** | Telefon (Google için), Instagram, adres, harita konumu, çalışma saatleri |
 
 Değişiklikler alttaki **Kaydet** ile kaydedilir ve sitede hemen görünür. İngilizce alanlar boş

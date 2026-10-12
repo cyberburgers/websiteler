@@ -238,6 +238,19 @@ html[data-garson] footer {
   }
 }
 
+/* A waiter call dropping in at the top of the panel. */
+@keyframes drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-110%);
+  }
+}
+@utility animate-drop-in {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: drop-in 0.55s var(--ease-out-expo) both;
+  }
+}
+
 /* Phones/tablets: the header tucks away while scrolling down and returns on the way up. */
 .site-header {
   transition:

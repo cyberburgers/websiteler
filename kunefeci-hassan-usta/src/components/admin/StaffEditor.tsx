@@ -4,7 +4,7 @@ import { Check, Copy, ExternalLink, QrCode } from "lucide-react";
 import { useState } from "react";
 import { Section, buttonClass } from "./fields";
 
-export type StaffSetup = { url: string; qrSvg: string; enabled: boolean };
+export type StaffSetup = { key: string; url: string; qrSvg: string; enabled: boolean };
 
 /** Where the owner finds the waiter screen's address and a QR code to open it on the counter tablet. */
 export function StaffEditor({ staff }: { staff: StaffSetup }) {
@@ -27,6 +27,17 @@ export function StaffEditor({ staff }: { staff: StaffSetup }) {
           tuşu görmez. Adımlar README dosyasında.
         </p>
       )}
+
+      <Section
+        title="Bu panelde"
+        hint="Panel açıkken çağrılar burada da gelir: üstte “Masa 7 · Garson istiyor” çıkar ve cihaz öter."
+      >
+        <p className="text-sm leading-relaxed text-zumrut-900/75">
+          Sesin çıkması için panelde herhangi bir yere bir kez dokunmanız yeterli; üstteki düğme <b>“Ses açık”</b> olur.
+          “Tamam”a basınca müşterinin telefonunda “Garson çağrınızı gördü” yazar. Telefon kilitlenirse ya da panel
+          kapatılırsa ses gelmez; dükkânda sürekli açık duracak bir cihaz için aşağıdaki garson ekranını kullanın.
+        </p>
+      </Section>
 
       <Section
         title="Garson ekranı"
