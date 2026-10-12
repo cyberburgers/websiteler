@@ -13,10 +13,6 @@ const en: Dictionary = {
   },
   actions: {
     seeMenu: "Explore the Menu",
-    directions: "Directions",
-    call: "Call",
-    whatsapp: "WhatsApp",
-    whatsappText: "Hello Hassan Usta, ",
   },
   status: {
     open: "Open now",
@@ -73,8 +69,6 @@ const en: Dictionary = {
     hint: "Tap for details",
     details: "Details",
     next: "Next category",
-    trayAsk: "Ask about a tray on WhatsApp",
-    trayText: "Hello Hassan Usta, I'd like to ask about a künefe tray.",
   },
   item: {
     pairing: "Goes well with",
@@ -99,6 +93,7 @@ const en: Dictionary = {
     },
   },
   footer: {
+    follow: "Follow us on Instagram",
     privacy: "Privacy notice",
     photoNote: "Photos are for illustration.",
   },

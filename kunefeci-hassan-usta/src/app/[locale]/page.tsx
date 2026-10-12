@@ -9,7 +9,6 @@ import { OpenStatus } from "@/components/OpenStatus";
 import { Photo } from "@/components/ui";
 import { DessertWheel, WheelBanner } from "@/components/wheel/DessertWheel";
 import { availableMenu } from "@/content/menu";
-import { linksFor } from "@/content/site";
 import { isLocale, localePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getContent } from "@/lib/content";
@@ -32,7 +31,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const waiterDict = getDictionary("tr");
   const content = await getContent();
   const menu = availableMenu(content.menu);
-  const links = linksFor(content.info);
   const notice = tx(content.notice, locale);
   const categories = menuView(locale, menu);
   const items = categories.flatMap((c) => c.items);
@@ -128,12 +126,10 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
                 item,
                 href: categoryPath(locale, item.categoryId, item.id),
               }))}
-              trayHref={links.whatsapp(dict.category.trayText)}
               labels={{
                 tabs: dict.home.categories,
                 dishes: dict.home.dishes,
                 drinks: dict.home.drinks,
-                trayAsk: dict.category.trayAsk,
                 details: dict.category.details,
                 hot: dict.search.filterNames.sicak,
                 cold: dict.search.filterNames.soguk,

@@ -6,10 +6,9 @@ import { CategoryView } from "@/components/menu/CategoryView";
 import { allergenIcons } from "@/components/menu/icons";
 import { Photo } from "@/components/ui";
 import { allergenIds, allergens } from "@/content/menu";
-import { linksFor } from "@/content/site";
 import { isLocale, localePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { getContent, getMenu } from "@/lib/content";
+import { getMenu } from "@/lib/content";
 import { categoryPath, fill, menuView, pairingItems } from "@/lib/menu-view";
 import { pageMetadata } from "@/lib/seo";
 
@@ -35,7 +34,6 @@ export default async function CategoryPage({ params }: PageProps<"/[locale]/menu
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
   const waiterDict = getDictionary("tr");
-  const content = await getContent();
   const categories = menuView(locale, await getMenu());
   const index = categories.findIndex((c) => c.id === kategori);
   if (index === -1) notFound();
@@ -84,7 +82,6 @@ export default async function CategoryPage({ params }: PageProps<"/[locale]/menu
             item,
             href: categoryPath(locale, item.categoryId, item.id),
           }))}
-          trayHref={linksFor(content.info).whatsapp(dict.category.trayText)}
           labels={{
             ...dict.category,
             close: dict.menu.close,

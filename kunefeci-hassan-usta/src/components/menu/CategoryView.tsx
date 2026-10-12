@@ -14,13 +14,11 @@ type Labels = SheetLabels &
     view: string;
     cards: string;
     list: string;
-    trayAsk: string;
   };
 
 type Props = {
   category: MenuViewCategory;
   pairing: { item: MenuViewItem; href: string }[];
-  trayHref: string;
   labels: Labels;
   waiter: WaiterLabels;
 };
@@ -52,7 +50,7 @@ function saveView(view: View) {
 }
 
 /** The dishes of one category as big cards or a compact list, and the detail sheet they open. */
-export function CategoryView({ category, pairing, trayHref, labels, waiter }: Props) {
+export function CategoryView({ category, pairing, labels, waiter }: Props) {
   const storedView = useSyncExternalStore(subscribeView, readView, () => "cards" as View);
   const view: View = category.layout === "list" ? "list" : storedView;
   const hash = useItemHash();
@@ -99,7 +97,6 @@ export function CategoryView({ category, pairing, trayHref, labels, waiter }: Pr
               item={item}
               index={ii}
               onOpen={() => openItem(item.id)}
-              tray={{ href: trayHref, label: labels.trayAsk }}
               labels={labels}
             />
           ))}
@@ -121,7 +118,6 @@ export function CategoryView({ category, pairing, trayHref, labels, waiter }: Pr
         pairing={sheetPairing}
         labels={labels}
         waiter={waiter}
-        tray={{ href: trayHref, label: labels.trayAsk }}
         onDismiss={closeItem}
       />
     </>

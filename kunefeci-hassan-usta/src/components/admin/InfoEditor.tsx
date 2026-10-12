@@ -20,13 +20,12 @@ export function internationalDigits(value: string): string {
 
 export function InfoEditor({ content, update }: { content: SiteContent; update: Update }) {
   const { info } = content;
-  const [whatsapp, setWhatsapp] = useState(info.whatsapp ? `+${info.whatsapp}` : "");
   const [geo, setGeo] = useState(`${info.geo.lat}, ${info.geo.lng}`);
   const geoMatch = /^\s*(-?\d{1,3}(?:\.\d+)?)\s*[,;\s]\s*(-?\d{1,3}(?:\.\d+)?)\s*$/.exec(geo);
 
   return (
     <div className="space-y-4">
-      <Section title="İletişim" hint="Sitenin altında, Ara ve WhatsApp düğmelerinde ve Google'da görünür.">
+      <Section title="İletişim" hint="Telefon Google'da işletme bilgisi olarak görünür; Instagram sitenin altında.">
         <Field label="Telefon" hint={info.phone ? `Arama bağlantısı: ${info.phone}` : undefined}>
           <input
             type="tel"
@@ -38,18 +37,6 @@ export function InfoEditor({ content, update }: { content: SiteContent; update: 
                 d.info.phone = `+${internationalDigits(e.target.value)}`;
               })
             }
-            className={inputClass}
-          />
-        </Field>
-        <Field label="WhatsApp numarası" hint="Cep numarası; tepsi siparişi ve WhatsApp düğmesi buraya yazar.">
-          <input
-            type="tel"
-            value={whatsapp}
-            placeholder="0532 123 45 67"
-            onChange={(e) => {
-              setWhatsapp(e.target.value);
-              update((d) => void (d.info.whatsapp = internationalDigits(e.target.value)));
-            }}
             className={inputClass}
           />
         </Field>

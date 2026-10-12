@@ -19,8 +19,8 @@ export type ShopInfo = {
   /** For tel: links, international form without spaces: +904140000000. */
   phone: string;
   phoneDisplay: string;
-  /** Digits only, with the country code: 905000000000. */
-  whatsapp: string;
+  /** No longer shown on the site; kept so details saved by older versions of the panel still read. */
+  whatsapp?: string;
   /** Username without the @. */
   instagram: string;
   address: { street: string; district: string; city: string; postalCode: string; country: string };
@@ -33,7 +33,6 @@ export type ShopInfo = {
 export const defaultInfo: ShopInfo = {
   phone: "+904140000000",
   phoneDisplay: "0 (414) 000 00 00",
-  whatsapp: "905000000000",
   instagram: "kunefecihassanusta",
   address: {
     street: "Örnek Mah. Örnek Cad. No: 1",
@@ -54,20 +53,6 @@ export const defaultInfo: ShopInfo = {
   ],
 };
 
-export type Links = {
-  tel: string;
-  whatsapp: (text?: string) => string;
-  instagram: string;
-  directions: string;
-  mapsSearch: string;
-};
-
-export function linksFor(info: ShopInfo): Links {
-  return {
-    tel: `tel:${info.phone}`,
-    whatsapp: (text?: string) => `https://wa.me/${info.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ""}`,
-    instagram: `https://www.instagram.com/${info.instagram}/`,
-    directions: `https://www.google.com/maps/dir/?api=1&destination=${info.geo.lat},${info.geo.lng}`,
-    mapsSearch: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name} ${info.address.city}`)}`,
-  };
+export function linksFor(info: ShopInfo) {
+  return { instagram: `https://www.instagram.com/${info.instagram}/` };
 }

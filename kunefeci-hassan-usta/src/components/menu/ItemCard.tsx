@@ -1,5 +1,4 @@
 import { ArrowUpRight, Flame, Snowflake } from "lucide-react";
-import { WhatsAppIcon } from "@/components/BrandIcons";
 import { Photo } from "@/components/ui";
 import { TagBadge, allergenIcons } from "./icons";
 import type { MenuViewItem } from "./types";
@@ -15,7 +14,6 @@ export function ItemCard({
   item,
   index,
   onOpen,
-  tray,
   labels,
   priority = false,
 }: {
@@ -23,14 +21,11 @@ export function ItemCard({
   /** Position in its category, shown as 01, 02… */
   index: number;
   onOpen: () => void;
-  /** "Ask about a tray on WhatsApp", for dishes made to order. */
-  tray?: { href: string; label: string };
   labels: ItemCardLabels;
   /** Load the photo right away (the first card on the page). */
   priority?: boolean;
 }) {
   const single = item.prices.length === 1;
-  const onOrder = item.tags.some((t) => t.id === "siparis");
   const serving = item.filters.includes("sicak") ? "hot" : item.filters.includes("soguk") ? "cold" : null;
   const ServingIcon = serving === "hot" ? Flame : Snowflake;
 
@@ -126,17 +121,6 @@ export function ItemCard({
           </span>
         </button>
 
-        {onOrder && tray && (
-          <a
-            href={tray.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mx-4 mb-4 flex h-12 items-center justify-center gap-2 rounded-2xl bg-[#25d366] text-sm font-extrabold text-[#0b3d1f] transition hover:brightness-105"
-          >
-            <WhatsAppIcon className="size-[18px]" />
-            {tray.label}
-          </a>
-        )}
       </article>
     </li>
   );

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowLeft, Phone, Search } from "lucide-react";
+import { ArrowLeft, Search } from "lucide-react";
 import { useEffect, useSyncExternalStore, type ReactNode } from "react";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import type { Locale } from "@/i18n/config";
@@ -13,8 +13,6 @@ type Props = {
   homeHref: string;
   searchHref: string;
   labels: { search: string; back: string; language: string };
-  phoneHref: string;
-  phoneDisplay: string;
 };
 
 function subscribeScroll(onChange: () => void) {
@@ -26,7 +24,7 @@ const roundButton =
   "grid size-11 shrink-0 place-items-center rounded-full bg-zumrut-950/45 text-krem-50 ring-1 ring-krem-50/10 backdrop-blur-md transition-colors hover:bg-zumrut-950/70";
 
 /** Search (or back) on the left, the logo in the middle, the language on the right. */
-export function SiteHeader({ locale, logo, homeHref, searchHref, labels, phoneHref, phoneDisplay }: Props) {
+export function SiteHeader({ locale, logo, homeHref, searchHref, labels }: Props) {
   const pathname = usePathname();
   const isHome = pathname === homeHref || pathname === `${homeHref}/`;
   const solid = useSyncExternalStore(
@@ -76,16 +74,7 @@ export function SiteHeader({ locale, logo, homeHref, searchHref, labels, phoneHr
           {logo}
         </Link>
 
-        <div className="flex items-center gap-3">
-          <a
-            href={phoneHref}
-            className="hidden items-center gap-2 rounded-full bg-fistik-300 px-4 py-2.5 text-sm font-bold text-zumrut-900 transition-colors hover:bg-fistik-200 md:inline-flex"
-          >
-            <Phone className="size-4" aria-hidden="true" />
-            <span>{phoneDisplay}</span>
-          </a>
-          <LanguageSwitcher current={locale} label={labels.language} />
-        </div>
+        <LanguageSwitcher current={locale} label={labels.language} />
       </div>
     </header>
   );

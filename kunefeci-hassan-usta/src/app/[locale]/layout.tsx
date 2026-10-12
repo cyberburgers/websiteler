@@ -4,7 +4,7 @@ import { Logo } from "@/components/Logo";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Splash } from "@/components/Splash";
-import { linksFor, site } from "@/content/site";
+import { site } from "@/content/site";
 import { isLocale, localePath, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getContent } from "@/lib/content";
@@ -63,8 +63,6 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
           homeHref={home}
           searchHref={localePath(locale, "/ara")}
           labels={{ search: dict.search.title, back: dict.category.back, language: dict.nav.language }}
-          phoneHref={linksFor(info).tel}
-          phoneDisplay={info.phoneDisplay}
         />
         <main id="icerik">{children}</main>
         <SiteFooter locale={locale} dict={dict} info={info} />

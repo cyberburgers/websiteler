@@ -11,10 +11,6 @@ const tr = {
   },
   actions: {
     seeMenu: "Menüyü İncele",
-    directions: "Yol Tarifi",
-    call: "Ara",
-    whatsapp: "WhatsApp",
-    whatsappText: "Merhaba Hassan Usta, ",
   },
   status: {
     open: "Şu an açık",
@@ -71,8 +67,6 @@ const tr = {
     hint: "Dokun, ayrıntıyı gör",
     details: "Ayrıntı",
     next: "Sonraki kategori",
-    trayAsk: "WhatsApp'tan tepsi sor",
-    trayText: "Merhaba Hassan Usta, tepsi künefe hakkında bilgi almak istiyorum.",
   },
   item: {
     pairing: "Yanında iyi gider",
@@ -97,6 +91,7 @@ const tr = {
     },
   },
   footer: {
+    follow: "Bizi Instagram'da takip edin",
     privacy: "Gizlilik ve KVKK",
     photoNote: "Fotoğraflar temsilidir.",
   },

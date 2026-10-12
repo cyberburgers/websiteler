@@ -16,7 +16,7 @@ export const privacy: Record<Locale, { intro: string; sections: Section[] }> = {
     sections: [
       {
         title: "Veri sorumlusu",
-        body: ["Künefeci Hassan Usta. Adres ve iletişim bilgilerimiz sayfanın altında yer alır."],
+        body: ["Künefeci Hassan Usta. Adresimiz sayfanın altında yer alır."],
       },
       {
         title: "Topladığımız veriler",
@@ -30,15 +30,14 @@ export const privacy: Record<Locale, { intro: string; sections: Section[] }> = {
       {
         title: "Üçüncü taraf hizmetler",
         body: [
-          "Harita: \"Yol Tarifi\" düğmesi Google Haritalar'ı yeni sekmede açar. Bu andan itibaren Google'ın gizlilik politikası geçerlidir.",
-          "WhatsApp ve telefon: Bize WhatsApp üzerinden yazdığınızda ya da aradığınızda paylaştığınız bilgiler yalnızca talebinizi yanıtlamak için kullanılır. WhatsApp kullanımı Meta'nın gizlilik koşullarına tabidir.",
+          "Instagram: Sayfanın altındaki Instagram bağlantısı Instagram'ı yeni sekmede açar. Bu andan itibaren Meta'nın gizlilik koşulları geçerlidir.",
         ],
       },
       {
         title: "Haklarınız",
         body: [
           "KVKK'nın 11. maddesi uyarınca kişisel verilerinizin işlenip işlenmediğini öğrenme, bilgi talep etme, düzeltilmesini veya silinmesini isteme ve işlemeye itiraz etme haklarına sahipsiniz.",
-          "Taleplerinizi sayfanın altındaki iletişim bilgilerinden bize iletebilirsiniz.",
+          "Taleplerinizi dükkânımızda ya da sayfanın altındaki adrese yazılı olarak bize iletebilirsiniz.",
         ],
       },
     ],
@@ -49,7 +48,7 @@ export const privacy: Record<Locale, { intro: string; sections: Section[] }> = {
     sections: [
       {
         title: "Data controller",
-        body: ["Künefeci Hassan Usta. Our address and contact details are at the bottom of the page."],
+        body: ["Künefeci Hassan Usta. Our address is at the bottom of the page."],
       },
       {
         title: "What we collect",
@@ -63,15 +62,14 @@ export const privacy: Record<Locale, { intro: string; sections: Section[] }> = {
       {
         title: "Third-party services",
         body: [
-          "Map: the \"Directions\" button opens Google Maps in a new tab. From then on, Google's privacy policy applies.",
-          "WhatsApp and phone: anything you share when you message or call us is used only to answer your request. WhatsApp is subject to Meta's privacy terms.",
+          "Instagram: the Instagram link at the bottom of the page opens Instagram in a new tab. From then on, Meta's privacy terms apply.",
         ],
       },
       {
         title: "Your rights",
         body: [
           "Under Article 11 of the KVKK you may ask whether your data is processed, request information, ask for correction or deletion, and object to processing.",
-          "You can send requests using the contact details at the bottom of the page.",
+          "You can make requests in person at the shop or in writing to the address at the bottom of the page.",
         ],
       },
     ],

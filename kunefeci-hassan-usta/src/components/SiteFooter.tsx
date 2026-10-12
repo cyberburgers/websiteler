@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { MapPin, Navigation, Phone } from "lucide-react";
-import { InstagramIcon, WhatsAppIcon } from "./BrandIcons";
+import { Clock, MapPin } from "lucide-react";
+import { InstagramIcon } from "./BrandIcons";
 import { linksFor, site, type ShopInfo } from "@/content/site";
 import { localePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
@@ -11,60 +11,43 @@ async function CopyrightYear() {
   return <>{new Date().getFullYear()}</>;
 }
 
-const action =
-  "flex h-12 items-center justify-center gap-2 rounded-2xl text-[13px] font-bold transition-colors sm:text-sm";
-
-/** Directions, call, Instagram and WhatsApp, then the address and hours in two short lines. */
+/**
+ * The guest is already at the table, so no call or directions buttons: just Instagram to follow
+ * the shop, and the address and hours as a quiet note.
+ */
 export function SiteFooter({ locale, dict, info }: { locale: Locale; dict: Dictionary; info: ShopInfo }) {
-  const links = linksFor(info);
   return (
     <footer className="print-hidden border-t border-krem-50/10 bg-zumrut-925 text-krem-100">
-      <div className="container-page max-w-6xl pb-[calc(2rem+env(safe-area-inset-bottom))] pt-6 md:pt-8">
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          <a
-            href={links.directions}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${action} bg-fistik-300 font-extrabold text-zumrut-925 hover:bg-fistik-200`}
-          >
-            <Navigation className="size-4" aria-hidden="true" />
-            {dict.actions.directions}
-          </a>
-          <a href={links.tel} className={`${action} bg-krem-50/[0.08] hover:bg-krem-50/[0.14]`}>
-            <Phone className="size-4" aria-hidden="true" />
-            {dict.actions.call}
-          </a>
-          <a
-            href={links.whatsapp(dict.actions.whatsappText)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${action} bg-krem-50/[0.08] hover:bg-krem-50/[0.14]`}
-          >
-            <WhatsAppIcon className="size-4" />
-            {dict.actions.whatsapp}
-          </a>
-          <a
-            href={links.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${action} bg-krem-50/[0.08] hover:bg-krem-50/[0.14]`}
-          >
-            <InstagramIcon className="size-4" />
-            {dict.home.instagram}
-          </a>
-        </div>
+      <div className="container-page max-w-6xl pb-[calc(2rem+env(safe-area-inset-bottom))] pt-7 md:pt-9">
+        <a
+          href={linksFor(info).instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3.5 rounded-2xl bg-krem-50/[0.06] p-3 pe-4 ring-1 ring-inset ring-krem-50/[0.08] transition-colors hover:bg-krem-50/[0.1] sm:max-w-sm"
+        >
+          <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-fistik-300 text-zumrut-925">
+            <InstagramIcon className="size-5" />
+          </span>
+          <span className="min-w-0">
+            <span className="block text-sm font-extrabold text-krem-50">{dict.footer.follow}</span>
+            <span className="block truncate text-[13px] text-krem-100/60">@{info.instagram}</span>
+          </span>
+        </a>
 
-        <div className="mt-5 space-y-1.5 text-[13px] leading-relaxed text-krem-100/60">
-          <a href={links.mapsSearch} target="_blank" rel="noopener noreferrer" className="flex gap-2 hover:text-krem-50">
+        <div className="mt-5 space-y-2 text-[13px] leading-relaxed text-krem-100/60">
+          <p className="flex gap-2">
             <MapPin className="mt-0.5 size-4 shrink-0 text-karamel-300" aria-hidden="true" />
             <span>
               {info.address.street}, {info.address.district} / {info.address.city}
             </span>
-          </a>
-          <p className="ps-6">
-            {groupedHours(info.hours, dict.days, dict.status.dayOff)
-              .map((g) => `${g.days} ${g.hours}`)
-              .join(" · ")}
+          </p>
+          <p className="flex gap-2">
+            <Clock className="mt-0.5 size-4 shrink-0 text-karamel-300" aria-hidden="true" />
+            <span>
+              {groupedHours(info.hours, dict.days, dict.status.dayOff)
+                .map((g) => `${g.days} ${g.hours}`)
+                .join(" · ")}
+            </span>
           </p>
         </div>
 

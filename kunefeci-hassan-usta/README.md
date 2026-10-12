@@ -7,7 +7,8 @@
 
 ## Sayfalar
 
-Site, masadaki QR kodla açılan bir menü gibi çalışır.
+Site, masadaki QR kodla açılan bir menüdür: müşteri zaten dükkândadır. Bu yüzden telefon, yol tarifi
+ya da WhatsApp düğmeleri yoktur; sayfanın altında yalnızca Instagram, adres ve saatler durur.
 
 | Adres | İçerik |
 | --- | --- |
@@ -51,7 +52,7 @@ Menü ve işletme bilgileri kod bilmeden, telefondan değiştirilir. Adres: `htt
 | --- | --- |
 | **Menü** | Fiyatlar (doğrudan kutudan), ürünü gizleme/gösterme ("bugün yok"), yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler; kategori ekleme, silme, sıralama, kapak fotoğrafı |
 | **Duyuru** | Ana sayfanın üstündeki kısa not (ör. bayram kapanışı) |
-| **İşletme bilgileri** | Telefon, WhatsApp, Instagram, adres, harita konumu, çalışma saatleri |
+| **İşletme bilgileri** | Telefon (Google için), Instagram, adres, harita konumu, çalışma saatleri |
 
 Değişiklikler alttaki **Kaydet** ile kaydedilir ve sitede hemen görünür. İngilizce alanlar boş
 bırakılırsa İngilizce menüde Türkçesi gösterilir. Telefondan yüklenen fotoğraflar küçültülür,
@@ -86,7 +87,7 @@ sonra bu dosyalar okunmaz.
 
 Panelden:
 
-- [ ] Telefon, WhatsApp, Instagram, açık adres ve harita konumu
+- [ ] Telefon, Instagram, açık adres ve harita konumu
 - [ ] Çalışma saatleri
 - [ ] **Örnek fiyatlar** → gerçek fiyatlar
 - [ ] Dükkânın kendi fotoğrafları

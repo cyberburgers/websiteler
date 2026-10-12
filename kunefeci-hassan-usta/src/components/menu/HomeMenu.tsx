@@ -9,18 +9,17 @@ import { closeItem, openItem, useItemHash } from "./itemHash";
 import { DrinkMenu } from "./parts";
 import type { MenuViewCategory, MenuViewItem } from "./types";
 
-type Labels = SheetLabels & ItemCardLabels & { tabs: string; dishes: string; drinks: string; trayAsk: string };
+type Labels = SheetLabels & ItemCardLabels & { tabs: string; dishes: string; drinks: string };
 
 type Props = {
   categories: MenuViewCategory[];
   pairing: { item: MenuViewItem; href: string }[];
-  trayHref: string;
   labels: Labels;
   waiter: WaiterLabels;
 };
 
 /** The whole menu on the home page: category pills that follow the scroll, every dish, and its detail sheet. */
-export function HomeMenu({ categories, pairing, trayHref, labels, waiter }: Props) {
+export function HomeMenu({ categories, pairing, labels, waiter }: Props) {
   const [active, setActive] = useState(categories[0]?.id ?? "");
   const barRef = useRef<HTMLDivElement>(null);
   const hash = useItemHash();
@@ -109,7 +108,6 @@ export function HomeMenu({ categories, pairing, trayHref, labels, waiter }: Prop
                   item={item}
                   index={ii}
                   onOpen={() => openItem(item.id)}
-                  tray={{ href: trayHref, label: labels.trayAsk }}
                   labels={labels}
                 />
               ))}
@@ -127,7 +125,6 @@ export function HomeMenu({ categories, pairing, trayHref, labels, waiter }: Prop
         pairing={selectedLayout === "cards" ? pairing : []}
         labels={labels}
         waiter={waiter}
-        tray={{ href: trayHref, label: labels.trayAsk }}
         onDismiss={closeItem}
       />
     </>

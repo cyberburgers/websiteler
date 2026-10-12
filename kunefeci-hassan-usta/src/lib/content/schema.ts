@@ -46,7 +46,7 @@ const time = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Saat 10:00 gibi yaz�
 const info = z.object({
   phone: z.string().regex(/^\+\d{8,15}$/, "Telefon numarası anlaşılamadı"),
   phoneDisplay: text(30).min(1, "Telefon boş olamaz"),
-  whatsapp: z.string().regex(/^\d{8,15}$/, "WhatsApp numarası anlaşılamadı"),
+  whatsapp: z.string().regex(/^\d{8,15}$/).optional(),
   instagram: z.string().regex(/^[A-Za-z0-9._]{1,30}$/, "Instagram kullanıcı adı anlaşılamadı"),
   address: z.object({
     street: text(120).min(1, "Adres boş olamaz"),
