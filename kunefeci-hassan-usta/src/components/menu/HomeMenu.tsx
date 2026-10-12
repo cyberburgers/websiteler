@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { fill } from "@/lib/format";
-import { ItemCard } from "./ItemCard";
+import { CategoryBanner } from "./CategoryBanner";
+import { ItemCard, type ItemCardLabels } from "./ItemCard";
 import { ItemSheet, type SheetLabels, type WaiterLabels } from "./ItemSheet";
 import { closeItem, openItem, useItemHash } from "./itemHash";
-import { DrinkLine } from "./parts";
+import { DrinkMenu } from "./parts";
 import type { MenuViewCategory, MenuViewItem } from "./types";
 
-type Labels = SheetLabels & { tabs: string; dishes: string; drinks: string; trayAsk: string; details: string };
+type Labels = SheetLabels & ItemCardLabels & { tabs: string; dishes: string; drinks: string; trayAsk: string };
 
 type Props = {
   categories: MenuViewCategory[];
@@ -85,42 +86,38 @@ export function HomeMenu({ categories, pairing, trayHref, labels, waiter }: Prop
         </div>
       </nav>
 
-      {categories.map((category) => (
+      {categories.map((category, ci) => (
         <section
           key={category.id}
           id={`kategori-${category.id}`}
           aria-labelledby={`baslik-${category.id}`}
-          className="pt-8 md:pt-12"
+          className="pt-8 md:pt-14"
         >
-          <div className="flex items-baseline justify-between gap-4">
-            <h3 id={`baslik-${category.id}`} className="font-display text-[28px] font-semibold text-krem-50 md:text-4xl">
-              {category.name}
-            </h3>
-            <span className="shrink-0 text-xs font-bold text-krem-100/50">
-              {fill(category.layout === "cards" ? labels.dishes : labels.drinks, { n: category.items.length })}
-            </span>
-          </div>
-          {category.description && <p className="mt-1 text-sm text-krem-100/65">{category.description}</p>}
+          <CategoryBanner
+            id={category.id}
+            index={ci}
+            name={category.name}
+            description={category.description}
+            photo={category.photo}
+            count={fill(category.layout === "cards" ? labels.dishes : labels.drinks, { n: category.items.length })}
+          />
           {category.layout === "cards" ? (
-            <ul className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
-              {category.items.map((item) => (
+            <ul className="mt-4 grid grid-cols-1 gap-5 md:mt-6 md:grid-cols-2 lg:grid-cols-3">
+              {category.items.map((item, ii) => (
                 <ItemCard
                   key={item.id}
                   item={item}
+                  index={ii}
                   onOpen={() => openItem(item.id)}
                   tray={{ href: trayHref, label: labels.trayAsk }}
-                  detailsLabel={labels.details}
+                  labels={labels}
                 />
               ))}
             </ul>
           ) : (
-            <ul className="mt-4 grid grid-cols-1 gap-2.5 md:grid-cols-2 md:gap-3">
-              {category.items.map((item) => (
-                <li key={item.id} id={item.id}>
-                  <DrinkLine item={item} onOpen={() => openItem(item.id)} />
-                </li>
-              ))}
-            </ul>
+            <div className="mt-4 md:mt-6">
+              <DrinkMenu items={category.items} onOpen={openItem} />
+            </div>
           )}
         </section>
       ))}

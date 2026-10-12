@@ -95,6 +95,8 @@ export default async function CategoryPage({ params }: PageProps<"/[locale]/menu
             showWaiter: dict.item.showWaiter,
             share: dict.item.share,
             copied: dict.item.copied,
+            hot: dict.search.filterNames.sicak,
+            cold: dict.search.filterNames.soguk,
           }}
           waiter={{ title: waiterDict.item.waiterTitle, table: waiterDict.home.table }}
         />
