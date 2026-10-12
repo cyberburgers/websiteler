@@ -27,9 +27,14 @@ export function useItemHash(): string {
   return useSyncExternalStore(subscribe, read, () => "");
 }
 
-export function openItem(id: string) {
-  window.history.pushState(null, "", `#${id}`);
-  pushedUrl = window.location.href;
+/**
+ * `replace`: another dish's sheet is open (a "Yanında iyi gider" link). The new dish takes its place in
+ * the history, so closing it goes back to the menu rather than to the dish before.
+ */
+export function openItem(id: string, { replace = false } = {}) {
+  if (replace) window.history.replaceState(null, "", `#${id}`);
+  else window.history.pushState(null, "", `#${id}`);
+  if (!replace || pushedUrl) pushedUrl = window.location.href;
   window.dispatchEvent(new Event(HASH_EVENT));
 }
 

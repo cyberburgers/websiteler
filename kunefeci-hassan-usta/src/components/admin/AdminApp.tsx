@@ -33,10 +33,9 @@ type Props = {
  * After a save, the first visit to each page still gets the old copy while the new one is built.
  * Opening the guest pages once from here takes that first visit, so guests see the change.
  */
-function warmPages(content: SiteContent) {
-  const paths = ["", "/ara", ...content.menu.filter((c) => c.items.length > 0).map((c) => `/menu/${c.id}`)];
+function warmPages() {
   for (const locale of ["tr", "en"]) {
-    for (const path of paths) void fetch(`/${locale}${path}`, { cache: "no-store" }).catch(() => {});
+    for (const path of ["", "/ara"]) void fetch(`/${locale}${path}`, { cache: "no-store" }).catch(() => {});
   }
 }
 
@@ -88,7 +87,7 @@ export function AdminApp({ initial, writable, staff, today }: Props) {
         setContent(next);
         setSaved(JSON.stringify(next));
         setMessage({ ok: true, text: "Kaydedildi. Değişiklikler sitede görünüyor." });
-        warmPages(next);
+        warmPages();
       } else {
         setMessage({ ok: false, text: result.error });
       }

@@ -1,6 +1,6 @@
 import type { MenuCategory, MenuItem } from "@/content/menu";
 
-/** "Fıstıklı Künefe" → "fistikli-kunefe": the dish's address on the menu (…/menu/kunefeler#fistikli-kunefe). */
+/** "Fıstıklı Künefe" → "fistikli-kunefe": the dish's address on the menu (…/tr#fistikli-kunefe). */
 export function slugify(text: string): string {
   return text
     .toLocaleLowerCase("tr")

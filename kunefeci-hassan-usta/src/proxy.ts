@@ -12,7 +12,8 @@ function phoneLocale(request: NextRequest): Locale {
 }
 
 // Every page lives under a language prefix (/tr, /en); anything without one (the table QR codes,
-// shared links) gets the language of the phone. The menu is the home page, so old /menu links land there too.
+// shared links) gets the language of the phone. The menu is the home page, so old /menu and
+// /menu/<category> links land there too.
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const parts = pathname.split("/").filter(Boolean);
@@ -23,8 +24,10 @@ export function proxy(request: NextRequest) {
   const rest = hasLocale ? parts.slice(1) : parts;
 
   const url = request.nextUrl.clone();
-  if (rest.length === 1 && rest[0] === "menu") {
+  if (rest[0] === "menu" && rest.length <= 2) {
     url.pathname = `/${locale}`;
+    // A category had its own page once; now the menu is one page and opens at that category's heading.
+    if (rest[1]) url.hash = `kategori-${rest[1]}`;
     return NextResponse.redirect(url, 308);
   }
   if (hasLocale) return;

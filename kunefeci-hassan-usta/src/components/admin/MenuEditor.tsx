@@ -376,7 +376,6 @@ function CategoryDialog({
               ))}
             </div>
           </fieldset>
-          <PhotoField label="Kapak fotoğrafı" value={category.image} onChange={(image) => edit((d) => void (d.image = image))} />
           <button
             type="button"
             onClick={() => {

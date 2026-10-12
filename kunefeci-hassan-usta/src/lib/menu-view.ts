@@ -60,8 +60,9 @@ export function pairingItems(categories: MenuViewCategory[]): MenuViewItem[] {
   return PAIRING_IDS.map((id) => all.find((i) => i.id === id)).filter((i): i is MenuViewItem => Boolean(i));
 }
 
-export function categoryPath(locale: Locale, categoryId: string, itemId?: string): string {
-  return `${localePath(locale, `/menu/${categoryId}`)}${itemId ? `#${itemId}` : ""}`;
+/** The whole menu is one page: a dish opens there by its id (/tr#fistikli-kunefe). */
+export function itemPath(locale: Locale, itemId: string): string {
+  return `${localePath(locale)}#${itemId}`;
 }
 
 export { fill } from "./format";

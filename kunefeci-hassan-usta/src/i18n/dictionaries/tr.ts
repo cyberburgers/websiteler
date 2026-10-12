@@ -58,14 +58,8 @@ const tr = {
     shopPhoto: "Künefeci Hassan Usta dükkânının önü",
   },
   category: {
-    back: "Kategorilere dön",
-    tabs: "Kategoriler",
-    view: "Görünüm",
-    cards: "Büyük kartlar",
-    list: "Liste",
-    hint: "Dokun, ayrıntıyı gör",
+    back: "Menüye dön",
     details: "Ayrıntı",
-    next: "Sonraki kategori",
   },
   item: {
     pairing: "Yanında iyi gider",

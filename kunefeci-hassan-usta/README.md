@@ -12,9 +12,8 @@ ya da WhatsApp düğmeleri yoktur; sayfanın altında yalnızca Instagram, adres
 
 | Adres | İçerik |
 | --- | --- |
-| `/tr` | Ana sayfa: dükkân fotoğraflı karşılama, arama, hızlı filtreler, tatlı çarkı ve altında menüdeki bütün ürünler (kategori düğmeleriyle) |
-| `/tr/menu/kunefeler` | Bir kategorinin ürünleri: büyük kartlar ya da liste. Ürüne dokununca ayrıntı penceresi açılır |
-| `/tr/menu/kunefeler#kunefe` | Ürünün ayrıntısı doğrudan açık gelir (paylaşılan bağlantılar böyle görünür) |
+| `/tr` | Menü tek sayfadır: dükkân fotoğraflı karşılama, arama, hızlı filtreler, tatlı çarkı ve altında bütün ürünler. Üstteki kategori düğmeleri sayfayı o kategorinin başlığına kaydırır; ürüne dokununca ayrıntı penceresi açılır |
+| `/tr#kunefe` | Ürünün ayrıntısı doğrudan açık gelir (paylaşılan bağlantılar, arama sonuçları, tatlı çarkı ve "Yanında iyi gider" buraya götürür) |
 | `/tr/ara` | Menüde arama ve filtreler: Fıstıklı, Sıcak, Soğuk, ₺250 altı, Paylaşmalık (Google'a kapalı) |
 | `/tr/gizlilik` | Gizlilik ve KVKK aydınlatma metni |
 | `/tr/qr` | Masalara konacak yazdırılabilir QR kartları (Google'a kapalı) |
@@ -37,7 +36,8 @@ Site açılırken bir an işletmenin logosu görünür (her ziyarette bir kez; s
 
 `/en/...` İngilizce sürümdür. Sayfada dil düğmesi yok: önek olmadan gelen adresler (masa QR'ları dahil)
 telefonun diline göre açılır; Türkçe telefon `/tr`, diğer diller `/en`. Eski `/menu` adresleri
-(ör. basılmış bir QR kodu) ana sayfaya yönlenir.
+(ör. basılmış bir QR kodu) ana sayfaya, eski kategori adresleri (`/tr/menu/kunefeler`) menüde o kategorinin
+başlığına yönlenir.
 
 ## Garson çağırma
 
@@ -95,7 +95,7 @@ Menü ve işletme bilgileri kod bilmeden, telefondan değiştirilir. Adres: `htt
 
 | Bölüm | Neler değişir? |
 | --- | --- |
-| **Menü** | Fiyatlar (doğrudan kutudan), **Bugün yok** düğmesi (ürün menüde kalır, "Bugün yok" yazar, ertesi sabah 05:00'te kendiliğinden geri gelir), ürünü menüden gizleme/gösterme, yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler; kategori ekleme, silme, sıralama, kapak fotoğrafı |
+| **Menü** | Fiyatlar (doğrudan kutudan), **Bugün yok** düğmesi (ürün menüde kalır, "Bugün yok" yazar, ertesi sabah 05:00'te kendiliğinden geri gelir), ürünü menüden gizleme/gösterme, yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler; kategori ekleme, silme, sıralama |
 | **Duyuru** | Ana sayfanın üstündeki kısa not (ör. bayram kapanışı) |
 | **Garson** | Masadan sipariş açık/kapalı, garson ekranının adresi ve karekodu, masa kartlarına bağlantı (çağrılar ve siparişler panel açıkken her sekmede sesli gelir) |
 | **İşletme bilgileri** | Telefon (Google için), Instagram, adres, harita konumu, çalışma saatleri |

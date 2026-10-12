@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Check, Plus, Share, Smartphone, X } from "lucide-react";
 import { useEffect, useRef, useState, type TouchEvent } from "react";
 import { useOrdering } from "@/components/order/OrderProvider";
@@ -8,6 +7,7 @@ import { Photo } from "@/components/ui";
 import { addOne, qtyOf, useCart } from "@/lib/order/cart";
 import { useTable } from "@/lib/table";
 import { TagBadge, allergenIcons } from "./icons";
+import { MenuLink } from "./MenuLink";
 import type { MenuViewItem } from "./types";
 
 export type SheetLabels = {
@@ -265,7 +265,7 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
                   </p>
                   <div className="mt-2 grid grid-cols-2 gap-2">
                     {others.map(({ item: drink, href }) => (
-                      <Link
+                      <MenuLink
                         key={drink.id}
                         href={href}
                         className="flex items-center gap-2.5 rounded-2xl bg-krem-50 p-[7px] shadow-[0_1px_0_rgba(44,68,54,.06)] ring-1 ring-zumrut-800/[0.06] transition hover:ring-karamel-300"
@@ -279,7 +279,7 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
                             {drink.prices[0].formatted}
                           </span>
                         </span>
-                      </Link>
+                      </MenuLink>
                     ))}
                   </div>
                 </>

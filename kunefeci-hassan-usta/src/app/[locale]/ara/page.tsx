@@ -6,7 +6,7 @@ import { MenuSearchFromUrl } from "@/components/menu/MenuSearchFromUrl";
 import { isLocale, localePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getMenu } from "@/lib/content";
-import { categoryPath, menuView } from "@/lib/menu-view";
+import { itemPath, menuView } from "@/lib/menu-view";
 import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/ara">): Promise<Metadata> {
@@ -31,7 +31,7 @@ export default async function SearchPage({ params }: PageProps<"/[locale]/ara">)
 
   const props: MenuSearchProps = {
     categories,
-    hrefs: Object.fromEntries(items.map((i) => [i.id, categoryPath(locale, i.categoryId, i.id)])),
+    hrefs: Object.fromEntries(items.map((i) => [i.id, itemPath(locale, i.id)])),
     popular: items.filter((i) => i.tags.some((t) => t.id === "populer" || t.id === "imza")),
     homeHref: localePath(locale),
     labels: {

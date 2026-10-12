@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { MenuLink } from "@/components/menu/MenuLink";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import { ArtGroup, type ArtKind } from "@/components/art/FoodArt";
@@ -396,13 +396,13 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
                   </div>
                   <p className="mt-3 text-sm leading-relaxed text-zumrut-800/70">{result.description}</p>
                   <div className="mt-4 grid grid-cols-2 gap-2">
-                    <Link
+                    <MenuLink
                       href={result.href}
                       onClick={close}
                       className="inline-flex items-center justify-center rounded-full bg-zumrut-800 px-4 py-3 text-sm font-bold text-krem-50 transition hover:bg-zumrut-700"
                     >
                       {labels.seeMenu}
-                    </Link>
+                    </MenuLink>
                     <button
                       type="button"
                       onClick={spinButton}

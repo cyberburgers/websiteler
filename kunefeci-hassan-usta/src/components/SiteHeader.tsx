@@ -35,6 +35,11 @@ export function SiteHeader({ logo, homeHref, labels }: Props) {
     let lastY = window.scrollY;
     const onScroll = () => {
       const y = window.scrollY;
+      // While the menu glides to a category (jumpTo) the header stays put.
+      if (root.dataset.jump !== undefined) {
+        lastY = y;
+        return;
+      }
       if (Math.abs(y - lastY) < 8) return;
       root.dataset.header = y > lastY && y > 320 ? "hidden" : "shown";
       lastY = y;

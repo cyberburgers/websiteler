@@ -13,7 +13,7 @@ import { isLocale, localePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getContent } from "@/lib/content";
 import { fill, tx } from "@/lib/format";
-import { categoryPath, menuView, pairingItems } from "@/lib/menu-view";
+import { itemPath, menuView, pairingItems } from "@/lib/menu-view";
 import { JsonLd, menuJsonLd, restaurantJsonLd } from "@/lib/structured-data";
 import { wheelSlices } from "@/lib/wheel";
 
@@ -124,7 +124,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
               categories={categories}
               pairing={pairingItems(categories).map((item) => ({
                 item,
-                href: categoryPath(locale, item.categoryId, item.id),
+                href: itemPath(locale, item.id),
               }))}
               labels={{
                 tabs: dict.home.categories,

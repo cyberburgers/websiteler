@@ -60,14 +60,8 @@ const en: Dictionary = {
     shopPhoto: "The front of the Künefeci Hassan Usta shop",
   },
   category: {
-    back: "Back to categories",
-    tabs: "Categories",
-    view: "View",
-    cards: "Large cards",
-    list: "List",
-    hint: "Tap for details",
+    back: "Back to the menu",
     details: "Details",
-    next: "Next category",
   },
   item: {
     pairing: "Goes well with",

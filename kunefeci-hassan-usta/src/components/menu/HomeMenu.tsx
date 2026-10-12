@@ -5,6 +5,7 @@ import { fill } from "@/lib/format";
 import { ItemCard } from "./ItemCard";
 import { ItemSheet, type SheetLabels, type WaiterLabels } from "./ItemSheet";
 import { closeItem, openItem, useItemHash } from "./itemHash";
+import { jumpTo } from "./jump";
 import { DrinkLine } from "./parts";
 import type { MenuViewCategory, MenuViewItem } from "./types";
 
@@ -58,6 +59,17 @@ export function HomeMenu({ categories, pairing, labels, waiter }: Props) {
     };
   }, [categories]);
 
+  // Opened at a category (an old category address lands here as /tr#kategori-…): settle on its heading
+  // the same way a pill does, so the header can't sit on top of it.
+  // Waits a moment first: at a table the "+ Ekle" buttons appear right after load and lengthen the drinks.
+  useEffect(() => {
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    const section = id.startsWith("kategori-") ? document.getElementById(id) : null;
+    if (!section) return;
+    const timer = window.setTimeout(() => jumpTo(section), 120);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   // Keep the active pill in view inside the horizontally scrolling bar.
   useEffect(() => {
     const bar = barRef.current;
@@ -85,7 +97,8 @@ export function HomeMenu({ categories, pairing, labels, waiter }: Props) {
                   e.preventDefault();
                   setActive(c.id);
                   settleUntil.current = performance.now() + 900;
-                  document.getElementById(`kategori-${c.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  const section = document.getElementById(`kategori-${c.id}`);
+                  if (section) jumpTo(section);
                 }}
                 className={`flex h-[38px] shrink-0 items-center rounded-full px-[15px] text-[13.5px] transition-colors ${
                   current
@@ -105,7 +118,8 @@ export function HomeMenu({ categories, pairing, labels, waiter }: Props) {
           key={category.id}
           id={`kategori-${category.id}`}
           aria-labelledby={`baslik-${category.id}`}
-          className="pt-8 md:pt-12"
+          // Lands with the heading just under the category bar (see jumpTo): bar alone on phones, header too on wide screens.
+          className="scroll-mt-11 pt-8 md:scroll-mt-7 md:pt-12 lg:scroll-mt-[108px]"
         >
           <div className="flex items-baseline justify-between gap-4">
             <h3 id={`baslik-${category.id}`} className="font-display text-[28px] font-semibold text-krem-50 md:text-4xl">
@@ -131,7 +145,7 @@ export function HomeMenu({ categories, pairing, labels, waiter }: Props) {
           ) : (
             <ul className="mt-4 grid grid-cols-1 gap-2.5 md:grid-cols-2 md:gap-3">
               {category.items.map((item) => (
-                <li key={item.id} id={item.id}>
+                <li key={item.id} id={item.id} className="scroll-mt-36">
                   <DrinkLine item={item} onOpen={() => openItem(item.id)} soldOutLabel={labels.soldOut} />
                 </li>
               ))}

@@ -38,7 +38,7 @@ export type MenuCategory = {
   description?: Text;
   /** "cards": fotoğraflı kartlar. "list": klasik menü satırları (içecekler gibi). */
   layout: "cards" | "list";
-  /** Kategori sayfasının kapak fotoğrafı. */
+  /** Eskiden kategori sayfasının kapağıydı; menü tek sayfa olunca kullanılmıyor (kayıtlı içerik bozulmasın diye duruyor). */
   image?: string;
   items: MenuItem[];
 };

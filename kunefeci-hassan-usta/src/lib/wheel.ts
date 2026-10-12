@@ -3,7 +3,7 @@ import type { MenuCategory } from "@/content/menu";
 import { isPhotoKey, photoArt } from "@/content/photos";
 import type { Locale } from "@/i18n/config";
 import { formatPrice, tx } from "./format";
-import { categoryPath } from "./menu-view";
+import { itemPath } from "./menu-view";
 
 /** Splits a name over at most two lines, as evenly as the words allow. */
 function twoLines(name: string): string[] {
@@ -27,15 +27,15 @@ function twoLines(name: string): string[] {
 export function wheelSlices(locale: Locale, menu: MenuCategory[]): WheelSlice[] {
   return menu
     .filter((c) => c.layout === "cards")
-    .flatMap((c) => c.items.map((item) => ({ item, categoryId: c.id })))
-    .filter(({ item }) => !item.tags?.includes("siparis") && !item.soldOutOn)
-    .map(({ item, categoryId }) => ({
+    .flatMap((c) => c.items)
+    .filter((item) => !item.tags?.includes("siparis") && !item.soldOutOn)
+    .map((item) => ({
       id: item.id,
       name: tx(item.name, locale),
       lines: twoLines(tx(item.shortName, locale) || tx(item.name, locale)),
       description: tx(item.description, locale),
       price: formatPrice(item.prices[0].amount, locale),
       art: item.image && isPhotoKey(item.image) ? photoArt[item.image] : undefined,
-      href: categoryPath(locale, categoryId, item.id),
+      href: itemPath(locale, item.id),
     }));
 }

@@ -33,7 +33,7 @@ export function ItemCard({
   const ordering = useOrdering();
   const orderable = Boolean(ordering?.canOrder && !out && ordering.catalog[item.id]);
   return (
-    <li id={item.id} className="reveal">
+    <li id={item.id} className="reveal scroll-mt-36">
       <div className="flex h-full flex-col rounded-[28px] bg-krem-100 p-2.5 text-zumrut-800 shadow-[0_28px_50px_-34px_rgba(0,0,0,.9)]">
         <button type="button" onClick={onOpen} aria-haspopup="dialog" className="group block w-full flex-1 text-start">
           <span className="relative block aspect-square overflow-hidden rounded-[22px] bg-krem-200">
@@ -81,7 +81,7 @@ export function ItemCard({
             )}
           </span>
         </button>
-        <div className="mx-2.5 mb-2 mt-3.5 flex min-h-[1.375rem] items-center gap-2 border-t border-zumrut-800/10 pt-3 text-karamel-600">
+        <div className="mx-2.5 mb-2 mt-3.5 flex min-h-[53px] items-center gap-2 border-t border-zumrut-800/10 pt-3 text-karamel-600">
           <AllergenIcons item={item} />
           {orderable ? (
             <span className="ms-auto">
