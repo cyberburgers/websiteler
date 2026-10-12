@@ -5,6 +5,7 @@ import { MenuSearch, type MenuSearchProps } from "@/components/menu/MenuSearch";
 import { MenuSearchFromUrl } from "@/components/menu/MenuSearchFromUrl";
 import { isLocale, localePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
+import { getMenu } from "@/lib/content";
 import { categoryPath, menuView } from "@/lib/menu-view";
 import { pageMetadata } from "@/lib/seo";
 
@@ -25,7 +26,7 @@ export default async function SearchPage({ params }: PageProps<"/[locale]/ara">)
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
-  const categories = menuView(locale);
+  const categories = menuView(locale, await getMenu());
   const items = categories.flatMap((c) => c.items);
 
   const props: MenuSearchProps = {

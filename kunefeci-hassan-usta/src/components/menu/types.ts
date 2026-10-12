@@ -1,5 +1,4 @@
 import type { Allergen, Tag } from "@/content/menu";
-import type { PhotoKey } from "@/content/photos";
 
 /** The quick filters on the home page and the search page. */
 export const filterIds = ["fistikli", "sicak", "soguk", "ucuz", "paylasmalik"] as const;
@@ -14,7 +13,7 @@ export type MenuViewItem = {
   prices: { label?: string; formatted: string }[];
   allergens: { id: Allergen; label: string }[];
   tags: { id: Tag; label: string }[];
-  photo?: PhotoKey;
+  photo?: string;
   filters: FilterId[];
   /** Accent-folded text in every language, so "kunefe" or "pistachio" finds the right item. */
   search: string;
@@ -27,6 +26,6 @@ export type MenuViewCategory = {
   name: string;
   description?: string;
   layout: "cards" | "list";
-  photo?: PhotoKey;
+  photo?: string;
   items: MenuViewItem[];
 };

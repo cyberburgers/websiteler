@@ -1,7 +1,8 @@
-import { availableMenu } from "@/content/menu";
-import { site } from "@/content/site";
+import type { MenuCategory } from "@/content/menu";
+import { site, type ShopInfo } from "@/content/site";
 import { localePath, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
+import { tx } from "./format";
 
 const schemaDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
@@ -10,7 +11,7 @@ function absolute(path: string) {
 }
 
 /** Google'ın işletmeyi (adres, saat, menü bağlantısı) tanıması için Restaurant şeması. */
-export function restaurantJsonLd(locale: Locale) {
+export function restaurantJsonLd(locale: Locale, info: ShopInfo) {
   const dict = getDictionary(locale);
   return {
     "@context": "https://schema.org",
@@ -21,7 +22,7 @@ export function restaurantJsonLd(locale: Locale) {
     url: absolute(localePath(locale)),
     logo: absolute("/brand/logo.png"),
     image: absolute("/og.jpg"),
-    telephone: site.phone,
+    telephone: info.phone,
     priceRange: site.priceRange,
     servesCuisine: ["Turkish", "Künefe", "Turkish desserts"],
     hasMenu: absolute(localePath(locale)),
@@ -29,44 +30,44 @@ export function restaurantJsonLd(locale: Locale) {
     ...(site.foundingYear ? { foundingDate: String(site.foundingYear) } : {}),
     address: {
       "@type": "PostalAddress",
-      streetAddress: site.address.street,
-      addressLocality: site.address.district,
-      addressRegion: site.address.city,
-      postalCode: site.address.postalCode,
-      addressCountry: site.address.country,
+      streetAddress: info.address.street,
+      addressLocality: info.address.district,
+      addressRegion: info.address.city,
+      postalCode: info.address.postalCode,
+      addressCountry: info.address.country,
     },
-    geo: { "@type": "GeoCoordinates", latitude: site.geo.lat, longitude: site.geo.lng },
-    openingHoursSpecification: site.hours.map((h) => ({
+    geo: { "@type": "GeoCoordinates", latitude: info.geo.lat, longitude: info.geo.lng },
+    openingHoursSpecification: info.hours.map((h) => ({
       "@type": "OpeningHoursSpecification",
       dayOfWeek: `https://schema.org/${schemaDays[h.day - 1]}`,
       opens: h.open,
       closes: h.close,
     })),
-    sameAs: [`https://www.instagram.com/${site.instagram}/`],
+    sameAs: [`https://www.instagram.com/${info.instagram}/`],
   };
 }
 
 /** Menüdeki her ürünü fiyatıyla birlikte arama motorlarına anlatır. */
-export function menuJsonLd(locale: Locale) {
+export function menuJsonLd(locale: Locale, menu: MenuCategory[]) {
   return {
     "@context": "https://schema.org",
     "@type": "Menu",
     name: `${site.name} — ${getDictionary(locale).menu.title}`,
     inLanguage: locale,
     url: absolute(localePath(locale)),
-    hasMenuSection: availableMenu().map((category) => ({
+    hasMenuSection: menu.map((category) => ({
       "@type": "MenuSection",
-      name: category.name[locale],
-      ...(category.description ? { description: category.description[locale] } : {}),
+      name: tx(category.name, locale),
+      ...(tx(category.description, locale) ? { description: tx(category.description, locale) } : {}),
       hasMenuItem: category.items.map((item) => ({
         "@type": "MenuItem",
-        name: item.name[locale],
-        description: item.description[locale],
+        name: tx(item.name, locale),
+        description: tx(item.description, locale),
         offers: item.prices.map((price) => ({
           "@type": "Offer",
           price: price.amount,
           priceCurrency: "TRY",
-          ...(price.label ? { name: price.label[locale] } : {}),
+          ...(tx(price.label, locale) ? { name: tx(price.label, locale) } : {}),
         })),
       })),
     })),

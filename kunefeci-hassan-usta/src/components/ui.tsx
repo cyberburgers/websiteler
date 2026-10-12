@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { FoodArt } from "@/components/art/FoodArt";
-import { photoArt, photos, type PhotoKey } from "@/content/photos";
+import { isPhotoKey, isUploadedPhoto, photoArt, photos } from "@/content/photos";
 
 /** Shown wherever a photo hasn't been supplied yet — on-brand instead of an empty grey box. */
 export function PhotoPlaceholder({ className = "", label }: { className?: string; label?: string }) {
@@ -25,8 +25,8 @@ export function PhotoPlaceholder({ className = "", label }: { className?: string
 }
 
 /**
- * A photo slot: the real photo when one has been added, otherwise the dish illustration.
- * `fill` crops round dishes to their rim, for circular frames.
+ * A photo slot: a bundled photo (by name), a photo uploaded from the panel (by address),
+ * or else the dish illustration. `fill` crops round dishes to their rim, for circular frames.
  */
 export function Photo({
   photo,
@@ -36,14 +36,18 @@ export function Photo({
   preload,
   fill,
 }: {
-  photo?: PhotoKey;
+  photo?: string;
   alt: string;
   sizes: string;
   className?: string;
   preload?: boolean;
   fill?: boolean;
 }) {
-  const src = photo ? photos[photo] : undefined;
+  if (photo && isUploadedPhoto(photo)) {
+    return <Image src={photo} alt={alt} fill sizes={sizes} preload={preload} className={`object-cover ${className}`} />;
+  }
+  const key = photo && isPhotoKey(photo) ? photo : undefined;
+  const src = key ? photos[key] : undefined;
   if (src) {
     return (
       <Image
@@ -57,7 +61,7 @@ export function Photo({
       />
     );
   }
-  const art = photo ? photoArt[photo] : undefined;
+  const art = key ? photoArt[key] : undefined;
   if (art) return <FoodArt kind={art} fill={fill} className={className} />;
   return <PhotoPlaceholder label={alt} />;
 }

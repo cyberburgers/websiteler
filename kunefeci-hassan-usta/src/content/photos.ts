@@ -105,3 +105,14 @@ export const photoArt: Record<PhotoKey, ArtKind | undefined> = {
   katSicak: "cay",
   katSoguk: undefined,
 };
+
+export const photoKeys = Object.keys(photoArt) as PhotoKey[];
+
+export function isPhotoKey(value: string): value is PhotoKey {
+  return (photoKeys as string[]).includes(value);
+}
+
+/** Photos uploaded from the panel: Vercel Blob in production, /medya/… when running on a single server. */
+export function isUploadedPhoto(value: string): boolean {
+  return /^https:\/\/[a-z0-9]+\.public\.blob\.vercel-storage\.com\/foto\/[\w.-]+$/i.test(value) || /^\/medya\/[\w-]+\.jpg$/.test(value);
+}

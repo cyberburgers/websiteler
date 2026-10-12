@@ -5,6 +5,7 @@ import QRCode from "qrcode";
 import { Logo } from "@/components/Logo";
 import { PrintButton } from "@/components/menu/PrintButton";
 import { site } from "@/content/site";
+import { getContent } from "@/lib/content";
 import { isLocale } from "@/i18n/config";
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ function parseTables(value: string | string[] | undefined): (number | null)[] {
 }
 
 async function TableCard({ table }: { table: number | null }) {
+  const { info } = await getContent();
   const url = new URL(table ? `/?masa=${table}` : "/", site.url).toString();
   const svg = await QRCode.toString(url, {
     type: "svg",
@@ -51,7 +53,7 @@ async function TableCard({ table }: { table: number | null }) {
         <span className="text-[3mm] text-krem-100/70">Türkçe · English</span>
       </div>
       <p className="relative mt-auto text-[2.7mm] tracking-[0.08em] text-krem-100/60">
-        @{site.instagram} · {site.address.district}, {site.address.city}
+        @{info.instagram} · {info.address.district}, {info.address.city}
       </p>
     </article>
   );

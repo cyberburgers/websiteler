@@ -5,21 +5,22 @@ import { CategoryTabs } from "@/components/menu/CategoryTabs";
 import { CategoryView } from "@/components/menu/CategoryView";
 import { allergenIcons } from "@/components/menu/icons";
 import { Photo } from "@/components/ui";
-import { allergens, availableMenu, type Allergen } from "@/content/menu";
-import { links } from "@/content/site";
+import { allergenIds, allergens } from "@/content/menu";
+import { linksFor } from "@/content/site";
 import { isLocale, localePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
+import { getContent, getMenu } from "@/lib/content";
 import { categoryPath, fill, menuView, pairingItems } from "@/lib/menu-view";
 import { pageMetadata } from "@/lib/seo";
 
-export function generateStaticParams() {
-  return availableMenu().map((category) => ({ kategori: category.id }));
+export async function generateStaticParams() {
+  return (await getMenu()).map((category) => ({ kategori: category.id }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/menu/[kategori]">): Promise<Metadata> {
   const { locale, kategori } = await params;
   if (!isLocale(locale)) return {};
-  const category = menuView(locale).find((c) => c.id === kategori);
+  const category = menuView(locale, await getMenu()).find((c) => c.id === kategori);
   if (!category) return {};
   return pageMetadata({
     locale,
@@ -34,7 +35,8 @@ export default async function CategoryPage({ params }: PageProps<"/[locale]/menu
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
   const waiterDict = getDictionary("tr");
-  const categories = menuView(locale);
+  const content = await getContent();
+  const categories = menuView(locale, await getMenu());
   const index = categories.findIndex((c) => c.id === kategori);
   if (index === -1) notFound();
   const category = categories[index];
@@ -82,7 +84,7 @@ export default async function CategoryPage({ params }: PageProps<"/[locale]/menu
             item,
             href: categoryPath(locale, item.categoryId, item.id),
           }))}
-          trayHref={links.whatsapp(dict.category.trayText)}
+          trayHref={linksFor(content.info).whatsapp(dict.category.trayText)}
           labels={{
             ...dict.category,
             close: dict.menu.close,
@@ -120,7 +122,7 @@ export default async function CategoryPage({ params }: PageProps<"/[locale]/menu
               {dict.menu.allergensTitle}
             </h2>
             <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-[13px] font-semibold text-krem-100/80">
-              {(Object.keys(allergens) as Allergen[]).map((id) => {
+              {allergenIds.map((id) => {
                 const Icon = allergenIcons[id];
                 return (
                   <li key={id} className="inline-flex items-center gap-1.5">

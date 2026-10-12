@@ -1,16 +1,24 @@
 "use client";
 
-import { site } from "@/content/site";
-import { openState, shopClock } from "@/lib/hours";
+import type { DayHours } from "@/content/site";
+import { openState } from "@/lib/hours";
 import { useNow } from "@/lib/useShopClock";
 
 type Labels = { open: string; closed: string; closes: string; opens: string; today: string };
 
-export function OpenStatus({ labels, tone = "dark" }: { labels: Labels; tone?: "dark" | "light" | "glass" }) {
+export function OpenStatus({
+  labels,
+  hours,
+  tone = "dark",
+}: {
+  labels: Labels;
+  hours: DayHours[];
+  tone?: "dark" | "light" | "glass";
+}) {
   const now = useNow();
   if (!now) return <span className="inline-block h-8" aria-hidden="true" />;
 
-  const state = openState(now);
+  const state = openState(now, hours);
   const detail = state.open ? `${labels.closes} ${state.closes}` : state.opens ? `${labels.opens} ${state.opens}` : "";
   const base = {
     dark: "bg-krem-50/10 text-krem-100 ring-krem-50/15",
@@ -30,36 +38,5 @@ export function OpenStatus({ labels, tone = "dark" }: { labels: Labels; tone?: "
       <span>{state.open ? labels.open : labels.closed}</span>
       {detail && <span className="opacity-60">· {detail}</span>}
     </span>
-  );
-}
-
-export function HoursList({ days, labels }: { days: string[]; labels: Labels }) {
-  const now = useNow();
-  const today = now ? shopClock(now).day : null;
-
-  return (
-    <ul className="divide-y divide-krem-50/10">
-      {days.map((dayName, index) => {
-        const day = index + 1;
-        const hours = site.hours.find((h) => h.day === day);
-        const isToday = day === today;
-        return (
-          <li
-            key={day}
-            className={`flex items-center justify-between gap-4 py-2.5 text-[15px] ${isToday ? "text-fistik-300" : "text-krem-100/80"}`}
-          >
-            <span className="flex items-center gap-2">
-              {dayName}
-              {isToday && (
-                <span className="rounded-full bg-fistik-300/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-fistik-300">
-                  {labels.today}
-                </span>
-              )}
-            </span>
-            <span className="tabular-nums">{hours ? `${hours.open} – ${hours.close}` : "—"}</span>
-          </li>
-        );
-      })}
-    </ul>
   );
 }

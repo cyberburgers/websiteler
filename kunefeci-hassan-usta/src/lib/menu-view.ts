@@ -1,49 +1,53 @@
 import type { FilterId, MenuViewCategory, MenuViewItem } from "@/components/menu/types";
-import { allergens, availableMenu, tags, type MenuCategory, type MenuItem } from "@/content/menu";
+import { allergens, tags, type MenuCategory, type MenuItem } from "@/content/menu";
 import { locales, localePath, type Locale } from "@/i18n/config";
-import { foldForSearch, formatPrice } from "./format";
+import { foldForSearch, formatPrice, tx } from "./format";
 
 /** Drinks suggested next to every dessert in its detail sheet. */
 const PAIRING_IDS = ["cay", "mirra"];
 const HOT_CATEGORIES = ["kunefeler", "sicak-icecekler"];
 const COLD_CATEGORIES = ["sutlu-ve-dondurma", "soguk-icecekler"];
+// Categories added in the panel are sorted by their name instead.
+const isHot = (c: MenuCategory) => HOT_CATEGORIES.includes(c.id) || foldForSearch(c.name.tr).includes("sicak");
+const isCold = (c: MenuCategory) =>
+  COLD_CATEGORIES.includes(c.id) || /soguk|dondurma/.test(foldForSearch(c.name.tr));
 const CHEAP_UNDER = 250;
 
 function filtersFor(item: MenuItem, category: MenuCategory): FilterId[] {
   const out: FilterId[] = [];
   if (foldForSearch(`${item.name.tr} ${item.description.tr}`).includes("fistik")) out.push("fistikli");
-  if (HOT_CATEGORIES.includes(category.id) || item.tags?.includes("sicak")) out.push("sicak");
-  if (COLD_CATEGORIES.includes(category.id)) out.push("soguk");
+  if (isHot(category) || item.tags?.includes("sicak")) out.push("sicak");
+  if (isCold(category)) out.push("soguk");
   if (Math.min(...item.prices.map((p) => p.amount)) < CHEAP_UNDER) out.push("ucuz");
   if (item.prices.length > 1 || item.tags?.includes("siparis")) out.push("paylasmalik");
   return out;
 }
 
-/** The whole menu, localized for one language. */
-export function menuView(locale: Locale): MenuViewCategory[] {
-  return availableMenu().map((category) => ({
+/** The menu guests see (hidden dishes already left out), localized for one language. */
+export function menuView(locale: Locale, menu: MenuCategory[]): MenuViewCategory[] {
+  return menu.map((category) => ({
     id: category.id,
-    name: category.name[locale],
-    description: category.description?.[locale],
+    name: tx(category.name, locale),
+    description: tx(category.description, locale) || undefined,
     layout: category.layout,
     photo: category.image,
     items: category.items.map(
       (item): MenuViewItem => ({
         id: item.id,
         categoryId: category.id,
-        name: item.name[locale],
-        description: item.description[locale],
-        prices: item.prices.map((p) => ({ label: p.label?.[locale], formatted: formatPrice(p.amount, locale) })),
+        name: tx(item.name, locale),
+        description: tx(item.description, locale),
+        prices: item.prices.map((p) => ({ label: tx(p.label, locale) || undefined, formatted: formatPrice(p.amount, locale) })),
         allergens: item.allergens.map((a) => ({ id: a, label: allergens[a][locale] })),
         tags: (item.tags ?? []).map((t) => ({ id: t, label: tags[t][locale] })),
         photo: item.image,
         filters: filtersFor(item, category),
         search: foldForSearch(
-          [...locales.map((l) => item.name[l]), item.description[locale], category.name[locale]].join(" "),
+          [...locales.map((l) => item.name[l]), tx(item.description, locale), tx(category.name, locale)].join(" "),
         ),
         waiter: {
           name: item.name.tr,
-          prices: item.prices.map((p) => ({ label: p.label?.tr, formatted: formatPrice(p.amount, "tr") })),
+          prices: item.prices.map((p) => ({ label: p.label?.tr || undefined, formatted: formatPrice(p.amount, "tr") })),
         },
       }),
     ),
@@ -60,3 +64,11 @@ export function categoryPath(locale: Locale, categoryId: string, itemId?: string
 }
 
 export { fill } from "./format";
+
+/** The "master's pick": the dish chosen in the panel, else the signature dish, else the first one. */
+export function featuredItem(categories: MenuViewCategory[], featuredId?: string): MenuViewItem | undefined {
+  const items = categories.flatMap((c) => c.items);
+  return (
+    items.find((i) => i.id === featuredId) ?? items.find((i) => i.tags.some((t) => t.id === "imza")) ?? items[0]
+  );
+}

@@ -1,34 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Berkshire_Swash, Fraunces, Manrope } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Logo } from "@/components/Logo";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Splash } from "@/components/Splash";
-import { links, site } from "@/content/site";
+import { linksFor, site } from "@/content/site";
 import { isLocale, localePath, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
+import { getContent } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
+import { fontVariables } from "../fonts";
 import "../globals.css";
 import "../splash-logo.css";
-
-const berkshire = Berkshire_Swash({
-  weight: "400",
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-berkshire",
-});
-
-const fraunces = Fraunces({
-  subsets: ["latin", "latin-ext"],
-  axes: ["SOFT", "opsz"],
-  style: ["normal", "italic"],
-  variable: "--font-fraunces",
-});
-
-const manrope = Manrope({
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-manrope",
-});
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -57,11 +40,12 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
   const home = localePath(locale);
+  const { info } = await getContent();
 
   return (
     <html
       lang={locale}
-      className={`${berkshire.variable} ${fraunces.variable} ${manrope.variable} antialiased`}
+      className={`${fontVariables} antialiased`}
       // The splash script adds a class to <html> before React hydrates.
       suppressHydrationWarning
     >
@@ -79,11 +63,11 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
           homeHref={home}
           searchHref={localePath(locale, "/ara")}
           labels={{ search: dict.search.title, back: dict.category.back, language: dict.nav.language }}
-          phoneHref={links.tel}
-          phoneDisplay={site.phoneDisplay}
+          phoneHref={linksFor(info).tel}
+          phoneDisplay={info.phoneDisplay}
         />
         <main id="icerik">{children}</main>
-        <SiteFooter locale={locale} dict={dict} />
+        <SiteFooter locale={locale} dict={dict} info={info} />
       </body>
     </html>
   );

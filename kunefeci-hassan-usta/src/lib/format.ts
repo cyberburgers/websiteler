@@ -1,8 +1,9 @@
 import { localeMeta, type Locale } from "@/i18n/config";
 import type { Text } from "@/content/menu";
 
-export function tx(text: Text, locale: Locale): string {
-  return text[locale];
+/** The text in this language; the Turkish one when the English hasn't been written yet. */
+export function tx(text: Text | undefined, locale: Locale): string {
+  return text?.[locale] || text?.tr || "";
 }
 
 export function formatPrice(amount: number, locale: Locale): string {

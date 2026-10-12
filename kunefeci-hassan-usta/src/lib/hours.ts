@@ -7,8 +7,8 @@ function toMinutes(time: string): number {
   return h * 60 + m;
 }
 
-function hoursFor(day: number): DayHours | undefined {
-  return site.hours.find((h) => h.day === day);
+function hoursFor(hours: DayHours[], day: number): DayHours | undefined {
+  return hours.find((h) => h.day === day);
 }
 
 /** Day of week (1 = Monday) and minutes since midnight in the shop's time zone. */
@@ -26,16 +26,16 @@ export function shopClock(date: Date): { day: number; minutes: number } {
 
 export type OpenState = { open: true; closes: string } | { open: false; opens: string | null };
 
-export function openState(date: Date): OpenState {
+export function openState(date: Date, hours: DayHours[]): OpenState {
   const { day, minutes } = shopClock(date);
 
   // Still open from yesterday's late shift (e.g. 10:00–01:00 and it's 00:30)?
-  const yesterday = hoursFor(day === 1 ? 7 : day - 1);
+  const yesterday = hoursFor(hours, day === 1 ? 7 : day - 1);
   if (yesterday && toMinutes(yesterday.close) <= toMinutes(yesterday.open) && minutes < toMinutes(yesterday.close)) {
     return { open: true, closes: yesterday.close };
   }
 
-  const today = hoursFor(day);
+  const today = hoursFor(hours, day);
   if (today) {
     const open = toMinutes(today.open);
     const close = toMinutes(today.close);
@@ -45,17 +45,21 @@ export function openState(date: Date): OpenState {
   }
 
   for (let i = 1; i <= 7; i++) {
-    const next = hoursFor(((day - 1 + i) % 7) + 1);
+    const next = hoursFor(hours, ((day - 1 + i) % 7) + 1);
     if (next) return { open: false, opens: next.open };
   }
   return { open: false, opens: null };
 }
 
 /** Consecutive days with the same hours folded into one line: "Pazartesi – Perşembe  10:00 – 00:00". */
-export function groupedHours(dayNames: string[], closedLabel: string): { days: string; hours: string }[] {
+export function groupedHours(
+  hoursList: DayHours[],
+  dayNames: string[],
+  closedLabel: string,
+): { days: string; hours: string }[] {
   const groups: { start: number; end: number; hours: string }[] = [];
   for (let day = 1; day <= 7; day++) {
-    const h = hoursFor(day);
+    const h = hoursFor(hoursList, day);
     const hours = h ? `${h.open} – ${h.close}` : closedLabel;
     const last = groups.at(-1);
     if (last && last.hours === hours && last.end === day - 1) last.end = day;

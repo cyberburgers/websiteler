@@ -89,6 +89,10 @@ html,
 body {
   background-color: var(--color-zumrut-925);
 }
+html.panel,
+html.panel body {
+  background-color: var(--color-krem-100);
+}
 
 @utility container-page {
   width: 100%;

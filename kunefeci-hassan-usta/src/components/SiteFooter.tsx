@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { MapPin, Navigation, Phone } from "lucide-react";
 import { InstagramIcon, WhatsAppIcon } from "./BrandIcons";
-import { links, site } from "@/content/site";
+import { linksFor, site, type ShopInfo } from "@/content/site";
 import { localePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { groupedHours } from "@/lib/hours";
@@ -15,7 +15,8 @@ const action =
   "flex h-12 items-center justify-center gap-2 rounded-2xl text-[13px] font-bold transition-colors sm:text-sm";
 
 /** Directions, call, Instagram and WhatsApp, then the address and hours in two short lines. */
-export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+export function SiteFooter({ locale, dict, info }: { locale: Locale; dict: Dictionary; info: ShopInfo }) {
+  const links = linksFor(info);
   return (
     <footer className="print-hidden border-t border-krem-50/10 bg-zumrut-925 text-krem-100">
       <div className="container-page max-w-6xl pb-[calc(2rem+env(safe-area-inset-bottom))] pt-6 md:pt-8">
@@ -57,11 +58,11 @@ export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary 
           <a href={links.mapsSearch} target="_blank" rel="noopener noreferrer" className="flex gap-2 hover:text-krem-50">
             <MapPin className="mt-0.5 size-4 shrink-0 text-karamel-300" aria-hidden="true" />
             <span>
-              {site.address.street}, {site.address.district} / {site.address.city}
+              {info.address.street}, {info.address.district} / {info.address.city}
             </span>
           </a>
           <p className="ps-6">
-            {groupedHours(dict.days, dict.status.dayOff)
+            {groupedHours(info.hours, dict.days, dict.status.dayOff)
               .map((g) => `${g.days} ${g.hours}`)
               .join(" · ")}
           </p>

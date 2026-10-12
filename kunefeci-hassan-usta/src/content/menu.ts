@@ -1,11 +1,11 @@
-import type { PhotoKey } from "./photos";
-
 /**
- * MENÜ — fiyatları, ürünleri ve açıklamaları buradan güncelleyin.
+ * BAŞLANGIÇ MENÜSÜ — sitenin ilk açılışta gösterdiği menü.
+ *
+ * Menü artık yönetici panelinden (/yonetim) değiştirilir. Panelden ilk kez
+ * kaydedildiğinde menü depolamaya yazılır ve bu dosya bir daha okunmaz;
+ * yalnızca yeni kurulumlar için başlangıç içeriğidir.
  *
  * - Fiyatlar Türk Lirası, KDV dahil, tam sayı yazılır (220 = ₺220).
- * - Şu anki fiyatlar ÖRNEKTİR; yayından önce gerçek fiyatlarla değiştirin.
- * - Bir ürünü geçici olarak kaldırmak için `available: false` yazın.
  * - Her metnin iki dili var: tr (Türkçe), en (İngilizce).
  */
 
@@ -25,7 +25,8 @@ export type MenuItem = {
   prices: Price[];
   allergens: Allergen[];
   tags?: Tag[];
-  image?: PhotoKey;
+  /** A bundled photo's name (see photos.ts) or the address of a photo uploaded from the panel. */
+  image?: string;
   available?: boolean;
 };
 
@@ -35,18 +36,18 @@ export type MenuCategory = {
   description?: Text;
   /** "cards": fotoğraflı kartlar. "list": klasik menü satırları (içecekler gibi). */
   layout: "cards" | "list";
-  /** Ana sayfadaki kategori kutusunun ve kategori sayfasının kapak fotoğrafı. */
-  image?: PhotoKey;
+  /** Kategori sayfasının kapak fotoğrafı. */
+  image?: string;
   items: MenuItem[];
 };
 
-/** Menünün en son ne zaman güncellendiği (YYYY-AA-GG). Menü sayfasında gösterilir. */
-export const menuUpdatedAt = "2026-10-11";
+/** Başlangıç menüsünün tarihi (YYYY-AA-GG). Panelden kaydedince güncellenir. */
+export const defaultMenuUpdatedAt = "2026-10-11";
 
 const portion: Text = { tr: "Porsiyon", en: "Portion" };
 const kilo: Text = { tr: "1 kg", en: "1 kg" };
 
-export const menu: MenuCategory[] = [
+export const defaultMenu: MenuCategory[] = [
   {
     id: "kunefeler",
     name: { tr: "Künefeler", en: "Künefe" },
@@ -383,7 +384,11 @@ export const tags: Record<Tag, Text> = {
   siparis: { tr: "Ön sipariş", en: "Pre-order" },
 };
 
-export function availableMenu(): MenuCategory[] {
+export const allergenIds = Object.keys(allergens) as Allergen[];
+export const tagIds = Object.keys(tags) as Tag[];
+
+/** The menu as guests see it: hidden dishes left out, and categories with nothing left in them too. */
+export function availableMenu(menu: MenuCategory[]): MenuCategory[] {
   return menu
     .map((c) => ({ ...c, items: c.items.filter((i) => i.available !== false) }))
     .filter((c) => c.items.length > 0);

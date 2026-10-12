@@ -1,32 +1,48 @@
 /**
- * İşletme bilgileri — sitenin her yerinde (başlık, alt bilgi, harita, Google
- * yapısal verisi) buradan okunur. "DOLDURULACAK" yazan alanlar örnek değerdir;
- * yayına almadan önce gerçek bilgilerle değiştirin.
+ * Sitenin sabit bilgileri. Telefon, adres, saatler gibi işletme bilgileri
+ * yönetici panelinden (/yonetim) değiştirilir; aşağıdaki `defaultInfo` yalnızca
+ * panelden ilk kayıt yapılana kadar gösterilen başlangıç değeridir.
  */
 export const site = {
   name: "Künefeci Hassan Usta",
   /** Sitenin yayında olacağı adres. Vercel'de NEXT_PUBLIC_SITE_URL ile de verilebilir. */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://kunefecihassanusta.com", // DOLDURULACAK
+  timeZone: "Europe/Istanbul",
+  priceRange: "₺₺",
+  foundingYear: null as number | null, // DOLDURULACAK — biliniyorsa ör. 1998
+} as const;
 
-  phone: "+904140000000", // DOLDURULACAK — uluslararası biçimde, boşluksuz
-  phoneDisplay: "0 (414) 000 00 00", // DOLDURULACAK
-  whatsapp: "905000000000", // DOLDURULACAK — başında + olmadan, 90 ile
-  instagram: "kunefecihassanusta", // DOLDURULACAK — kullanıcı adı, @ olmadan
+/** day: 1 = Pazartesi … 7 = Pazar. Gece yarısından sonra kapanıyorsa close, open'dan küçüktür (10:00–01:00). */
+export type DayHours = { day: number; open: string; close: string };
 
+export type ShopInfo = {
+  /** For tel: links, international form without spaces: +904140000000. */
+  phone: string;
+  phoneDisplay: string;
+  /** Digits only, with the country code: 905000000000. */
+  whatsapp: string;
+  /** Username without the @. */
+  instagram: string;
+  address: { street: string; district: string; city: string; postalCode: string; country: string };
+  /** Where the map pin goes. */
+  geo: { lat: number; lng: number };
+  /** Days that are missing are closed. */
+  hours: DayHours[];
+};
+
+export const defaultInfo: ShopInfo = {
+  phone: "+904140000000",
+  phoneDisplay: "0 (414) 000 00 00",
+  whatsapp: "905000000000",
+  instagram: "kunefecihassanusta",
   address: {
-    street: "Örnek Mah. Örnek Cad. No: 1", // DOLDURULACAK
-    district: "Haliliye", // DOLDURULACAK
+    street: "Örnek Mah. Örnek Cad. No: 1",
+    district: "Haliliye",
     city: "Şanlıurfa",
-    postalCode: "63000", // DOLDURULACAK
+    postalCode: "63000",
     country: "TR",
   },
-  /** Haritadaki iğnenin yeri. Google Haritalar'da dükkâna sağ tıklayıp koordinatı kopyalayın. */
-  geo: { lat: 37.1591, lng: 38.7969 }, // DOLDURULACAK — şimdilik şehir merkezi
-
-  /**
-   * Çalışma saatleri. day: 1 = Pazartesi … 7 = Pazar.
-   * Gece yarısından sonra kapanıyorsa close değeri open'dan küçük yazılır (ör. 10:00–01:00).
-   */
+  geo: { lat: 37.1591, lng: 38.7969 },
   hours: [
     { day: 1, open: "10:00", close: "00:00" },
     { day: 2, open: "10:00", close: "00:00" },
@@ -35,19 +51,23 @@ export const site = {
     { day: 5, open: "10:00", close: "01:00" },
     { day: 6, open: "10:00", close: "01:00" },
     { day: 7, open: "10:00", close: "00:00" },
-  ] as const, // DOLDURULACAK
-
-  timeZone: "Europe/Istanbul",
-  priceRange: "₺₺",
-  foundingYear: null as number | null, // DOLDURULACAK — biliniyorsa ör. 1998
-} as const;
-
-export type DayHours = (typeof site.hours)[number];
-
-export const links = {
-  tel: `tel:${site.phone}`,
-  whatsapp: (text?: string) => `https://wa.me/${site.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ""}`,
-  instagram: `https://www.instagram.com/${site.instagram}/`,
-  directions: `https://www.google.com/maps/dir/?api=1&destination=${site.geo.lat},${site.geo.lng}`,
-  mapsSearch: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name} ${site.address.city}`)}`,
+  ],
 };
+
+export type Links = {
+  tel: string;
+  whatsapp: (text?: string) => string;
+  instagram: string;
+  directions: string;
+  mapsSearch: string;
+};
+
+export function linksFor(info: ShopInfo): Links {
+  return {
+    tel: `tel:${info.phone}`,
+    whatsapp: (text?: string) => `https://wa.me/${info.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ""}`,
+    instagram: `https://www.instagram.com/${info.instagram}/`,
+    directions: `https://www.google.com/maps/dir/?api=1&destination=${info.geo.lat},${info.geo.lng}`,
+    mapsSearch: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name} ${info.address.city}`)}`,
+  };
+}

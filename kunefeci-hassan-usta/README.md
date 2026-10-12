@@ -17,6 +17,7 @@ Site, masadaki QR kodla açılan bir menü gibi çalışır.
 | `/tr/ara` | Menüde arama ve filtreler: Fıstıklı, Sıcak, Soğuk, ₺250 altı, Paylaşmalık (Google'a kapalı) |
 | `/tr/gizlilik` | Gizlilik ve KVKK aydınlatma metni |
 | `/tr/qr` | Masalara konacak yazdırılabilir QR kartları (Google'a kapalı) |
+| `/yonetim` | Yönetici paneli: menü, fiyatlar, fotoğraflar, saatler, iletişim (şifreli, Google'a kapalı) |
 
 **Ürün penceresi:** fotoğraf, fiyat, alerjenler, "Yanında iyi gider" (çay, mırra), **Garsona göster**
 (ürünün Türkçe adını ve masa numarasını büyük yazıyla gösterir; yabancı misafirler için) ve Paylaş.
@@ -42,46 +43,67 @@ npm run build    # yayın öncesi kontrol
 npm run lint
 ```
 
-## İçeriği güncelleme
+## Yönetici paneli (`/yonetim`)
 
-Her şey `src/content/` klasöründedir; kod bilmeden düzenlenebilecek şekilde açıklamalıdır.
+Menü ve işletme bilgileri kod bilmeden, telefondan değiştirilir. Adres: `https://alanadiniz.com/yonetim`
+
+| Bölüm | Neler değişir? |
+| --- | --- |
+| **Menü** | Fiyatlar (doğrudan kutudan), ürünü gizleme/gösterme ("bugün yok"), yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler; kategori ekleme, silme, sıralama, kapak fotoğrafı |
+| **Öne çıkanlar** | "Ustanın önerisi" ürünü, ana sayfanın üstündeki duyuru (ör. bayram kapanışı) |
+| **İşletme bilgileri** | Telefon, WhatsApp, Instagram, adres, harita konumu, çalışma saatleri |
+
+Değişiklikler alttaki **Kaydet** ile kaydedilir ve sitede hemen görünür. İngilizce alanlar boş
+bırakılırsa İngilizce menüde Türkçesi gösterilir. Telefondan yüklenen fotoğraflar küçültülür,
+düzeltilir ve içindeki konum bilgisi silinir.
+
+### Kurulum (bir kez)
+
+1. **Şifre:** Vercel → proje → **Settings → Environment Variables** → `ADMIN_PASSWORD` ekleyin.
+   En az 8 karakter; uzun ve tahmin edilmesi zor olsun (ör. üç-dört kelimelik bir cümle).
+   Şifreyi değiştirince herkesin oturumu kapanır.
+2. **Kayıt yeri:** Vercel → proje → **Storage → Create → Blob** → projeye bağlayın.
+   Vercel `BLOB_READ_WRITE_TOKEN` ayarını kendisi ekler. Menü ve yüklenen fotoğraflar burada durur;
+   her kayıtta son 20 sürüm yedek olarak saklanır.
+3. **Redeploy** edin, sonra `/yonetim` adresinden girin.
+
+Vercel dışında kendi sunucunuzda çalıştırırsanız Blob gerekmez: içerik proje klasöründeki `.data/`
+klasörüne yazılır (bu klasörü yedekleyin).
+
+### Başlangıç içeriği
+
+Panelden ilk kayıt yapılana kadar site `src/content/menu.ts` (menü) ve `src/content/site.ts`
+(`defaultInfo`: telefon, adres, saatler) dosyalarındaki başlangıç içeriğini gösterir. İlk kayıttan
+sonra bu dosyalar okunmaz.
 
 | Dosya | Ne var? |
 | --- | --- |
-| `src/content/site.ts` | Telefon, WhatsApp, adres, konum, çalışma saatleri, Instagram |
-| `src/content/menu.ts` | Kategoriler (ve kapak fotoğrafları), ürünler, fiyatlar, alerjenler, etiketler |
-| `src/content/photos.ts` | Hangi fotoğrafın nerede kullanılacağı |
+| `src/content/photos.ts` | Siteyle gelen fotoğraflar (`src/assets/photos/`) |
 | `src/content/privacy.ts` | Gizlilik / KVKK metni |
-| `src/i18n/dictionaries/` | Sitedeki tüm yazılar (tr, en) |
-
-- **Fiyat değiştirmek:** `menu.ts` içinde ürünün `amount` değerini değiştirin (`220` = ₺220).
-  Sonra dosyanın başındaki `menuUpdatedAt` tarihini güncelleyin.
-- **Ürünü geçici kaldırmak:** ürüne `available: false` ekleyin.
-- **Fotoğraf değiştirmek:** şu an sitede Pexels/Unsplash'tan alınmış temsili fotoğraflar var
-  (kaynaklar: `src/assets/photos/KAYNAKLAR.md`). Dükkânın kendi fotoğrafını `src/assets/photos/`
-  içindeki dosyanın üstüne aynı adla kaydetmek yeterli (örneğin `kunefe1.jpg`).
-  En az 1400 piksel, iyi ışıklı fotoğraflar en iyi sonucu verir.
+| `src/i18n/dictionaries/` | Sitedeki sabit yazılar (tr, en) |
 
 ## Yayına almadan önce yapılacaklar
 
-`site.ts` içinde `DOLDURULACAK` yazan her alanı gerçek bilgiyle değiştirin:
+Panelden:
 
-- [ ] Telefon ve WhatsApp numarası
-- [ ] Açık adres ve haritadaki konum (Google Haritalar'da dükkâna sağ tıklayıp koordinatı kopyalayın)
+- [ ] Telefon, WhatsApp, Instagram, açık adres ve harita konumu
 - [ ] Çalışma saatleri
-- [ ] Instagram kullanıcı adı
-- [ ] Alan adı (`url`) — ya da Vercel'de `NEXT_PUBLIC_SITE_URL` ortam değişkeni
-- [ ] `menu.ts` içindeki **örnek fiyatlar** → gerçek fiyatlar
-- [ ] Dükkânın kendi fotoğrafları (künefe, tatlılar, içecekler, dükkân, usta)
+- [ ] **Örnek fiyatlar** → gerçek fiyatlar
+- [ ] Dükkânın kendi fotoğrafları
+
+Kodda / Vercel'de:
+
+- [ ] Alan adı: Vercel'de `NEXT_PUBLIC_SITE_URL` ortam değişkeni
 - [ ] Gizlilik metnini bir hukukçuya kontrol ettirin
 
 ## Yayına alma (Vercel)
 
 1. [vercel.com](https://vercel.com) → **Add New Project** → bu GitHub deposunu seçin.
 2. **Root Directory** olarak `kunefeci-hassan-usta` klasörünü seçin.
-3. Ortam değişkeni: `NEXT_PUBLIC_SITE_URL=https://alanadiniz.com`
-4. **Deploy**. Sonra alan adını Vercel'den bağlayın.
-5. [Google İşletme Profili](https://business.google.com)'nde web sitesi alanına adresi yazın ve
+3. Ortam değişkenleri: `NEXT_PUBLIC_SITE_URL=https://alanadiniz.com` ve `ADMIN_PASSWORD=…`
+4. **Storage → Blob** deposu oluşturup projeye bağlayın (panelin kayıt yeri).
+5. **Deploy**. Sonra alan adını Vercel'den bağlayın.
+6. [Google İşletme Profili](https://business.google.com)'nde web sitesi alanına adresi yazın ve
    [Search Console](https://search.google.com/search-console)'a `https://alanadiniz.com/sitemap.xml` ekleyin.
 
 ## Notlar
@@ -89,6 +111,7 @@ Her şey `src/content/` klasöründedir; kod bilmeden düzenlenebilecek şekilde
 - **Logo:** `src/components/Logo.tsx`, tabeladaki logonun vektör çizimidir (Berkshire Swash yazı tipiyle).
   Tabelacıdan orijinal vektör dosyası (AI/PDF/SVG) alınırsa onunla değiştirilebilir.
   Tabelanın fotoğrafı `docs/logo-tabela.jpg` içinde.
-- **Çerez / analiz aracı yok.** Google Analytics vb. eklenirse çerez onayı ve gizlilik metni güncellenmelidir.
+- **Çerez / analiz aracı yok.** Ziyaretçilere çerez konmaz; yalnızca panele giren kişiye oturum çerezi konur.
+  Google Analytics vb. eklenirse çerez onayı ve gizlilik metni güncellenmelidir.
 - **SEO:** Her sayfada başlık/açıklama, dil alternatifleri (hreflang), `sitemap.xml`, `robots.txt` ve
   Google için `Restaurant` + `Menu` yapısal verisi (JSON-LD) vardır.
