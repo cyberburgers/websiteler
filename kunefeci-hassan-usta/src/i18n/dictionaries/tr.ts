@@ -51,6 +51,14 @@ const tr = {
     sticker: "Siparişle hazırlanır",
     ring: "KÜNEFECİ HASSAN USTA • ŞANLIURFA • SICAK SICAK • ",
   },
+  ticker: [
+    "Siparişle hazırlanır",
+    "Bol Antep fıstığı",
+    "Urfa sadeyağı",
+    "Tuzsuz Urfa peyniri",
+    "Sıcak şerbet",
+    "Tepsi künefe",
+  ],
   wheel: {
     trigger: "Kararsız mısın?",
     title: "Çarkı çevir, tatlını seç",
@@ -74,6 +82,23 @@ const tr = {
     p2: "Hassan Usta'nın tezgâhında kural basit: iyi malzeme, doğru ateş ve hiç kısaltılmayan bir usul. Şanlıurfa'nın sofra kültüründen gelen bu ustalığı her tabakta aynı özenle sunuyoruz.",
     quote: "Künefe beklemez; ateşten indiği an yenir.",
     imageAlt: "Künefe tepsisinin hazırlanışı",
+    pillarsTitle: "Dört malzeme, tek usul",
+    pillars: [
+      { title: "Tel kadayıf", text: "İncecik ve taze; sadeyağla tel tel ovulur." },
+      { title: "Urfa peyniri", text: "Tuzu alınmış, ısınınca uzayan yumuşak peynir." },
+      { title: "Urfa sadeyağı", text: "Künefeye o kokuyu veren, Şanlıurfa'nın meşhur yağı." },
+      { title: "Antep fıstığı", text: "Güneydoğu bağlarından, bol ve taze dövülmüş." },
+    ],
+  },
+  process: {
+    eyebrow: "Ateşten masaya",
+    title: "Her künefe dört adımda, sizin için hazırlanır",
+    steps: [
+      { title: "Hazırlık", text: "Kadayıf sadeyağla ovulur, tepsiye ince bir kat serilir." },
+      { title: "Peynir", text: "Tuzsuz Urfa peyniri iki kat kadayıfın arasına yerleşir." },
+      { title: "Ateş", text: "Tepsi ateşte çevrilir; alt kat altın rengine döner, peynir erir." },
+      { title: "Şerbet", text: "Sıcak şerbet ve dövme fıstıkla, bekletilmeden masaya gelir." },
+    ],
   },
   trays: {
     eyebrow: "Davet & ikram",

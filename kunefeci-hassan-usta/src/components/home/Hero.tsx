@@ -95,8 +95,35 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             <div className="animate-dish-in absolute inset-[10%] rounded-full bg-gradient-to-b from-karamel-300 to-karamel-700 p-[3.2%] shadow-[0_50px_90px_-30px_rgba(0,0,0,.75)]">
               <div className="relative size-full overflow-hidden rounded-full ring-2 ring-lacivert-900/40">
                 <Photo photo="hero" alt={dict.hero.imageAlt} sizes="(min-width: 1024px) 34rem, 80vw" preload fill />
+                <span
+                  aria-hidden="true"
+                  className="animate-sheen pointer-events-none absolute inset-y-0 left-0 w-[55%] bg-[linear-gradient(105deg,transparent,rgba(255,250,235,.32),transparent)]"
+                />
               </div>
             </div>
+            <svg
+              viewBox="0 0 120 100"
+              aria-hidden="true"
+              className="pointer-events-none absolute left-1/2 top-[12%] h-[30%] w-[36%] -translate-x-1/2 blur-[1.5px]"
+            >
+              {[
+                ["M34 96C24 76 44 66 34 46C26 30 40 18 36 4", "0s"],
+                ["M60 96C50 74 70 62 60 42C52 26 66 14 62 2", "1.2s"],
+                ["M86 96C76 78 96 66 86 48C78 32 92 20 88 6", "2.4s"],
+              ].map(([d, delay]) => (
+                <path
+                  key={delay}
+                  d={d}
+                  className="animate-steam opacity-0"
+                  style={{ animationDelay: delay }}
+                  stroke="#fffdf6"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                  fill="none"
+                />
+              ))}
+            </svg>
+
             <div className="animate-pop absolute -end-1 top-[7%] grid size-[4.75rem] rotate-12 [animation-delay:1s] place-items-center rounded-full bg-fistik-500 p-2 text-center text-[9px] font-extrabold uppercase leading-tight tracking-wider text-krem-50 shadow-xl ring-4 ring-lacivert-900 sm:size-28 sm:p-3 sm:text-xs">
               {dict.hero.sticker}
             </div>

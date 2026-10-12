@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
 import { Gallery } from "@/components/home/Gallery";
 import { Hero } from "@/components/home/Hero";
+import { Process } from "@/components/home/Process";
 import { Signature } from "@/components/home/Signature";
 import { Story } from "@/components/home/Story";
+import { Ticker } from "@/components/home/Ticker";
 import { Trays } from "@/components/home/Trays";
 import { Visit } from "@/components/home/Visit";
 import { isLocale } from "@/i18n/config";
@@ -19,7 +21,9 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <JsonLd data={restaurantJsonLd(locale)} />
       <Hero locale={locale} dict={dict} />
       <Signature locale={locale} dict={dict} />
+      <Ticker items={dict.ticker} />
       <Story dict={dict} />
+      <Process dict={dict} />
       <Trays dict={dict} />
       <Gallery dict={dict} />
       <Visit dict={dict} />

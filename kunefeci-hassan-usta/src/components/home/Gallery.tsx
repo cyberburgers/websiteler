@@ -2,7 +2,7 @@ import { Photo, SectionHeading } from "@/components/ui";
 import { photos, type PhotoKey } from "@/content/photos";
 import type { Dictionary } from "@/i18n/dictionaries";
 
-// Spans make a mosaic that fills three rows of four (six rows of two on phones) with no gaps.
+// Spans make a mosaic that fills four rows of four (eight rows of two on phones) with no gaps.
 // Photos that don't exist yet are simply skipped.
 const tiles: { key: PhotoKey; span: string }[] = [
   { key: "kunefe1", span: "col-span-2 row-span-2" },
@@ -10,7 +10,8 @@ const tiles: { key: PhotoKey; span: string }[] = [
   { key: "cay", span: "" },
   { key: "urfa", span: "col-span-2" },
   { key: "kahve", span: "" },
-  { key: "tel", span: "col-span-2" },
+  { key: "kunefe3", span: "row-span-2" },
+  { key: "tel", span: "col-span-2 row-span-2" },
   { key: "fistik", span: "" },
 ];
 
