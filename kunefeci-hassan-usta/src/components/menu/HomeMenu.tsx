@@ -2,14 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { fill } from "@/lib/format";
-import { CategoryBanner } from "./CategoryBanner";
-import { ItemCard, type ItemCardLabels } from "./ItemCard";
+import { ItemCard } from "./ItemCard";
 import { ItemSheet, type SheetLabels, type WaiterLabels } from "./ItemSheet";
 import { closeItem, openItem, useItemHash } from "./itemHash";
-import { DrinkMenu } from "./parts";
+import { DrinkLine } from "./parts";
 import type { MenuViewCategory, MenuViewItem } from "./types";
 
-type Labels = SheetLabels & ItemCardLabels & { tabs: string; dishes: string; drinks: string };
+type Labels = SheetLabels & { tabs: string; dishes: string; drinks: string; details: string };
 
 type Props = {
   categories: MenuViewCategory[];
@@ -26,22 +25,37 @@ export function HomeMenu({ categories, pairing, labels, waiter }: Props) {
   const selected = categories.flatMap((c) => c.items).find((i) => i.id === hash) ?? null;
   const selectedLayout = categories.find((c) => c.id === selected?.categoryId)?.layout;
 
-  // Highlight the category currently under the pill bar.
+  // Highlight the category whose heading has passed under the pill bar. It is worked out from where
+  // every section is, not from which one just crossed a line, so jumping back up can't pick the wrong one.
+  // Right after a pill is tapped the smooth scroll runs through other sections; wait for it to settle.
+  const settleUntil = useRef(0);
   useEffect(() => {
     const sections = categories
       .map((c) => document.getElementById(`kategori-${c.id}`))
       .filter((el): el is HTMLElement => el !== null);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const top = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (top) setActive(top.target.id.replace("kategori-", ""));
-      },
-      { rootMargin: "-140px 0px -55% 0px" },
-    );
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
+    let frame = 0;
+    let timer = 0;
+    const update = () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+      const wait = settleUntil.current - performance.now();
+      if (wait > 0) {
+        timer = window.setTimeout(update, wait);
+        return;
+      }
+      frame = requestAnimationFrame(() => {
+        let current = sections[0]?.id;
+        for (const section of sections) if (section.getBoundingClientRect().top <= 170) current = section.id;
+        if (current) setActive(current.replace("kategori-", ""));
+      });
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", update);
+      cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+    };
   }, [categories]);
 
   // Keep the active pill in view inside the horizontally scrolling bar.
@@ -70,6 +84,7 @@ export function HomeMenu({ categories, pairing, labels, waiter }: Props) {
                 onClick={(e) => {
                   e.preventDefault();
                   setActive(c.id);
+                  settleUntil.current = performance.now() + 900;
                   document.getElementById(`kategori-${c.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
                 }}
                 className={`flex h-[38px] shrink-0 items-center rounded-full px-[15px] text-[13.5px] transition-colors ${
@@ -85,37 +100,41 @@ export function HomeMenu({ categories, pairing, labels, waiter }: Props) {
         </div>
       </nav>
 
-      {categories.map((category, ci) => (
+      {categories.map((category) => (
         <section
           key={category.id}
           id={`kategori-${category.id}`}
           aria-labelledby={`baslik-${category.id}`}
-          className="pt-8 md:pt-14"
+          className="pt-8 md:pt-12"
         >
-          <CategoryBanner
-            id={category.id}
-            index={ci}
-            name={category.name}
-            description={category.description}
-            photo={category.photo}
-            count={fill(category.layout === "cards" ? labels.dishes : labels.drinks, { n: category.items.length })}
-          />
+          <div className="flex items-baseline justify-between gap-4">
+            <h3 id={`baslik-${category.id}`} className="font-display text-[28px] font-semibold text-krem-50 md:text-4xl">
+              {category.name}
+            </h3>
+            <span className="shrink-0 text-xs font-bold text-krem-100/50">
+              {fill(category.layout === "cards" ? labels.dishes : labels.drinks, { n: category.items.length })}
+            </span>
+          </div>
+          {category.description && <p className="mt-1 text-sm text-krem-100/65">{category.description}</p>}
           {category.layout === "cards" ? (
-            <ul className="mt-4 grid grid-cols-1 gap-5 md:mt-6 md:grid-cols-2 lg:grid-cols-3">
-              {category.items.map((item, ii) => (
+            <ul className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
+              {category.items.map((item) => (
                 <ItemCard
                   key={item.id}
                   item={item}
-                  index={ii}
                   onOpen={() => openItem(item.id)}
-                  labels={labels}
+                  detailsLabel={labels.details}
                 />
               ))}
             </ul>
           ) : (
-            <div className="mt-4 md:mt-6">
-              <DrinkMenu items={category.items} onOpen={openItem} />
-            </div>
+            <ul className="mt-4 grid grid-cols-1 gap-2.5 md:grid-cols-2 md:gap-3">
+              {category.items.map((item) => (
+                <li key={item.id} id={item.id}>
+                  <DrinkLine item={item} onOpen={() => openItem(item.id)} />
+                </li>
+              ))}
+            </ul>
           )}
         </section>
       ))}

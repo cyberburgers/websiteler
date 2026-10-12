@@ -2,19 +2,19 @@
 
 import { LayoutList, RectangleHorizontal } from "lucide-react";
 import { useSyncExternalStore } from "react";
-import { ItemCard, type ItemCardLabels } from "./ItemCard";
+import { ItemCard } from "./ItemCard";
 import { ItemSheet, type SheetLabels, type WaiterLabels } from "./ItemSheet";
 import { closeItem, openItem, useItemHash } from "./itemHash";
-import { DrinkMenu, ItemLine, lineClass } from "./parts";
+import { DrinkLine, ItemLine, lineClass } from "./parts";
 import type { MenuViewCategory, MenuViewItem } from "./types";
 
-type Labels = SheetLabels &
-  ItemCardLabels & {
-    hint: string;
-    view: string;
-    cards: string;
-    list: string;
-  };
+type Labels = SheetLabels & {
+  hint: string;
+  view: string;
+  cards: string;
+  list: string;
+  details: string;
+};
 
 type Props = {
   category: MenuViewCategory;
@@ -87,27 +87,30 @@ export function CategoryView({ category, pairing, labels, waiter }: Props) {
         </div>
       )}
 
-      {category.layout === "list" ? (
-        <DrinkMenu items={category.items} onOpen={openItem} />
-      ) : view === "cards" ? (
-        <ul className="mt-3.5 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {category.items.map((item, ii) => (
+      {view === "cards" ? (
+        <ul className="mt-3.5 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
+          {category.items.map((item) => (
             <ItemCard
               key={item.id}
               item={item}
-              index={ii}
               onOpen={() => openItem(item.id)}
-              labels={labels}
+              detailsLabel={labels.details}
             />
           ))}
         </ul>
       ) : (
-        <ul className="mt-3.5 grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-3">
+        <ul
+          className={`grid grid-cols-1 md:grid-cols-2 md:gap-3 ${category.layout === "cards" ? "mt-3.5 gap-2" : "gap-2.5"}`}
+        >
           {category.items.map((item) => (
             <li key={item.id} id={item.id}>
-              <button type="button" onClick={() => openItem(item.id)} aria-haspopup="dialog" className={lineClass}>
-                <ItemLine item={item} />
-              </button>
+              {category.layout === "cards" ? (
+                <button type="button" onClick={() => openItem(item.id)} aria-haspopup="dialog" className={lineClass}>
+                  <ItemLine item={item} />
+                </button>
+              ) : (
+                <DrinkLine item={item} onOpen={() => openItem(item.id)} />
+              )}
             </li>
           ))}
         </ul>

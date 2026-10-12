@@ -131,8 +131,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
                 dishes: dict.home.dishes,
                 drinks: dict.home.drinks,
                 details: dict.category.details,
-                hot: dict.search.filterNames.sicak,
-                cold: dict.search.filterNames.soguk,
                 close: dict.menu.close,
                 price: dict.menu.price,
                 contains: dict.menu.contains,
