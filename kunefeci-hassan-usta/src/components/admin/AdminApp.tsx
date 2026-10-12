@@ -148,7 +148,7 @@ export function AdminApp({ initial, writable }: Props) {
       </main>
 
       {(dirty || message) && (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-zumrut-800/15 bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_30px_-18px_rgba(0,58,41,.5)] backdrop-blur">
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-zumrut-800/15 bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_30px_-18px_rgba(20,35,25,.5)] backdrop-blur">
           <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-3 px-4 py-3">
             <p
               role="status"

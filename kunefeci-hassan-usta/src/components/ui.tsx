@@ -70,7 +70,7 @@ const buttonBase =
   "inline-flex items-center justify-center gap-2.5 rounded-full px-7 py-4 text-[15px] font-bold transition-all duration-300 active:scale-[.98]";
 
 export const buttonStyles = {
-  primary: `${buttonBase} bg-fistik-300 text-zumrut-900 shadow-[0_10px_30px_-10px_rgba(182,232,106,.55)] hover:bg-fistik-200 hover:shadow-[0_14px_36px_-10px_rgba(182,232,106,.75)]`,
+  primary: `${buttonBase} bg-fistik-300 text-zumrut-900 shadow-[0_10px_30px_-10px_rgba(161,219,181,.55)] hover:bg-fistik-200 hover:shadow-[0_14px_36px_-10px_rgba(161,219,181,.75)]`,
   ghostDark: `${buttonBase} text-krem-50 ring-1 ring-krem-50/25 hover:bg-krem-50/10`,
   dark: `${buttonBase} bg-zumrut-800 text-krem-50 hover:bg-zumrut-700`,
   ghostLight: `${buttonBase} text-zumrut-800 ring-1 ring-zumrut-800/20 hover:bg-zumrut-800/[0.05]`,

@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 /*
- * Tema: kuyumcu yeşili (derin zümrüt) zemin, canlı fıstık yeşili vurgular.
+ * Tema: koyu, mat orman yeşili zemin; yumuşak nane yeşili vurgular.
  * Krem ve karamel tabeladaki logodan, şerbet turuncusu ürünlerden gelir.
  * Logonun kendisi tabeladaki gibi lacivert-sarı kalır.
  */
 @theme {
-  --color-zumrut-950: #003a29;
+  --color-zumrut-950: #142319;
   /* Page background of the menu. */
-  --color-zumrut-925: #004d36;
-  --color-zumrut-900: #005a3f;
-  --color-zumrut-800: #0b6b4c;
-  --color-zumrut-700: #148058;
-  --color-zumrut-600: #23996b;
-  --color-zumrut-400: #82d7b1;
+  --color-zumrut-925: #1d3126;
+  --color-zumrut-900: #233a2d;
+  --color-zumrut-800: #2c4436;
+  --color-zumrut-700: #375544;
+  --color-zumrut-600: #4a6e59;
+  --color-zumrut-400: #8fb8a0;
 
   --color-krem-50: #fffdf6;
   --color-krem-100: #fbf6e7;
@@ -27,12 +27,12 @@
   --color-karamel-600: #8f5a28;
   --color-karamel-700: #6f441e;
 
-  /* Vivid pistachio: buttons, prices, the selected category. */
-  --color-fistik-200: #dcf5b4;
-  --color-fistik-300: #b6e86a;
-  --color-fistik-400: #94d64a;
-  --color-fistik-500: #6fb32e;
-  --color-fistik-600: #437a15;
+  /* Soft mint: buttons, prices, the selected category. */
+  --color-fistik-200: #cdeed6;
+  --color-fistik-300: #a1dbb5;
+  --color-fistik-400: #7cc795;
+  --color-fistik-500: #58a874;
+  --color-fistik-600: #3d7d54;
 
   --color-serbet-400: #f0b452;
   --color-serbet-500: #dd9530;
@@ -134,7 +134,7 @@ html.panel body {
  * Yeşil bölümlerin arka planında çok hafif görünür.
  */
 @utility pattern-star {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='88' viewBox='0 0 88 88'%3E%3Cg fill='none' stroke='%23b6e86a' stroke-opacity='.075' stroke-width='1'%3E%3Cpath d='M26 26h36v36H26z'/%3E%3Cpath d='M44 18.5 69.5 44 44 69.5 18.5 44z'/%3E%3Ccircle cx='44' cy='44' r='6'/%3E%3Cpath d='M0 0l12 12M88 0 76 12M0 88l12-12M88 88 76 76'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='88' viewBox='0 0 88 88'%3E%3Cg fill='none' stroke='%23a1dbb5' stroke-opacity='.075' stroke-width='1'%3E%3Cpath d='M26 26h36v36H26z'/%3E%3Cpath d='M44 18.5 69.5 44 44 69.5 18.5 44z'/%3E%3Ccircle cx='44' cy='44' r='6'/%3E%3Cpath d='M0 0l12 12M88 0 76 12M0 88l12-12M88 88 76 76'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 88px 88px;
 }
 

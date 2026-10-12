@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
 }
 
 export const viewport: Viewport = {
-  themeColor: "#004d36",
+  themeColor: "#1d3126",
   colorScheme: "light",
   viewportFit: "cover",
 };
@@ -59,7 +59,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
         </a>
         <SiteHeader
           locale={locale}
-          logo={<Logo id="header-logo" className="h-auto w-full drop-shadow-[0_8px_14px_rgba(0,58,41,.45)]" />}
+          logo={<Logo id="header-logo" className="h-auto w-full drop-shadow-[0_8px_14px_rgba(20,35,25,.45)]" />}
           homeHref={home}
           searchHref={localePath(locale, "/ara")}
           labels={{ search: dict.search.title, back: dict.category.back, language: dict.nav.language }}

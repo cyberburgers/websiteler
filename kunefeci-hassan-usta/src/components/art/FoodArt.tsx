@@ -43,7 +43,7 @@ const C = {
   plate: "#fffdf6",
   plateWell: "#f8f1dc",
   plateLine: "#e8dbad",
-  dark: "#0b6b4c",
+  dark: "#2c4436",
 } as const;
 
 // --- deterministic texture helpers -------------------------------------------
@@ -572,8 +572,8 @@ function Fistik() {
     <g>
       <circle cx="207" cy="214" r="168" fill={C.trayShadow} opacity=".16" />
       <circle cx="200" cy="200" r="166" fill={C.dark} />
-      <path d="M62 116A160 160 0 0 1 116 62" stroke="#23996b" strokeWidth="6" strokeLinecap="round" fill="none" />
-      <circle cx="200" cy="200" r="150" fill="#005a3f" />
+      <path d="M62 116A160 160 0 0 1 116 62" stroke="#4a6e59" strokeWidth="6" strokeLinecap="round" fill="none" />
+      <circle cx="200" cy="200" r="150" fill="#233a2d" />
       {nuts.map(({ x, y, rot, s }, i) => (
         <g key={i} transform={`translate(${n1(x)} ${n1(y)}) rotate(${n1(rot)}) scale(${n1(s)})`}>
           <ellipse cx="2" cy="4" rx="28" ry="18" fill="#000" opacity=".25" />

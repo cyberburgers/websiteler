@@ -58,7 +58,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             />
             <div
               aria-hidden="true"
-              className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(0,77,54,.05)_30%,rgba(0,77,54,.92))]"
+              className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(29,49,38,.05)_30%,rgba(29,49,38,.92))]"
             />
             <div className="p-[18px] md:p-7">
               <div className="flex flex-wrap gap-2">
