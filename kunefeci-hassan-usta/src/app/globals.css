@@ -209,6 +209,24 @@ html.panel body {
   }
 }
 
+/* The bell on the waiter-call screen gives a little shake while waiting. */
+@keyframes wiggle {
+  0%, 60%, 100% {
+    rotate: 0deg;
+  }
+  15%, 45% {
+    rotate: -14deg;
+  }
+  30% {
+    rotate: 14deg;
+  }
+}
+
+/* With the "Garson çağır" button on screen, the page ends a little higher so nothing hides behind it. */
+html[data-garson] footer {
+  padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
+}
+
 @keyframes bar-in {
   from {
     transform: translateY(140%);

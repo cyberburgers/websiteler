@@ -71,3 +71,17 @@ export async function isAdmin(): Promise<boolean> {
 export async function requireAdmin(): Promise<void> {
   if (!(await isAdmin())) throw new Error("Oturum kapandı. Lütfen yeniden giriş yapın.");
 }
+
+/**
+ * The key in the waiter screen's address (/garson?k=…). It only lets someone see and answer calls,
+ * so it can live on the counter tablet without giving the menu away. Changing the password changes it.
+ */
+export function staffKey(): string | null {
+  const secret = key();
+  return secret ? sign(secret, "garson-ekrani").slice(0, 24) : null;
+}
+
+export function isStaffKey(value: string | null | undefined): boolean {
+  const expected = staffKey();
+  return Boolean(expected && value && sameText(value, expected));
+}

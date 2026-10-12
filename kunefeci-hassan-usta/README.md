@@ -19,6 +19,7 @@ ya da WhatsApp düğmeleri yoktur; sayfanın altında yalnızca Instagram, adres
 | `/tr/gizlilik` | Gizlilik ve KVKK aydınlatma metni |
 | `/tr/qr` | Masalara konacak yazdırılabilir QR kartları (Google'a kapalı) |
 | `/yonetim` | Yönetici paneli: menü, fiyatlar, fotoğraflar, saatler, iletişim (şifreli, Google'a kapalı) |
+| `/garson?k=…` | Kasadaki tablet için garson ekranı (adresi panelde) |
 
 **Ürün penceresi:** fotoğraf, fiyat, alerjenler, "Yanında iyi gider" (çay, mırra), **Garsona göster**
 (ürünün Türkçe adını ve masa numarasını büyük yazıyla gösterir; yabancı misafirler için) ve Paylaş.
@@ -34,6 +35,22 @@ Site açılırken bir an işletmenin logosu görünür (her ziyarette bir kez; s
 
 `/en/...` İngilizce sürümdür. Önek olmadan gelen her adres Türkçeye yönlenir.
 Eski `/menu` adresleri (ör. basılmış bir QR kodu) ana sayfaya yönlenir.
+
+## Garson çağırma
+
+Masa QR kartıyla açılan menünün altında **“Garson çağır”** tuşu durur (sayfa kayarken de görünür).
+Müşteri “Garson gelsin” ya da “Hesabı istiyorum”u seçer; çağrı kasadaki tabletteki **garson ekranına**
+sesli düşer. Garson “Tamam, gidiyorum”a basınca müşterinin telefonunda “Garson çağrınızı gördü” yazar.
+
+- Tuş yalnızca masa numarası bilinen menüde çıkar (`/tr?masa=7` gibi; masa kartları `/tr/qr?masa=1-12`).
+- Aynı masa 40 saniyede bir çağırabilir; cevaplanmayan çağrı 2 dakikada sarıya döner, dakikada bir yeniden öter.
+- Garson ekranının adresi ve tabletle okutulacak karekodu: panel → **Garson**. Adres panel şifresinden
+  üretilir; şifre değişirse adres de değişir. Personel bu adresle menüyü değiştiremez.
+
+**Kurulum (Vercel'de bir kez):** Vercel → proje → **Storage → Marketplace → Upstash (Redis)** → projeye
+bağlayın (ücretsiz paket bir dükkân için yeter). Vercel `KV_REST_API_URL` ve `KV_REST_API_TOKEN`
+ayarlarını kendisi ekler; sonra **Redeploy**. Bu yapılmadan tuş görünmez. Vercel dışında tek bir sunucuda
+Redis gerekmez.
 
 ## Çalıştırma
 
@@ -52,6 +69,7 @@ Menü ve işletme bilgileri kod bilmeden, telefondan değiştirilir. Adres: `htt
 | --- | --- |
 | **Menü** | Fiyatlar (doğrudan kutudan), ürünü gizleme/gösterme ("bugün yok"), yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler; kategori ekleme, silme, sıralama, kapak fotoğrafı |
 | **Duyuru** | Ana sayfanın üstündeki kısa not (ör. bayram kapanışı) |
+| **Garson** | Garson ekranının adresi ve karekodu, masa kartlarına bağlantı |
 | **İşletme bilgileri** | Telefon (Google için), Instagram, adres, harita konumu, çalışma saatleri |
 
 Değişiklikler alttaki **Kaydet** ile kaydedilir ve sitede hemen görünür. İngilizce alanlar boş

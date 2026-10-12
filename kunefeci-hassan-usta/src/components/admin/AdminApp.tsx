@@ -8,11 +8,13 @@ import { buttonClass } from "./fields";
 import { HighlightsEditor } from "./HighlightsEditor";
 import { InfoEditor } from "./InfoEditor";
 import { MenuEditor } from "./MenuEditor";
+import { StaffEditor, type StaffSetup } from "./StaffEditor";
 
-type Tab = "menu" | "duyuru" | "isletme";
+type Tab = "menu" | "duyuru" | "garson" | "isletme";
 const TABS: { id: Tab; label: string }[] = [
   { id: "menu", label: "Menü" },
   { id: "duyuru", label: "Duyuru" },
+  { id: "garson", label: "Garson" },
   { id: "isletme", label: "İşletme bilgileri" },
 ];
 
@@ -20,6 +22,8 @@ type Props = {
   initial: SiteContent;
   /** False on Vercel before a Blob store is connected: the panel can look but not save. */
   writable: boolean;
+  /** Null until a panel password is set (the waiter screen key comes from it). */
+  staff: StaffSetup | null;
 };
 
 const savedTime = (iso?: string) =>
@@ -33,7 +37,7 @@ const savedTime = (iso?: string) =>
       }).format(new Date(iso))
     : null;
 
-export function AdminApp({ initial, writable }: Props) {
+export function AdminApp({ initial, writable, staff }: Props) {
   const [content, setContent] = useState(initial);
   const [saved, setSaved] = useState(() => JSON.stringify(initial));
   const [tab, setTab] = useState<Tab>("menu");
@@ -144,6 +148,7 @@ export function AdminApp({ initial, writable }: Props) {
           </>
         )}
         {tab === "duyuru" && <HighlightsEditor content={content} update={update} />}
+        {tab === "garson" && staff && <StaffEditor staff={staff} />}
         {tab === "isletme" && <InfoEditor content={content} update={update} />}
       </main>
 

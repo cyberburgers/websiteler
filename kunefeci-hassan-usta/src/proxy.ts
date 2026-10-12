@@ -6,8 +6,8 @@ import { defaultLocale, isLocale } from "@/i18n/config";
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const parts = pathname.split("/").filter(Boolean);
-  // The panel and its uploaded photos live outside the language prefixes.
-  if (parts[0] === "yonetim" || parts[0] === "medya") return;
+  // The panel, its uploaded photos and the waiter screen live outside the language prefixes.
+  if (parts[0] === "yonetim" || parts[0] === "medya" || parts[0] === "garson") return;
   const hasLocale = isLocale(parts[0] ?? "");
   const locale = hasLocale ? parts[0] : defaultLocale;
   const rest = hasLocale ? parts.slice(1) : parts;

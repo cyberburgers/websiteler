@@ -4,9 +4,11 @@ import { Logo } from "@/components/Logo";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Splash } from "@/components/Splash";
+import { WaiterCall } from "@/components/WaiterCall";
 import { site } from "@/content/site";
 import { isLocale, localePath, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
+import { callsEnabled } from "@/lib/calls/store";
 import { getContent } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 import { fontVariables } from "../fonts";
@@ -66,6 +68,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
         />
         <main id="icerik">{children}</main>
         <SiteFooter locale={locale} dict={dict} info={info} />
+        <WaiterCall enabled={callsEnabled()} labels={dict.call} tableLabel={dict.home.table} />
       </body>
     </html>
   );
