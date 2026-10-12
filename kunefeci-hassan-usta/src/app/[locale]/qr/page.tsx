@@ -13,13 +13,13 @@ export const metadata: Metadata = {
 
 /**
  * Masalara konacak QR kartı (/tr/qr). Yazdırıp kesmeniz yeterli.
- * QR, sitenin /menu adresine gider; ziyaretçi Türkçe menüye düşer, dili oradan değiştirebilir.
+ * QR sitenin ana adresine gider; ana sayfa menünün kendisidir. Ziyaretçi Türkçe menüye düşer, dili oradan değiştirebilir.
  */
 export default async function QrPage({ params }: PageProps<"/[locale]/qr">) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
 
-  const menuUrl = new URL("/menu", site.url).toString();
+  const menuUrl = new URL("/", site.url).toString();
   const svg = await QRCode.toString(menuUrl, {
     type: "svg",
     margin: 0,

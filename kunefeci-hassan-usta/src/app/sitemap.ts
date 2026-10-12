@@ -5,7 +5,6 @@ import { localePath, locales } from "@/i18n/config";
 
 const pages = [
   { path: "/", priority: 1, lastModified: menuUpdatedAt },
-  { path: "/menu", priority: 0.9, lastModified: menuUpdatedAt },
   { path: "/gizlilik", priority: 0.2, lastModified: "2026-10-11" },
 ];
 

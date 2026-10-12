@@ -17,7 +17,7 @@ export function MobileActionBar({ locale, dict }: { locale: Locale; dict: Dictio
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="flex gap-1 rounded-[1.4rem] bg-lacivert-900/95 p-1.5 text-krem-100 shadow-[0_18px_40px_-12px_rgba(16,17,42,.6)] ring-1 ring-krem-50/10 backdrop-blur-lg">
-        <Link href={localePath(locale, "/menu")} className={`${item} bg-sari-300 text-lacivert-900`}>
+        <Link href={`${localePath(locale)}#icerik`} className={`${item} bg-sari-300 text-lacivert-900`}>
           <BookOpen className="size-5" aria-hidden="true" />
           {dict.nav.menu}
         </Link>

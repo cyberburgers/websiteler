@@ -18,11 +18,8 @@ export default async function NotFound() {
           <div className="max-w-2xl">
             <p className="text-xl leading-relaxed text-lacivert-800/80">{dict.notFound.text}</p>
             <div className="mt-10 flex flex-wrap gap-3">
-              <Link href={localePath(locale, "/menu")} className={buttonStyles.navy}>
+              <Link href={localePath(locale)} className={buttonStyles.navy}>
                 {dict.actions.seeMenu}
-              </Link>
-              <Link href={localePath(locale)} className={buttonStyles.ghostLight}>
-                {dict.actions.backHome}
               </Link>
             </div>
           </div>

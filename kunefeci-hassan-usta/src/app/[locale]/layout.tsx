@@ -57,13 +57,6 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
   const dict = getDictionary(locale);
   const home = localePath(locale);
 
-  const nav = [
-    { href: localePath(locale, "/menu"), label: dict.nav.menu },
-    { href: `${home}#hikaye`, label: dict.nav.story },
-    { href: `${home}#tepsi`, label: dict.nav.trays },
-    { href: `${home}#ziyaret`, label: dict.nav.visit },
-  ];
-
   return (
     <html lang={locale} className={`${berkshire.variable} ${fraunces.variable} ${manrope.variable} antialiased`}>
       <body className="min-h-dvh">
@@ -77,18 +70,9 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
           locale={locale}
           logo={<Logo id="header-logo" className="h-auto w-full drop-shadow-[0_10px_18px_rgba(16,17,42,.35)]" />}
           homeHref={home}
-          nav={nav}
-          labels={{
-            open: dict.nav.open,
-            close: dict.nav.close,
-            language: dict.nav.language,
-            primary: dict.nav.primary,
-            call: dict.actions.call,
-            whatsapp: dict.actions.whatsapp,
-          }}
+          languageLabel={dict.nav.language}
           phoneHref={links.tel}
           phoneDisplay={site.phoneDisplay}
-          whatsappHref={links.whatsapp(dict.actions.whatsappText)}
         />
         <main id="icerik">{children}</main>
         <SiteFooter locale={locale} dict={dict} />

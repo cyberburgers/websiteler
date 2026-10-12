@@ -13,14 +13,6 @@ async function CopyrightYear() {
 }
 
 export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary }) {
-  const nav = [
-    { href: localePath(locale), label: dict.nav.home },
-    { href: localePath(locale, "/menu"), label: dict.nav.menu },
-    { href: `${localePath(locale)}#hikaye`, label: dict.nav.story },
-    { href: `${localePath(locale)}#tepsi`, label: dict.nav.trays },
-    { href: `${localePath(locale)}#ziyaret`, label: dict.nav.visit },
-  ];
-
   return (
     <footer className="print-hidden pattern-star relative overflow-hidden bg-lacivert-950 pb-28 pt-20 text-krem-100 md:pb-12">
       <div
@@ -28,7 +20,7 @@ export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary 
         className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[48rem] -translate-x-1/2 rounded-full bg-karamel-500/15 blur-3xl"
       />
       <div className="container-page relative">
-        <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
+        <div className="grid gap-12 md:grid-cols-[1.3fr_1fr_1fr]">
           <div>
             <Logo id="footer-logo" className="w-40" />
             <p className="mt-6 max-w-xs text-[15px] leading-relaxed text-krem-100/70">{dict.footer.tagline}</p>
@@ -52,19 +44,6 @@ export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary 
                 <WhatsAppIcon className="size-5" />
               </a>
             </div>
-          </div>
-
-          <div>
-            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-sari-300">{dict.footer.explore}</h2>
-            <ul className="mt-3 space-y-0.5">
-              {nav.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="inline-block py-2 text-krem-100/80 transition hover:text-krem-50">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
 
           <div>

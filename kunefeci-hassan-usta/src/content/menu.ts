@@ -26,8 +26,6 @@ export type MenuItem = {
   allergens: Allergen[];
   tags?: Tag[];
   image?: PhotoKey;
-  /** Ana sayfadaki "İmza lezzetler" bölümünde gösterilsin mi? */
-  featured?: boolean;
   available?: boolean;
 };
 
@@ -68,7 +66,6 @@ export const menu: MenuCategory[] = [
         allergens: ["gluten", "sut", "kabuklu"],
         tags: ["imza"],
         image: "hero",
-        featured: true,
       },
       {
         id: "kunefe",
@@ -81,7 +78,6 @@ export const menu: MenuCategory[] = [
         allergens: ["gluten", "sut", "kabuklu"],
         tags: ["populer"],
         image: "kunefe1",
-        featured: true,
       },
       {
         id: "fistikli-kunefe",
@@ -95,7 +91,6 @@ export const menu: MenuCategory[] = [
         allergens: ["gluten", "sut", "kabuklu"],
         tags: ["populer"],
         image: "kunefe2",
-        featured: true,
       },
       {
         id: "kaymakli-kunefe",
@@ -158,7 +153,6 @@ export const menu: MenuCategory[] = [
         allergens: ["gluten", "sut", "yumurta", "kabuklu"],
         tags: ["urfa"],
         image: "sillik",
-        featured: true,
       },
       {
         id: "fistikli-baklava",
@@ -386,8 +380,4 @@ export function availableMenu(): MenuCategory[] {
   return menu
     .map((c) => ({ ...c, items: c.items.filter((i) => i.available !== false) }))
     .filter((c) => c.items.length > 0);
-}
-
-export function featuredItems(): MenuItem[] {
-  return availableMenu().flatMap((c) => c.items.filter((i) => i.featured));
 }

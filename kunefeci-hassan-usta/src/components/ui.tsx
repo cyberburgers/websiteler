@@ -1,47 +1,6 @@
 import Image from "next/image";
-import type { ReactNode } from "react";
 import { FoodArt } from "@/components/art/FoodArt";
 import { photoArt, photos, type PhotoKey } from "@/content/photos";
-
-export function SectionHeading({
-  eyebrow,
-  title,
-  tone = "light",
-  align = "start",
-  as: Tag = "h2",
-  className = "",
-}: {
-  eyebrow: string;
-  title: string;
-  tone?: "light" | "dark";
-  align?: "start" | "center";
-  as?: "h1" | "h2";
-  className?: string;
-}) {
-  const centered = align === "center";
-  return (
-    <div className={`${centered ? "mx-auto text-center" : ""} max-w-3xl ${className}`}>
-      <p
-        className={`flex items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] sm:tracking-[0.24em] ${centered ? "justify-center" : ""} ${
-          tone === "dark" ? "text-sari-300" : "text-karamel-600"
-        }`}
-      >
-        <span
-          aria-hidden="true"
-          className={`kadayif-rule rule-draw w-10 ${tone === "dark" ? "opacity-70 brightness-200" : ""}`}
-        />
-        {eyebrow}
-      </p>
-      <Tag
-        className={`font-display mt-5 text-balance text-[clamp(2.25rem,5vw,3.75rem)] font-medium leading-[1.04] tracking-[-0.015em] ${
-          tone === "dark" ? "text-krem-50" : "text-lacivert-800"
-        }`}
-      >
-        {title}
-      </Tag>
-    </div>
-  );
-}
 
 /** Shown wherever a photo hasn't been supplied yet — on-brand instead of an empty grey box. */
 export function PhotoPlaceholder({ className = "", label }: { className?: string; label?: string }) {
@@ -103,10 +62,6 @@ export function Photo({
   return <PhotoPlaceholder label={alt} />;
 }
 
-export function hasPhoto(photo?: PhotoKey): boolean {
-  return Boolean(photo && photos[photo]);
-}
-
 const buttonBase =
   "inline-flex items-center justify-center gap-2.5 rounded-full px-7 py-4 text-[15px] font-bold transition-all duration-300 active:scale-[.98]";
 
@@ -116,7 +71,3 @@ export const buttonStyles = {
   navy: `${buttonBase} bg-lacivert-800 text-krem-50 hover:bg-lacivert-700`,
   ghostLight: `${buttonBase} text-lacivert-800 ring-1 ring-lacivert-800/20 hover:bg-lacivert-800/[0.05]`,
 };
-
-export function Eyebrow({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <p className={`text-xs font-bold uppercase tracking-[0.2em] ${className}`}>{children}</p>;
-}

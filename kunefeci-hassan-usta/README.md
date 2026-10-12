@@ -9,13 +9,12 @@
 
 | Adres | İçerik |
 | --- | --- |
-| `/tr` | Ana sayfa: giriş, imza lezzetler, hikâye, hazırlanış, tepsi künefe, galeri, ziyaret bilgisi |
-| `/tr/menu` | Menü: arama, kategori çubuğu, ürün detayı, alerjenler, yazdırılabilir |
+| `/tr` | Ana sayfa = menü: arama, kategori çubuğu, ürün detayı, tatlı çarkı, alerjenler, yazdırılabilir. Adres, telefon ve saatler sayfanın altında |
 | `/tr/gizlilik` | Gizlilik ve KVKK aydınlatma metni |
 | `/tr/qr` | Masalara konacak yazdırılabilir QR kartı (Google'a kapalı) |
 
-`/en/...` İngilizce sürümdür. Önek olmadan gelen her adres
-Türkçeye yönlenir; yani QR kodu `site.com/menu` adresine gidebilir.
+`/en/...` İngilizce sürümdür. Önek olmadan gelen her adres Türkçeye yönlenir.
+Eski `/menu` adresleri (ör. basılmış bir QR kodu) ana sayfaya, yani menüye yönlenir.
 
 ## Çalıştırma
 
@@ -41,12 +40,11 @@ Her şey `src/content/` klasöründedir; kod bilmeden düzenlenebilecek şekilde
 - **Fiyat değiştirmek:** `menu.ts` içinde ürünün `amount` değerini değiştirin (`220` = ₺220).
   Sonra dosyanın başındaki `menuUpdatedAt` tarihini güncelleyin.
 - **Ürünü geçici kaldırmak:** ürüne `available: false` ekleyin.
-- **Ana sayfadaki imza lezzetler:** ürüne `featured: true` ekleyin (ilk 4 ürün gösterilir).
 - **Fotoğraf değiştirmek:** şu an sitede Pexels/Unsplash'tan alınmış temsili fotoğraflar var
   (kaynaklar: `src/assets/photos/KAYNAKLAR.md`). Dükkânın kendi fotoğrafını `src/assets/photos/`
-  içindeki dosyanın üstüne aynı adla kaydetmek yeterli (örneğin `kunefe1.jpg`). Ana sayfadaki
-  yuvarlak fotoğraf `hero.jpg`'dir; kare ve tatlı ortada olmalı. En az 1400 piksel, iyi ışıklı
-  fotoğraflar en iyi sonucu verir.
+  içindeki dosyanın üstüne aynı adla kaydetmek yeterli (örneğin `kunefe1.jpg`). Menünün en
+  üstündeki koyu bandın arkasında soluk duran fotoğraf `yapim.jpg`'dir (dükkânın önü).
+  En az 1400 piksel, iyi ışıklı fotoğraflar en iyi sonucu verir.
 
 ## Yayına almadan önce yapılacaklar
 

@@ -24,7 +24,7 @@ export function restaurantJsonLd(locale: Locale) {
     telephone: site.phone,
     priceRange: site.priceRange,
     servesCuisine: ["Turkish", "Künefe", "Turkish desserts"],
-    hasMenu: absolute(localePath(locale, "/menu")),
+    hasMenu: absolute(localePath(locale)),
     acceptsReservations: false,
     ...(site.foundingYear ? { foundingDate: String(site.foundingYear) } : {}),
     address: {
@@ -53,7 +53,7 @@ export function menuJsonLd(locale: Locale) {
     "@type": "Menu",
     name: `${site.name} — ${getDictionary(locale).menu.title}`,
     inLanguage: locale,
-    url: absolute(localePath(locale, "/menu")),
+    url: absolute(localePath(locale)),
     hasMenuSection: availableMenu().map((category) => ({
       "@type": "MenuSection",
       name: category.name[locale],

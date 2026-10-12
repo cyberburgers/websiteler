@@ -1,24 +1,18 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { MapPin } from "lucide-react";
+import { OpenStatus } from "@/components/OpenStatus";
+import { Photo } from "@/components/ui";
 import { MenuExplorer } from "@/components/menu/MenuExplorer";
 import { PrintButton } from "@/components/menu/PrintButton";
 import { allergenIcons } from "@/components/menu/icons";
 import type { MenuViewCategory } from "@/components/menu/types";
 import { DessertWheel, WheelTrigger } from "@/components/wheel/DessertWheel";
 import { allergens, availableMenu, tags, type Allergen } from "@/content/menu";
-import { isLocale, locales, type Locale } from "@/i18n/config";
+import { site } from "@/content/site";
+import { locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { foldForSearch, formatPrice } from "@/lib/format";
-import { pageMetadata } from "@/lib/seo";
 import { JsonLd, menuJsonLd } from "@/lib/structured-data";
 import { wheelSlices } from "@/lib/wheel";
-
-export async function generateMetadata({ params }: PageProps<"/[locale]/menu">): Promise<Metadata> {
-  const { locale } = await params;
-  if (!isLocale(locale)) return {};
-  const dict = getDictionary(locale);
-  return pageMetadata({ locale, path: "/menu", title: dict.meta.menuTitle, description: dict.meta.menuDescription });
-}
 
 function buildView(locale: Locale): MenuViewCategory[] {
   return availableMenu().map((category) => ({
@@ -41,9 +35,8 @@ function buildView(locale: Locale): MenuViewCategory[] {
   }));
 }
 
-export default async function MenuPage({ params }: PageProps<"/[locale]/menu">) {
-  const { locale } = await params;
-  if (!isLocale(locale)) notFound();
+/** The whole menu: title band, the explorer with its search and categories, and the allergen note. */
+export function MenuPage({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
   const categories = buildView(locale);
   const itemCount = categories.reduce((n, c) => n + c.items.length, 0);
@@ -53,6 +46,10 @@ export default async function MenuPage({ params }: PageProps<"/[locale]/menu">) 
       <JsonLd data={menuJsonLd(locale)} />
 
       <section className="pattern-star relative isolate overflow-hidden bg-lacivert-900 pb-12 pt-[6.5rem] text-krem-100 sm:pb-20 sm:pt-36 md:pb-24 md:pt-48 print:bg-transparent print:pb-4 print:pt-0 print:text-lacivert-900">
+        <div aria-hidden="true" className="absolute inset-0 -z-10 print:hidden">
+          <Photo photo="yapim" alt="" sizes="100vw" preload className="object-[50%_62%] opacity-35" />
+          <div className="absolute inset-0 bg-gradient-to-b from-lacivert-900/80 via-lacivert-900/85 to-lacivert-900" />
+        </div>
         <div
           aria-hidden="true"
           className="absolute -end-32 -top-24 -z-10 size-[36rem] rounded-full bg-serbet-500/20 blur-[120px] print:hidden"
@@ -85,6 +82,13 @@ export default async function MenuPage({ params }: PageProps<"/[locale]/menu">) 
             <p className="animate-rise mt-3 max-w-xl text-[15px] leading-relaxed text-krem-100/75 [animation-delay:350ms] sm:mt-6 sm:text-lg md:text-xl print:text-base print:text-lacivert-800">
               {dict.menu.lead}
             </p>
+            <div className="print-hidden animate-rise mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-krem-100/70 [animation-delay:420ms] sm:mt-6">
+              <OpenStatus labels={dict.status} />
+              <span className="flex items-center gap-2">
+                <MapPin className="size-4 text-karamel-300" aria-hidden="true" />
+                {site.address.district}, {site.address.city}
+              </span>
+            </div>
           </div>
           <div className="animate-rise hidden flex-col items-start gap-4 [animation-delay:450ms] sm:flex lg:items-end lg:pb-3 lg:text-end">
             <div className="hidden gap-6 sm:flex lg:gap-8">

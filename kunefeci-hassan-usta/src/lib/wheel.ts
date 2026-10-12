@@ -35,6 +35,6 @@ export function wheelSlices(locale: Locale): WheelSlice[] {
       description: item.description[locale],
       price: formatPrice(item.prices[0].amount, locale),
       art: item.image ? photoArt[item.image] : undefined,
-      href: `${localePath(locale, "/menu")}#${item.id}`,
+      href: `${localePath(locale)}#${item.id}`,
     }));
 }

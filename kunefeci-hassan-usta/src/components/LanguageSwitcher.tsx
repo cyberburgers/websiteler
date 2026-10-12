@@ -37,7 +37,7 @@ export function LanguageSwitcher({
                 lang={locale}
                 aria-current={isCurrent ? "true" : undefined}
                 title={localeMeta[locale].label}
-                className={`grid place-items-center rounded-full font-bold tracking-wide transition-colors ${size === "lg" ? "h-11 min-w-14 px-4 text-sm" : "h-7 min-w-9 px-2 text-xs"} ${isCurrent ? active : idle}`}
+                className={`grid place-items-center rounded-full font-bold tracking-wide transition-colors ${size === "lg" ? "h-11 min-w-14 px-4 text-sm" : "h-9 min-w-10 px-2.5 text-xs sm:h-7 sm:min-w-9 sm:px-2"} ${isCurrent ? active : idle}`}
               >
                 {localeMeta[locale].short}
               </Link>
