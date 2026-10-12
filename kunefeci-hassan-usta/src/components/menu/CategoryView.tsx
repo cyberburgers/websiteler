@@ -1,13 +1,11 @@
 "use client";
 
-import { ArrowRight, LayoutList, RectangleHorizontal } from "lucide-react";
+import { LayoutList, RectangleHorizontal } from "lucide-react";
 import { useSyncExternalStore } from "react";
-import { WhatsAppIcon } from "@/components/BrandIcons";
-import { Photo } from "@/components/ui";
-import { TagBadge } from "./icons";
+import { ItemCard } from "./ItemCard";
 import { ItemSheet, type SheetLabels, type WaiterLabels } from "./ItemSheet";
 import { closeItem, openItem, useItemHash } from "./itemHash";
-import { AllergenIcons, ItemLine, lineClass } from "./parts";
+import { DrinkLine, ItemLine, lineClass } from "./parts";
 import type { MenuViewCategory, MenuViewItem } from "./types";
 
 type Labels = SheetLabels & {
@@ -53,84 +51,6 @@ function saveView(view: View) {
   window.dispatchEvent(new Event(VIEW_EVENT));
 }
 
-function ItemCard({
-  item,
-  onOpen,
-  trayHref,
-  labels,
-}: {
-  item: MenuViewItem;
-  onOpen: () => void;
-  trayHref: string;
-  labels: Labels;
-}) {
-  const single = item.prices.length === 1;
-  const onOrder = item.tags.some((t) => t.id === "siparis");
-  return (
-    <li id={item.id} className="reveal">
-      <div className="h-full rounded-[26px] bg-krem-100 p-2 text-zumrut-800 shadow-[0_24px_48px_-36px_rgba(0,0,0,.8)]">
-        <button type="button" onClick={onOpen} aria-haspopup="dialog" className="group block w-full text-start">
-          <span className="relative block h-[228px] overflow-hidden rounded-[20px] bg-krem-200 md:h-[240px]">
-            <Photo
-              photo={item.photo}
-              alt={item.name}
-              sizes="(min-width: 1024px) 24rem, (min-width: 768px) 45vw, 100vw"
-              className="transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]"
-            />
-            {item.tags.length > 0 && (
-              <span className="absolute start-2.5 top-2.5 flex flex-wrap gap-1.5">
-                {item.tags.map((t) => (
-                  <TagBadge key={t.id} id={t.id} label={t.label} onPhoto />
-                ))}
-              </span>
-            )}
-            {single && (
-              <span className="absolute bottom-2.5 end-2.5 rounded-full bg-fistik-300 px-3 py-1.5 text-base font-extrabold tabular-nums text-zumrut-925 shadow-md">
-                {item.prices[0].formatted}
-              </span>
-            )}
-          </span>
-          <span className="block px-2 pb-1.5 pt-3">
-            <span className="font-display block text-[23px] font-semibold leading-[1.1]">{item.name}</span>
-            <span className="mt-1.5 block text-[13.5px] leading-[1.45] text-zumrut-800/70">{item.description}</span>
-            {!single && (
-              <span className="mt-3 grid grid-cols-2 gap-2">
-                {item.prices.map((p) => (
-                  <span
-                    key={p.label}
-                    className="flex h-14 flex-col items-center justify-center rounded-2xl ring-2 ring-zumrut-800/15"
-                  >
-                    <span className="text-xs font-semibold text-zumrut-800/70">{p.label}</span>
-                    <span className="text-[17px] font-extrabold tabular-nums text-karamel-600">{p.formatted}</span>
-                  </span>
-                ))}
-              </span>
-            )}
-            <span className="mt-2.5 flex items-center gap-2 text-karamel-600">
-              <AllergenIcons item={item} />
-              <span className="ms-auto inline-flex items-center gap-1 text-[12.5px] font-extrabold text-zumrut-800">
-                {labels.details}
-                <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5 rtl:rotate-180" />
-              </span>
-            </span>
-          </span>
-        </button>
-        {onOrder && (
-          <a
-            href={trayHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mx-2 mb-2 mt-2 flex h-12 items-center justify-center gap-2 rounded-2xl bg-[#25d366] text-sm font-extrabold text-[#0b3d1f] transition hover:brightness-105"
-          >
-            <WhatsAppIcon className="size-[18px]" />
-            {labels.trayAsk}
-          </a>
-        )}
-      </div>
-    </li>
-  );
-}
-
 /** The dishes of one category as big cards or a compact list, and the detail sheet they open. */
 export function CategoryView({ category, pairing, trayHref, labels, waiter }: Props) {
   const storedView = useSyncExternalStore(subscribeView, readView, () => "cards" as View);
@@ -170,23 +90,30 @@ export function CategoryView({ category, pairing, trayHref, labels, waiter }: Pr
       )}
 
       {view === "cards" ? (
-        <ul className="mt-3.5 grid grid-cols-1 gap-3.5 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
+        <ul className="mt-3.5 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
           {category.items.map((item) => (
-            <ItemCard key={item.id} item={item} onOpen={() => openItem(item.id)} trayHref={trayHref} labels={labels} />
+            <ItemCard
+              key={item.id}
+              item={item}
+              onOpen={() => openItem(item.id)}
+              tray={{ href: trayHref, label: labels.trayAsk }}
+              detailsLabel={labels.details}
+            />
           ))}
         </ul>
       ) : (
-        <ul className={`grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-3 ${category.layout === "cards" ? "mt-3.5" : ""}`}>
+        <ul
+          className={`grid grid-cols-1 md:grid-cols-2 md:gap-3 ${category.layout === "cards" ? "mt-3.5 gap-2" : "gap-2.5"}`}
+        >
           {category.items.map((item) => (
             <li key={item.id} id={item.id}>
-              <button
-                type="button"
-                onClick={() => openItem(item.id)}
-                aria-haspopup="dialog"
-                className={`${lineClass} ${category.layout === "list" ? "min-h-[68px] ps-4" : ""}`}
-              >
-                <ItemLine item={item} thumb={category.layout === "cards"} />
-              </button>
+              {category.layout === "cards" ? (
+                <button type="button" onClick={() => openItem(item.id)} aria-haspopup="dialog" className={lineClass}>
+                  <ItemLine item={item} />
+                </button>
+              ) : (
+                <DrinkLine item={item} onOpen={() => openItem(item.id)} />
+              )}
             </li>
           ))}
         </ul>

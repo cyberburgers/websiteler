@@ -65,15 +65,11 @@ export function ItemLine({
   item,
   words = [],
   thumb = true,
-  size = "md",
 }: {
   item: MenuViewItem;
   words?: string[];
   thumb?: boolean;
-  /** "lg": bigger photo and two lines of description, for the menu on the home page. */
-  size?: "md" | "lg";
 }) {
-  const lg = size === "lg";
   const detail =
     item.prices.length > 1
       ? item.prices.map((p) => `${p.label} ${p.formatted}`).join(" · ")
@@ -81,23 +77,15 @@ export function ItemLine({
   return (
     <>
       {thumb && (
-        <span
-          className={`relative shrink-0 overflow-hidden bg-zumrut-800 ${lg ? "size-[84px] rounded-2xl" : "size-[62px] rounded-[14px]"}`}
-        >
-          <Photo photo={item.photo} alt="" sizes={lg ? "84px" : "62px"} />
+        <span className="relative size-[62px] shrink-0 overflow-hidden rounded-[14px] bg-zumrut-800">
+          <Photo photo={item.photo} alt="" sizes="62px" />
         </span>
       )}
       <span className="min-w-0 flex-1">
-        <span
-          className={`font-display block font-semibold leading-snug text-krem-50 ${lg ? "text-lg" : "text-[17px]"}`}
-        >
+        <span className="font-display block text-[17px] font-semibold leading-snug text-krem-50">
           {highlight(item.name, words)}
         </span>
-        <span
-          className={`mt-0.5 text-[12.5px] text-krem-100/60 ${lg ? "line-clamp-2 leading-snug" : "line-clamp-1"}`}
-        >
-          {highlight(detail, words)}
-        </span>
+        <span className="mt-0.5 line-clamp-1 text-[12.5px] text-krem-100/60">{highlight(detail, words)}</span>
       </span>
       <span className="shrink-0 text-[15px] font-extrabold tabular-nums text-fistik-300">{fromPrice(item)}</span>
     </>
@@ -106,3 +94,42 @@ export function ItemLine({
 
 export const lineClass =
   "flex w-full items-center gap-3 rounded-[20px] bg-krem-50/[0.06] p-2 pe-4 text-start transition-colors hover:bg-krem-50/[0.1] active:bg-krem-50/[0.12]";
+
+/**
+ * A drink on the menu: no photo, but the name and price large and what it is written in full underneath.
+ * Several sizes are listed under it, each with its price.
+ */
+export function DrinkLine({ item, onOpen }: { item: MenuViewItem; onOpen: () => void }) {
+  const single = item.prices.length === 1;
+  return (
+    <button
+      type="button"
+      aria-haspopup="dialog"
+      onClick={onOpen}
+      className="block w-full rounded-[22px] bg-krem-50/[0.07] px-5 py-4 text-start ring-1 ring-inset ring-krem-50/[0.06] transition-colors hover:bg-krem-50/[0.11] active:bg-krem-50/[0.13]"
+    >
+      <span className="flex items-start justify-between gap-4">
+        <span className="font-display text-[21px] font-semibold leading-snug text-krem-50">{item.name}</span>
+        {single && (
+          <span className="shrink-0 pt-0.5 text-lg font-extrabold tabular-nums text-fistik-300">
+            {item.prices[0].formatted}
+          </span>
+        )}
+      </span>
+      {item.description && (
+        <span className="mt-1 block text-[14.5px] leading-relaxed text-krem-100/70">{item.description}</span>
+      )}
+      {!single && (
+        <span className="mt-2 block space-y-1">
+          {item.prices.map((p) => (
+            <span key={p.label} className="flex items-baseline text-sm">
+              <span className="font-semibold text-krem-100/75">{p.label}</span>
+              <span aria-hidden="true" className="leader opacity-60" />
+              <span className="font-extrabold tabular-nums text-fistik-300">{p.formatted}</span>
+            </span>
+          ))}
+        </span>
+      )}
+    </button>
+  );
+}

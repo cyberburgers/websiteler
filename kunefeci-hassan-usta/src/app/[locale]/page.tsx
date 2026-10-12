@@ -170,6 +170,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
                 dishes: dict.home.dishes,
                 drinks: dict.home.drinks,
                 trayAsk: dict.category.trayAsk,
+                details: dict.category.details,
                 close: dict.menu.close,
                 price: dict.menu.price,
                 contains: dict.menu.contains,
