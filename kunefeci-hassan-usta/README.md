@@ -12,9 +12,9 @@ ya da WhatsApp düğmeleri yoktur; sayfanın altında yalnızca Instagram, adres
 
 | Adres | İçerik |
 | --- | --- |
-| `/tr` | Menü tek sayfadır: dükkân fotoğraflı karşılama, arama, hızlı filtreler, tatlı çarkı ve altında bütün ürünler. Üstteki kategori düğmeleri sayfayı o kategorinin başlığına kaydırır; ürüne dokununca ayrıntı penceresi açılır |
+| `/tr` | Menü tek sayfadır: dükkân fotoğraflı karşılama, hızlı filtreler, tatlı çarkı ve altında bütün ürünler. Üstteki kategori düğmeleri sayfayı o kategorinin başlığına kaydırır; ürüne dokununca ayrıntı penceresi açılır |
 | `/tr#kunefe` | Ürünün ayrıntısı doğrudan açık gelir (paylaşılan bağlantılar, arama sonuçları, tatlı çarkı ve "Yanında iyi gider" buraya götürür) |
-| `/tr/ara` | Menüde arama ve filtreler: Fıstıklı, Sıcak, Soğuk, ₺250 altı, Paylaşmalık (Google'a kapalı) |
+| `/tr/ara` | Menüde arama ve filtreler: Fıstıklı, Sıcak, Soğuk, ₺250 altı, Paylaşmalık. Ana sayfada arama çubuğu yok; filtre düğmeleri buraya açılır (Google'a kapalı) |
 | `/tr/gizlilik` | Gizlilik ve KVKK aydınlatma metni |
 | `/tr/qr` | Masalara konacak yazdırılabilir QR kartları (Google'a kapalı) |
 | `/yonetim` | Yönetici paneli: menü, fiyatlar, fotoğraflar, saatler, iletişim (şifreli, Google'a kapalı) |
@@ -34,7 +34,7 @@ geri tuşuyla kapanır.
 kartı birden basar. Kart okutulunca menü açılır, karşılama kartında ve alttaki çubukta "Masa 7" yazar.
 
 **Geniş ekran:** telefonda karşılama yazısı dükkân fotoğrafının üstündedir. Tablet ve bilgisayarda fotoğraf
-solda yazısız ve bütün durur; sağ sütunun başında karşılama, altında arama, filtreler ve çark. Menüde bir
+solda yazısız ve bütün durur; sağ sütunun başında karşılama, altında filtreler ve çark. Menüde bir
 kategorinin son satırı yarım kalmasın diye ilk (gerekirse son) ürün iki sütun genişliğinde gösterilir;
 sıra panelde verildiği gibi kalır.
 
@@ -70,16 +70,12 @@ bir sunucuda Redis gerekmez.
 
 Yalnızca masa QR kartıyla açılan menüde çalışır; masa dışından bakan için site değişmez.
 
-Masada sipariş vermek herkesin alışık olduğu bir şey değil; “Ekle” eve sipariş sanılmasın diye menünün
-başında **Masanızdan sipariş verin** kartı çıkar: “Ekle” ile seçin → siparişi gönderin → masanıza gelsin;
-“Paket ya da eve servis yok. Ödeme masada veya kasada.” **Anladım** denince ya da ilk sipariş
-gönderilince o ziyaret boyunca bir daha çıkmaz.
-
 1. Kartlarda “Ayrıntı” yerine **+ Ekle** çıkar; eklenince **− 2 +** olur. Boy seçilen ürünlerde (Porsiyon /
    1 kg) **+ Seç** ürün penceresini açar.
 2. Alttaki çubukta garson tuşunun yanına **Siparişi gör** gelir (adet, masa ve tutar). Sepet sayfalar arasında
    gezerken kaybolmaz.
-3. Sepette adet değiştirilir, kısa bir not yazılır (ör. “şerbeti az olsun”), **Siparişi gönder**.
+3. Sepette adet değiştirilir, kısa bir not yazılır (ör. “şerbeti az olsun”), **Siparişi Masa 7 için gönder**.
+   Düğmede masanın adı yazar; siparişin eve değil bu masaya geldiği açıkça görünür.
 4. Sipariş garson ekranına ve açık paneldeki kartlara sesli düşer: kalemler, not, tutar.
    **Onayla** → müşterinin telefonunda “Hazırlanıyor”; **Teslim edildi** → “Afiyet olsun!”.
 

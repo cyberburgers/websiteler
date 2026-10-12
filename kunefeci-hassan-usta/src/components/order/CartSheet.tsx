@@ -194,7 +194,7 @@ export function CartSheet({
                   {labels.sending}
                 </>
               ) : (
-                `${labels.send} · ${money(total)}`
+                `${labels.send.replace("{table}", tableText)} · ${money(total)}`
               )}
             </button>
           </>

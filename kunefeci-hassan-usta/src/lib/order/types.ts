@@ -20,6 +20,7 @@ export type OrderLabels = {
   notePlaceholder: string;
   total: string;
   payHint: string;
+  /** "Siparişi {table} için gönder": the table is named on the button, so it's clear the order is for here. */
   send: string;
   sending: string;
   sentTitle: string;
@@ -35,11 +36,4 @@ export type OrderLabels = {
   error: string;
   close: string;
   done: string;
-  introTable: string;
-  introTitle: string;
-  introStep1: string;
-  introStep2: string;
-  introStep3: string;
-  introNote: string;
-  introOk: string;
 };

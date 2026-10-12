@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Megaphone, Search } from "lucide-react";
+import { Megaphone } from "lucide-react";
 import { TableChip } from "@/components/home/TableChip";
-import { TableIntro } from "@/components/order/TableIntro";
 import { HomeMenu } from "@/components/menu/HomeMenu";
 import { filterIcons } from "@/components/menu/icons";
 import { filterIds, type FilterId } from "@/components/menu/types";
@@ -24,7 +23,7 @@ const filterTone: Partial<Record<FilterId, string>> = {
   sicak: "bg-karamel-400/[0.16] text-karamel-300",
 };
 
-/** The menu's front page: welcome card, search and quick filters, the wheel, then every dish on the menu. */
+/** The menu's front page: welcome card, quick filters, the wheel, then every dish on the menu. */
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
@@ -86,7 +85,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           </section>
 
           <div className="animate-rise flex flex-col md:col-start-2 md:row-start-2 md:justify-end" style={intro(120)}>
-            <TableIntro />
             {notice && (
               <p
                 role="note"
@@ -96,16 +94,9 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
                 {notice}
               </p>
             )}
-            <Link
-              href={searchHref}
-              className="mt-4 flex h-[52px] items-center gap-2.5 rounded-[26px] bg-krem-50/[0.07] px-[18px] text-[15px] text-krem-100/60 ring-1 ring-inset ring-fistik-300/[0.18] transition-colors hover:bg-krem-50/[0.1] md:mt-0"
-            >
-              <Search className="size-[18px] text-fistik-300" aria-hidden="true" />
-              {dict.menu.searchPlaceholder}
-            </Link>
             <nav
               aria-label={dict.search.filters}
-              className="no-scrollbar -mx-4 mt-3 flex gap-2 overflow-x-auto px-4 sm:-mx-6 sm:px-6 md:mx-0 md:flex-wrap md:px-0"
+              className="no-scrollbar -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 sm:-mx-6 sm:px-6 md:mx-0 md:mt-0 md:flex-wrap md:px-0"
             >
               {filterIds.map((id) => {
                 const Icon = filterIcons[id];
