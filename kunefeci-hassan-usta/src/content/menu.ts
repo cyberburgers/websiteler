@@ -358,7 +358,7 @@ export const defaultMenu: MenuCategory[] = [
 export const allergens: Record<Allergen, Text> = {
   gluten: { tr: "Gluten", en: "Gluten" },
   sut: { tr: "Süt", en: "Milk" },
-  kabuklu: { tr: "Kabuklu yemiş", en: "Tree nuts" },
+  kabuklu: { tr: "Fıstık, fındık veya ceviz", en: "Pistachio, hazelnut or walnut" },
   yumurta: { tr: "Yumurta", en: "Egg" },
 };
 
