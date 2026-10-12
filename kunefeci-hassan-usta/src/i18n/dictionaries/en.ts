@@ -112,7 +112,6 @@ const en: Dictionary = {
     categories: "Categories",
     noResults: "Nothing on the menu matches your search.",
     results: "results",
-    priceNote: "Prices are in Turkish lira and include VAT.",
     updated: "Last updated",
     allergensTitle: "Allergen information",
     allergensNote:

@@ -110,7 +110,6 @@ const tr = {
     categories: "Kategoriler",
     noResults: "Aramanızla eşleşen bir ürün bulunamadı.",
     results: "sonuç",
-    priceNote: "Fiyatlar Türk lirasıdır, KDV dahildir.",
     updated: "Son güncelleme",
     allergensTitle: "Alerjen bilgisi",
     allergensNote:

@@ -5,10 +5,10 @@ import { PrintButton } from "@/components/menu/PrintButton";
 import { allergenIcons } from "@/components/menu/icons";
 import type { MenuViewCategory } from "@/components/menu/types";
 import { DessertWheel, WheelTrigger } from "@/components/wheel/DessertWheel";
-import { allergens, availableMenu, menuUpdatedAt, tags, type Allergen } from "@/content/menu";
+import { allergens, availableMenu, tags, type Allergen } from "@/content/menu";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { foldForSearch, formatDate, formatPrice } from "@/lib/format";
+import { foldForSearch, formatPrice } from "@/lib/format";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd, menuJsonLd } from "@/lib/structured-data";
 import { wheelSlices } from "@/lib/wheel";
@@ -86,7 +86,7 @@ export default async function MenuPage({ params }: PageProps<"/[locale]/menu">) 
               {dict.menu.lead}
             </p>
           </div>
-          <div className="animate-rise flex flex-col items-start gap-4 [animation-delay:450ms] lg:items-end lg:pb-3 lg:text-end">
+          <div className="animate-rise hidden flex-col items-start gap-4 [animation-delay:450ms] sm:flex lg:items-end lg:pb-3 lg:text-end">
             <div className="hidden gap-6 sm:flex lg:gap-8">
               <div>
                 <p className="font-display text-4xl text-sari-300 print:text-lacivert-900">{categories.length}</p>
@@ -100,9 +100,6 @@ export default async function MenuPage({ params }: PageProps<"/[locale]/menu">) 
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-krem-100/55">{dict.menu.dishes}</p>
               </div>
             </div>
-            <p className="text-xs text-krem-100/60 sm:text-sm print:text-lacivert-800">
-              {dict.menu.priceNote} · {dict.menu.updated}: {formatDate(menuUpdatedAt, locale)}
-            </p>
             <div className="print-hidden hidden md:block">
               <PrintButton label={dict.menu.print} />
             </div>
