@@ -75,7 +75,7 @@ const en: Dictionary = {
     p1: "Künefe cannot be rushed. The kadayıf is rubbed with clarified butter, unsalted cheese is laid in between, and the tray is turned patiently over the fire. Once it turns golden, warm syrup is poured, pistachio is scattered, and it comes to your table piping hot.",
     p2: "At Hassan Usta's counter the rule is simple: good ingredients, the right fire and a method that is never cut short. It is a craft that comes from Şanlıurfa's food culture, served with the same care on every plate.",
     quote: "Künefe doesn't wait — it's eaten the moment it leaves the fire.",
-    imageAlt: "A künefe tray being prepared",
+    imageAlt: "A tray of künefe with clotted cream and pistachio, in front of the Künefeci Hassan Usta shop",
     pillarsTitle: "Four ingredients, one method",
     pillars: [
       { title: "Kadayıf", text: "Fine, fresh shredded pastry, rubbed strand by strand with butter." },

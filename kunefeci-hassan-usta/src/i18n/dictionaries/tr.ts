@@ -73,7 +73,7 @@ const tr = {
     p1: "Künefe acele kaldırmaz. Tel kadayıf sadeyağla ovulur, arasına tuzsuz peynir serilir, tepsi ateşin üstünde sabırla çevrilir. Altın rengini alınca şerbet dökülür, fıstık serpilir ve sıcak sıcak masanıza gelir.",
     p2: "Hassan Usta'nın tezgâhında kural basit: iyi malzeme, doğru ateş ve hiç kısaltılmayan bir usul. Şanlıurfa'nın sofra kültüründen gelen bu ustalığı her tabakta aynı özenle sunuyoruz.",
     quote: "Künefe beklemez; ateşten indiği an yenir.",
-    imageAlt: "Künefe tepsisinin hazırlanışı",
+    imageAlt: "Künefeci Hassan Usta dükkânının önünde, kaymaklı ve fıstıklı bir tepsi künefe",
     pillarsTitle: "Dört malzeme, tek usul",
     pillars: [
       { title: "Tel kadayıf", text: "İncecik ve taze; sadeyağla tel tel ovulur." },
