@@ -342,7 +342,8 @@ html[data-garson] footer {
  * 0.45s    "Şanlıurfa" appears under it
  * 1.25s    the ring is closed: logo and ring fade, then the green panel dissolves into the menu,
  *          which rises as it clears (--intro-delay). Done by 1.75s.
- * Only opacity, scale and a stroke are animated, so it runs the same on every phone.
+ * Only opacity, scale and a stroke are animated, and nothing uses filters, masks or blend modes:
+ * those drew a white square over the logo on some iPhones.
  */
 html:not(.splash-seen) {
   --intro-delay: 1.5s;
@@ -387,6 +388,20 @@ html.splash-seen .splash {
   position: relative;
   width: min(62vw, 18.5rem);
 }
+/* The badge's shadow is a soft dark disc behind it, not a CSS filter: some iPhones draw a filtered
+ * element as a light square while it fades. */
+.splash-mark::before {
+  content: "";
+  position: absolute;
+  top: 56%;
+  left: 56%;
+  width: 82%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.42), rgb(0 0 0 / 0.18) 60%, transparent);
+  animation: splash-fade 0.7s ease-out 0.05s both;
+}
 .splash-ring {
   position: absolute;
   inset: 0;
@@ -404,7 +419,6 @@ html.splash-seen .splash {
 }
 .splash-logo {
   position: relative;
-  filter: drop-shadow(0 14px 24px rgb(0 0 0 / 0.4));
   animation: splash-logo-in 0.7s var(--ease-out-quint) 0.05s both;
 }
 .splash-place {

@@ -30,8 +30,8 @@ geri tuşuyla kapanır.
 **Masa numarası:** `/tr/qr?masa=7` adresi 7 numaralı masanın kartını, `/tr/qr?masa=1-12` on iki
 kartı birden basar. Kart okutulunca menü açılır, karşılama kartında ve alttaki çubukta "Masa 7" yazar.
 
-Site açılırken bir an işletmenin logosu görünür (her ziyarette bir kez; sayfa yenilenince tekrar
-çıkmaz). Logo dosyası `src/assets/brand/logo.png`; açılışta kullanılan küçük kopyası
+Site ilk açıldığında bir an işletmenin logosu görünür; aynı telefonda bir ay boyunca tekrar çıkmaz
+(QR yeniden okutulsa ya da sayfa yenilense de). Logo dosyası `src/assets/brand/logo.png`; açılışta kullanılan küçük kopyası
 `src/app/splash-logo.css`, açılış `src/components/Splash.tsx` içindedir.
 
 `/en/...` İngilizce sürümdür. Sayfada dil düğmesi yok: önek olmadan gelen adresler (masa QR'ları dahil)

@@ -1,11 +1,15 @@
 const SEEN = "splash-seen";
+const KEY = "acilis-goruldu";
+/** After the first open, a phone doesn't see the opening again for this long. */
+const AGAIN_AFTER_MS = 30 * 24 * 60 * 60 * 1000;
 
-// Runs before the first paint. The intro plays once per visit: a reload or a second page in the
-// same tab skips it, and the class is also set once it has finished so later page changes start at once.
-const script = `try{var d=document.documentElement;if(sessionStorage.getItem("${SEEN}"))d.classList.add("${SEEN}");else{sessionStorage.setItem("${SEEN}","1");setTimeout(function(){d.classList.add("${SEEN}")},1900)}}catch(e){}`;
+// Runs before the first paint. The opening plays on a phone's first visit only: scanning the table's
+// QR again (a new tab), a reload or another page skips it for a month. The class is also set once it
+// has finished, so later page changes start at once. Without storage (some private modes) it is skipped.
+const script = `(function(){var d=document.documentElement;try{var t=+localStorage.getItem("${KEY}")||0,n=Date.now();if(n-t<${AGAIN_AFTER_MS}){d.classList.add("${SEEN}");return}localStorage.setItem("${KEY}",String(n));setTimeout(function(){d.classList.add("${SEEN}")},1900)}catch(e){d.classList.add("${SEEN}")}})()`;
 
 /**
- * The opening, under two seconds: the logo fades in, a thin gold ring is drawn round it once with
+ * The opening on a phone's first visit, under two seconds: the logo fades in, a thin gold ring is drawn round it once with
  * "Şanlıurfa" underneath, and as soon as the ring is closed the opening fades and the menu rises.
  * The timing lives in globals.css (".splash"), the logo image in splash-logo.css.
  */
