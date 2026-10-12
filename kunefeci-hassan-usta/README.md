@@ -11,7 +11,7 @@ Site, masadaki QR kodla açılan bir menü gibi çalışır.
 
 | Adres | İçerik |
 | --- | --- |
-| `/tr` | Ana sayfa: dükkân fotoğraflı karşılama, arama, hızlı filtreler, ustanın önerisi, tatlı çarkı ve altında menüdeki bütün ürünler (kategori düğmeleriyle) |
+| `/tr` | Ana sayfa: dükkân fotoğraflı karşılama, arama, hızlı filtreler, tatlı çarkı ve altında menüdeki bütün ürünler (kategori düğmeleriyle) |
 | `/tr/menu/kunefeler` | Bir kategorinin ürünleri: büyük kartlar ya da liste. Ürüne dokununca ayrıntı penceresi açılır |
 | `/tr/menu/kunefeler#kunefe` | Ürünün ayrıntısı doğrudan açık gelir (paylaşılan bağlantılar böyle görünür) |
 | `/tr/ara` | Menüde arama ve filtreler: Fıstıklı, Sıcak, Soğuk, ₺250 altı, Paylaşmalık (Google'a kapalı) |
@@ -50,7 +50,7 @@ Menü ve işletme bilgileri kod bilmeden, telefondan değiştirilir. Adres: `htt
 | Bölüm | Neler değişir? |
 | --- | --- |
 | **Menü** | Fiyatlar (doğrudan kutudan), ürünü gizleme/gösterme ("bugün yok"), yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler; kategori ekleme, silme, sıralama, kapak fotoğrafı |
-| **Öne çıkanlar** | "Ustanın önerisi" ürünü, ana sayfanın üstündeki duyuru (ör. bayram kapanışı) |
+| **Duyuru** | Ana sayfanın üstündeki kısa not (ör. bayram kapanışı) |
 | **İşletme bilgileri** | Telefon, WhatsApp, Instagram, adres, harita konumu, çalışma saatleri |
 
 Değişiklikler alttaki **Kaydet** ile kaydedilir ve sitede hemen görünür. İngilizce alanlar boş

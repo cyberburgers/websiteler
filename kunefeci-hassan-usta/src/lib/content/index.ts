@@ -9,7 +9,7 @@ import { readStoredContent } from "./store";
 export type SiteContent = {
   info: ShopInfo;
   menu: MenuCategory[];
-  /** The "master's pick" on the home page; falls back to the signature dish. */
+  /** No longer shown; kept so content saved by older versions of the panel still reads. */
   featuredId?: string;
   /** A short note shown at the top of the home page (holiday hours and the like). Empty: no note. */
   notice?: Text;

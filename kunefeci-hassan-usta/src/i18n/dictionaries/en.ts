@@ -56,7 +56,6 @@ const en: Dictionary = {
     welcome: "Welcome.",
     welcomeLead: "Künefe is made to order and served hot from the tray.",
     table: "Table {n}",
-    recommended: "The master's pick",
     categories: "Categories",
     summary: "{categories} categories · {items} items",
     dishes: "{n} desserts",

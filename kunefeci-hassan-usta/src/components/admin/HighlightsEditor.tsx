@@ -2,42 +2,15 @@
 
 import { Megaphone } from "lucide-react";
 import type { SiteContent } from "@/lib/content";
-import { Bilingual, Field, Section, buttonClass, inputClass } from "./fields";
+import { Bilingual, Section, buttonClass } from "./fields";
 
 type Update = (change: (draft: SiteContent) => void) => void;
 
 export function HighlightsEditor({ content, update }: { content: SiteContent; update: Update }) {
   const notice = content.notice ?? { tr: "", en: "" };
-  const shown = content.menu.flatMap((c) => c.items).filter((i) => i.available !== false);
-  const signature = shown.find((i) => i.tags?.includes("imza")) ?? shown.find((i) => i.tags?.includes("populer")) ?? shown[0];
 
   return (
     <div className="space-y-4">
-      <Section title="Ustanın önerisi" hint="Ana sayfada, aramanın altında büyük kartla gösterilen ürün.">
-        <Field label="Önerilen ürün">
-          <select
-            value={content.featuredId ?? ""}
-            onChange={(e) =>
-              update((d) => void (e.target.value ? (d.featuredId = e.target.value) : delete d.featuredId))
-            }
-            className={inputClass}
-          >
-            <option value="">Otomatik{signature ? ` (${signature.name.tr})` : ""}</option>
-            {content.menu.map((c) => (
-              <optgroup key={c.id} label={c.name.tr}>
-                {c.items
-                  .filter((i) => i.available !== false && !i.id.startsWith("yeni-"))
-                  .map((i) => (
-                    <option key={i.id} value={i.id}>
-                      {i.name.tr}
-                    </option>
-                  ))}
-              </optgroup>
-            ))}
-          </select>
-        </Field>
-      </Section>
-
       <Section
         title="Duyuru"
         hint="Ana sayfanın üstünde yeşil bir kutuda görünür. Ör. “Bayramın ilk günü kapalıyız.” Boş bırakılırsa görünmez."

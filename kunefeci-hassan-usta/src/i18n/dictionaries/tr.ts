@@ -54,7 +54,6 @@ const tr = {
     welcome: "Hoş geldiniz.",
     welcomeLead: "Künefe siparişle, tepsiden sıcak sıcak gelir.",
     table: "Masa {n}",
-    recommended: "Ustanın önerisi",
     categories: "Kategoriler",
     summary: "{categories} kategori · {items} lezzet",
     dishes: "{n} lezzet",

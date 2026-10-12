@@ -3,8 +3,7 @@ import { notFound } from "next/navigation";
 import { Megaphone, Search } from "lucide-react";
 import { TableChip } from "@/components/home/TableChip";
 import { HomeMenu } from "@/components/menu/HomeMenu";
-import { TagBadge, filterIcons } from "@/components/menu/icons";
-import { OpenItemLink } from "@/components/menu/OpenItemLink";
+import { filterIcons } from "@/components/menu/icons";
 import { filterIds, type FilterId } from "@/components/menu/types";
 import { OpenStatus } from "@/components/OpenStatus";
 import { Photo } from "@/components/ui";
@@ -15,7 +14,7 @@ import { isLocale, localePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getContent } from "@/lib/content";
 import { fill, tx } from "@/lib/format";
-import { categoryPath, featuredItem, menuView, pairingItems } from "@/lib/menu-view";
+import { categoryPath, menuView, pairingItems } from "@/lib/menu-view";
 import { JsonLd, menuJsonLd, restaurantJsonLd } from "@/lib/structured-data";
 import { wheelSlices } from "@/lib/wheel";
 
@@ -25,7 +24,7 @@ const filterTone: Partial<Record<FilterId, string>> = {
   sicak: "bg-karamel-400/[0.16] text-karamel-300",
 };
 
-/** The menu's front page: welcome card, search, the master's pick, then every dish on the menu. */
+/** The menu's front page: welcome card, search and quick filters, the wheel, then every dish on the menu. */
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
@@ -37,7 +36,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const notice = tx(content.notice, locale);
   const categories = menuView(locale, menu);
   const items = categories.flatMap((c) => c.items);
-  const featured = featuredItem(categories, content.featuredId);
   const searchHref = localePath(locale, "/ara");
   const intro = (ms: number) => ({ animationDelay: `calc(var(--intro-delay, 0s) + ${ms}ms)` });
 
@@ -110,41 +108,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
               })}
             </nav>
 
-            {featured && (
-              <>
-                <p className="mt-6 text-[11px] font-extrabold uppercase tracking-[0.2em] text-fistik-300">
-                  {dict.home.recommended}
-                </p>
-                <OpenItemLink
-                  id={featured.id}
-                  className="group mt-2.5 flex items-center gap-3.5 rounded-3xl bg-krem-100 p-2.5 text-zumrut-800 transition hover:-translate-y-0.5 lg:flex-1"
-                >
-                  <span className="relative size-28 shrink-0 overflow-hidden rounded-[18px] bg-krem-200 lg:size-44">
-                    <Photo
-                      photo={featured.photo}
-                      alt={featured.name}
-                      sizes="(min-width: 1024px) 11rem, 7rem"
-                      className="object-[50%_70%] transition-transform duration-700 group-hover:scale-105"
-                    />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    {featured.tags.map((t) => (
-                      <TagBadge key={t.id} id={t.id} label={t.label} />
-                    ))}
-                    <span className="font-display mt-1.5 block text-[21px] font-semibold leading-[1.1] lg:text-2xl">
-                      {featured.name}
-                    </span>
-                    <span className="mt-1 line-clamp-2 block text-[12.5px] leading-snug text-zumrut-800/70">
-                      {featured.description}
-                    </span>
-                    <span className="mt-2 inline-block text-[17px] font-extrabold tabular-nums text-karamel-600">
-                      {featured.prices[0].formatted}
-                    </span>
-                  </span>
-                </OpenItemLink>
-              </>
-            )}
-            <WheelBanner title={dict.wheel.trigger} action={dict.home.spin} className="mt-3" />
+            <WheelBanner title={dict.wheel.trigger} action={dict.home.spin} className="mt-5" />
           </div>
         </div>
 

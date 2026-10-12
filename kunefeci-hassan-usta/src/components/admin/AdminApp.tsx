@@ -9,10 +9,10 @@ import { HighlightsEditor } from "./HighlightsEditor";
 import { InfoEditor } from "./InfoEditor";
 import { MenuEditor } from "./MenuEditor";
 
-type Tab = "menu" | "one-cikan" | "isletme";
+type Tab = "menu" | "duyuru" | "isletme";
 const TABS: { id: Tab; label: string }[] = [
   { id: "menu", label: "Menü" },
-  { id: "one-cikan", label: "Öne çıkanlar" },
+  { id: "duyuru", label: "Duyuru" },
   { id: "isletme", label: "İşletme bilgileri" },
 ];
 
@@ -143,7 +143,7 @@ export function AdminApp({ initial, writable }: Props) {
             <MenuEditor content={content} update={update} />
           </>
         )}
-        {tab === "one-cikan" && <HighlightsEditor content={content} update={update} />}
+        {tab === "duyuru" && <HighlightsEditor content={content} update={update} />}
         {tab === "isletme" && <InfoEditor content={content} update={update} />}
       </main>
 
