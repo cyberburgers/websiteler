@@ -2,6 +2,7 @@ import { MapPin } from "lucide-react";
 import { OpenStatus } from "@/components/OpenStatus";
 import { MenuExplorer } from "@/components/menu/MenuExplorer";
 import { PrintButton } from "@/components/menu/PrintButton";
+import { ShopCard } from "@/components/menu/ShopCard";
 import { allergenIcons } from "@/components/menu/icons";
 import type { MenuViewCategory } from "@/components/menu/types";
 import { DessertWheel, WheelTrigger } from "@/components/wheel/DessertWheel";
@@ -79,10 +80,14 @@ export function MenuPage({ locale }: { locale: Locale }) {
             </p>
             <div className="print-hidden animate-rise mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-krem-100/70 [animation-delay:calc(var(--intro-delay,0s)_+_420ms)] sm:mt-6">
               <OpenStatus labels={dict.status} />
-              <span className="flex items-center gap-2">
+              {/* Jumps to the shop card, with its photo and directions, at the end of the menu. */}
+              <a
+                href="#dukkan"
+                className="-my-2 flex items-center gap-2 py-2 underline-offset-4 transition hover:text-krem-50 hover:underline"
+              >
                 <MapPin className="size-4 text-karamel-300" aria-hidden="true" />
                 {site.address.district}, {site.address.city}
-              </span>
+              </a>
             </div>
           </div>
           <div className="animate-rise hidden flex-col items-start gap-4 [animation-delay:calc(var(--intro-delay,0s)_+_450ms)] sm:flex lg:items-end lg:pb-3 lg:text-end">
@@ -125,7 +130,7 @@ export function MenuPage({ locale }: { locale: Locale }) {
         }}
       />
 
-      <section className="bg-krem-100 pb-24 md:pb-32">
+      <section className="bg-krem-100 pb-10 md:pb-14 print:pb-0">
         <div className="container-page">
           <div className="rounded-[2rem] bg-krem-200/60 p-6 ring-1 ring-karamel-300/40 md:flex md:items-start md:gap-10 md:p-10 print:bg-transparent print:p-0 print:ring-0">
             <div className="md:w-72 md:shrink-0">
@@ -149,6 +154,8 @@ export function MenuPage({ locale }: { locale: Locale }) {
           </div>
         </div>
       </section>
+
+      <ShopCard dict={dict} />
     </>
   );
 }

@@ -3,6 +3,7 @@ import type { ArtKind } from "@/components/art/FoodArt";
 import baklava from "@/assets/photos/baklava.jpg";
 import burma from "@/assets/photos/burma.jpg";
 import cay from "@/assets/photos/cay.jpg";
+import dukkan from "@/assets/photos/dukkan.jpg";
 import dondurma from "@/assets/photos/dondurma.jpg";
 import fistik from "@/assets/photos/fistik.jpg";
 import hero from "@/assets/photos/hero.jpg";
@@ -19,7 +20,6 @@ import sutlac from "@/assets/photos/sutlac.jpg";
 import tel from "@/assets/photos/tel.jpg";
 import tepsi from "@/assets/photos/tepsi.jpg";
 import urfa from "@/assets/photos/urfa.jpg";
-import yapim from "@/assets/photos/yapim.jpg";
 
 /**
  * FOTOĞRAFLAR — src/assets/photos/ klasöründeki dosyalar.
@@ -39,7 +39,7 @@ export type PhotoKey =
   | "kunefe3"
   | "kunefe4"
   | "tepsi"
-  | "yapim"
+  | "dukkan"
   | "tel"
   | "fistik"
   | "baklava"
@@ -61,7 +61,7 @@ export const photos: Partial<Record<PhotoKey, StaticImageData>> = {
   kunefe3,
   kunefe4,
   tepsi,
-  yapim,
+  dukkan,
   tel,
   fistik,
   baklava,
@@ -85,7 +85,7 @@ export const photoArt: Record<PhotoKey, ArtKind | undefined> = {
   kunefe3: "kunefe-kaymak",
   kunefe4: "kunefe-dondurma",
   tepsi: "tepsi",
-  yapim: "tepsi",
+  dukkan: undefined,
   tel: "tel",
   fistik: "fistik",
   baklava: "baklava",

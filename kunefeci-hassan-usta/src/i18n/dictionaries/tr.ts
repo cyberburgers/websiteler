@@ -39,6 +39,9 @@ const tr = {
     close: "Kapat",
   },
   visit: {
+    eyebrow: "Dükkânımız",
+    title: "Sıcak künefe sizi bekliyor",
+    imageAlt: "Künefeci Hassan Usta dükkânının önü ve tabelası, önde kaymaklı ve fıstıklı bir tepsi künefe",
     hours: "Çalışma saatleri",
     contact: "İletişim",
   },

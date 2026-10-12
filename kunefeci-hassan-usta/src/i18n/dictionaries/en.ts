@@ -41,6 +41,9 @@ const en: Dictionary = {
     close: "Close",
   },
   visit: {
+    eyebrow: "Our shop",
+    title: "Hot künefe is waiting for you",
+    imageAlt: "The front and sign of the Künefeci Hassan Usta shop, with a tray of künefe topped with clotted cream and pistachio",
     hours: "Opening hours",
     contact: "Contact",
   },
