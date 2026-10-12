@@ -337,11 +337,12 @@ html[data-garson] footer {
 }
 
 /* ---- Opening (Splash.tsx) ---------------------------------------------------
- * 0–0.95s  the logo comes into focus while a thin gold ring is drawn round it
- * 0.55s    "Şanlıurfa" settles under it
- * 0.85s    a light passes once over the badge
- * 1.4s     the logo steps back and the panel lifts away like a curtain, its curved lower edge
- *          sweeping up the screen while the menu rises behind it (--intro-delay, 1.5s)
+ * 0–0.75s  the logo fades in and settles
+ * 0.15s    a thin gold ring is drawn once round the badge (done at 1.2s)
+ * 0.45s    "Şanlıurfa" appears under it
+ * 1.25s    the ring is closed: logo and ring fade, then the green panel dissolves into the menu,
+ *          which rises as it clears (--intro-delay). Done by 1.75s.
+ * Only opacity, scale and a stroke are animated, so it runs the same on every phone.
  */
 html:not(.splash-seen) {
   --intro-delay: 1.5s;
@@ -351,30 +352,25 @@ html.splash-seen .splash {
 }
 .splash {
   position: fixed;
-  inset: 0 0 auto;
+  inset: 0;
   z-index: 100;
-  /* Taller than the screen, with a curved lower edge that only shows once it starts to lift. */
-  height: calc(100lvh + 12vh);
-  border-bottom-left-radius: 50% 12vh;
-  border-bottom-right-radius: 50% 12vh;
-  background: radial-gradient(110% 65% at 50% 40%, var(--color-zumrut-900), var(--color-zumrut-950) 72%);
-  box-shadow: 0 30px 70px -10px rgb(0 0 0 / 0.6);
-  animation: splash-lift 0.85s var(--ease-in-out-quart) 1.45s forwards;
+  background: radial-gradient(110% 65% at 50% 42%, var(--color-zumrut-900), var(--color-zumrut-950) 72%);
+  animation: splash-out 0.35s ease 1.4s forwards;
 }
 .splash-pattern {
   position: absolute;
   inset: 0;
-  animation: splash-fade 1.4s ease-out both;
+  animation: splash-fade 1s ease-out both;
 }
 .splash-stage {
   position: relative;
   display: flex;
-  height: 100dvh;
+  height: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1.75rem;
-  animation: splash-step-back 0.55s var(--ease-in-quart) 1.35s forwards;
+  animation: splash-out 0.25s ease 1.25s forwards;
 }
 .splash-glow {
   position: absolute;
@@ -385,11 +381,10 @@ html.splash-seen .splash {
   translate: -50% -50%;
   border-radius: 50%;
   background: radial-gradient(closest-side, rgb(224 180 121 / 0.2), rgb(224 180 121 / 0.06) 55%, transparent);
-  animation: splash-glow 1.3s var(--ease-out-quint) both;
+  animation: splash-fade 1s ease-out both;
 }
 .splash-mark {
   position: relative;
-  isolation: isolate;
   width: min(62vw, 18.5rem);
 }
 .splash-ring {
@@ -397,28 +392,20 @@ html.splash-seen .splash {
   inset: 0;
   overflow: visible;
 }
+/* Dashes measured in the drawing's own units (the ring is 2π·226 ≈ 1420 long): works on every browser. */
 .splash-ring circle {
   stroke: var(--color-karamel-300);
   stroke-opacity: 0.75;
   stroke-width: 2.4;
   stroke-linecap: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: splash-ring 1.2s var(--ease-in-out-quart) 0.2s forwards;
+  stroke-dasharray: 1421;
+  stroke-dashoffset: 1421;
+  animation: splash-ring 1.05s var(--ease-in-out-quart) 0.15s forwards;
 }
 .splash-logo {
   position: relative;
-  animation: splash-focus 0.95s var(--ease-out-quint) 0.05s both;
-}
-.splash-sheen {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(110deg, transparent 40%, rgb(255 253 246 / 0.85) 50%, transparent 60%) no-repeat;
-  background-size: 260% 100%;
-  background-position: 100% 0;
-  mix-blend-mode: overlay;
-  opacity: 0;
-  animation: splash-sheen 0.8s var(--ease-in-out-quart) 0.85s;
+  filter: drop-shadow(0 14px 24px rgb(0 0 0 / 0.4));
+  animation: splash-logo-in 0.7s var(--ease-out-quint) 0.05s both;
 }
 .splash-place {
   display: flex;
@@ -429,7 +416,7 @@ html.splash-seen .splash {
   letter-spacing: 0.42em;
   text-transform: uppercase;
   color: color-mix(in oklab, var(--color-karamel-300) 85%, transparent);
-  animation: splash-place 0.9s var(--ease-out-quint) 0.55s both;
+  animation: splash-fade-up 0.6s var(--ease-out-quint) 0.45s both;
 }
 .splash-place span {
   display: block;
@@ -437,32 +424,16 @@ html.splash-seen .splash {
   width: 1.75rem;
   background: currentColor;
   opacity: 0.5;
-  animation: splash-rule 0.9s var(--ease-out-quint) 0.65s both;
 }
 @keyframes splash-fade {
   from {
     opacity: 0;
   }
 }
-@keyframes splash-glow {
+@keyframes splash-logo-in {
   from {
     opacity: 0;
-    scale: 0.7;
-  }
-}
-@keyframes splash-focus {
-  from {
-    opacity: 0;
-    scale: 1.08;
-    filter: blur(14px) drop-shadow(0 14px 24px rgb(0 0 0 / 0));
-  }
-  45% {
-    opacity: 1;
-  }
-  to {
-    opacity: 1;
-    scale: 1;
-    filter: blur(0) drop-shadow(0 14px 24px rgb(0 0 0 / 0.4));
+    scale: 0.94;
   }
 }
 @keyframes splash-ring {
@@ -470,38 +441,15 @@ html.splash-seen .splash {
     stroke-dashoffset: 0;
   }
 }
-@keyframes splash-sheen {
-  from {
-    opacity: 1;
-    background-position: 100% 0;
-  }
-  to {
-    opacity: 1;
-    background-position: 0% 0;
-  }
-}
-@keyframes splash-place {
+@keyframes splash-fade-up {
   from {
     opacity: 0;
-    letter-spacing: 0.75em;
     translate: 0 6px;
   }
 }
-@keyframes splash-rule {
-  from {
-    scale: 0 1;
-  }
-}
-@keyframes splash-step-back {
+@keyframes splash-out {
   to {
     opacity: 0;
-    scale: 0.96;
-    translate: 0 -3vh;
-  }
-}
-@keyframes splash-lift {
-  to {
-    translate: 0 calc(-100% - 6rem);
     visibility: hidden;
   }
 }

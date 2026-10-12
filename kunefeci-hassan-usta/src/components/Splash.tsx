@@ -2,13 +2,12 @@ const SEEN = "splash-seen";
 
 // Runs before the first paint. The intro plays once per visit: a reload or a second page in the
 // same tab skips it, and the class is also set once it has finished so later page changes start at once.
-const script = `try{var d=document.documentElement;if(sessionStorage.getItem("${SEEN}"))d.classList.add("${SEEN}");else{sessionStorage.setItem("${SEEN}","1");setTimeout(function(){d.classList.add("${SEEN}")},2400)}}catch(e){}`;
+const script = `try{var d=document.documentElement;if(sessionStorage.getItem("${SEEN}"))d.classList.add("${SEEN}");else{sessionStorage.setItem("${SEEN}","1");setTimeout(function(){d.classList.add("${SEEN}")},1900)}}catch(e){}`;
 
 /**
- * The opening, about two seconds: the logo comes into focus while a thin gold ring is drawn round it,
- * a light passes over the badge, "Şanlıurfa" settles underneath, and then the whole panel lifts away
- * like a curtain with the menu rising behind it. The timing lives in globals.css (".splash"), the logo
- * image in splash-logo.css.
+ * The opening, under two seconds: the logo fades in, a thin gold ring is drawn round it once with
+ * "Şanlıurfa" underneath, and as soon as the ring is closed the opening fades and the menu rises.
+ * The timing lives in globals.css (".splash"), the logo image in splash-logo.css.
  */
 export function Splash() {
   return (
@@ -21,10 +20,9 @@ export function Splash() {
           <div className="splash-mark">
             {/* The ring sits on the badge's own centre, which is right of the image's middle. */}
             <svg className="splash-ring" viewBox="0 0 560 431" fill="none">
-              <circle cx="316" cy="213" r="226" pathLength="1" transform="rotate(-90 316 213)" />
+              <circle cx="316" cy="213" r="226" transform="rotate(-90 316 213)" />
             </svg>
             <div className="splash-logo" />
-            <div className="splash-sheen" />
           </div>
           <p className="splash-place">
             <span />
