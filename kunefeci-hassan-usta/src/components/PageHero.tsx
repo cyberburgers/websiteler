@@ -20,7 +20,6 @@ export function PageHero({ eyebrow, title, children }: { eyebrow: string; title:
         </h1>
         {children}
       </div>
-      <div aria-hidden="true" className="scallop absolute inset-x-0 -bottom-px" />
     </section>
   );
 }

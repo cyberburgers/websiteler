@@ -91,12 +91,6 @@
 }
 
 /* Scalloped edge between sections, like the rim of a künefe tray. */
-@utility scallop {
-  height: 14px;
-  background: radial-gradient(circle at 14px 0, transparent 13.5px, var(--scallop, var(--color-krem-100)) 14px) repeat-x;
-  background-size: 28px 14px;
-}
-
 @utility no-scrollbar {
   scrollbar-width: none;
   &::-webkit-scrollbar {
