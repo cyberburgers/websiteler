@@ -14,8 +14,8 @@ export function OpenStatus({ labels, tone = "dark" }: { labels: Labels; tone?: "
   const detail = state.open ? `${labels.closes} ${state.closes}` : state.opens ? `${labels.opens} ${state.opens}` : "";
   const base = {
     dark: "bg-krem-50/10 text-krem-100 ring-krem-50/15",
-    light: "bg-lacivert-800/[0.06] text-lacivert-800 ring-lacivert-800/10",
-    glass: "bg-lacivert-925/65 font-bold text-krem-50 ring-krem-50/10 backdrop-blur-md",
+    light: "bg-zumrut-800/[0.06] text-zumrut-800 ring-zumrut-800/10",
+    glass: "bg-zumrut-925/65 font-bold text-krem-50 ring-krem-50/10 backdrop-blur-md",
   }[tone];
 
   return (
@@ -46,12 +46,12 @@ export function HoursList({ days, labels }: { days: string[]; labels: Labels }) 
         return (
           <li
             key={day}
-            className={`flex items-center justify-between gap-4 py-2.5 text-[15px] ${isToday ? "text-sari-300" : "text-krem-100/80"}`}
+            className={`flex items-center justify-between gap-4 py-2.5 text-[15px] ${isToday ? "text-fistik-300" : "text-krem-100/80"}`}
           >
             <span className="flex items-center gap-2">
               {dayName}
               {isToday && (
-                <span className="rounded-full bg-sari-300/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-sari-300">
+                <span className="rounded-full bg-fistik-300/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-fistik-300">
                   {labels.today}
                 </span>
               )}

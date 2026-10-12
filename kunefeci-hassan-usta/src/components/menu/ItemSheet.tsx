@@ -126,23 +126,23 @@ export function ItemSheet({ item, pairing, labels, waiter, tray, onDismiss }: Pr
         }}
         aria-labelledby="urun-baslik"
         {...touch}
-        className="menu-sheet mx-auto mb-0 mt-auto max-h-[92dvh] w-full max-w-none overflow-y-auto overscroll-contain rounded-t-[30px] bg-krem-100 p-0 text-lacivert-800 md:my-auto md:max-w-lg md:rounded-[30px]"
+        className="menu-sheet mx-auto mb-0 mt-auto max-h-[92dvh] w-full max-w-none overflow-y-auto overscroll-contain rounded-t-[30px] bg-krem-100 p-0 text-zumrut-800 md:my-auto md:max-w-lg md:rounded-[30px]"
       >
         {item && (
           <article className="flex min-h-full flex-col">
             <div
-              className={`relative shrink-0 overflow-hidden ${item.photo ? "h-[min(18rem,38dvh)] bg-krem-200" : "h-16 border-b border-lacivert-800/10"}`}
+              className={`relative shrink-0 overflow-hidden ${item.photo ? "h-[min(18rem,38dvh)] bg-krem-200" : "h-16 border-b border-zumrut-800/10"}`}
             >
               {item.photo && <Photo photo={item.photo} alt={item.name} sizes="(min-width: 768px) 32rem, 100vw" />}
               <span
                 aria-hidden="true"
-                className={`absolute left-1/2 top-2.5 h-[5px] w-12 -translate-x-1/2 rounded-full md:hidden ${item.photo ? "bg-krem-50/85" : "bg-lacivert-800/15"}`}
+                className={`absolute left-1/2 top-2.5 h-[5px] w-12 -translate-x-1/2 rounded-full md:hidden ${item.photo ? "bg-krem-50/85" : "bg-zumrut-800/15"}`}
               />
               <button
                 type="button"
                 onClick={() => sheetRef.current?.close()}
                 aria-label={labels.close}
-                className="absolute end-3 top-3.5 grid size-11 place-items-center rounded-full bg-krem-50/90 text-lacivert-900 shadow-lg backdrop-blur transition hover:bg-krem-50"
+                className="absolute end-3 top-3.5 grid size-11 place-items-center rounded-full bg-krem-50/90 text-zumrut-900 shadow-lg backdrop-blur transition hover:bg-krem-50"
               >
                 <X className="size-5" />
               </button>
@@ -161,12 +161,12 @@ export function ItemSheet({ item, pairing, labels, waiter, tray, onDismiss }: Pr
                   {item.name}
                 </h2>
                 {item.prices.length === 1 && (
-                  <span className="shrink-0 rounded-full bg-lacivert-800 px-3.5 py-1.5 text-lg font-extrabold tabular-nums text-sari-300">
+                  <span className="shrink-0 rounded-full bg-zumrut-800 px-3.5 py-1.5 text-lg font-extrabold tabular-nums text-fistik-300">
                     {item.prices[0].formatted}
                   </span>
                 )}
               </div>
-              <p className="mt-2 text-[15px] leading-relaxed text-lacivert-800/75">{item.description}</p>
+              <p className="mt-2 text-[15px] leading-relaxed text-zumrut-800/75">{item.description}</p>
 
               {tray && item.tags.some((t) => t.id === "siparis") && (
                 <a
@@ -185,9 +185,9 @@ export function ItemSheet({ item, pairing, labels, waiter, tray, onDismiss }: Pr
                   {item.prices.map((p) => (
                     <div
                       key={p.label}
-                      className="flex h-14 flex-col items-center justify-center rounded-2xl bg-krem-50 ring-1 ring-lacivert-800/10"
+                      className="flex h-14 flex-col items-center justify-center rounded-2xl bg-krem-50 ring-1 ring-zumrut-800/10"
                     >
-                      <span className="text-xs font-semibold text-lacivert-800/65">{p.label}</span>
+                      <span className="text-xs font-semibold text-zumrut-800/65">{p.label}</span>
                       <span className="text-[17px] font-extrabold tabular-nums text-karamel-600">{p.formatted}</span>
                     </div>
                   ))}
@@ -195,7 +195,7 @@ export function ItemSheet({ item, pairing, labels, waiter, tray, onDismiss }: Pr
               )}
 
               <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-[18px] bg-krem-200/70 px-4 py-3">
-                <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-lacivert-800/55">
+                <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-zumrut-800/55">
                   {labels.contains}
                 </span>
                 {item.allergens.length > 0 ? (
@@ -211,13 +211,13 @@ export function ItemSheet({ item, pairing, labels, waiter, tray, onDismiss }: Pr
                     })}
                   </span>
                 ) : (
-                  <span className="text-[13px] text-lacivert-800/65">{labels.noAllergens}</span>
+                  <span className="text-[13px] text-zumrut-800/65">{labels.noAllergens}</span>
                 )}
               </div>
 
               {others.length > 0 && (
                 <>
-                  <p className="mt-5 text-[11px] font-extrabold uppercase tracking-[0.18em] text-lacivert-800/55">
+                  <p className="mt-5 text-[11px] font-extrabold uppercase tracking-[0.18em] text-zumrut-800/55">
                     {labels.pairing}
                   </p>
                   <div className="mt-2 grid grid-cols-2 gap-2">
@@ -225,7 +225,7 @@ export function ItemSheet({ item, pairing, labels, waiter, tray, onDismiss }: Pr
                       <Link
                         key={drink.id}
                         href={href}
-                        className="flex items-center gap-2.5 rounded-2xl bg-krem-50 p-[7px] shadow-[0_1px_0_rgba(35,38,74,.06)] ring-1 ring-lacivert-800/[0.06] transition hover:ring-karamel-300"
+                        className="flex items-center gap-2.5 rounded-2xl bg-krem-50 p-[7px] shadow-[0_1px_0_rgba(22,90,61,.06)] ring-1 ring-zumrut-800/[0.06] transition hover:ring-karamel-300"
                       >
                         <span className="relative size-11 shrink-0 overflow-hidden rounded-xl bg-krem-200">
                           <Photo photo={drink.photo} alt="" sizes="44px" />
@@ -247,22 +247,22 @@ export function ItemSheet({ item, pairing, labels, waiter, tray, onDismiss }: Pr
               <button
                 type="button"
                 onClick={() => waiterRef.current?.showModal()}
-                className="flex h-[54px] flex-1 items-center justify-center gap-2 rounded-[18px] bg-lacivert-800 text-[15px] font-extrabold text-krem-50 transition hover:bg-lacivert-700 active:scale-[.98]"
+                className="flex h-[54px] flex-1 items-center justify-center gap-2 rounded-[18px] bg-zumrut-800 text-[15px] font-extrabold text-krem-50 transition hover:bg-zumrut-700 active:scale-[.98]"
               >
-                <Smartphone className="size-[18px] text-sari-300" aria-hidden="true" />
+                <Smartphone className="size-[18px] text-fistik-300" aria-hidden="true" />
                 {labels.showWaiter}
               </button>
               <button
                 type="button"
                 onClick={share}
                 aria-label={labels.share}
-                className="relative grid size-[54px] shrink-0 place-items-center rounded-[18px] bg-krem-200 text-lacivert-800 transition hover:bg-krem-300 active:scale-[.96]"
+                className="relative grid size-[54px] shrink-0 place-items-center rounded-[18px] bg-krem-200 text-zumrut-800 transition hover:bg-krem-300 active:scale-[.96]"
               >
                 {copied ? <Check className="size-5 text-fistik-600" /> : <Share className="size-5" />}
               </button>
               <p
                 role="status"
-                className={`pointer-events-none absolute -top-8 right-4 rounded-full bg-lacivert-800 px-3 py-1.5 text-xs font-bold text-krem-50 transition-opacity ${copied ? "opacity-100" : "opacity-0"}`}
+                className={`pointer-events-none absolute -top-8 right-4 rounded-full bg-zumrut-800 px-3 py-1.5 text-xs font-bold text-krem-50 transition-opacity ${copied ? "opacity-100" : "opacity-0"}`}
               >
                 {copied ? labels.copied : ""}
               </p>
@@ -276,11 +276,11 @@ export function ItemSheet({ item, pairing, labels, waiter, tray, onDismiss }: Pr
         ref={waiterRef}
         onClick={() => waiterRef.current?.close()}
         aria-labelledby="garson-baslik"
-        className="waiter-sheet pattern-star m-0 h-dvh max-h-none w-full max-w-none bg-lacivert-900 p-0 text-krem-50"
+        className="waiter-sheet pattern-star m-0 h-dvh max-h-none w-full max-w-none bg-zumrut-900 p-0 text-krem-50"
       >
         {item && (
           <div className="flex h-full flex-col items-center justify-center gap-5 px-6 text-center">
-            <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-sari-300">{waiter.title}</p>
+            <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-fistik-300">{waiter.title}</p>
             <h2 id="garson-baslik" className="font-display text-[clamp(2.75rem,12vw,5rem)] font-semibold leading-[1]">
               {item.waiter.name}
             </h2>
@@ -288,7 +288,7 @@ export function ItemSheet({ item, pairing, labels, waiter, tray, onDismiss }: Pr
               {item.waiter.prices.map((p) => (
                 <span
                   key={p.label ?? "tek"}
-                  className="rounded-full bg-krem-50/10 px-4 py-2 text-lg font-extrabold tabular-nums text-sari-300"
+                  className="rounded-full bg-krem-50/10 px-4 py-2 text-lg font-extrabold tabular-nums text-fistik-300"
                 >
                   {p.label ? `${p.label} · ` : ""}
                   {p.formatted}
@@ -296,7 +296,7 @@ export function ItemSheet({ item, pairing, labels, waiter, tray, onDismiss }: Pr
               ))}
             </div>
             {table && (
-              <span className="mt-2 rounded-full bg-sari-300 px-6 py-2.5 text-2xl font-extrabold text-lacivert-900">
+              <span className="mt-2 rounded-full bg-fistik-300 px-6 py-2.5 text-2xl font-extrabold text-zumrut-900">
                 {waiter.table.replace("{n}", table)}
               </span>
             )}

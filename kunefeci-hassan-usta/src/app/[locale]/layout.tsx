@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
 }
 
 export const viewport: Viewport = {
-  themeColor: "#14152f",
+  themeColor: "#0b3d28",
   colorScheme: "light",
   viewportFit: "cover",
 };
@@ -69,13 +69,13 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
         <Splash />
         <a
           href="#icerik"
-          className="print-hidden fixed start-4 top-4 z-[60] -translate-y-24 rounded-full bg-sari-300 px-5 py-3 font-bold text-lacivert-900 shadow-lg transition focus:translate-y-0"
+          className="print-hidden fixed start-4 top-4 z-[60] -translate-y-24 rounded-full bg-fistik-300 px-5 py-3 font-bold text-zumrut-900 shadow-lg transition focus:translate-y-0"
         >
           {dict.nav.skip}
         </a>
         <SiteHeader
           locale={locale}
-          logo={<Logo id="header-logo" className="h-auto w-full drop-shadow-[0_8px_14px_rgba(16,17,42,.45)]" />}
+          logo={<Logo id="header-logo" className="h-auto w-full drop-shadow-[0_8px_14px_rgba(6,45,29,.45)]" />}
           homeHref={home}
           searchHref={localePath(locale, "/ara")}
           labels={{ search: dict.search.title, back: dict.category.back, language: dict.nav.language }}

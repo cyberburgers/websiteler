@@ -17,14 +17,14 @@ const action =
 /** Directions, call, Instagram and WhatsApp, then the address and hours in two short lines. */
 export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
-    <footer className="print-hidden border-t border-krem-50/10 bg-lacivert-925 text-krem-100">
+    <footer className="print-hidden border-t border-krem-50/10 bg-zumrut-925 text-krem-100">
       <div className="container-page max-w-6xl pb-[calc(2rem+env(safe-area-inset-bottom))] pt-6 md:pt-8">
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           <a
             href={links.directions}
             target="_blank"
             rel="noopener noreferrer"
-            className={`${action} bg-sari-300 font-extrabold text-lacivert-925 hover:bg-sari-200`}
+            className={`${action} bg-fistik-300 font-extrabold text-zumrut-925 hover:bg-fistik-200`}
           >
             <Navigation className="size-4" aria-hidden="true" />
             {dict.actions.directions}

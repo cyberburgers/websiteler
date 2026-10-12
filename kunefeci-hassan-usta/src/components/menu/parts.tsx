@@ -58,7 +58,7 @@ export function fromPrice(item: MenuViewItem): string {
 }
 
 /**
- * One compact line of the menu on the navy background: thumbnail, name, a line of detail and the price.
+ * One compact line of the menu on the green background: thumbnail, name, a line of detail and the price.
  * Used by the search results and the list view of a category.
  */
 export function ItemLine({
@@ -82,7 +82,7 @@ export function ItemLine({
     <>
       {thumb && (
         <span
-          className={`relative shrink-0 overflow-hidden bg-lacivert-800 ${lg ? "size-[84px] rounded-2xl" : "size-[62px] rounded-[14px]"}`}
+          className={`relative shrink-0 overflow-hidden bg-zumrut-800 ${lg ? "size-[84px] rounded-2xl" : "size-[62px] rounded-[14px]"}`}
         >
           <Photo photo={item.photo} alt="" sizes={lg ? "84px" : "62px"} />
         </span>
@@ -99,7 +99,7 @@ export function ItemLine({
           {highlight(detail, words)}
         </span>
       </span>
-      <span className="shrink-0 text-[15px] font-extrabold tabular-nums text-sari-300">{fromPrice(item)}</span>
+      <span className="shrink-0 text-[15px] font-extrabold tabular-nums text-fistik-300">{fromPrice(item)}</span>
     </>
   );
 }

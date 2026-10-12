@@ -1,28 +1,25 @@
 @import "tailwindcss";
 
 /*
- * Marka renkleri tabeladaki logodan alınmıştır:
- * lacivert yazı, krem-sarı daire, karamel çerçeve.
- * Fıstık yeşili ve şerbet turuncusu ürünlerden gelen yardımcı renklerdir.
+ * Tema: zümrüt yeşili zemin, canlı fıstık yeşili vurgular.
+ * Krem ve karamel tabeladaki logodan, şerbet turuncusu ürünlerden gelir.
+ * Logonun kendisi tabeladaki gibi lacivert-sarı kalır.
  */
 @theme {
-  --color-lacivert-950: #10112a;
-  /* Page background of the menu: a touch deeper than the logo's navy. */
-  --color-lacivert-925: #14152f;
-  --color-lacivert-900: #181a3a;
-  --color-lacivert-800: #23264a;
-  --color-lacivert-700: #31356a;
-  --color-lacivert-600: #464b86;
-  --color-lacivert-400: #8c90c0;
+  --color-zumrut-950: #062d1d;
+  /* Page background of the menu. */
+  --color-zumrut-925: #0b3d28;
+  --color-zumrut-900: #0f4830;
+  --color-zumrut-800: #165a3d;
+  --color-zumrut-700: #206f4e;
+  --color-zumrut-600: #2e8a63;
+  --color-zumrut-400: #77c5a4;
 
   --color-krem-50: #fffdf6;
   --color-krem-100: #fbf6e7;
   --color-krem-200: #f4ebcd;
   --color-krem-300: #e8dbad;
 
-  --color-sari-200: #f7efc0;
-  --color-sari-300: #f1e6a0;
-  --color-sari-400: #e6d576;
 
   --color-karamel-300: #e0b479;
   --color-karamel-400: #cb9452;
@@ -30,10 +27,12 @@
   --color-karamel-600: #8f5a28;
   --color-karamel-700: #6f441e;
 
-  --color-fistik-300: #c4d68c;
-  --color-fistik-400: #a2ba57;
-  --color-fistik-500: #7e9838;
-  --color-fistik-600: #5f7628;
+  /* Vivid pistachio: buttons, prices, the selected category. */
+  --color-fistik-200: #dcf5b4;
+  --color-fistik-300: #b6e86a;
+  --color-fistik-400: #94d64a;
+  --color-fistik-500: #6fb32e;
+  --color-fistik-600: #437a15;
 
   --color-serbet-400: #f0b452;
   --color-serbet-500: #dd9530;
@@ -56,7 +55,7 @@
   }
 
   body {
-    background-color: var(--color-lacivert-925);
+    background-color: var(--color-zumrut-925);
     color: var(--color-krem-100);
     font-family: var(--font-sans);
     text-rendering: optimizeLegibility;
@@ -65,13 +64,13 @@
   /* Search matches: the matched letters simply turn yellow. */
   mark {
     background-color: transparent;
-    color: var(--color-sari-300);
+    color: var(--color-fistik-300);
     font-weight: 800;
   }
 
   ::selection {
-    background-color: var(--color-sari-300);
-    color: var(--color-lacivert-900);
+    background-color: var(--color-fistik-300);
+    color: var(--color-zumrut-900);
   }
 
   :focus-visible {
@@ -123,10 +122,10 @@
 
 /*
  * Selçuklu yıldızı deseni — Şanlıurfa'nın taş işçiliğine selam.
- * Lacivert bölümlerin arka planında çok hafif görünür.
+ * Yeşil bölümlerin arka planında çok hafif görünür.
  */
 @utility pattern-star {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='88' viewBox='0 0 88 88'%3E%3Cg fill='none' stroke='%23f1e6a0' stroke-opacity='.075' stroke-width='1'%3E%3Cpath d='M26 26h36v36H26z'/%3E%3Cpath d='M44 18.5 69.5 44 44 69.5 18.5 44z'/%3E%3Ccircle cx='44' cy='44' r='6'/%3E%3Cpath d='M0 0l12 12M88 0 76 12M0 88l12-12M88 88 76 76'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='88' viewBox='0 0 88 88'%3E%3Cg fill='none' stroke='%23b6e86a' stroke-opacity='.075' stroke-width='1'%3E%3Cpath d='M26 26h36v36H26z'/%3E%3Cpath d='M44 18.5 69.5 44 44 69.5 18.5 44z'/%3E%3Ccircle cx='44' cy='44' r='6'/%3E%3Cpath d='M0 0l12 12M88 0 76 12M0 88l12-12M88 88 76 76'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 88px 88px;
 }
 
@@ -368,7 +367,7 @@ html:has(dialog[open]) {
 }
 .menu-sheet[open]::backdrop,
 .wheel-sheet[open]::backdrop {
-  background-color: color-mix(in oklab, var(--color-lacivert-950) 70%, transparent);
+  background-color: color-mix(in oklab, var(--color-zumrut-950) 70%, transparent);
   backdrop-filter: blur(4px);
 }
 @starting-style {

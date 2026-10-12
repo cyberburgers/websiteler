@@ -19,7 +19,7 @@ import { wheelSlices } from "@/lib/wheel";
 
 /** Each quick filter keeps a little of its own colour: pistachio green, syrup amber. */
 const filterTone: Partial<Record<FilterId, string>> = {
-  fistikli: "bg-fistik-300 text-lacivert-925",
+  fistikli: "bg-fistik-300 text-zumrut-925",
   sicak: "bg-karamel-400/[0.16] text-karamel-300",
 };
 
@@ -52,7 +52,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             />
             <div
               aria-hidden="true"
-              className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(20,21,47,.05)_30%,rgba(20,21,47,.92))]"
+              className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(11,61,40,.05)_30%,rgba(11,61,40,.92))]"
             />
             <div className="p-[18px] md:p-7">
               <div className="flex flex-wrap gap-2">
@@ -69,9 +69,9 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           <div className="animate-rise flex flex-col" style={intro(120)}>
             <Link
               href={searchHref}
-              className="mt-4 flex h-[52px] items-center gap-2.5 rounded-[26px] bg-krem-50/[0.07] px-[18px] text-[15px] text-krem-100/60 ring-1 ring-inset ring-sari-300/[0.18] transition-colors hover:bg-krem-50/[0.1] lg:mt-0"
+              className="mt-4 flex h-[52px] items-center gap-2.5 rounded-[26px] bg-krem-50/[0.07] px-[18px] text-[15px] text-krem-100/60 ring-1 ring-inset ring-fistik-300/[0.18] transition-colors hover:bg-krem-50/[0.1] lg:mt-0"
             >
-              <Search className="size-[18px] text-sari-300" aria-hidden="true" />
+              <Search className="size-[18px] text-fistik-300" aria-hidden="true" />
               {dict.menu.searchPlaceholder}
             </Link>
             <nav
@@ -95,12 +95,12 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
               })}
             </nav>
 
-            <p className="mt-6 text-[11px] font-extrabold uppercase tracking-[0.2em] text-sari-300">
+            <p className="mt-6 text-[11px] font-extrabold uppercase tracking-[0.2em] text-fistik-300">
               {dict.home.recommended}
             </p>
             <OpenItemLink
               id={featured.id}
-              className="group mt-2.5 flex items-center gap-3.5 rounded-3xl bg-krem-100 p-2.5 text-lacivert-800 transition hover:-translate-y-0.5 lg:flex-1"
+              className="group mt-2.5 flex items-center gap-3.5 rounded-3xl bg-krem-100 p-2.5 text-zumrut-800 transition hover:-translate-y-0.5 lg:flex-1"
             >
               <span className="relative size-28 shrink-0 overflow-hidden rounded-[18px] bg-krem-200 lg:size-44">
                 <Photo
@@ -117,7 +117,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
                 <span className="font-display mt-1.5 block text-[21px] font-semibold leading-[1.1] lg:text-2xl">
                   {featured.name}
                 </span>
-                <span className="mt-1 line-clamp-2 block text-[12.5px] leading-snug text-lacivert-800/70">
+                <span className="mt-1 line-clamp-2 block text-[12.5px] leading-snug text-zumrut-800/70">
                   {featured.description}
                 </span>
                 <span className="mt-2 inline-block text-[17px] font-extrabold tabular-nums text-karamel-600">

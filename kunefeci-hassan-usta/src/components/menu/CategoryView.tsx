@@ -68,7 +68,7 @@ function ItemCard({
   const onOrder = item.tags.some((t) => t.id === "siparis");
   return (
     <li id={item.id} className="reveal">
-      <div className="h-full rounded-[26px] bg-krem-100 p-2 text-lacivert-800 shadow-[0_24px_48px_-36px_rgba(0,0,0,.8)]">
+      <div className="h-full rounded-[26px] bg-krem-100 p-2 text-zumrut-800 shadow-[0_24px_48px_-36px_rgba(0,0,0,.8)]">
         <button type="button" onClick={onOpen} aria-haspopup="dialog" className="group block w-full text-start">
           <span className="relative block h-[228px] overflow-hidden rounded-[20px] bg-krem-200 md:h-[240px]">
             <Photo
@@ -85,22 +85,22 @@ function ItemCard({
               </span>
             )}
             {single && (
-              <span className="absolute bottom-2.5 end-2.5 rounded-full bg-sari-300 px-3 py-1.5 text-base font-extrabold tabular-nums text-lacivert-925 shadow-md">
+              <span className="absolute bottom-2.5 end-2.5 rounded-full bg-fistik-300 px-3 py-1.5 text-base font-extrabold tabular-nums text-zumrut-925 shadow-md">
                 {item.prices[0].formatted}
               </span>
             )}
           </span>
           <span className="block px-2 pb-1.5 pt-3">
             <span className="font-display block text-[23px] font-semibold leading-[1.1]">{item.name}</span>
-            <span className="mt-1.5 block text-[13.5px] leading-[1.45] text-lacivert-800/70">{item.description}</span>
+            <span className="mt-1.5 block text-[13.5px] leading-[1.45] text-zumrut-800/70">{item.description}</span>
             {!single && (
               <span className="mt-3 grid grid-cols-2 gap-2">
                 {item.prices.map((p) => (
                   <span
                     key={p.label}
-                    className="flex h-14 flex-col items-center justify-center rounded-2xl ring-2 ring-lacivert-800/15"
+                    className="flex h-14 flex-col items-center justify-center rounded-2xl ring-2 ring-zumrut-800/15"
                   >
-                    <span className="text-xs font-semibold text-lacivert-800/70">{p.label}</span>
+                    <span className="text-xs font-semibold text-zumrut-800/70">{p.label}</span>
                     <span className="text-[17px] font-extrabold tabular-nums text-karamel-600">{p.formatted}</span>
                   </span>
                 ))}
@@ -108,7 +108,7 @@ function ItemCard({
             )}
             <span className="mt-2.5 flex items-center gap-2 text-karamel-600">
               <AllergenIcons item={item} />
-              <span className="ms-auto inline-flex items-center gap-1 text-[12.5px] font-extrabold text-lacivert-800">
+              <span className="ms-auto inline-flex items-center gap-1 text-[12.5px] font-extrabold text-zumrut-800">
                 {labels.details}
                 <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5 rtl:rotate-180" />
               </span>
@@ -159,7 +159,7 @@ export function CategoryView({ category, pairing, trayHref, labels, waiter }: Pr
                 aria-pressed={view === value}
                 onClick={() => saveView(value)}
                 className={`grid h-[34px] w-10 place-items-center rounded-[9px] transition-colors ${
-                  view === value ? "bg-krem-50 text-lacivert-925" : "text-krem-100/70 hover:text-krem-50"
+                  view === value ? "bg-krem-50 text-zumrut-925" : "text-krem-100/70 hover:text-krem-50"
                 }`}
               >
                 <Icon className="size-4" aria-hidden="true" />

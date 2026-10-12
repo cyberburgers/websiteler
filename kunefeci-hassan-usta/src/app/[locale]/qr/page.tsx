@@ -29,11 +29,11 @@ async function TableCard({ table }: { table: number | null }) {
     type: "svg",
     margin: 0,
     errorCorrectionLevel: "M",
-    color: { dark: "#23264a", light: "#00000000" },
+    color: { dark: "#165a3d", light: "#00000000" },
   });
   return (
-    <article className="relative flex h-[128mm] w-[90mm] break-inside-avoid flex-col items-center overflow-hidden rounded-[6mm] bg-lacivert-900 px-[8mm] pb-[6mm] pt-[8mm] text-krem-100 shadow-2xl [print-color-adjust:exact] print:shadow-none">
-      <div aria-hidden="true" className="absolute inset-[3mm] rounded-[5mm] border border-sari-300/35" />
+    <article className="relative flex h-[128mm] w-[90mm] break-inside-avoid flex-col items-center overflow-hidden rounded-[6mm] bg-zumrut-900 px-[8mm] pb-[6mm] pt-[8mm] text-krem-100 shadow-2xl [print-color-adjust:exact] print:shadow-none">
+      <div aria-hidden="true" className="absolute inset-[3mm] rounded-[5mm] border border-fistik-300/35" />
       <Logo id={`qr-logo-${table ?? "genel"}`} className="relative w-[36mm]" />
       <p className="font-display relative mt-[3mm] text-[6.4mm] font-medium italic leading-tight text-krem-50">
         Menü için okutun
@@ -44,7 +44,7 @@ async function TableCard({ table }: { table: number | null }) {
       </div>
       <div className="relative mt-[4mm] flex items-center gap-[2.5mm]">
         {table && (
-          <span className="rounded-full bg-sari-300 px-[4mm] py-[1.6mm] text-[4mm] font-extrabold text-lacivert-900">
+          <span className="rounded-full bg-fistik-300 px-[4mm] py-[1.6mm] text-[4mm] font-extrabold text-zumrut-900">
             Masa {table}
           </span>
         )}
@@ -99,7 +99,7 @@ export default async function QrPage({ params, searchParams }: PageProps<"/[loca
                 className="h-12 w-full rounded-full bg-krem-50/10 px-5 text-krem-50 outline-none ring-1 ring-krem-50/15 placeholder:text-krem-100/45 focus:ring-2 focus:ring-karamel-400"
               />
             </label>
-            <button type="submit" className="h-12 rounded-full bg-sari-300 px-5 text-sm font-extrabold text-lacivert-900">
+            <button type="submit" className="h-12 rounded-full bg-fistik-300 px-5 text-sm font-extrabold text-zumrut-900">
               Kartları oluştur
             </button>
           </form>

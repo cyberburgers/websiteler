@@ -55,7 +55,7 @@ export function HomeMenu({ categories, pairing, trayHref, labels, waiter }: Prop
     <>
       <nav
         aria-label={labels.tabs}
-        className="under-header sticky top-16 z-30 -mx-4 border-b border-krem-50/[0.08] bg-lacivert-925/95 backdrop-blur-xl sm:-mx-6 md:top-20 lg:-mx-8"
+        className="under-header sticky top-16 z-30 -mx-4 border-b border-krem-50/[0.08] bg-zumrut-925/95 backdrop-blur-xl sm:-mx-6 md:top-20 lg:-mx-8"
       >
         <div ref={barRef} className="no-scrollbar relative flex h-[60px] items-center gap-2 overflow-x-auto px-4 sm:px-6 lg:px-8">
           {categories.map((c) => {
@@ -73,7 +73,7 @@ export function HomeMenu({ categories, pairing, trayHref, labels, waiter }: Prop
                 }}
                 className={`flex h-[38px] shrink-0 items-center rounded-full px-[15px] text-[13.5px] transition-colors ${
                   current
-                    ? "bg-sari-300 font-extrabold text-lacivert-925"
+                    ? "bg-fistik-300 font-extrabold text-zumrut-925"
                     : "bg-krem-50/[0.08] font-bold text-krem-100/85 hover:bg-krem-50/15"
                 }`}
               >

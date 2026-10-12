@@ -90,10 +90,10 @@ export function MenuSearch({
 
   return (
     <div className="mx-auto max-w-2xl">
-      <div className="under-header sticky top-16 z-30 -mx-4 bg-lacivert-925/95 px-4 pb-3 pt-2 backdrop-blur-xl sm:-mx-6 sm:px-6 md:top-20">
+      <div className="under-header sticky top-16 z-30 -mx-4 bg-zumrut-925/95 px-4 pb-3 pt-2 backdrop-blur-xl sm:-mx-6 sm:px-6 md:top-20">
         <div className="flex items-center gap-2.5">
           <label className="relative flex h-[52px] min-w-0 flex-1 items-center gap-2.5 rounded-[26px] bg-krem-50/10 pe-2 ps-4 shadow-[inset_0_0_0_2px_var(--color-karamel-400)]">
-            <Search className="size-[18px] shrink-0 text-sari-300" aria-hidden="true" />
+            <Search className="size-[18px] shrink-0 text-fistik-300" aria-hidden="true" />
             <span className="sr-only">{labels.title}</span>
             <input
               ref={inputRef}
@@ -141,7 +141,7 @@ export function MenuSearch({
                 onClick={() => toggle(id)}
                 className={`inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full px-3.5 text-[13px] transition-colors ${
                   on
-                    ? "bg-fistik-400 font-extrabold text-lacivert-925"
+                    ? "bg-fistik-400 font-extrabold text-zumrut-925"
                     : "bg-krem-50/[0.08] font-bold text-krem-100/85 hover:bg-krem-50/[0.14]"
                 }`}
               >
@@ -157,7 +157,7 @@ export function MenuSearch({
       <div aria-live="polite">
         {!searching ? (
           <section className="mt-4">
-            <h2 className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-sari-300">{labels.popular}</h2>
+            <h2 className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-fistik-300">{labels.popular}</h2>
             <ul className="mt-2.5 flex flex-col gap-2">
               {popular.map((item) => (
                 <li key={item.id}>
@@ -170,14 +170,14 @@ export function MenuSearch({
           </section>
         ) : total === 0 ? (
           <div className="py-16 text-center" role="status">
-            <span className="mx-auto grid size-16 place-items-center rounded-full bg-krem-50/[0.08] text-sari-300">
+            <span className="mx-auto grid size-16 place-items-center rounded-full bg-krem-50/[0.08] text-fistik-300">
               <SearchX className="size-7" aria-hidden="true" />
             </span>
             <p className="font-display mx-auto mt-5 max-w-xs text-xl text-krem-50">{labels.noResults}</p>
             <button
               type="button"
               onClick={reset}
-              className="mt-5 rounded-full bg-sari-300 px-6 py-3 text-sm font-extrabold text-lacivert-925"
+              className="mt-5 rounded-full bg-fistik-300 px-6 py-3 text-sm font-extrabold text-zumrut-925"
             >
               {labels.clear}
             </button>
@@ -190,7 +190,7 @@ export function MenuSearch({
             </p>
             {groups.map((group) => (
               <section key={group.id}>
-                <h2 className="mb-2 mt-4 text-[11px] font-extrabold uppercase tracking-[0.2em] text-sari-300">
+                <h2 className="mb-2 mt-4 text-[11px] font-extrabold uppercase tracking-[0.2em] text-fistik-300">
                   {group.name}
                 </h2>
                 <ul className="flex flex-col gap-2">

@@ -28,10 +28,10 @@ export type WheelLabels = {
 };
 
 const COLORS = [
-  { fill: "#23264a", text: "#f1e6a0" },
-  { fill: "#cb9452", text: "#181a3a" },
-  { fill: "#fbf6e7", text: "#23264a" },
-  { fill: "#7e9838", text: "#fffdf6" },
+  { fill: "#165a3d", text: "#b6e86a" },
+  { fill: "#cb9452", text: "#0f4830" },
+  { fill: "#fbf6e7", text: "#165a3d" },
+  { fill: "#94d64a", text: "#062d1d" },
 ];
 
 const R = 182;
@@ -52,7 +52,7 @@ function WheelFace({ slices }: { slices: WheelSlice[] }) {
             <path
               d={`M200 200L${toXY(i * seg - seg / 2, R)}A${R} ${R} 0 0 1 ${toXY(i * seg + seg / 2, R)}Z`}
               fill={c.fill}
-              stroke="#10112a"
+              stroke="#062d1d"
               strokeOpacity=".3"
               strokeWidth="1.5"
             />
@@ -97,7 +97,7 @@ function Rim() {
       <circle cx="200" cy="200" r="187" fill="none" stroke="#7a4a1e" strokeWidth="2" />
       {Array.from({ length: 24 }, (_, i) => {
         const [x, y] = toXY(i * 15, 194).split(" ");
-        return <circle key={i} cx={x} cy={y} r="3.4" fill={i % 2 ? "#fffdf6" : "#f1e6a0"} />;
+        return <circle key={i} cx={x} cy={y} r="3.4" fill={i % 2 ? "#fffdf6" : "#b6e86a"} />;
       })}
     </svg>
   );
@@ -118,7 +118,7 @@ function MiniWheel({ className }: { className?: string }) {
         );
       })}
       <circle cx="20" cy="20" r="18" fill="none" stroke="#cb9452" strokeWidth="2.5" />
-      <circle cx="20" cy="20" r="4" fill="#f1e6a0" stroke="#23264a" strokeWidth="1.5" />
+      <circle cx="20" cy="20" r="4" fill="#b6e86a" stroke="#165a3d" strokeWidth="1.5" />
     </svg>
   );
 }
@@ -134,7 +134,7 @@ export function WheelBanner({ title, action, className = "" }: { title: string; 
       aria-haspopup="dialog"
       data-wheel-trigger=""
       onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}
-      className={`group flex w-full items-center gap-3.5 rounded-3xl bg-[radial-gradient(circle_at_15%_50%,#2a2d5a,#1b1d3f)] p-2.5 pe-4 text-start text-sari-300 ring-1 ring-inset ring-sari-300/25 transition hover:ring-sari-300/50 active:scale-[.99] ${className}`}
+      className={`group flex w-full items-center gap-3.5 rounded-3xl bg-[radial-gradient(circle_at_15%_50%,#1a6b48,#0f4830)] p-2.5 pe-4 text-start text-fistik-300 ring-1 ring-inset ring-fistik-300/25 transition hover:ring-fistik-300/50 active:scale-[.99] ${className}`}
     >
       <MiniWheel className="size-14 shrink-0 animate-[spin_14s_linear_infinite] group-hover:animate-[spin_1.6s_linear_infinite] motion-reduce:animate-none" />
       <span className="min-w-0 flex-1">
@@ -143,7 +143,7 @@ export function WheelBanner({ title, action, className = "" }: { title: string; 
       </span>
       <span
         aria-hidden="true"
-        className="grid size-9 shrink-0 place-items-center rounded-full bg-sari-300 text-lacivert-925 transition-transform group-hover:translate-x-0.5"
+        className="grid size-9 shrink-0 place-items-center rounded-full bg-fistik-300 text-zumrut-925 transition-transform group-hover:translate-x-0.5"
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="size-4">
           <path d="M5 12h14M13 6l6 6-6 6" />
@@ -220,7 +220,7 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
           dx: Math.cos(a) * d,
           dy: Math.sin(a) * d - 40,
           r: Math.random() * 540 - 270,
-          color: ["#f1e6a0", "#a2ba57", "#cb9452", "#fffdf6", "#dd9530"][i % 5],
+          color: ["#dcf5b4", "#94d64a", "#cb9452", "#fffdf6", "#dd9530"][i % 5],
           delay: Math.random() * 120,
         };
       }),
@@ -310,7 +310,7 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
           if (e.target === e.currentTarget) close();
         }}
         aria-labelledby="cark-baslik"
-        className="wheel-sheet pattern-star m-auto max-h-[94dvh] w-[min(94vw,30rem)] overflow-y-auto overflow-x-hidden rounded-[2rem] bg-lacivert-900 p-0 text-krem-50 shadow-[0_40px_90px_-30px_rgba(0,0,0,.8)] ring-1 ring-sari-300/20"
+        className="wheel-sheet pattern-star m-auto max-h-[94dvh] w-[min(94vw,30rem)] overflow-y-auto overflow-x-hidden rounded-[2rem] bg-zumrut-900 p-0 text-krem-50 shadow-[0_40px_90px_-30px_rgba(0,0,0,.8)] ring-1 ring-fistik-300/20"
       >
         {open && (
           <div className="relative px-5 pb-6 pt-6 sm:px-8 sm:pb-8">
@@ -322,7 +322,7 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
             >
               <X className="size-5" />
             </button>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-sari-300">{labels.trigger}</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-fistik-300">{labels.trigger}</p>
             <h2 id="cark-baslik" className="font-display mt-2 pe-10 text-[1.75rem] font-medium leading-tight">
               {labels.title}
             </h2>
@@ -346,15 +346,15 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
                 className="absolute left-1/2 top-[-3%] z-10 -ml-4 w-8 origin-[50%_20%] drop-shadow-[0_6px_8px_rgba(0,0,0,.45)]"
               >
                 <svg viewBox="0 0 32 44">
-                  <path d="M16 42 3 16a13 13 0 1 1 26 0Z" fill="#f1e6a0" stroke="#23264a" strokeWidth="2.5" />
-                  <circle cx="16" cy="14" r="5" fill="#23264a" />
+                  <path d="M16 42 3 16a13 13 0 1 1 26 0Z" fill="#b6e86a" stroke="#165a3d" strokeWidth="2.5" />
+                  <circle cx="16" cy="14" r="5" fill="#165a3d" />
                 </svg>
               </div>
               <button
                 type="button"
                 onClick={spinButton}
                 onPointerDown={(e) => e.stopPropagation()}
-                className="absolute left-1/2 top-1/2 z-10 grid size-[24%] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-sari-300 text-sm font-extrabold uppercase tracking-wider text-lacivert-900 shadow-[0_10px_24px_-8px_rgba(0,0,0,.6)] ring-4 ring-lacivert-900 transition hover:bg-sari-200 active:scale-95"
+                className="absolute left-1/2 top-1/2 z-10 grid size-[24%] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-fistik-300 text-sm font-extrabold uppercase tracking-wider text-zumrut-900 shadow-[0_10px_24px_-8px_rgba(0,0,0,.6)] ring-4 ring-zumrut-900 transition hover:bg-fistik-200 active:scale-95"
               >
                 {labels.spin}
               </button>
@@ -379,7 +379,7 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
 
             <div aria-live="polite" className="mt-6 min-h-[8.5rem]">
               {result ? (
-                <div className="animate-rise rounded-[1.5rem] bg-krem-50 p-4 text-lacivert-800 shadow-xl">
+                <div className="animate-rise rounded-[1.5rem] bg-krem-50 p-4 text-zumrut-800 shadow-xl">
                   <div className="flex items-center gap-4">
                     {result.art && (
                       <svg viewBox="18 18 364 364" aria-hidden="true" className="size-16 shrink-0">
@@ -394,19 +394,19 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
                       <p className="mt-0.5 font-extrabold text-karamel-700">{result.price}</p>
                     </div>
                   </div>
-                  <p className="mt-3 text-sm leading-relaxed text-lacivert-800/70">{result.description}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-zumrut-800/70">{result.description}</p>
                   <div className="mt-4 grid grid-cols-2 gap-2">
                     <Link
                       href={result.href}
                       onClick={close}
-                      className="inline-flex items-center justify-center rounded-full bg-lacivert-800 px-4 py-3 text-sm font-bold text-krem-50 transition hover:bg-lacivert-700"
+                      className="inline-flex items-center justify-center rounded-full bg-zumrut-800 px-4 py-3 text-sm font-bold text-krem-50 transition hover:bg-zumrut-700"
                     >
                       {labels.seeMenu}
                     </Link>
                     <button
                       type="button"
                       onClick={spinButton}
-                      className="inline-flex items-center justify-center rounded-full px-4 py-3 text-sm font-bold text-lacivert-800 ring-1 ring-lacivert-800/20 transition hover:bg-lacivert-800/[0.05]"
+                      className="inline-flex items-center justify-center rounded-full px-4 py-3 text-sm font-bold text-zumrut-800 ring-1 ring-zumrut-800/20 transition hover:bg-zumrut-800/[0.05]"
                     >
                       {labels.again}
                     </button>

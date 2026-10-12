@@ -43,7 +43,7 @@ const C = {
   plate: "#fffdf6",
   plateWell: "#f8f1dc",
   plateLine: "#e8dbad",
-  navy: "#23264a",
+  dark: "#165a3d",
 } as const;
 
 // --- deterministic texture helpers -------------------------------------------
@@ -175,7 +175,7 @@ function Plate() {
     <g>
       <circle cx="207" cy="214" r="178" fill={C.trayShadow} opacity=".13" />
       <circle cx="200" cy="200" r="176" fill={C.plate} />
-      <circle cx="200" cy="200" r="166" fill="none" stroke={C.navy} strokeWidth="3" opacity=".85" />
+      <circle cx="200" cy="200" r="166" fill="none" stroke={C.dark} strokeWidth="3" opacity=".85" />
       <circle cx="200" cy="200" r="130" fill={C.plateWell} />
       <circle cx="200" cy="200" r="130" fill="none" stroke={C.plateLine} strokeWidth="2" />
     </g>
@@ -571,9 +571,9 @@ function Fistik() {
   return (
     <g>
       <circle cx="207" cy="214" r="168" fill={C.trayShadow} opacity=".16" />
-      <circle cx="200" cy="200" r="166" fill={C.navy} />
-      <path d="M62 116A160 160 0 0 1 116 62" stroke="#464b86" strokeWidth="6" strokeLinecap="round" fill="none" />
-      <circle cx="200" cy="200" r="150" fill="#181a3a" />
+      <circle cx="200" cy="200" r="166" fill={C.dark} />
+      <path d="M62 116A160 160 0 0 1 116 62" stroke="#2e8a63" strokeWidth="6" strokeLinecap="round" fill="none" />
+      <circle cx="200" cy="200" r="150" fill="#0f4830" />
       {nuts.map(({ x, y, rot, s }, i) => (
         <g key={i} transform={`translate(${n1(x)} ${n1(y)}) rotate(${n1(rot)}) scale(${n1(s)})`}>
           <ellipse cx="2" cy="4" rx="28" ry="18" fill="#000" opacity=".25" />
@@ -595,7 +595,7 @@ function Saucer({ cx = 200, cy = 330, rx = 130, ry = 26 }: { cx?: number; cy?: n
     <g>
       <ellipse cx={cx + 6} cy={cy + 10} rx={rx} ry={ry} fill={C.trayShadow} opacity=".15" />
       <ellipse cx={cx} cy={cy} rx={rx} ry={ry} fill={C.plate} />
-      <ellipse cx={cx} cy={cy} rx={rx - 8} ry={ry - 5} fill="none" stroke={C.navy} strokeWidth="2.5" opacity=".85" />
+      <ellipse cx={cx} cy={cy} rx={rx - 8} ry={ry - 5} fill="none" stroke={C.dark} strokeWidth="2.5" opacity=".85" />
       <ellipse cx={cx} cy={cy - 2} rx={rx * 0.5} ry={ry * 0.42} fill={C.plateWell} />
     </g>
   );
@@ -679,7 +679,7 @@ function Kahve() {
         stroke="#e8dbad"
         strokeWidth="2.5"
       />
-      <path d="M134 206H266C264 216 262 224 260 232H140C138 224 136 216 134 206Z" fill={C.navy} />
+      <path d="M134 206H266C264 216 262 224 260 232H140C138 224 136 216 134 206Z" fill={C.dark} />
       <path d="M140 232H260" stroke="#d6a94f" strokeWidth="3" />
       <path d="M134 206H266" stroke="#d6a94f" strokeWidth="3" />
       <ellipse cx="200" cy="176" rx="72" ry="13" fill="#5a3418" />
@@ -733,7 +733,7 @@ function Mirra() {
         <g key={x} transform={`translate(${x} ${y})`}>
           <ellipse cx="2" cy="22" rx="30" ry="7" fill={C.trayShadow} opacity=".16" />
           <path d="M-30 -14H30C28 8 18 22 0 22C-18 22 -28 8 -30 -14Z" fill="#fffdf6" stroke="#e8dbad" strokeWidth="2" />
-          <path d="M-29 -4H29" stroke={C.navy} strokeWidth="4" />
+          <path d="M-29 -4H29" stroke={C.dark} strokeWidth="4" />
           <ellipse cx="0" cy="-14" rx="30" ry="6" fill="#3a2212" />
         </g>
       ))}

@@ -16,9 +16,9 @@ export default async function NotFound() {
       <section className="grain bg-krem-100 py-16 md:py-24">
         <div className="container-page">
           <div className="max-w-2xl">
-            <p className="text-xl leading-relaxed text-lacivert-800/80">{dict.notFound.text}</p>
+            <p className="text-xl leading-relaxed text-zumrut-800/80">{dict.notFound.text}</p>
             <div className="mt-10 flex flex-wrap gap-3">
-              <Link href={localePath(locale)} className={buttonStyles.navy}>
+              <Link href={localePath(locale)} className={buttonStyles.dark}>
                 {dict.actions.seeMenu}
               </Link>
             </div>

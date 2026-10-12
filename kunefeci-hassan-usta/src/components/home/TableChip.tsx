@@ -7,7 +7,7 @@ export function TableChip({ label }: { label: string }) {
   const table = useTable();
   if (!table) return null;
   return (
-    <span className="inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-[12.5px] font-extrabold text-sari-300 ring-1 ring-inset ring-sari-300/55">
+    <span className="inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-[12.5px] font-extrabold text-fistik-300 ring-1 ring-inset ring-fistik-300/55">
       <svg
         viewBox="0 0 24 24"
         fill="none"

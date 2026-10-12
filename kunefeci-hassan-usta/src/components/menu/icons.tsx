@@ -42,12 +42,12 @@ export const filterIcons: Record<FilterId, LucideIcon> = {
 };
 
 const tagTone: Record<Tag, string> = {
-  imza: "bg-lacivert-800 text-sari-300",
+  imza: "bg-zumrut-800 text-fistik-300",
   populer: "bg-karamel-500/12 text-karamel-700",
   urfa: "bg-fistik-500/15 text-fistik-600",
   sicak: "bg-serbet-500/15 text-karamel-700",
   mevsim: "bg-fistik-500/15 text-fistik-600",
-  siparis: "bg-lacivert-800/[0.07] text-lacivert-700",
+  siparis: "bg-zumrut-800/[0.07] text-zumrut-700",
 };
 
 /**
@@ -56,7 +56,7 @@ const tagTone: Record<Tag, string> = {
  */
 export function TagBadge({ id, label, onPhoto = false }: { id: Tag; label: string; onPhoto?: boolean }) {
   const Icon = tagIcons[id];
-  const tone = onPhoto && id !== "imza" ? "bg-krem-50 text-lacivert-800 shadow-sm" : tagTone[id];
+  const tone = onPhoto && id !== "imza" ? "bg-krem-50 text-zumrut-800 shadow-sm" : tagTone[id];
   return (
     <span
       className={`inline-flex items-center gap-1 rounded-full px-2.5 py-[5px] text-[11px] font-extrabold leading-none tracking-wide ${tone}`}

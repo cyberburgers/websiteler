@@ -23,7 +23,7 @@ function subscribeScroll(onChange: () => void) {
 }
 
 const roundButton =
-  "grid size-11 shrink-0 place-items-center rounded-full bg-lacivert-950/45 text-krem-50 ring-1 ring-krem-50/10 backdrop-blur-md transition-colors hover:bg-lacivert-950/70";
+  "grid size-11 shrink-0 place-items-center rounded-full bg-zumrut-950/45 text-krem-50 ring-1 ring-krem-50/10 backdrop-blur-md transition-colors hover:bg-zumrut-950/70";
 
 /** Search (or back) on the left, the logo in the middle, the language on the right. */
 export function SiteHeader({ locale, logo, homeHref, searchHref, labels, phoneHref, phoneDisplay }: Props) {
@@ -55,7 +55,7 @@ export function SiteHeader({ locale, logo, homeHref, searchHref, labels, phoneHr
   return (
     <header
       className={`site-header print-hidden fixed inset-x-0 top-0 z-50 ${
-        solid ? "bg-lacivert-925/85 shadow-[0_1px_0_rgba(251,246,231,.06),0_16px_32px_-20px_rgba(0,0,0,.6)] backdrop-blur-xl" : ""
+        solid ? "bg-zumrut-925/85 shadow-[0_1px_0_rgba(251,246,231,.06),0_16px_32px_-20px_rgba(0,0,0,.6)] backdrop-blur-xl" : ""
       }`}
     >
       <div className="container-page relative flex h-16 items-center justify-between gap-3 md:h-20">
@@ -79,7 +79,7 @@ export function SiteHeader({ locale, logo, homeHref, searchHref, labels, phoneHr
         <div className="flex items-center gap-3">
           <a
             href={phoneHref}
-            className="hidden items-center gap-2 rounded-full bg-sari-300 px-4 py-2.5 text-sm font-bold text-lacivert-900 transition-colors hover:bg-sari-200 md:inline-flex"
+            className="hidden items-center gap-2 rounded-full bg-fistik-300 px-4 py-2.5 text-sm font-bold text-zumrut-900 transition-colors hover:bg-fistik-200 md:inline-flex"
           >
             <Phone className="size-4" aria-hidden="true" />
             <span>{phoneDisplay}</span>

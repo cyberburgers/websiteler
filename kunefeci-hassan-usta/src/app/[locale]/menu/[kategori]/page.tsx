@@ -46,10 +46,10 @@ export default async function CategoryPage({ params }: PageProps<"/[locale]/menu
       <section className="relative isolate flex h-[19rem] items-end overflow-hidden md:h-[24rem]">
         <div aria-hidden="true" className="absolute inset-0 -z-10">
           <Photo photo={category.photo} alt="" sizes="100vw" preload />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,21,47,.78),rgba(20,21,47,.2)_38%,rgba(20,21,47,.96))]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,61,40,.78),rgba(11,61,40,.2)_38%,rgba(11,61,40,.96))]" />
         </div>
         <div className="container-page max-w-6xl pb-5 md:pb-8">
-          <p className="animate-rise text-[11px] font-extrabold uppercase tracking-[0.22em] text-sari-300 [animation-delay:calc(var(--intro-delay,0s)_+_60ms)]">
+          <p className="animate-rise text-[11px] font-extrabold uppercase tracking-[0.22em] text-fistik-300 [animation-delay:calc(var(--intro-delay,0s)_+_60ms)]">
             {String(index + 1).padStart(2, "0")} · {count}
           </p>
           <h1 className="font-display mt-1.5 text-[clamp(2.6rem,9vw,4.5rem)] font-semibold leading-none tracking-[-0.015em] text-krem-50">
@@ -100,15 +100,15 @@ export default async function CategoryPage({ params }: PageProps<"/[locale]/menu
         {next.id !== category.id && (
           <Link
             href={categoryPath(locale, next.id)}
-            className="group mt-5 flex h-[72px] items-center gap-3 rounded-3xl bg-krem-50/[0.07] pe-2 ps-[18px] ring-1 ring-sari-300/[0.18] transition-colors hover:bg-krem-50/[0.11] md:mt-8 md:max-w-md"
+            className="group mt-5 flex h-[72px] items-center gap-3 rounded-3xl bg-krem-50/[0.07] pe-2 ps-[18px] ring-1 ring-fistik-300/[0.18] transition-colors hover:bg-krem-50/[0.11] md:mt-8 md:max-w-md"
           >
             <span className="min-w-0 flex-1">
-              <span className="block text-[11px] font-extrabold uppercase tracking-[0.2em] text-sari-300">
+              <span className="block text-[11px] font-extrabold uppercase tracking-[0.2em] text-fistik-300">
                 {dict.category.next}
               </span>
               <span className="font-display mt-0.5 block truncate text-xl font-semibold text-krem-50">{next.name}</span>
             </span>
-            <span className="relative size-14 shrink-0 overflow-hidden rounded-2xl bg-lacivert-800">
+            <span className="relative size-14 shrink-0 overflow-hidden rounded-2xl bg-zumrut-800">
               <Photo photo={next.photo} alt="" sizes="56px" className="transition-transform duration-700 group-hover:scale-110" />
             </span>
           </Link>

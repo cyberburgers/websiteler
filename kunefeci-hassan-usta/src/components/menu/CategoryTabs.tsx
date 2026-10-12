@@ -25,7 +25,7 @@ export function CategoryTabs({ tabs, active, searchHref, labels }: Props) {
   return (
     <nav
       aria-label={labels.tabs}
-      className="under-header print-hidden sticky top-16 z-30 border-b border-krem-50/[0.08] bg-lacivert-925/95 backdrop-blur-xl md:top-20"
+      className="under-header print-hidden sticky top-16 z-30 border-b border-krem-50/[0.08] bg-zumrut-925/95 backdrop-blur-xl md:top-20"
     >
       <div className="container-page flex h-16 max-w-6xl items-center gap-2">
         <Link
@@ -45,7 +45,7 @@ export function CategoryTabs({ tabs, active, searchHref, labels }: Props) {
                 aria-current={current ? "page" : undefined}
                 className={`flex h-[38px] shrink-0 items-center rounded-full px-[15px] text-[13.5px] transition-colors ${
                   current
-                    ? "bg-sari-300 font-extrabold text-lacivert-925"
+                    ? "bg-fistik-300 font-extrabold text-zumrut-925"
                     : "bg-krem-50/[0.08] font-bold text-krem-100/85 hover:bg-krem-50/15"
                 }`}
               >

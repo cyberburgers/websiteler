@@ -11,7 +11,7 @@ export function LanguageSwitcher({ current, label }: { current: Locale; label: s
 
   return (
     <nav aria-label={label}>
-      <ul className="inline-flex items-center rounded-full bg-lacivert-950/45 p-[3px] ring-1 ring-krem-50/10 backdrop-blur-md">
+      <ul className="inline-flex items-center rounded-full bg-zumrut-950/45 p-[3px] ring-1 ring-krem-50/10 backdrop-blur-md">
         {locales.map((locale) => {
           const isCurrent = locale === current;
           return (
@@ -23,7 +23,7 @@ export function LanguageSwitcher({ current, label }: { current: Locale; label: s
                 aria-current={isCurrent ? "true" : undefined}
                 title={localeMeta[locale].label}
                 className={`grid h-[38px] min-w-10 place-items-center rounded-full px-2.5 text-xs font-extrabold tracking-wide transition-colors ${
-                  isCurrent ? "bg-krem-50 text-lacivert-925" : "text-krem-100/70 hover:text-krem-50"
+                  isCurrent ? "bg-krem-50 text-zumrut-925" : "text-krem-100/70 hover:text-krem-50"
                 }`}
               >
                 {localeMeta[locale].short}
