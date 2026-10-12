@@ -35,6 +35,7 @@ export function Photo({
   className = "",
   preload,
   fill,
+  quality,
 }: {
   photo?: string;
   alt: string;
@@ -42,9 +43,21 @@ export function Photo({
   className?: string;
   preload?: boolean;
   fill?: boolean;
+  /** 85 for a large photo that fills the screen (the shop on the home page); the default 75 elsewhere. */
+  quality?: 75 | 85;
 }) {
   if (photo && isUploadedPhoto(photo)) {
-    return <Image src={photo} alt={alt} fill sizes={sizes} preload={preload} className={`object-cover ${className}`} />;
+    return (
+      <Image
+        src={photo}
+        alt={alt}
+        fill
+        sizes={sizes}
+        preload={preload}
+        quality={quality}
+        className={`object-cover ${className}`}
+      />
+    );
   }
   const key = photo && isPhotoKey(photo) ? photo : undefined;
   const src = key ? photos[key] : undefined;
@@ -57,6 +70,7 @@ export function Photo({
         sizes={sizes}
         placeholder="blur"
         preload={preload}
+        quality={quality}
         className={`object-cover ${className}`}
       />
     );

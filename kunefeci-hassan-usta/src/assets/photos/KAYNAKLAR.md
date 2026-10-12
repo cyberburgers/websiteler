@@ -1,7 +1,10 @@
 # Fotoğraf kaynakları
 
 `dukkan.jpg` (dükkânın önü ve kaymaklı künefe) ile `kunefe3.jpg` (aynı fotoğraftaki
-künefe tepsisi) Künefeci Hassan Usta'nın kendi fotoğrafıdır. Diğer fotoğraflar
+künefe tepsisi) Künefeci Hassan Usta'nın kendi fotoğrafıdır. `dukkan.jpg` portre
+modunda çekildiği için arkadaki tabela ve dükkân bulanıktı; künefeye dokunmadan
+yalnızca arka plan hafifçe keskinleştirildi. Net çekilmiş yeni bir dükkân fotoğrafı
+gelirse aynı adla üzerine kaydedin, ayrıca bir işlem gerekmez. Diğer fotoğraflar
 dükkânın kendi fotoğrafları değildir; site hazırlanırken
 yer tutması için ücretsiz stok sitelerinden alındı. Hepsi ticari kullanıma açık
 lisanslıdır (Pexels Lisansı / Unsplash Lisansı, atıf zorunlu değil). Sitenin alt

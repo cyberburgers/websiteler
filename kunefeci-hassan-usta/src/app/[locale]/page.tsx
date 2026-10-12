@@ -49,6 +49,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
               alt={dict.home.shopPhoto}
               sizes="(min-width: 1024px) 40rem, 100vw"
               preload
+              quality={85}
               className="animate-settle -z-10 object-[50%_30%] brightness-120"
             />
             <div
