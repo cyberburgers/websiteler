@@ -2,17 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowLeft, Search } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useEffect, useSyncExternalStore, type ReactNode } from "react";
-import { LanguageSwitcher } from "./LanguageSwitcher";
-import type { Locale } from "@/i18n/config";
 
 type Props = {
-  locale: Locale;
   logo: ReactNode;
   homeHref: string;
-  searchHref: string;
-  labels: { search: string; back: string; language: string };
+  labels: { back: string };
 };
 
 function subscribeScroll(onChange: () => void) {
@@ -23,8 +19,8 @@ function subscribeScroll(onChange: () => void) {
 const roundButton =
   "grid size-11 shrink-0 place-items-center rounded-full bg-zumrut-950/45 text-krem-50 ring-1 ring-krem-50/10 backdrop-blur-md transition-colors hover:bg-zumrut-950/70";
 
-/** Search (or back) on the left, the logo in the middle, the language on the right. */
-export function SiteHeader({ locale, logo, homeHref, searchHref, labels }: Props) {
+/** The logo in the middle; away from the home page, a back button on the left. */
+export function SiteHeader({ logo, homeHref, labels }: Props) {
   const pathname = usePathname();
   const isHome = pathname === homeHref || pathname === `${homeHref}/`;
   const solid = useSyncExternalStore(
@@ -57,11 +53,7 @@ export function SiteHeader({ locale, logo, homeHref, searchHref, labels }: Props
       }`}
     >
       <div className="container-page relative flex h-16 items-center justify-between gap-3 md:h-20">
-        {isHome ? (
-          <Link href={searchHref} aria-label={labels.search} className={roundButton}>
-            <Search className="size-5" aria-hidden="true" />
-          </Link>
-        ) : (
+        {!isHome && (
           <Link href={homeHref} aria-label={labels.back} className={roundButton}>
             <ArrowLeft className="size-5 rtl:rotate-180" aria-hidden="true" />
           </Link>
@@ -73,8 +65,6 @@ export function SiteHeader({ locale, logo, homeHref, searchHref, labels }: Props
         >
           {logo}
         </Link>
-
-        <LanguageSwitcher current={locale} label={labels.language} />
       </div>
     </header>
   );

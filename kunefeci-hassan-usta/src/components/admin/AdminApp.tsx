@@ -25,7 +25,20 @@ type Props = {
   writable: boolean;
   /** Null until a panel password is set (the waiter screen key comes from it). */
   staff: StaffSetup | null;
+  /** The shop's working day, for "Bugün yok". */
+  today: string;
 };
+
+/**
+ * After a save, the first visit to each page still gets the old copy while the new one is built.
+ * Opening the guest pages once from here takes that first visit, so guests see the change.
+ */
+function warmPages(content: SiteContent) {
+  const paths = ["", "/ara", ...content.menu.filter((c) => c.items.length > 0).map((c) => `/menu/${c.id}`)];
+  for (const locale of ["tr", "en"]) {
+    for (const path of paths) void fetch(`/${locale}${path}`, { cache: "no-store" }).catch(() => {});
+  }
+}
 
 const savedTime = (iso?: string) =>
   iso
@@ -38,7 +51,7 @@ const savedTime = (iso?: string) =>
       }).format(new Date(iso))
     : null;
 
-export function AdminApp({ initial, writable, staff }: Props) {
+export function AdminApp({ initial, writable, staff, today }: Props) {
   const [content, setContent] = useState(initial);
   const [saved, setSaved] = useState(() => JSON.stringify(initial));
   const [tab, setTab] = useState<Tab>("menu");
@@ -75,6 +88,7 @@ export function AdminApp({ initial, writable, staff }: Props) {
         setContent(next);
         setSaved(JSON.stringify(next));
         setMessage({ ok: true, text: "Kaydedildi. Değişiklikler sitede görünüyor." });
+        warmPages(next);
       } else {
         setMessage({ ok: false, text: result.error });
       }
@@ -146,10 +160,11 @@ export function AdminApp({ initial, writable, staff }: Props) {
         {tab === "menu" && (
           <>
             <p className="mb-3 text-sm text-zumrut-900/65">
-              Fiyatı doğrudan kutudan değiştirin. Biten ürünü <b>Menüde</b> düğmesiyle gizleyin. Ayrıntılar için kalem
-              simgesine basın. Bitince alttan <b>Kaydet</b>.
+              Fiyatı doğrudan kutudan değiştirin. O gün biten ürüne <b>Bugün yok</b> deyin: menüde kalır, “Bugün yok”
+              yazar ve ertesi sabah kendiliğinden geri gelir. Artık satılmayan ürünü <b>Menüde</b> düğmesiyle gizleyin.
+              Ayrıntılar için kalem simgesine basın. Bitince alttan <b>Kaydet</b>.
             </p>
-            <MenuEditor content={content} update={update} />
+            <MenuEditor content={content} update={update} today={today} />
           </>
         )}
         {tab === "duyuru" && <HighlightsEditor content={content} update={update} />}

@@ -63,13 +63,16 @@ export function fromPrice(item: MenuViewItem): string {
  */
 export function ItemLine({
   item,
+  soldOutLabel,
   words = [],
   thumb = true,
 }: {
   item: MenuViewItem;
+  soldOutLabel: string;
   words?: string[];
   thumb?: boolean;
 }) {
+  const out = item.soldOut;
   const detail =
     item.prices.length > 1
       ? item.prices.map((p) => `${p.label} ${p.formatted}`).join(" · ")
@@ -78,16 +81,22 @@ export function ItemLine({
     <>
       {thumb && (
         <span className="relative size-[62px] shrink-0 overflow-hidden rounded-[14px] bg-zumrut-800">
-          <Photo photo={item.photo} alt="" sizes="62px" />
+          <Photo photo={item.photo} alt="" sizes="62px" className={out ? "opacity-45 grayscale" : ""} />
         </span>
       )}
       <span className="min-w-0 flex-1">
-        <span className="font-display block text-[17px] font-semibold leading-snug text-krem-50">
+        <span
+          className={`font-display block text-[17px] font-semibold leading-snug ${out ? "text-krem-50/55" : "text-krem-50"}`}
+        >
           {highlight(item.name, words)}
         </span>
         <span className="mt-0.5 line-clamp-1 text-[12.5px] text-krem-100/60">{highlight(detail, words)}</span>
       </span>
-      <span className="shrink-0 text-[15px] font-extrabold tabular-nums text-fistik-300">{fromPrice(item)}</span>
+      {out ? (
+        <SoldOutPill label={soldOutLabel} />
+      ) : (
+        <span className="shrink-0 text-[15px] font-extrabold tabular-nums text-fistik-300">{fromPrice(item)}</span>
+      )}
     </>
   );
 }
@@ -99,8 +108,17 @@ export const lineClass =
  * A drink on the menu: no photo, but the name and price large and what it is written in full underneath.
  * Several sizes are listed under it, each with its price.
  */
-export function DrinkLine({ item, onOpen }: { item: MenuViewItem; onOpen: () => void }) {
+export function DrinkLine({
+  item,
+  onOpen,
+  soldOutLabel,
+}: {
+  item: MenuViewItem;
+  onOpen: () => void;
+  soldOutLabel: string;
+}) {
   const single = item.prices.length === 1;
+  const out = item.soldOut;
   return (
     <button
       type="button"
@@ -109,18 +127,28 @@ export function DrinkLine({ item, onOpen }: { item: MenuViewItem; onOpen: () => 
       className="block w-full rounded-[22px] bg-krem-50/[0.07] px-5 py-4 text-start ring-1 ring-inset ring-krem-50/[0.06] transition-colors hover:bg-krem-50/[0.11] active:bg-krem-50/[0.13]"
     >
       <span className="flex items-start justify-between gap-4">
-        <span className="font-display text-[21px] font-semibold leading-snug text-krem-50">{item.name}</span>
-        {single && (
-          <span className="shrink-0 pt-0.5 text-lg font-extrabold tabular-nums text-fistik-300">
-            {item.prices[0].formatted}
-          </span>
+        <span
+          className={`font-display text-[21px] font-semibold leading-snug ${out ? "text-krem-50/55" : "text-krem-50"}`}
+        >
+          {item.name}
+        </span>
+        {out ? (
+          <SoldOutPill label={soldOutLabel} />
+        ) : (
+          single && (
+            <span className="shrink-0 pt-0.5 text-lg font-extrabold tabular-nums text-fistik-300">
+              {item.prices[0].formatted}
+            </span>
+          )
         )}
       </span>
       {item.description && (
-        <span className="mt-1 block text-[14.5px] leading-relaxed text-krem-100/70">{item.description}</span>
+        <span className={`mt-1 block text-[14.5px] leading-relaxed ${out ? "text-krem-100/45" : "text-krem-100/70"}`}>
+          {item.description}
+        </span>
       )}
       {!single && (
-        <span className="mt-2 block space-y-1">
+        <span className={`mt-2 block space-y-1 ${out ? "opacity-45" : ""}`}>
           {item.prices.map((p) => (
             <span key={p.label} className="flex items-baseline text-sm">
               <span className="font-semibold text-krem-100/75">{p.label}</span>
@@ -131,5 +159,27 @@ export function DrinkLine({ item, onOpen }: { item: MenuViewItem; onOpen: () => 
         </span>
       )}
     </button>
+  );
+}
+
+/** "Bugün yok" in place of the price, on the green background. */
+export function SoldOutPill({ label }: { label: string }) {
+  return (
+    <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-krem-50/[0.1] px-2.5 py-1 text-[12px] font-extrabold text-krem-50 ring-1 ring-inset ring-krem-50/15">
+      <span aria-hidden="true" className="size-1.5 rounded-full bg-karamel-400" />
+      {label}
+    </span>
+  );
+}
+
+/** Over a dish's photo when it has run out today: the photo dims and the label sits in the middle. */
+export function SoldOutVeil({ label }: { label: string }) {
+  return (
+    <span className="absolute inset-0 grid place-items-center bg-zumrut-950/45">
+      <span className="inline-flex items-center gap-2 rounded-full bg-krem-50 px-4 py-2 text-[15px] font-extrabold text-zumrut-900 shadow-[0_12px_30px_-10px_rgba(0,0,0,.7)]">
+        <span aria-hidden="true" className="size-2 rounded-full bg-karamel-500" />
+        {label}
+      </span>
+    </span>
   );
 }

@@ -30,6 +30,7 @@ const item = z.object({
   tags: z.array(z.enum(tagIds as [string, ...string[]])).max(6).optional(),
   image: photo,
   available: z.boolean().optional(),
+  soldOutOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
 });
 
 const category = z.object({

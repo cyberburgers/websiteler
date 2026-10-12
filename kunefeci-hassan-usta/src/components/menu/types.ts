@@ -14,6 +14,8 @@ export type MenuViewItem = {
   allergens: { id: Allergen; label: string }[];
   tags: { id: Tag; label: string }[];
   photo?: string;
+  /** Marked "bugün yok" in the panel: still listed, but shown as not available today. */
+  soldOut: boolean;
   filters: FilterId[];
   /** Accent-folded text in every language, so "kunefe" or "pistachio" finds the right item. */
   search: string;

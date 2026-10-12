@@ -124,6 +124,7 @@ export function HomeMenu({ categories, pairing, labels, waiter }: Props) {
                   item={item}
                   onOpen={() => openItem(item.id)}
                   detailsLabel={labels.details}
+                  soldOutLabel={labels.soldOut}
                 />
               ))}
             </ul>
@@ -131,7 +132,7 @@ export function HomeMenu({ categories, pairing, labels, waiter }: Props) {
             <ul className="mt-4 grid grid-cols-1 gap-2.5 md:grid-cols-2 md:gap-3">
               {category.items.map((item) => (
                 <li key={item.id} id={item.id}>
-                  <DrinkLine item={item} onOpen={() => openItem(item.id)} />
+                  <DrinkLine item={item} onOpen={() => openItem(item.id)} soldOutLabel={labels.soldOut} />
                 </li>
               ))}
             </ul>

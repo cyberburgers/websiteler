@@ -2,6 +2,7 @@ import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import { availableMenu, defaultMenu, defaultMenuUpdatedAt, type MenuCategory, type Text } from "@/content/menu";
 import { defaultInfo, type ShopInfo } from "@/content/site";
+import { serviceDay } from "@/lib/serviceDay";
 import { contentSchema } from "./schema";
 import { readStoredContent } from "./store";
 
@@ -34,12 +35,26 @@ export async function readContentFresh(): Promise<SiteContent> {
   return parsed.data as SiteContent;
 }
 
-/** The content for the public pages. Cached until the panel saves (which expires the tag). */
+/** "Bugün yok" only holds for the day it was set; from the next morning the dish is back on its own. */
+function dropPastSoldOut(content: SiteContent, today: string): SiteContent {
+  return {
+    ...content,
+    menu: content.menu.map((c) => ({
+      ...c,
+      items: c.items.map(({ soldOutOn, ...item }) => (soldOutOn === today ? { ...item, soldOutOn } : item)),
+    })),
+  };
+}
+
+/**
+ * The content for the public pages. Cached until the panel saves (which expires the tag), and read
+ * again every hour so yesterday's "bugün yok" marks are gone by the time the shop opens.
+ */
 export async function getContent(): Promise<SiteContent> {
   "use cache";
   cacheTag(CONTENT_TAG);
-  cacheLife("max");
-  return readContentFresh();
+  cacheLife("hours");
+  return dropPastSoldOut(await readContentFresh(), serviceDay());
 }
 
 /** What guests see: hidden dishes and empty categories left out. */

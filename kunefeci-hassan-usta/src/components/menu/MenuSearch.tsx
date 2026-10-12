@@ -18,6 +18,7 @@ type Labels = {
   inCategories: string;
   popular: string;
   noResults: string;
+  soldOut: string;
   filterNames: Record<FilterId, string>;
 };
 
@@ -162,7 +163,7 @@ export function MenuSearch({
               {popular.map((item) => (
                 <li key={item.id}>
                   <Link href={hrefs[item.id]} className={lineClass}>
-                    <ItemLine item={item} />
+                    <ItemLine item={item} soldOutLabel={labels.soldOut} />
                   </Link>
                 </li>
               ))}
@@ -197,7 +198,12 @@ export function MenuSearch({
                   {group.items.map((item) => (
                     <li key={item.id}>
                       <Link href={hrefs[item.id]} className={lineClass}>
-                        <ItemLine item={item} words={words} thumb={group.layout === "cards"} />
+                        <ItemLine
+                          item={item}
+                          soldOutLabel={labels.soldOut}
+                          words={words}
+                          thumb={group.layout === "cards"}
+                        />
                       </Link>
                     </li>
                   ))}

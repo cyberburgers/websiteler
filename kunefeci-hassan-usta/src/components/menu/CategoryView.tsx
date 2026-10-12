@@ -95,6 +95,7 @@ export function CategoryView({ category, pairing, labels, waiter }: Props) {
               item={item}
               onOpen={() => openItem(item.id)}
               detailsLabel={labels.details}
+              soldOutLabel={labels.soldOut}
             />
           ))}
         </ul>
@@ -106,10 +107,10 @@ export function CategoryView({ category, pairing, labels, waiter }: Props) {
             <li key={item.id} id={item.id}>
               {category.layout === "cards" ? (
                 <button type="button" onClick={() => openItem(item.id)} aria-haspopup="dialog" className={lineClass}>
-                  <ItemLine item={item} />
+                  <ItemLine item={item} soldOutLabel={labels.soldOut} />
                 </button>
               ) : (
-                <DrinkLine item={item} onOpen={() => openItem(item.id)} />
+                <DrinkLine item={item} onOpen={() => openItem(item.id)} soldOutLabel={labels.soldOut} />
               )}
             </li>
           ))}

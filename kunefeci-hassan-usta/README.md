@@ -70,7 +70,7 @@ Menü ve işletme bilgileri kod bilmeden, telefondan değiştirilir. Adres: `htt
 
 | Bölüm | Neler değişir? |
 | --- | --- |
-| **Menü** | Fiyatlar (doğrudan kutudan), ürünü gizleme/gösterme ("bugün yok"), yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler; kategori ekleme, silme, sıralama, kapak fotoğrafı |
+| **Menü** | Fiyatlar (doğrudan kutudan), **Bugün yok** düğmesi (ürün menüde kalır, "Bugün yok" yazar, ertesi sabah 05:00'te kendiliğinden geri gelir), ürünü menüden gizleme/gösterme, yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler; kategori ekleme, silme, sıralama, kapak fotoğrafı |
 | **Duyuru** | Ana sayfanın üstündeki kısa not (ör. bayram kapanışı) |
 | **Garson** | Garson ekranının adresi ve karekodu, masa kartlarına bağlantı (çağrılar panel açıkken her sekmede sesli gelir) |
 | **İşletme bilgileri** | Telefon (Google için), Instagram, adres, harita konumu, çalışma saatleri |

@@ -41,6 +41,7 @@ export function menuView(locale: Locale, menu: MenuCategory[]): MenuViewCategory
         allergens: item.allergens.map((a) => ({ id: a, label: allergens[a][locale] })),
         tags: (item.tags ?? []).map((t) => ({ id: t, label: tags[t][locale] })),
         photo: item.image,
+        soldOut: item.soldOutOn !== undefined,
         filters: filtersFor(item, category),
         search: foldForSearch(
           [...locales.map((l) => item.name[l]), tx(item.description, locale), tx(category.name, locale)].join(" "),

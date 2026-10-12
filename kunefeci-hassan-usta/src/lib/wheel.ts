@@ -23,12 +23,12 @@ function twoLines(name: string): string[] {
   return best;
 }
 
-/** Every dessert on the menu (not drinks, not pre-order trays) as a slice of the wheel. */
+/** Every dessert on the menu (not drinks, not pre-order trays, not what has run out today) as a slice of the wheel. */
 export function wheelSlices(locale: Locale, menu: MenuCategory[]): WheelSlice[] {
   return menu
     .filter((c) => c.layout === "cards")
     .flatMap((c) => c.items.map((item) => ({ item, categoryId: c.id })))
-    .filter(({ item }) => !item.tags?.includes("siparis"))
+    .filter(({ item }) => !item.tags?.includes("siparis") && !item.soldOutOn)
     .map(({ item, categoryId }) => ({
       id: item.id,
       name: tx(item.name, locale),

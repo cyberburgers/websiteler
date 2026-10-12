@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDown, ArrowUp, EyeOff, Pencil, Plus, Trash2, X } from "lucide-react";
+import { ArrowDown, ArrowUp, CalendarX2, Check, EyeOff, Pencil, Plus, Trash2, Undo2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Photo } from "@/components/ui";
 import { allergenIds, allergens, tagIds, tags, type MenuCategory, type MenuItem } from "@/content/menu";
@@ -396,7 +396,11 @@ function CategoryDialog({
   );
 }
 
-export function MenuEditor({ content, update }: { content: SiteContent; update: Update }) {
+/**
+ * @param today The shop's working day (YYYY-MM-DD). A dish marked "Bugün yok" carries this date, so it is
+ * back on the menu by itself the next morning.
+ */
+export function MenuEditor({ content, update, today }: { content: SiteContent; update: Update; today: string }) {
   const [itemId, setItemId] = useState<string | null>(null);
   const [categoryId, setCategoryId] = useState<string | null>(null);
   const close = () => {
@@ -404,9 +408,30 @@ export function MenuEditor({ content, update }: { content: SiteContent; update: 
     setCategoryId(null);
     update(settleIds);
   };
+  const soldOutToday = content.menu.flatMap((c) => c.items).filter((i) => i.soldOutOn === today);
 
   return (
     <div className="space-y-4">
+      {soldOutToday.length > 0 && (
+        <div className="flex flex-wrap items-center gap-3 rounded-2xl bg-amber-50 p-4 ring-1 ring-amber-200">
+          <CalendarX2 className="size-5 shrink-0 text-amber-700" aria-hidden="true" />
+          <p className="min-w-0 flex-1 text-sm leading-relaxed text-amber-950">
+            <b>Bugün yok:</b> {soldOutToday.map((i) => i.name.tr).join(", ")}.{" "}
+            <span className="text-amber-900/80">Yarın sabah kendiliğinden menüye döner.</span>
+          </p>
+          <button
+            type="button"
+            onClick={() =>
+              update((draft) => {
+                for (const i of draft.menu.flatMap((c) => c.items)) delete i.soldOutOn;
+              })
+            }
+            className={buttonClass.quiet}
+          >
+            <Undo2 className="size-4" aria-hidden="true" /> Hepsi var
+          </button>
+        </div>
+      )}
       {content.menu.map((category, ci) => (
         <section key={category.id} className="overflow-hidden rounded-2xl bg-white ring-1 ring-zumrut-800/10">
           <header className="flex items-center gap-2 border-b border-zumrut-800/10 bg-zumrut-800 px-3 py-2.5 text-krem-50">
@@ -444,10 +469,14 @@ export function MenuEditor({ content, update }: { content: SiteContent; update: 
           <ul className="divide-y divide-zumrut-800/10">
             {category.items.map((item, ii) => {
               const hidden = item.available === false;
+              const soldOut = !hidden && item.soldOutOn === today;
               return (
-                <li key={item.id} className={`flex gap-3 p-3 ${hidden ? "bg-krem-100/70" : ""}`}>
+                <li
+                  key={item.id}
+                  className={`flex gap-3 p-3 ${hidden ? "bg-krem-100/70" : soldOut ? "bg-amber-50/80" : ""}`}
+                >
                   <span
-                    className={`relative size-14 shrink-0 overflow-hidden rounded-xl bg-krem-200 ${hidden ? "opacity-50" : ""}`}
+                    className={`relative size-14 shrink-0 overflow-hidden rounded-xl bg-krem-200 ${hidden || soldOut ? "opacity-50 grayscale" : ""}`}
                   >
                     {item.image && <Photo photo={item.image} alt="" sizes="56px" />}
                   </span>
@@ -458,6 +487,11 @@ export function MenuEditor({ content, update }: { content: SiteContent; update: 
                         {hidden && (
                           <span className="ms-2 inline-flex items-center gap-1 rounded-full bg-zumrut-900/10 px-2 py-0.5 align-middle text-[11px] font-extrabold text-zumrut-900/70">
                             <EyeOff className="size-3" aria-hidden="true" /> Gizli
+                          </span>
+                        )}
+                        {soldOut && (
+                          <span className="ms-2 inline-flex items-center gap-1 rounded-full bg-amber-200 px-2 py-0.5 align-middle text-[11px] font-extrabold text-amber-950">
+                            <CalendarX2 className="size-3" aria-hidden="true" /> Bugün yok
                           </span>
                         )}
                       </p>
@@ -500,6 +534,32 @@ export function MenuEditor({ content, update }: { content: SiteContent; update: 
                         label="Menüde"
                         showLabel
                       />
+                      {!hidden && (
+                        <button
+                          type="button"
+                          aria-pressed={soldOut}
+                          aria-label={`${item.name.tr}: bugün yok`}
+                          onClick={() =>
+                            update((draft) => {
+                              const target = draft.menu[ci].items[ii];
+                              if (soldOut) delete target.soldOutOn;
+                              else target.soldOutOn = today;
+                            })
+                          }
+                          className={`inline-flex h-9 items-center gap-1.5 rounded-full px-3.5 text-sm font-extrabold transition active:scale-[.97] ${
+                            soldOut
+                              ? "bg-amber-400 text-zumrut-950 ring-1 ring-amber-500"
+                              : "bg-white text-zumrut-900 ring-1 ring-zumrut-800/20 hover:bg-krem-100"
+                          }`}
+                        >
+                          {soldOut ? (
+                            <Check className="size-4" aria-hidden="true" />
+                          ) : (
+                            <CalendarX2 className="size-4" aria-hidden="true" />
+                          )}
+                          Bugün yok
+                        </button>
+                      )}
                     </div>
                   </div>
                 </li>

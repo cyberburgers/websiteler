@@ -39,6 +39,7 @@ export default async function SearchPage({ params }: PageProps<"/[locale]/ara">)
       placeholder: dict.menu.searchPlaceholder,
       clear: dict.menu.clear,
       noResults: dict.menu.noResults,
+      soldOut: dict.item.soldOut,
     },
   };
 

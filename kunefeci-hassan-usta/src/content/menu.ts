@@ -28,6 +28,8 @@ export type MenuItem = {
   /** A bundled photo's name (see photos.ts) or the address of a photo uploaded from the panel. */
   image?: string;
   available?: boolean;
+  /** Panelde "Bugün yok" denen gün (YYYY-AA-GG). Ürün menüde kalır ama "Bugün yok" yazar; ertesi sabah kendiliğinden geri gelir. */
+  soldOutOn?: string;
 };
 
 export type MenuCategory = {

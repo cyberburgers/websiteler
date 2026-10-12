@@ -139,6 +139,8 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
                 showWaiter: dict.item.showWaiter,
                 share: dict.item.share,
                 copied: dict.item.copied,
+                soldOut: dict.item.soldOut,
+                soldOutHint: dict.item.soldOutHint,
               }}
               waiter={{ title: waiterDict.item.waiterTitle, table: waiterDict.home.table }}
             />

@@ -7,6 +7,7 @@ import { isAdmin, staffKey } from "@/lib/admin/auth";
 import { callsEnabled } from "@/lib/calls/store";
 import { readContentFresh } from "@/lib/content";
 import { storeIsWritable } from "@/lib/content/store";
+import { serviceDay } from "@/lib/serviceDay";
 
 export default function AdminPage() {
   return (
@@ -22,7 +23,9 @@ async function Panel() {
   if (!(await isAdmin())) redirect("/yonetim/giris");
   // Read straight from the store, not the site's cache, so the panel always edits the latest version.
   const content = await readContentFresh();
-  return <AdminApp initial={content} writable={storeIsWritable()} staff={await staffSetup()} />;
+  return (
+    <AdminApp initial={content} writable={storeIsWritable()} staff={await staffSetup()} today={serviceDay()} />
+  );
 }
 
 /** The waiter screen's address on this very site, and a QR code so the tablet can open it with its camera. */

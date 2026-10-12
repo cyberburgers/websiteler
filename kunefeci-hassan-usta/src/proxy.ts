@@ -1,8 +1,18 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { defaultLocale, isLocale } from "@/i18n/config";
+import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
 
-// Every page lives under a language prefix (/tr, /en); anything without one goes to Turkish.
-// The menu is the home page, so old /menu links (and printed QR codes) land there too.
+/**
+ * There is no language switch on the page: a phone set to Turkish gets the Turkish menu, any other
+ * language the English one. Only the first (preferred) language counts. No header: Turkish.
+ */
+function phoneLocale(request: NextRequest): Locale {
+  const first = request.headers.get("accept-language")?.split(",")[0]?.trim().toLowerCase();
+  if (!first || first === "*" || first.startsWith("tr")) return defaultLocale;
+  return "en";
+}
+
+// Every page lives under a language prefix (/tr, /en); anything without one (the table QR codes,
+// shared links) gets the language of the phone. The menu is the home page, so old /menu links land there too.
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const parts = pathname.split("/").filter(Boolean);
@@ -19,8 +29,10 @@ export function proxy(request: NextRequest) {
   }
   if (hasLocale) return;
 
-  url.pathname = `/${defaultLocale}${pathname === "/" ? "" : pathname}`;
-  return NextResponse.redirect(url);
+  url.pathname = `/${phoneLocale(request)}${pathname === "/" ? "" : pathname}`;
+  const response = NextResponse.redirect(url);
+  response.headers.set("Vary", "Accept-Language");
+  return response;
 }
 
 export const config = {

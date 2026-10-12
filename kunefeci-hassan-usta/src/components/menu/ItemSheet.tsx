@@ -17,6 +17,8 @@ export type SheetLabels = {
   showWaiter: string;
   share: string;
   copied: string;
+  soldOut: string;
+  soldOutHint: string;
 };
 
 /** Always Turkish: this screen is read by the waiter, not the guest. */
@@ -105,7 +107,8 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
     }
   };
 
-  const others = pairing.filter((p) => p.item.id !== item?.id);
+  const others = pairing.filter((p) => p.item.id !== item?.id && !p.item.soldOut);
+  const out = item?.soldOut ?? false;
 
   return (
     <>
@@ -130,7 +133,14 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
             <div
               className={`relative shrink-0 overflow-hidden ${item.photo ? "h-[min(18rem,38dvh)] bg-krem-200" : "h-16 border-b border-zumrut-800/10"}`}
             >
-              {item.photo && <Photo photo={item.photo} alt={item.name} sizes="(min-width: 768px) 32rem, 100vw" />}
+              {item.photo && (
+                <Photo
+                  photo={item.photo}
+                  alt={item.name}
+                  sizes="(min-width: 768px) 32rem, 100vw"
+                  className={out ? "grayscale-[.7]" : ""}
+                />
+              )}
               <span
                 aria-hidden="true"
                 className={`absolute left-1/2 top-2.5 h-[5px] w-12 -translate-x-1/2 rounded-full md:hidden ${item.photo ? "bg-krem-50/85" : "bg-zumrut-800/15"}`}
@@ -158,11 +168,22 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
                   {item.name}
                 </h2>
                 {item.prices.length === 1 && (
-                  <span className="shrink-0 rounded-full bg-zumrut-800 px-3.5 py-1.5 text-lg font-extrabold tabular-nums text-fistik-300">
+                  <span
+                    className={`shrink-0 rounded-full px-3.5 py-1.5 text-lg font-extrabold tabular-nums ${out ? "bg-zumrut-800/10 text-zumrut-800/45" : "bg-zumrut-800 text-fistik-300"}`}
+                  >
                     {item.prices[0].formatted}
                   </span>
                 )}
               </div>
+              {out && (
+                <p className="mt-3 flex items-center gap-2.5 rounded-[16px] bg-zumrut-800 py-2.5 pe-4 ps-2.5 text-sm font-semibold text-krem-50">
+                  <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-krem-50 px-2.5 py-1 text-[12.5px] font-extrabold text-zumrut-900">
+                    <span aria-hidden="true" className="size-1.5 rounded-full bg-karamel-500" />
+                    {labels.soldOut}
+                  </span>
+                  {labels.soldOutHint}
+                </p>
+              )}
               <p className="mt-2 text-[15px] leading-relaxed text-zumrut-800/75">{item.description}</p>
 
               {item.prices.length > 1 && (
@@ -229,14 +250,20 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
             </div>
 
             <div className="sticky bottom-0 flex gap-2 bg-gradient-to-b from-krem-100/0 via-krem-100 via-30% to-krem-100 px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3 md:px-6">
-              <button
-                type="button"
-                onClick={() => waiterRef.current?.showModal()}
-                className="flex h-[54px] flex-1 items-center justify-center gap-2 rounded-[18px] bg-zumrut-800 text-[15px] font-extrabold text-krem-50 transition hover:bg-zumrut-700 active:scale-[.98]"
-              >
-                <Smartphone className="size-[18px] text-fistik-300" aria-hidden="true" />
-                {labels.showWaiter}
-              </button>
+              {out ? (
+                <p className="flex h-[54px] flex-1 items-center justify-center rounded-[18px] bg-zumrut-800/10 text-[15px] font-extrabold text-zumrut-800/55">
+                  {labels.soldOut}
+                </p>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => waiterRef.current?.showModal()}
+                  className="flex h-[54px] flex-1 items-center justify-center gap-2 rounded-[18px] bg-zumrut-800 text-[15px] font-extrabold text-krem-50 transition hover:bg-zumrut-700 active:scale-[.98]"
+                >
+                  <Smartphone className="size-[18px] text-fistik-300" aria-hidden="true" />
+                  {labels.showWaiter}
+                </button>
+              )}
               <button
                 type="button"
                 onClick={share}

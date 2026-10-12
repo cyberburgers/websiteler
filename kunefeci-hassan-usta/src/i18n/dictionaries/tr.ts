@@ -7,7 +7,6 @@ const tr = {
   },
   nav: {
     skip: "İçeriğe geç",
-    language: "Dil",
   },
   actions: {
     seeMenu: "Menüyü İncele",
@@ -74,6 +73,8 @@ const tr = {
     waiterTitle: "Şunu rica ediyorum",
     share: "Paylaş",
     copied: "Bağlantı kopyalandı",
+    soldOut: "Bugün yok",
+    soldOutHint: "Bu lezzet bugünlük tükendi.",
   },
   search: {
     title: "Menüde ara",

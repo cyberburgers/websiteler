@@ -60,11 +60,9 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
           {dict.nav.skip}
         </a>
         <SiteHeader
-          locale={locale}
           logo={<Logo id="header-logo" className="h-auto w-full drop-shadow-[0_8px_14px_rgba(20,35,25,.45)]" />}
           homeHref={home}
-          searchHref={localePath(locale, "/ara")}
-          labels={{ search: dict.search.title, back: dict.category.back, language: dict.nav.language }}
+          labels={{ back: dict.category.back }}
         />
         <main id="icerik">{children}</main>
         <SiteFooter locale={locale} dict={dict} info={info} />

@@ -9,7 +9,6 @@ const en: Dictionary = {
   },
   nav: {
     skip: "Skip to content",
-    language: "Language",
   },
   actions: {
     seeMenu: "Explore the Menu",
@@ -76,6 +75,8 @@ const en: Dictionary = {
     waiterTitle: "I'd like",
     share: "Share",
     copied: "Link copied",
+    soldOut: "Sold out today",
+    soldOutHint: "This one has run out for today.",
   },
   search: {
     title: "Search the menu",
