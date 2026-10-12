@@ -1,8 +1,9 @@
 import type { WheelSlice } from "@/components/wheel/DessertWheel";
 import { availableMenu } from "@/content/menu";
 import { photoArt } from "@/content/photos";
-import { localePath, type Locale } from "@/i18n/config";
+import type { Locale } from "@/i18n/config";
 import { formatPrice } from "./format";
+import { categoryPath } from "./menu-view";
 
 /** Splits a name over at most two lines, as evenly as the words allow. */
 function twoLines(name: string): string[] {
@@ -26,15 +27,15 @@ function twoLines(name: string): string[] {
 export function wheelSlices(locale: Locale): WheelSlice[] {
   return availableMenu()
     .filter((c) => c.layout === "cards")
-    .flatMap((c) => c.items)
-    .filter((item) => !item.tags?.includes("siparis"))
-    .map((item) => ({
+    .flatMap((c) => c.items.map((item) => ({ item, categoryId: c.id })))
+    .filter(({ item }) => !item.tags?.includes("siparis"))
+    .map(({ item, categoryId }) => ({
       id: item.id,
       name: item.name[locale],
       lines: twoLines((item.shortName ?? item.name)[locale]),
       description: item.description[locale],
       price: formatPrice(item.prices[0].amount, locale),
       art: item.image ? photoArt[item.image] : undefined,
-      href: `${localePath(locale)}#${item.id}`,
+      href: categoryPath(locale, categoryId, item.id),
     }));
 }

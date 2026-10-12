@@ -6,16 +6,17 @@ import { useNow } from "@/lib/useShopClock";
 
 type Labels = { open: string; closed: string; closes: string; opens: string; today: string };
 
-export function OpenStatus({ labels, tone = "dark" }: { labels: Labels; tone?: "dark" | "light" }) {
+export function OpenStatus({ labels, tone = "dark" }: { labels: Labels; tone?: "dark" | "light" | "glass" }) {
   const now = useNow();
   if (!now) return <span className="inline-block h-8" aria-hidden="true" />;
 
   const state = openState(now);
   const detail = state.open ? `${labels.closes} ${state.closes}` : state.opens ? `${labels.opens} ${state.opens}` : "";
-  const base =
-    tone === "dark"
-      ? "bg-krem-50/10 text-krem-100 ring-krem-50/15"
-      : "bg-lacivert-800/[0.06] text-lacivert-800 ring-lacivert-800/10";
+  const base = {
+    dark: "bg-krem-50/10 text-krem-100 ring-krem-50/15",
+    light: "bg-lacivert-800/[0.06] text-lacivert-800 ring-lacivert-800/10",
+    glass: "bg-lacivert-925/65 font-bold text-krem-50 ring-krem-50/10 backdrop-blur-md",
+  }[tone];
 
   return (
     <span

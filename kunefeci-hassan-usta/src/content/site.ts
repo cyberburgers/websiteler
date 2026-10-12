@@ -50,5 +50,4 @@ export const links = {
   instagram: `https://www.instagram.com/${site.instagram}/`,
   directions: `https://www.google.com/maps/dir/?api=1&destination=${site.geo.lat},${site.geo.lng}`,
   mapsSearch: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${site.name} ${site.address.city}`)}`,
-  mapEmbed: `https://maps.google.com/maps?q=${site.geo.lat},${site.geo.lng}&z=16&output=embed`,
 };

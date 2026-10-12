@@ -7,6 +7,8 @@
  */
 @theme {
   --color-lacivert-950: #10112a;
+  /* Page background of the menu: a touch deeper than the logo's navy. */
+  --color-lacivert-925: #14152f;
   --color-lacivert-900: #181a3a;
   --color-lacivert-800: #23264a;
   --color-lacivert-700: #31356a;
@@ -49,15 +51,22 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 6.5rem;
+    scroll-padding-top: 9rem;
     -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    background-color: var(--color-krem-100);
-    color: var(--color-lacivert-800);
+    background-color: var(--color-lacivert-925);
+    color: var(--color-krem-100);
     font-family: var(--font-sans);
     text-rendering: optimizeLegibility;
+  }
+
+  /* Search matches: the matched letters simply turn yellow. */
+  mark {
+    background-color: transparent;
+    color: var(--color-sari-300);
+    font-weight: 800;
   }
 
   ::selection {
@@ -90,7 +99,6 @@
   }
 }
 
-/* Scalloped edge between sections, like the rim of a künefe tray. */
 @utility no-scrollbar {
   scrollbar-width: none;
   &::-webkit-scrollbar {
@@ -294,11 +302,11 @@ html:has(dialog[open]) {
     translate: 0 48px;
   }
 }
-/* Dessert wheel: grows out of the little tab on the right edge. */
+/* Dessert wheel: grows out of its tile at the bottom of the category grid. */
 .wheel-sheet {
   opacity: 0;
   scale: 0.35;
-  transform-origin: 100% 40%;
+  transform-origin: 75% 85%;
   transition:
     opacity 0.35s ease,
     scale 0.6s var(--ease-out-expo),
@@ -313,6 +321,23 @@ html:has(dialog[open]) {
   .wheel-sheet[open] {
     opacity: 0;
     scale: 0.35;
+  }
+}
+
+/* "Show the waiter": a plain fade, so nothing moves while the phone is being turned round. */
+.waiter-sheet {
+  opacity: 0;
+  transition:
+    opacity 0.25s ease,
+    overlay 0.25s allow-discrete,
+    display 0.25s allow-discrete;
+}
+.waiter-sheet[open] {
+  opacity: 1;
+}
+@starting-style {
+  .waiter-sheet[open] {
+    opacity: 0;
   }
 }
 
@@ -356,7 +381,7 @@ html:has(dialog[open]) {
 
 @media print {
   @page {
-    margin: 14mm;
+    margin: 10mm;
   }
   html,
   body {

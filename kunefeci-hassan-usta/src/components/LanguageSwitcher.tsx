@@ -4,29 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { isLocale, localeMeta, locales, type Locale } from "@/i18n/config";
 
-export function LanguageSwitcher({
-  current,
-  label,
-  tone,
-  size = "md",
-}: {
-  current: Locale;
-  label: string;
-  tone: "dark" | "light";
-  size?: "md" | "lg";
-}) {
+export function LanguageSwitcher({ current, label }: { current: Locale; label: string }) {
   const pathname = usePathname();
   const segments = pathname.split("/");
   const rest = isLocale(segments[1] ?? "") ? segments.slice(2).join("/") : segments.slice(1).join("/");
 
-  const idle = tone === "dark" ? "text-krem-100/70 hover:text-krem-50" : "text-lacivert-800/60 hover:text-lacivert-800";
-  const active = tone === "dark" ? "bg-krem-50 text-lacivert-900" : "bg-lacivert-800 text-krem-50";
-
   return (
     <nav aria-label={label}>
-      <ul
-        className={`inline-flex items-center gap-0.5 rounded-full p-1 ring-1 transition-colors ${tone === "dark" ? "ring-krem-50/20" : "ring-lacivert-800/15"}`}
-      >
+      <ul className="inline-flex items-center rounded-full bg-lacivert-950/45 p-[3px] ring-1 ring-krem-50/10 backdrop-blur-md">
         {locales.map((locale) => {
           const isCurrent = locale === current;
           return (
@@ -37,7 +22,9 @@ export function LanguageSwitcher({
                 lang={locale}
                 aria-current={isCurrent ? "true" : undefined}
                 title={localeMeta[locale].label}
-                className={`grid place-items-center rounded-full font-bold tracking-wide transition-colors ${size === "lg" ? "h-11 min-w-14 px-4 text-sm" : "h-9 min-w-10 px-2.5 text-xs sm:h-7 sm:min-w-9 sm:px-2"} ${isCurrent ? active : idle}`}
+                className={`grid h-[38px] min-w-10 place-items-center rounded-full px-2.5 text-xs font-extrabold tracking-wide transition-colors ${
+                  isCurrent ? "bg-krem-50 text-lacivert-925" : "text-krem-100/70 hover:text-krem-50"
+                }`}
               >
                 {localeMeta[locale].short}
               </Link>

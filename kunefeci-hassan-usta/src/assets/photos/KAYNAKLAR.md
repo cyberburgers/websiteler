@@ -17,8 +17,6 @@ aynı adla üzerine kaydedin.
 | kunefe4.jpg | https://www.pexels.com/photo/36782578/ |
 | tepsi.jpg | https://www.pexels.com/photo/37268943/ |
 | dukkan.jpg | İşletmenin kendi fotoğrafı |
-| tel.jpg | https://www.pexels.com/photo/5342251/ |
-| fistik.jpg | https://www.pexels.com/photo/11842170/ |
 | baklava.jpg | https://unsplash.com (images.unsplash.com/photo-1617806501553-d3a6a3a7b227) |
 | burma.jpg | https://unsplash.com (images.unsplash.com/photo-1651493829690-ccad11ee95fa) |
 | sobiyet.jpg | https://www.pexels.com/photo/36879793/ |
@@ -29,4 +27,8 @@ aynı adla üzerine kaydedin.
 | cay.jpg | https://unsplash.com (images.unsplash.com/photo-1579005162638-11c872e1586e) |
 | kahve.jpg | https://www.pexels.com/photo/31456086/ |
 | mirra.jpg | https://www.pexels.com/photo/29091816/ |
-| urfa.jpg | https://www.pexels.com/photo/29621046/ |
+| kat_kunefe.jpg | https://www.pexels.com/photo/8294945/ |
+| kat_serbetli.jpg | https://unsplash.com (images.unsplash.com/photo-1705663106388-6c1c51ff5a8d) |
+| kat_sicak.jpg | https://unsplash.com (images.unsplash.com/photo-1624457245795-4b0eac9305b2) |
+| kat_soguk.jpg | https://www.pexels.com/photo/4134388/ |
+

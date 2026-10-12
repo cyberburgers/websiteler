@@ -1,5 +1,21 @@
-import { Clock, Crown, Egg, Flame, Heart, Leaf, MapPin, Milk, Nut, Wheat, type LucideIcon } from "lucide-react";
+import {
+  Clock,
+  Crown,
+  Egg,
+  Flame,
+  Heart,
+  Leaf,
+  MapPin,
+  Milk,
+  Nut,
+  Snowflake,
+  TurkishLira,
+  Users,
+  Wheat,
+  type LucideIcon,
+} from "lucide-react";
 import type { Allergen, Tag } from "@/content/menu";
+import type { FilterId } from "./types";
 
 export const allergenIcons: Record<Allergen, LucideIcon> = {
   gluten: Wheat,
@@ -17,6 +33,14 @@ export const tagIcons: Record<Tag, LucideIcon> = {
   siparis: Clock,
 };
 
+export const filterIcons: Record<FilterId, LucideIcon> = {
+  fistikli: Nut,
+  sicak: Flame,
+  soguk: Snowflake,
+  ucuz: TurkishLira,
+  paylasmalik: Users,
+};
+
 const tagTone: Record<Tag, string> = {
   imza: "bg-lacivert-800 text-sari-300",
   populer: "bg-karamel-500/12 text-karamel-700",
@@ -26,11 +50,16 @@ const tagTone: Record<Tag, string> = {
   siparis: "bg-lacivert-800/[0.07] text-lacivert-700",
 };
 
-export function TagBadge({ id, label }: { id: Tag; label: string }) {
+/**
+ * A small label such as "Ustanın imzası". On a photo every badge but the signature one
+ * turns solid cream, so it stays readable over any picture.
+ */
+export function TagBadge({ id, label, onPhoto = false }: { id: Tag; label: string; onPhoto?: boolean }) {
   const Icon = tagIcons[id];
+  const tone = onPhoto && id !== "imza" ? "bg-krem-50 text-lacivert-800 shadow-sm" : tagTone[id];
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold leading-none tracking-wide ${tagTone[id]}`}
+      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-[5px] text-[11px] font-extrabold leading-none tracking-wide ${tone}`}
     >
       <Icon className="size-3" aria-hidden="true" />
       {label}

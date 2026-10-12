@@ -5,7 +5,7 @@ import type { Locale } from "@/i18n/config";
  * analiz çerezi yok. Analiz aracı, iletişim formu vb. eklenirse bu metin
  * güncellenmelidir. Yayından önce bir hukukçuya kontrol ettirmeniz önerilir.
  */
-export const privacyUpdatedAt = "2026-10-11";
+export const privacyUpdatedAt = "2026-10-12";
 
 type Section = { title: string; body: string[] };
 
@@ -23,13 +23,14 @@ export const privacy: Record<Locale, { intro: string; sections: Section[] }> = {
         body: [
           "Sitemizde üyelik, sipariş veya iletişim formu yoktur; adınız, telefonunuz gibi bilgileri site üzerinden toplamıyoruz.",
           "Sitemiz reklam veya ziyaretçi takibi amaçlı çerez kullanmaz.",
+          "Masa numaranız ve menü görünümü tercihiniz yalnızca kendi tarayıcınızda saklanır; bize gönderilmez.",
           "Sitenin barındırıldığı sunucu sağlayıcısı, güvenlik ve hizmetin sürekliliği için IP adresi, tarayıcı türü ve ziyaret zamanı gibi teknik kayıtları kısa süreliğine tutabilir.",
         ],
       },
       {
         title: "Üçüncü taraf hizmetler",
         body: [
-          'Harita: Google Haritalar yalnızca siz "Haritayı göster" düğmesine bastığınızda yüklenir. Bu andan itibaren Google\'ın gizlilik politikası geçerlidir.',
+          "Harita: \"Yol Tarifi\" düğmesi Google Haritalar'ı yeni sekmede açar. Bu andan itibaren Google'ın gizlilik politikası geçerlidir.",
           "WhatsApp ve telefon: Bize WhatsApp üzerinden yazdığınızda ya da aradığınızda paylaştığınız bilgiler yalnızca talebinizi yanıtlamak için kullanılır. WhatsApp kullanımı Meta'nın gizlilik koşullarına tabidir.",
         ],
       },
@@ -55,13 +56,14 @@ export const privacy: Record<Locale, { intro: string; sections: Section[] }> = {
         body: [
           "There are no accounts, orders or contact forms on this site; we do not collect your name or phone number through it.",
           "We do not use advertising or visitor-tracking cookies.",
+          "Your table number and menu view preference are kept only in your own browser; they are never sent to us.",
           "Our hosting provider may briefly keep technical logs such as IP address, browser type and time of visit for security and reliability.",
         ],
       },
       {
         title: "Third-party services",
         body: [
-          'Map: Google Maps loads only when you press "Show map". From then on, Google\'s privacy policy applies.',
+          "Map: the \"Directions\" button opens Google Maps in a new tab. From then on, Google's privacy policy applies.",
           "WhatsApp and phone: anything you share when you message or call us is used only to answer your request. WhatsApp is subject to Meta's privacy terms.",
         ],
       },

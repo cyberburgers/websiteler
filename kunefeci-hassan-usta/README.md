@@ -7,18 +7,31 @@
 
 ## Sayfalar
 
+Site, masadaki QR kodla açılan bir menü gibi çalışır.
+
 | Adres | İçerik |
 | --- | --- |
-| `/tr` | Ana sayfa = menü: arama, kategori çubuğu, ürün detayı, tatlı çarkı, alerjenler, yazdırılabilir. Adres, telefon ve saatler sayfanın altında |
+| `/tr` | Ana sayfa: dükkân fotoğraflı karşılama, arama, hızlı filtreler, ustanın önerisi, kategori kutuları ve tatlı çarkı |
+| `/tr/menu/kunefeler` | Bir kategorinin ürünleri: büyük kartlar ya da liste. Ürüne dokununca ayrıntı penceresi açılır |
+| `/tr/menu/kunefeler#kunefe` | Ürünün ayrıntısı doğrudan açık gelir (paylaşılan bağlantılar böyle görünür) |
+| `/tr/ara` | Menüde arama ve filtreler: Fıstıklı, Sıcak, Soğuk, ₺250 altı, Paylaşmalık (Google'a kapalı) |
 | `/tr/gizlilik` | Gizlilik ve KVKK aydınlatma metni |
-| `/tr/qr` | Masalara konacak yazdırılabilir QR kartı (Google'a kapalı) |
+| `/tr/qr` | Masalara konacak yazdırılabilir QR kartları (Google'a kapalı) |
+
+**Ürün penceresi:** fotoğraf, fiyat, alerjenler, "Yanında iyi gider" (çay, mırra), **Garsona göster**
+(ürünün Türkçe adını ve masa numarasını büyük yazıyla gösterir; yabancı misafirler için) ve Paylaş.
+Telefonda aşağı kaydırarak ya da geri tuşuyla kapanır.
+
+**Masa numarası:** `/tr/qr?masa=7` adresi 7 numaralı masanın kartını, `/tr/qr?masa=1-12` on iki
+kartı birden basar. Kart okutulunca menü açılır, karşılama kartında ve "Garsona göster" ekranında
+"Masa 7" yazar.
 
 Site açılırken bir an işletmenin logosu görünür (her ziyarette bir kez; sayfa yenilenince tekrar
 çıkmaz). Logo dosyası `src/assets/brand/logo.png`; açılışta kullanılan küçük kopyası
 `src/app/splash-logo.css`, açılış `src/components/Splash.tsx` içindedir.
 
 `/en/...` İngilizce sürümdür. Önek olmadan gelen her adres Türkçeye yönlenir.
-Eski `/menu` adresleri (ör. basılmış bir QR kodu) ana sayfaya, yani menüye yönlenir.
+Eski `/menu` adresleri (ör. basılmış bir QR kodu) ana sayfaya yönlenir.
 
 ## Çalıştırma
 
@@ -36,7 +49,7 @@ Her şey `src/content/` klasöründedir; kod bilmeden düzenlenebilecek şekilde
 | Dosya | Ne var? |
 | --- | --- |
 | `src/content/site.ts` | Telefon, WhatsApp, adres, konum, çalışma saatleri, Instagram |
-| `src/content/menu.ts` | Kategoriler, ürünler, fiyatlar, alerjenler, etiketler |
+| `src/content/menu.ts` | Kategoriler (ve kapak fotoğrafları), ürünler, fiyatlar, alerjenler, etiketler |
 | `src/content/photos.ts` | Hangi fotoğrafın nerede kullanılacağı |
 | `src/content/privacy.ts` | Gizlilik / KVKK metni |
 | `src/i18n/dictionaries/` | Sitedeki tüm yazılar (tr, en) |
@@ -60,7 +73,6 @@ Her şey `src/content/` klasöründedir; kod bilmeden düzenlenebilecek şekilde
 - [ ] Alan adı (`url`) — ya da Vercel'de `NEXT_PUBLIC_SITE_URL` ortam değişkeni
 - [ ] `menu.ts` içindeki **örnek fiyatlar** → gerçek fiyatlar
 - [ ] Dükkânın kendi fotoğrafları (künefe, tatlılar, içecekler, dükkân, usta)
-- [ ] Hikâye metni (`src/i18n/dictionaries/`) — işletmenin gerçek hikâyesine göre düzenleyin
 - [ ] Gizlilik metnini bir hukukçuya kontrol ettirin
 
 ## Yayına alma (Vercel)
@@ -77,8 +89,6 @@ Her şey `src/content/` klasöründedir; kod bilmeden düzenlenebilecek şekilde
 - **Logo:** `src/components/Logo.tsx`, tabeladaki logonun vektör çizimidir (Berkshire Swash yazı tipiyle).
   Tabelacıdan orijinal vektör dosyası (AI/PDF/SVG) alınırsa onunla değiştirilebilir.
   Tabelanın fotoğrafı `docs/logo-tabela.jpg` içinde.
-- **Harita** yalnızca ziyaretçi "Haritayı göster"e basınca yüklenir; böylece izinsiz Google çerezi
-  oluşmaz ve sayfa daha hızlı açılır.
 - **Çerez / analiz aracı yok.** Google Analytics vb. eklenirse çerez onayı ve gizlilik metni güncellenmelidir.
 - **SEO:** Her sayfada başlık/açıklama, dil alternatifleri (hreflang), `sitemap.xml`, `robots.txt` ve
   Google için `Restaurant` + `Menu` yapısal verisi (JSON-LD) vardır.

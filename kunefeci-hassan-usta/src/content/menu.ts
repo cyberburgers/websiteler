@@ -35,6 +35,8 @@ export type MenuCategory = {
   description?: Text;
   /** "cards": fotoğraflı kartlar. "list": klasik menü satırları (içecekler gibi). */
   layout: "cards" | "list";
+  /** Ana sayfadaki kategori kutusunun ve kategori sayfasının kapak fotoğrafı. */
+  image?: PhotoKey;
   items: MenuItem[];
 };
 
@@ -53,6 +55,7 @@ export const menu: MenuCategory[] = [
       en: "Made to order and served piping hot from the tray.",
     },
     layout: "cards",
+    image: "katKunefe",
     items: [
       {
         id: "hassan-usta-ozel",
@@ -141,6 +144,7 @@ export const menu: MenuCategory[] = [
       en: "Paper-thin pastry, plenty of pistachio, syrup cooked just right.",
     },
     layout: "cards",
+    image: "katSerbetli",
     items: [
       {
         id: "sillik",
@@ -211,6 +215,7 @@ export const menu: MenuCategory[] = [
     id: "sutlu-ve-dondurma",
     name: { tr: "Sütlüler & Dondurma", en: "Puddings & Ice Cream" },
     layout: "cards",
+    image: "dondurma",
     items: [
       {
         id: "maras-dondurmasi",
@@ -241,6 +246,7 @@ export const menu: MenuCategory[] = [
     id: "sicak-icecekler",
     name: { tr: "Sıcak İçecekler", en: "Hot Drinks" },
     layout: "list",
+    image: "katSicak",
     items: [
       {
         id: "cay",
@@ -303,6 +309,7 @@ export const menu: MenuCategory[] = [
     id: "soguk-icecekler",
     name: { tr: "Soğuk İçecekler", en: "Cold Drinks" },
     layout: "list",
+    image: "katSoguk",
     items: [
       {
         id: "ayran",

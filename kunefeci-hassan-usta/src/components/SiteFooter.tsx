@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { MapPin, Phone } from "lucide-react";
+import { MapPin, Navigation, Phone } from "lucide-react";
 import { InstagramIcon, WhatsAppIcon } from "./BrandIcons";
-import { Logo } from "./Logo";
 import { links, site } from "@/content/site";
 import { localePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
@@ -12,100 +11,73 @@ async function CopyrightYear() {
   return <>{new Date().getFullYear()}</>;
 }
 
+const action =
+  "flex h-12 items-center justify-center gap-2 rounded-2xl text-[13px] font-bold transition-colors sm:text-sm";
+
+/** Directions, call, Instagram and WhatsApp, then the address and hours in two short lines. */
 export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
-    <footer className="print-hidden pattern-star relative overflow-hidden bg-lacivert-950 pb-28 pt-20 text-krem-100 md:pb-12">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[48rem] -translate-x-1/2 rounded-full bg-karamel-500/15 blur-3xl"
-      />
-      <div className="container-page relative">
-        <div className="grid gap-12 md:grid-cols-[1.3fr_1fr_1fr]">
-          <div>
-            <Logo id="footer-logo" className="w-40" />
-            <p className="mt-6 max-w-xs text-[15px] leading-relaxed text-krem-100/70">{dict.footer.tagline}</p>
-            <div className="mt-6 flex gap-3">
-              <a
-                href={links.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="grid size-11 place-items-center rounded-full bg-krem-50/[0.07] text-krem-50 ring-1 ring-krem-50/10 transition hover:bg-krem-50/15"
-              >
-                <InstagramIcon className="size-5" />
-              </a>
-              <a
-                href={links.whatsapp(dict.actions.whatsappText)}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp"
-                className="grid size-11 place-items-center rounded-full bg-krem-50/[0.07] text-krem-50 ring-1 ring-krem-50/10 transition hover:bg-krem-50/15"
-              >
-                <WhatsAppIcon className="size-5" />
-              </a>
-            </div>
-          </div>
-
-          <div>
-            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-sari-300">{dict.visit.contact}</h2>
-            <ul className="mt-5 space-y-4 text-krem-100/80">
-              <li>
-                <a
-                  href={links.mapsSearch}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex gap-3 hover:text-krem-50"
-                >
-                  <MapPin className="mt-0.5 size-5 shrink-0 text-karamel-300" aria-hidden="true" />
-                  <span>
-                    {site.address.street}
-                    <br />
-                    {site.address.district} / {site.address.city}
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a href={links.tel} className="-my-2 flex gap-3 py-2 hover:text-krem-50">
-                  <Phone className="mt-0.5 size-5 shrink-0 text-karamel-300" aria-hidden="true" />
-                  <span>{site.phoneDisplay}</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-sari-300">{dict.visit.hours}</h2>
-            <ul className="mt-5 space-y-3">
-              {groupedHours(dict.days, dict.status.dayOff).map((g) => (
-                <li key={g.days} className="flex flex-col">
-                  <span className="text-sm text-krem-100/55">{g.days}</span>
-                  <span className="font-semibold tabular-nums text-krem-50">{g.hours}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+    <footer className="print-hidden border-t border-krem-50/10 bg-lacivert-925 text-krem-100">
+      <div className="container-page max-w-6xl pb-[calc(2rem+env(safe-area-inset-bottom))] pt-6 md:pt-8">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <a
+            href={links.directions}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${action} bg-sari-300 font-extrabold text-lacivert-925 hover:bg-sari-200`}
+          >
+            <Navigation className="size-4" aria-hidden="true" />
+            {dict.actions.directions}
+          </a>
+          <a href={links.tel} className={`${action} bg-krem-50/[0.08] hover:bg-krem-50/[0.14]`}>
+            <Phone className="size-4" aria-hidden="true" />
+            {dict.actions.call}
+          </a>
+          <a
+            href={links.whatsapp(dict.actions.whatsappText)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${action} bg-krem-50/[0.08] hover:bg-krem-50/[0.14]`}
+          >
+            <WhatsAppIcon className="size-4" />
+            {dict.actions.whatsapp}
+          </a>
+          <a
+            href={links.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${action} bg-krem-50/[0.08] hover:bg-krem-50/[0.14]`}
+          >
+            <InstagramIcon className="size-4" />
+            {dict.home.instagram}
+          </a>
         </div>
 
-        <p
-          className="font-brand mt-20 select-none whitespace-nowrap text-center text-[clamp(2rem,8.2vw,7.4rem)] leading-none text-krem-50/[0.07]"
-          aria-hidden="true"
-        >
-          Künefeci Hassan Usta
-        </p>
-
-        <div className="mt-8 flex flex-col gap-3 border-t border-krem-50/10 pt-6 text-sm text-krem-100/55 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © <CopyrightYear /> {site.name}. {dict.footer.rights}
+        <div className="mt-5 space-y-1.5 text-[13px] leading-relaxed text-krem-100/60">
+          <a href={links.mapsSearch} target="_blank" rel="noopener noreferrer" className="flex gap-2 hover:text-krem-50">
+            <MapPin className="mt-0.5 size-4 shrink-0 text-karamel-300" aria-hidden="true" />
+            <span>
+              {site.address.street}, {site.address.district} / {site.address.city}
+            </span>
+          </a>
+          <p className="ps-6">
+            {groupedHours(dict.days, dict.status.dayOff)
+              .map((g) => `${g.days} ${g.hours}`)
+              .join(" · ")}
           </p>
-          <div className="flex gap-5">
-            <span>{dict.footer.photoNote}</span>
-            <Link
-              href={localePath(locale, "/gizlilik")}
-              className="-my-2 inline-block py-2 underline-offset-4 hover:text-krem-50 hover:underline"
-            >
-              {dict.footer.privacy}
-            </Link>
-          </div>
+        </div>
+
+        <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-krem-50/10 pt-4 text-xs text-krem-100/45">
+          <span>
+            © <CopyrightYear /> {site.name}
+          </span>
+          <span>{dict.footer.photoNote}</span>
+          <Link
+            href={localePath(locale, "/gizlilik")}
+            className="-my-2 inline-block py-2 underline-offset-4 hover:text-krem-50 hover:underline"
+          >
+            {dict.footer.privacy}
+          </Link>
         </div>
       </div>
     </footer>

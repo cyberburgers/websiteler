@@ -1,11 +1,16 @@
 import type { MetadataRoute } from "next";
-import { menuUpdatedAt } from "@/content/menu";
+import { availableMenu, menuUpdatedAt } from "@/content/menu";
 import { site } from "@/content/site";
 import { localePath, locales } from "@/i18n/config";
 
 const pages = [
   { path: "/", priority: 1, lastModified: menuUpdatedAt },
-  { path: "/gizlilik", priority: 0.2, lastModified: "2026-10-11" },
+  ...availableMenu().map((category) => ({
+    path: `/menu/${category.id}`,
+    priority: 0.8,
+    lastModified: menuUpdatedAt,
+  })),
+  { path: "/gizlilik", priority: 0.2, lastModified: "2026-10-12" },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

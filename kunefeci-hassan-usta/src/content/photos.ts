@@ -5,9 +5,12 @@ import burma from "@/assets/photos/burma.jpg";
 import cay from "@/assets/photos/cay.jpg";
 import dukkan from "@/assets/photos/dukkan.jpg";
 import dondurma from "@/assets/photos/dondurma.jpg";
-import fistik from "@/assets/photos/fistik.jpg";
 import hero from "@/assets/photos/hero.jpg";
 import kahve from "@/assets/photos/kahve.jpg";
+import katKunefe from "@/assets/photos/kat_kunefe.jpg";
+import katSerbetli from "@/assets/photos/kat_serbetli.jpg";
+import katSicak from "@/assets/photos/kat_sicak.jpg";
+import katSoguk from "@/assets/photos/kat_soguk.jpg";
 import katmer from "@/assets/photos/katmer.jpg";
 import kunefe1 from "@/assets/photos/kunefe1.jpg";
 import kunefe2 from "@/assets/photos/kunefe2.jpg";
@@ -17,9 +20,7 @@ import mirra from "@/assets/photos/mirra.jpg";
 import sillik from "@/assets/photos/sillik.jpg";
 import sobiyet from "@/assets/photos/sobiyet.jpg";
 import sutlac from "@/assets/photos/sutlac.jpg";
-import tel from "@/assets/photos/tel.jpg";
 import tepsi from "@/assets/photos/tepsi.jpg";
-import urfa from "@/assets/photos/urfa.jpg";
 
 /**
  * FOTOĞRAFLAR — src/assets/photos/ klasöründeki dosyalar.
@@ -40,8 +41,6 @@ export type PhotoKey =
   | "kunefe4"
   | "tepsi"
   | "dukkan"
-  | "tel"
-  | "fistik"
   | "baklava"
   | "burma"
   | "sobiyet"
@@ -52,7 +51,11 @@ export type PhotoKey =
   | "cay"
   | "kahve"
   | "mirra"
-  | "urfa";
+  // Kategori kutuları ve kategori sayfalarının kapakları
+  | "katKunefe"
+  | "katSerbetli"
+  | "katSicak"
+  | "katSoguk";
 
 export const photos: Partial<Record<PhotoKey, StaticImageData>> = {
   hero,
@@ -62,8 +65,6 @@ export const photos: Partial<Record<PhotoKey, StaticImageData>> = {
   kunefe4,
   tepsi,
   dukkan,
-  tel,
-  fistik,
   baklava,
   burma,
   sobiyet,
@@ -74,7 +75,10 @@ export const photos: Partial<Record<PhotoKey, StaticImageData>> = {
   cay,
   kahve,
   mirra,
-  urfa,
+  katKunefe,
+  katSerbetli,
+  katSicak,
+  katSoguk,
 };
 
 /** Çizimler: tatlı çarkının dilimlerinde ve fotoğrafı silinen yerlerde gösterilir. */
@@ -86,8 +90,6 @@ export const photoArt: Record<PhotoKey, ArtKind | undefined> = {
   kunefe4: "kunefe-dondurma",
   tepsi: "tepsi",
   dukkan: undefined,
-  tel: "tel",
-  fistik: "fistik",
   baklava: "baklava",
   burma: "burma",
   sobiyet: "sobiyet",
@@ -98,5 +100,8 @@ export const photoArt: Record<PhotoKey, ArtKind | undefined> = {
   cay: "cay",
   kahve: "kahve",
   mirra: "mirra",
-  urfa: undefined,
+  katKunefe: "kunefe",
+  katSerbetli: "baklava",
+  katSicak: "cay",
+  katSoguk: undefined,
 };

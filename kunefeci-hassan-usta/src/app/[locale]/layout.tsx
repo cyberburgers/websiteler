@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Berkshire_Swash, Fraunces, Manrope } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Logo } from "@/components/Logo";
-import { MobileActionBar } from "@/components/MobileActionBar";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Splash } from "@/components/Splash";
@@ -48,7 +47,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
 }
 
 export const viewport: Viewport = {
-  themeColor: "#181a3a",
+  themeColor: "#14152f",
   colorScheme: "light",
   viewportFit: "cover",
 };
@@ -70,21 +69,21 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
         <Splash />
         <a
           href="#icerik"
-          className="fixed start-4 top-4 z-[60] -translate-y-24 rounded-full bg-sari-300 px-5 py-3 font-bold text-lacivert-900 shadow-lg transition focus:translate-y-0"
+          className="print-hidden fixed start-4 top-4 z-[60] -translate-y-24 rounded-full bg-sari-300 px-5 py-3 font-bold text-lacivert-900 shadow-lg transition focus:translate-y-0"
         >
           {dict.nav.skip}
         </a>
         <SiteHeader
           locale={locale}
-          logo={<Logo id="header-logo" className="h-auto w-full drop-shadow-[0_10px_18px_rgba(16,17,42,.35)]" />}
+          logo={<Logo id="header-logo" className="h-auto w-full drop-shadow-[0_8px_14px_rgba(16,17,42,.45)]" />}
           homeHref={home}
-          languageLabel={dict.nav.language}
+          searchHref={localePath(locale, "/ara")}
+          labels={{ search: dict.search.title, back: dict.category.back, language: dict.nav.language }}
           phoneHref={links.tel}
           phoneDisplay={site.phoneDisplay}
         />
         <main id="icerik">{children}</main>
         <SiteFooter locale={locale} dict={dict} />
-        <MobileActionBar locale={locale} dict={dict} />
       </body>
     </html>
   );

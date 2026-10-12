@@ -1,17 +1,25 @@
 import type { Allergen, Tag } from "@/content/menu";
 import type { PhotoKey } from "@/content/photos";
 
-/** Menu data already localized and price-formatted on the server, ready for the client explorer. */
+/** The quick filters on the home page and the search page. */
+export const filterIds = ["fistikli", "sicak", "soguk", "ucuz", "paylasmalik"] as const;
+export type FilterId = (typeof filterIds)[number];
+
+/** Menu data already localized and price-formatted on the server, ready for the client. */
 export type MenuViewItem = {
   id: string;
+  categoryId: string;
   name: string;
   description: string;
   prices: { label?: string; formatted: string }[];
   allergens: { id: Allergen; label: string }[];
   tags: { id: Tag; label: string }[];
   photo?: PhotoKey;
+  filters: FilterId[];
   /** Accent-folded text in every language, so "kunefe" or "pistachio" finds the right item. */
   search: string;
+  /** Turkish name and price labels for the "show the waiter" screen, whatever language the guest reads. */
+  waiter: { name: string; prices: { label?: string; formatted: string }[] };
 };
 
 export type MenuViewCategory = {
@@ -19,18 +27,6 @@ export type MenuViewCategory = {
   name: string;
   description?: string;
   layout: "cards" | "list";
+  photo?: PhotoKey;
   items: MenuViewItem[];
-};
-
-export type MenuLabels = {
-  search: string;
-  searchPlaceholder: string;
-  clear: string;
-  categories: string;
-  noResults: string;
-  results: string;
-  price: string;
-  contains: string;
-  noAllergens: string;
-  close: string;
 };

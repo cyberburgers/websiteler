@@ -126,18 +126,21 @@ function MiniWheel({ className }: { className?: string }) {
 /** Fired by any trigger on the page; the one wheel dialog in the layout listens for it. */
 const OPEN_EVENT = "tatli-carki:ac";
 
-/** The "Kararsız mısın?" pill that sits beside the big "Menü" title on the menu page. */
-export function WheelTrigger({ label, className = "" }: { label: string; className?: string }) {
+/** The last tile on the home page: a slowly turning wheel that opens the game. */
+export function WheelTile({ title, action, className = "" }: { title: string; action: string; className?: string }) {
   return (
     <button
       type="button"
       aria-haspopup="dialog"
       data-wheel-trigger=""
       onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}
-      className={`group inline-flex shrink-0 items-center gap-2 rounded-full bg-krem-50/[0.07] py-1 pe-4 ps-1 text-sm font-bold text-sari-300 ring-1 ring-sari-300/25 transition-colors hover:bg-krem-50/[0.13] lg:gap-3 lg:py-1.5 lg:pe-5 lg:ps-1.5 lg:text-base ${className}`}
+      className={`group flex flex-col items-center justify-center gap-2.5 overflow-hidden rounded-[26px] bg-[radial-gradient(circle_at_50%_35%,#2a2d5a,#1b1d3f)] text-sari-300 ring-1 ring-inset ring-sari-300/25 transition hover:ring-sari-300/50 active:scale-[.98] ${className}`}
     >
-      <MiniWheel className="size-9 shrink-0 animate-[spin_9s_linear_infinite] group-hover:animate-[spin_1.6s_linear_infinite] motion-reduce:animate-none lg:size-11" />
-      <span className="whitespace-nowrap">{label}</span>
+      <MiniWheel className="size-[84px] animate-[spin_14s_linear_infinite] group-hover:animate-[spin_1.6s_linear_infinite] motion-reduce:animate-none md:size-24" />
+      <span className="text-center">
+        <span className="font-display block text-[19px] font-semibold leading-[1.05] md:text-[22px]">{title}</span>
+        <span className="mt-1 block text-xs text-krem-100/70">{action}</span>
+      </span>
     </button>
   );
 }
@@ -174,7 +177,14 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
     if (faceRef.current) faceRef.current.style.transform = `rotate(${angle.current}deg)`;
   }, [open]);
 
-  useEffect(() => () => cancelAnimationFrame(frame.current), []);
+  // Also close the dialog if the page is left (or kept hidden for Back) while it is open.
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    return () => {
+      cancelAnimationFrame(frame.current);
+      dialog?.close();
+    };
+  }, []);
 
   const render = () => {
     if (faceRef.current) faceRef.current.style.transform = `rotate(${angle.current}deg)`;
