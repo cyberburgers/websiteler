@@ -257,17 +257,6 @@
   }
 }
 
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-@utility animate-marquee {
-  @media (prefers-reduced-motion: no-preference) {
-    animation: marquee 40s linear infinite;
-  }
-}
-
 @keyframes bar-in {
   from {
     transform: translateY(140%);

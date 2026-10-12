@@ -51,14 +51,6 @@ const tr = {
     sticker: "Siparişle hazırlanır",
     ring: "KÜNEFECİ HASSAN USTA • ŞANLIURFA • SICAK SICAK • ",
   },
-  ticker: [
-    "Siparişle hazırlanır",
-    "Bol Antep fıstığı",
-    "Urfa sadeyağı",
-    "Tuzsuz Urfa peyniri",
-    "Sıcak şerbet",
-    "Tepsi künefe",
-  ],
   wheel: {
     trigger: "Kararsız mısın?",
     title: "Çarkı çevir, tatlını seç",
@@ -88,16 +80,6 @@ const tr = {
       { title: "Urfa peyniri", text: "Tuzu alınmış, ısınınca uzayan yumuşak peynir." },
       { title: "Urfa sadeyağı", text: "Künefeye o kokuyu veren, Şanlıurfa'nın meşhur yağı." },
       { title: "Antep fıstığı", text: "Güneydoğu bağlarından, bol ve taze dövülmüş." },
-    ],
-  },
-  process: {
-    eyebrow: "Ateşten masaya",
-    title: "Her künefe dört adımda, sizin için hazırlanır",
-    steps: [
-      { title: "Hazırlık", text: "Kadayıf sadeyağla ovulur, tepsiye ince bir kat serilir." },
-      { title: "Peynir", text: "Tuzsuz Urfa peyniri iki kat kadayıfın arasına yerleşir." },
-      { title: "Ateş", text: "Tepsi ateşte çevrilir; alt kat altın rengine döner, peynir erir." },
-      { title: "Şerbet", text: "Sıcak şerbet ve dövme fıstıkla, bekletilmeden masaya gelir." },
     ],
   },
   trays: {
