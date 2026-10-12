@@ -20,9 +20,12 @@ ya da WhatsApp düğmeleri yoktur; sayfanın altında yalnızca Instagram, adres
 | `/yonetim` | Yönetici paneli: menü, fiyatlar, fotoğraflar, saatler, iletişim (şifreli, Google'a kapalı) |
 | `/garson?k=…` | Kasadaki tablet için garson ekranı: çağrılar ve siparişler (adresi panelde) |
 
-Üstte yalnızca logo durur (ana sayfa dışında bir de geri düğmesi); dil ve arama düğmesi yoktur.
+Üstte ortada logo, sağda küçük kilitli **yönetici girişi** düğmesi durur (ana sayfa dışında solda geri düğmesi);
+dil ve arama düğmesi yoktur. Yönetici düğmesi şifre penceresini menünün üstünde, arkası bulanık açar; giriş
+yapılmışsa doğrudan panele geçer.
 
-**Ürün penceresi:** fotoğraf, fiyat, alerjenler, "Yanında iyi gider" (çay, mırra) ve Paylaş. Masada
+**Ürün penceresi:** fotoğraf, fiyat, "Yanında iyi gider" (panelden ayarlanır; başlangıçta çay ve mırra) ve Paylaş.
+Alerjen bilgisi sitede gösterilmez; panelde ürünün içinde tutulur, müşteri sorarsa oradan bakılır. Masada
 **Siparişe ekle** (boy seçimiyle: Porsiyon / 1 kg); masa dışında ya da sipariş kapalıyken **Garsona göster**
 (ürünün Türkçe adını büyük yazıyla gösterir; yabancı misafirler için). Telefonda aşağı kaydırarak ya da
 geri tuşuyla kapanır.
@@ -91,11 +94,13 @@ npm run lint
 
 ## Yönetici paneli (`/yonetim`)
 
-Menü ve işletme bilgileri kod bilmeden, telefondan değiştirilir. Adres: `https://alanadiniz.com/yonetim`
+Menü ve işletme bilgileri kod bilmeden, telefondan değiştirilir. Sitenin sağ üstündeki kilit düğmesiyle
+ya da doğrudan `https://alanadiniz.com/yonetim` adresiyle girilir.
 
 | Bölüm | Neler değişir? |
 | --- | --- |
-| **Menü** | Fiyatlar (doğrudan kutudan), **Bugün yok** düğmesi (ürün menüde kalır, "Bugün yok" yazar, ertesi sabah 05:00'te kendiliğinden geri gelir), ürünü menüden gizleme/gösterme, yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler; kategori ekleme, silme, sıralama |
+| **Menü** | Fiyatlar (doğrudan kutudan), **Bugün yok** düğmesi (ürün menüde kalır, "Bugün yok" yazar, ertesi sabah 05:00'te kendiliğinden geri gelir), ürünü menüden gizleme/gösterme, yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler (yalnız panelde), ürüne özel "Yanında iyi gider"; kategori ekleme, silme, sıralama |
+| **Öneriler** | Tatlıların altında çıkan "Yanında iyi gider" genel listesi (en çok 4 ürün, seçilen sırayla); ürüne özel listelerin özeti |
 | **Duyuru** | Ana sayfanın üstündeki kısa not (ör. bayram kapanışı) |
 | **Garson** | Masadan sipariş açık/kapalı, garson ekranının adresi ve karekodu, masa kartlarına bağlantı (çağrılar ve siparişler panel açıkken her sekmede sesli gelir) |
 | **İşletme bilgileri** | Telefon (Google için), Instagram, adres, harita konumu, çalışma saatleri |

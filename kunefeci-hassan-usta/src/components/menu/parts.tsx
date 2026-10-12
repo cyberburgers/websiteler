@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { AddControl } from "@/components/order/AddControl";
 import { Photo } from "@/components/ui";
 import { foldForSearch } from "@/lib/format";
-import { allergenIcons } from "./icons";
 import type { MenuViewItem } from "./types";
 
 /** Splits a search into words; every word has to match. */
@@ -39,18 +38,6 @@ export function highlight(text: string, words: string[]): ReactNode {
   }
   parts.push(text.slice(from));
   return parts;
-}
-
-export function AllergenIcons({ item, className = "" }: { item: MenuViewItem; className?: string }) {
-  if (item.allergens.length === 0) return null;
-  return (
-    <span className={`flex items-center gap-2 ${className}`}>
-      {item.allergens.map((a) => {
-        const Icon = allergenIcons[a.id];
-        return <Icon key={a.id} className="size-[18px]" strokeWidth={1.8} aria-label={a.label} role="img" />;
-      })}
-    </span>
-  );
 }
 
 /** "₺220" or, for items sold in several sizes, the smallest price. */

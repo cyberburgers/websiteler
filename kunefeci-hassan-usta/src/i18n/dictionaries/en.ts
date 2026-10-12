@@ -8,6 +8,7 @@ const en: Dictionary = {
     privacyTitle: "Privacy Notice",
   },
   nav: {
+    admin: "Staff sign-in",
     skip: "Skip to content",
   },
   actions: {
@@ -39,12 +40,7 @@ const en: Dictionary = {
     clear: "Clear",
     noResults: "Nothing on the menu matches your search.",
     updated: "Last updated",
-    allergensTitle: "Allergen information",
-    allergensNote:
-      "All items are prepared in the same kitchen and may contain traces of allergens. If you have an allergy, please tell us before ordering.",
     price: "Price",
-    contains: "Contains",
-    noAllergens: "No known allergens.",
     close: "Close",
   },
   home: {
@@ -52,9 +48,6 @@ const en: Dictionary = {
     welcomeLead: "Künefe is made to order and served hot from the tray.",
     table: "Table {n}",
     categories: "Categories",
-    summary: "{categories} categories · {items} items",
-    dishes: "{n} desserts",
-    drinks: "{n} drinks",
     spin: "Spin the wheel",
     instagram: "Instagram",
     shopPhoto: "The front of the Künefeci Hassan Usta shop",

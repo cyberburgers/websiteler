@@ -1,28 +1,18 @@
 import {
   Clock,
   Crown,
-  Egg,
   Flame,
   Heart,
   Leaf,
   MapPin,
-  Milk,
   Nut,
   Snowflake,
   TurkishLira,
   Users,
-  Wheat,
   type LucideIcon,
 } from "lucide-react";
-import type { Allergen, Tag } from "@/content/menu";
+import type { Tag } from "@/content/menu";
 import type { FilterId } from "./types";
-
-export const allergenIcons: Record<Allergen, LucideIcon> = {
-  gluten: Wheat,
-  sut: Milk,
-  kabuklu: Nut,
-  yumurta: Egg,
-};
 
 export const tagIcons: Record<Tag, LucideIcon> = {
   imza: Crown,

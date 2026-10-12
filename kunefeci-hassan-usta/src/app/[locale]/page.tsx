@@ -12,8 +12,8 @@ import { availableMenu } from "@/content/menu";
 import { isLocale, localePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getContent } from "@/lib/content";
-import { fill, tx } from "@/lib/format";
-import { itemPath, menuView, pairingItems } from "@/lib/menu-view";
+import { tx } from "@/lib/format";
+import { menuView } from "@/lib/menu-view";
 import { JsonLd, menuJsonLd, restaurantJsonLd } from "@/lib/structured-data";
 import { wheelSlices } from "@/lib/wheel";
 
@@ -32,8 +32,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const content = await getContent();
   const menu = availableMenu(content.menu);
   const notice = tx(content.notice, locale);
-  const categories = menuView(locale, menu);
-  const items = categories.flatMap((c) => c.items);
+  const categories = menuView(locale, menu, content.pairing);
   const searchHref = localePath(locale, "/ara");
   const intro = (ms: number) => ({ animationDelay: `calc(var(--intro-delay, 0s) + ${ms}ms)` });
 
@@ -50,7 +49,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
               alt={dict.home.shopPhoto}
               sizes="(min-width: 1024px) 40rem, 100vw"
               preload
-              className="animate-settle -z-10 object-[50%_30%]"
+              className="animate-settle -z-10 object-[50%_30%] brightness-120"
             />
             <div
               aria-hidden="true"
@@ -111,30 +110,18 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         </div>
 
         <section aria-labelledby="menu-baslik" className="mt-8 md:mt-12">
-          <div className="flex items-baseline justify-between gap-4">
-            <h2 id="menu-baslik" className="font-display text-[28px] font-medium text-krem-50 md:text-4xl">
-              {dict.menu.title}
-            </h2>
-            <span className="text-[12.5px] text-krem-100/55">
-              {fill(dict.home.summary, { categories: categories.length, items: items.length })}
-            </span>
-          </div>
+          <h2 id="menu-baslik" className="font-display text-[28px] font-medium text-krem-50 md:text-4xl">
+            {dict.menu.title}
+          </h2>
           <div className="mt-2">
             <HomeMenu
               categories={categories}
-              pairing={pairingItems(categories).map((item) => ({
-                item,
-                href: itemPath(locale, item.id),
-              }))}
+              homeHref={localePath(locale)}
               labels={{
                 tabs: dict.home.categories,
-                dishes: dict.home.dishes,
-                drinks: dict.home.drinks,
                 details: dict.category.details,
                 close: dict.menu.close,
                 price: dict.menu.price,
-                contains: dict.menu.contains,
-                noAllergens: dict.menu.noAllergens,
                 pairing: dict.item.pairing,
                 showWaiter: dict.item.showWaiter,
                 share: dict.item.share,

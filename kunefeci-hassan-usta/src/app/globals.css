@@ -609,6 +609,56 @@ html:has(dialog[open]) {
   }
 }
 
+/* Staff sign-in (header, top right): a card over the menu, which blurs and dims behind it. */
+.login-sheet {
+  opacity: 0;
+  scale: 0.96;
+  translate: 0 12px;
+  transition:
+    opacity 0.2s ease,
+    scale 0.25s var(--ease-in-quart),
+    translate 0.25s var(--ease-in-quart),
+    overlay 0.25s allow-discrete,
+    display 0.25s allow-discrete;
+}
+.login-sheet[open] {
+  opacity: 1;
+  scale: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.3s ease,
+    scale 0.5s var(--ease-out-quint),
+    translate 0.5s var(--ease-out-quint),
+    overlay 0.5s allow-discrete,
+    display 0.5s allow-discrete;
+}
+@starting-style {
+  .login-sheet[open] {
+    opacity: 0;
+    scale: 0.96;
+    translate: 0 12px;
+  }
+}
+.login-sheet::backdrop {
+  background-color: transparent;
+  backdrop-filter: blur(0);
+  transition:
+    background-color 0.4s ease,
+    backdrop-filter 0.4s ease,
+    overlay 0.4s allow-discrete,
+    display 0.4s allow-discrete;
+}
+.login-sheet[open]::backdrop {
+  background-color: color-mix(in oklab, var(--color-zumrut-950) 45%, transparent);
+  backdrop-filter: blur(14px) saturate(1.1);
+}
+@starting-style {
+  .login-sheet[open]::backdrop {
+    background-color: transparent;
+    backdrop-filter: blur(0);
+  }
+}
+
 .menu-sheet::backdrop,
 .wheel-sheet::backdrop {
   background-color: transparent;

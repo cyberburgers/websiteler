@@ -4,7 +4,8 @@ import { LockKeyhole } from "lucide-react";
 import { useActionState } from "react";
 import { loginAction, type LoginState } from "@/app/yonetim/actions";
 
-export function LoginForm() {
+/** `autoFocus`: on the login page. In the header's sign-in window the field is focused as the window opens. */
+export function LoginForm({ autoFocus = true }: { autoFocus?: boolean }) {
   const [state, action, pending] = useActionState<LoginState, FormData>(loginAction, {});
   return (
     <form action={action} className="mt-6 space-y-4">
@@ -15,7 +16,7 @@ export function LoginForm() {
           name="sifre"
           required
           autoComplete="current-password"
-          autoFocus
+          autoFocus={autoFocus}
           className="mt-1.5 h-12 w-full rounded-xl bg-white px-4 text-base text-zumrut-950 outline-none ring-1 ring-zumrut-800/20 focus:ring-2 focus:ring-zumrut-600"
         />
       </label>

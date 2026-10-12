@@ -9,11 +9,13 @@ import { buttonClass } from "./fields";
 import { HighlightsEditor } from "./HighlightsEditor";
 import { InfoEditor } from "./InfoEditor";
 import { MenuEditor } from "./MenuEditor";
+import { PairingEditor } from "./PairingEditor";
 import { StaffEditor, type StaffSetup } from "./StaffEditor";
 
-type Tab = "menu" | "duyuru" | "garson" | "isletme";
+type Tab = "menu" | "oneri" | "duyuru" | "garson" | "isletme";
 const TABS: { id: Tab; label: string }[] = [
   { id: "menu", label: "Menü" },
+  { id: "oneri", label: "Öneriler" },
   { id: "duyuru", label: "Duyuru" },
   { id: "garson", label: "Garson" },
   { id: "isletme", label: "İşletme bilgileri" },
@@ -166,6 +168,7 @@ export function AdminApp({ initial, writable, staff, today }: Props) {
             <MenuEditor content={content} update={update} today={today} />
           </>
         )}
+        {tab === "oneri" && <PairingEditor content={content} update={update} />}
         {tab === "duyuru" && <HighlightsEditor content={content} update={update} />}
         {tab === "garson" && staff && <StaffEditor staff={staff} content={content} update={update} />}
         {tab === "isletme" && <InfoEditor content={content} update={update} />}

@@ -6,15 +6,13 @@ import { useOrdering } from "@/components/order/OrderProvider";
 import { Photo } from "@/components/ui";
 import { addOne, qtyOf, useCart } from "@/lib/order/cart";
 import { useTable } from "@/lib/table";
-import { TagBadge, allergenIcons } from "./icons";
+import { TagBadge } from "./icons";
 import { MenuLink } from "./MenuLink";
 import type { MenuViewItem } from "./types";
 
 export type SheetLabels = {
   close: string;
   price: string;
-  contains: string;
-  noAllergens: string;
   pairing: string;
   showWaiter: string;
   share: string;
@@ -236,27 +234,6 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
                   )}
                 </div>
               )}
-
-              <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-[18px] bg-krem-200/70 px-4 py-3">
-                <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-zumrut-800/55">
-                  {labels.contains}
-                </span>
-                {item.allergens.length > 0 ? (
-                  <span className="flex flex-wrap gap-x-3 gap-y-1 text-[13px] font-bold text-karamel-700">
-                    {item.allergens.map((a) => {
-                      const Icon = allergenIcons[a.id];
-                      return (
-                        <span key={a.id} className="inline-flex items-center gap-1">
-                          <Icon className="size-[15px]" strokeWidth={1.8} aria-hidden="true" />
-                          {a.label}
-                        </span>
-                      );
-                    })}
-                  </span>
-                ) : (
-                  <span className="text-[13px] text-zumrut-800/65">{labels.noAllergens}</span>
-                )}
-              </div>
 
               {others.length > 0 && (
                 <>

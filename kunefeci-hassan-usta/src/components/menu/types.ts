@@ -1,4 +1,4 @@
-import type { Allergen, Tag } from "@/content/menu";
+import type { Tag } from "@/content/menu";
 
 /** The quick filters on the home page and the search page. */
 export const filterIds = ["fistikli", "sicak", "soguk", "ucuz", "paylasmalik"] as const;
@@ -11,11 +11,12 @@ export type MenuViewItem = {
   name: string;
   description: string;
   prices: { label?: string; formatted: string }[];
-  allergens: { id: Allergen; label: string }[];
   tags: { id: Tag; label: string }[];
   photo?: string;
   /** Marked "bugün yok" in the panel: still listed, but shown as not available today. */
   soldOut: boolean;
+  /** "Yanında iyi gider": ids of dishes on the menu today, already worked out from the panel's settings. */
+  pairing: string[];
   filters: FilterId[];
   /** Accent-folded text in every language, so "kunefe" or "pistachio" finds the right item. */
   search: string;

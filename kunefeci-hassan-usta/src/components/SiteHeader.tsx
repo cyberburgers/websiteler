@@ -4,11 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useSyncExternalStore, type ReactNode } from "react";
+import { AdminEntry } from "./AdminEntry";
 
 type Props = {
   logo: ReactNode;
   homeHref: string;
-  labels: { back: string };
+  labels: { back: string; admin: string };
 };
 
 function subscribeScroll(onChange: () => void) {
@@ -19,7 +20,7 @@ function subscribeScroll(onChange: () => void) {
 const roundButton =
   "grid size-11 shrink-0 place-items-center rounded-full bg-zumrut-950/45 text-krem-50 ring-1 ring-krem-50/10 backdrop-blur-md transition-colors hover:bg-zumrut-950/70";
 
-/** The logo in the middle; away from the home page, a back button on the left. */
+/** The logo in the middle; away from the home page, a back button on the left; the staff's sign-in on the right. */
 export function SiteHeader({ logo, homeHref, labels }: Props) {
   const pathname = usePathname();
   const isHome = pathname === homeHref || pathname === `${homeHref}/`;
@@ -70,6 +71,8 @@ export function SiteHeader({ logo, homeHref, labels }: Props) {
         >
           {logo}
         </Link>
+
+        <AdminEntry label={labels.admin} className={`${roundButton} ms-auto`} />
       </div>
     </header>
   );

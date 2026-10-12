@@ -66,7 +66,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
         <SiteHeader
           logo={<Logo id="header-logo" className="h-auto w-full drop-shadow-[0_8px_14px_rgba(20,35,25,.45)]" />}
           homeHref={home}
-          labels={{ back: dict.category.back }}
+          labels={{ back: dict.category.back, admin: dict.nav.admin }}
         />
         <OrderProvider
           enabled={callsEnabled() && content.tableOrders !== false}

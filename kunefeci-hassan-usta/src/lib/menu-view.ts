@@ -1,10 +1,8 @@
 import type { FilterId, MenuViewCategory, MenuViewItem } from "@/components/menu/types";
-import { allergens, tags, type MenuCategory, type MenuItem } from "@/content/menu";
+import { MAX_PAIRING, defaultPairing, tags, type MenuCategory, type MenuItem } from "@/content/menu";
 import { locales, localePath, type Locale } from "@/i18n/config";
 import { foldForSearch, formatPrice, tx } from "./format";
 
-/** Drinks suggested next to every dessert in its detail sheet. */
-const PAIRING_IDS = ["cay", "mirra"];
 const HOT_CATEGORIES = ["kunefeler", "sicak-icecekler"];
 const COLD_CATEGORIES = ["sutlu-ve-dondurma", "soguk-icecekler"];
 // Categories added in the panel are sorted by their name instead.
@@ -23,8 +21,29 @@ function filtersFor(item: MenuItem, category: MenuCategory): FilterId[] {
   return out;
 }
 
+/**
+ * "Yanında iyi gider" for one dish: its own list if the panel gave it one, otherwise the general list for
+ * desserts (nothing for drinks). Only what is on the menu and not run out today, never the dish itself.
+ */
+function pairingFor(
+  item: MenuItem,
+  category: MenuCategory,
+  general: string[],
+  onMenu: Map<string, MenuItem>,
+): string[] {
+  const ids = item.pairing ?? (category.layout === "cards" ? general : []);
+  return ids
+    .filter((id) => id !== item.id && onMenu.has(id) && !onMenu.get(id)!.soldOutOn)
+    .slice(0, MAX_PAIRING);
+}
+
 /** The menu guests see (hidden dishes already left out), localized for one language. */
-export function menuView(locale: Locale, menu: MenuCategory[]): MenuViewCategory[] {
+export function menuView(
+  locale: Locale,
+  menu: MenuCategory[],
+  generalPairing: string[] = defaultPairing,
+): MenuViewCategory[] {
+  const onMenu = new Map(menu.flatMap((c) => c.items).map((i) => [i.id, i]));
   return menu.map((category) => ({
     id: category.id,
     name: tx(category.name, locale),
@@ -38,10 +57,10 @@ export function menuView(locale: Locale, menu: MenuCategory[]): MenuViewCategory
         name: tx(item.name, locale),
         description: tx(item.description, locale),
         prices: item.prices.map((p) => ({ label: tx(p.label, locale) || undefined, formatted: formatPrice(p.amount, locale) })),
-        allergens: item.allergens.map((a) => ({ id: a, label: allergens[a][locale] })),
         tags: (item.tags ?? []).map((t) => ({ id: t, label: tags[t][locale] })),
         photo: item.image,
         soldOut: item.soldOutOn !== undefined,
+        pairing: pairingFor(item, category, generalPairing, onMenu),
         filters: filtersFor(item, category),
         search: foldForSearch(
           [...locales.map((l) => item.name[l]), tx(item.description, locale), tx(category.name, locale)].join(" "),
@@ -53,11 +72,6 @@ export function menuView(locale: Locale, menu: MenuCategory[]): MenuViewCategory
       }),
     ),
   }));
-}
-
-export function pairingItems(categories: MenuViewCategory[]): MenuViewItem[] {
-  const all = categories.flatMap((c) => c.items);
-  return PAIRING_IDS.map((id) => all.find((i) => i.id === id)).filter((i): i is MenuViewItem => Boolean(i));
 }
 
 /** The whole menu is one page: a dish opens there by its id (/tr#fistikli-kunefe). */

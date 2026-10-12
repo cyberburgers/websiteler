@@ -1,30 +1,34 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { fill } from "@/lib/format";
 import { ItemCard } from "./ItemCard";
 import { ItemSheet, type SheetLabels, type WaiterLabels } from "./ItemSheet";
 import { closeItem, openItem, useItemHash } from "./itemHash";
 import { jumpTo } from "./jump";
 import { DrinkLine } from "./parts";
-import type { MenuViewCategory, MenuViewItem } from "./types";
+import type { MenuViewCategory } from "./types";
 
-type Labels = SheetLabels & { tabs: string; dishes: string; drinks: string; details: string };
+type Labels = SheetLabels & { tabs: string; details: string };
 
 type Props = {
   categories: MenuViewCategory[];
-  pairing: { item: MenuViewItem; href: string }[];
+  /** The menu's own address (/tr): dishes suggested in a sheet link to /tr#their-id. */
+  homeHref: string;
   labels: Labels;
   waiter: WaiterLabels;
 };
 
 /** The whole menu on the home page: category pills that follow the scroll, every dish, and its detail sheet. */
-export function HomeMenu({ categories, pairing, labels, waiter }: Props) {
+export function HomeMenu({ categories, homeHref, labels, waiter }: Props) {
   const [active, setActive] = useState(categories[0]?.id ?? "");
   const barRef = useRef<HTMLDivElement>(null);
   const hash = useItemHash();
-  const selected = categories.flatMap((c) => c.items).find((i) => i.id === hash) ?? null;
-  const selectedLayout = categories.find((c) => c.id === selected?.categoryId)?.layout;
+  const items = categories.flatMap((c) => c.items);
+  const selected = items.find((i) => i.id === hash) ?? null;
+  const pairing = (selected?.pairing ?? []).flatMap((id) => {
+    const item = items.find((i) => i.id === id);
+    return item ? [{ item, href: `${homeHref}#${id}` }] : [];
+  });
 
   // Highlight the category whose heading has passed under the pill bar. It is worked out from where
   // every section is, not from which one just crossed a line, so jumping back up can't pick the wrong one.
@@ -121,14 +125,9 @@ export function HomeMenu({ categories, pairing, labels, waiter }: Props) {
           // Lands with the heading just under the category bar (see jumpTo): bar alone on phones, header too on wide screens.
           className="scroll-mt-11 pt-8 md:scroll-mt-7 md:pt-12 lg:scroll-mt-[108px]"
         >
-          <div className="flex items-baseline justify-between gap-4">
-            <h3 id={`baslik-${category.id}`} className="font-display text-[28px] font-semibold text-krem-50 md:text-4xl">
-              {category.name}
-            </h3>
-            <span className="shrink-0 text-xs font-bold text-krem-100/50">
-              {fill(category.layout === "cards" ? labels.dishes : labels.drinks, { n: category.items.length })}
-            </span>
-          </div>
+          <h3 id={`baslik-${category.id}`} className="font-display text-[28px] font-semibold text-krem-50 md:text-4xl">
+            {category.name}
+          </h3>
           {category.description && <p className="mt-1 text-sm text-krem-100/65">{category.description}</p>}
           {category.layout === "cards" ? (
             <ul className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3">
@@ -156,7 +155,7 @@ export function HomeMenu({ categories, pairing, labels, waiter }: Props) {
 
       <ItemSheet
         item={selected}
-        pairing={selectedLayout === "cards" ? pairing : []}
+        pairing={pairing}
         labels={labels}
         waiter={waiter}
         onDismiss={closeItem}

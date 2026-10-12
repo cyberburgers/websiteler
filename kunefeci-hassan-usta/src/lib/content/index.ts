@@ -16,6 +16,8 @@ export type SiteContent = {
   notice?: Text;
   /** False: guests at a table can only call the waiter, not order from the menu. On unless turned off. */
   tableOrders?: boolean;
+  /** "Yanında iyi gider" under every dessert (dish ids). Unset: the starting pair, tea and mırra. */
+  pairing?: string[];
   menuUpdatedAt: string;
   /** When the panel last saved; the panel uses it to spot two people editing at once. */
   savedAt?: string;

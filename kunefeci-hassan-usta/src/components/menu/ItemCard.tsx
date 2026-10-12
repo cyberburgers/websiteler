@@ -5,7 +5,7 @@ import { AddControl } from "@/components/order/AddControl";
 import { useOrdering } from "@/components/order/OrderProvider";
 import { Photo } from "@/components/ui";
 import { TagBadge } from "./icons";
-import { AllergenIcons, SoldOutBadge } from "./parts";
+import { SoldOutBadge } from "./parts";
 import type { MenuViewItem } from "./types";
 
 /**
@@ -82,7 +82,6 @@ export function ItemCard({
           </span>
         </button>
         <div className="mx-2.5 mb-2 mt-3.5 flex min-h-[53px] items-center gap-2 border-t border-zumrut-800/10 pt-3 text-karamel-600">
-          <AllergenIcons item={item} />
           {orderable ? (
             <span className="ms-auto">
               <AddControl item={item} onChoose={onOpen} tone="light" />

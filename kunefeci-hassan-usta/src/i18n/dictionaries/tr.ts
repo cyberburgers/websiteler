@@ -7,6 +7,7 @@ const tr = {
   },
   nav: {
     skip: "İçeriğe geç",
+    admin: "Yönetici girişi",
   },
   actions: {
     seeMenu: "Menüyü İncele",
@@ -37,12 +38,7 @@ const tr = {
     clear: "Temizle",
     noResults: "Aramanızla eşleşen bir ürün bulunamadı.",
     updated: "Son güncelleme",
-    allergensTitle: "Alerjen bilgisi",
-    allergensNote:
-      "Tüm ürünlerimiz aynı mutfakta hazırlanır ve eser miktarda alerjen içerebilir. Alerjiniz varsa lütfen siparişten önce bize söyleyin.",
     price: "Fiyat",
-    contains: "İçerik uyarısı",
-    noAllergens: "Bilinen alerjen içermez.",
     close: "Kapat",
   },
   home: {
@@ -50,9 +46,6 @@ const tr = {
     welcomeLead: "Künefe siparişle, tepsiden sıcak sıcak gelir.",
     table: "Masa {n}",
     categories: "Kategoriler",
-    summary: "{categories} kategori · {items} lezzet",
-    dishes: "{n} lezzet",
-    drinks: "{n} çeşit",
     spin: "Çarkı çevir",
     instagram: "Instagram",
     shopPhoto: "Künefeci Hassan Usta dükkânının önü",

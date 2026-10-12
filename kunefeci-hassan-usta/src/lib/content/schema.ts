@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { allergenIds, tagIds } from "@/content/menu";
+import { MAX_PAIRING, allergenIds, tagIds } from "@/content/menu";
 import { isPhotoKey, isUploadedPhoto } from "@/content/photos";
 
 /** Everything the panel can change, checked again on the server before it is stored. */
@@ -31,6 +31,7 @@ const item = z.object({
   image: photo,
   available: z.boolean().optional(),
   soldOutOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  pairing: z.array(id).max(MAX_PAIRING).optional(),
 });
 
 const category = z.object({
@@ -70,6 +71,7 @@ export const contentSchema = z
     featuredId: id.optional(),
     notice: optionalBilingual(160).optional(),
     tableOrders: z.boolean().optional(),
+    pairing: z.array(id).max(MAX_PAIRING).optional(),
     menuUpdatedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     savedAt: z.string().optional(),
   })

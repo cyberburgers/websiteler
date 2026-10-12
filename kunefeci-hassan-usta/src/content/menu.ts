@@ -30,6 +30,11 @@ export type MenuItem = {
   available?: boolean;
   /** Panelde "Bugün yok" denen gün (YYYY-AA-GG). Ürün menüde kalır ama "Bugün yok" yazar; ertesi sabah kendiliğinden geri gelir. */
   soldOutOn?: string;
+  /**
+   * Ürün penceresindeki "Yanında iyi gider" (ürün kimlikleri, en çok 4). Yazılmazsa tatlılarda genel liste
+   * (defaultPairing ya da panelden seçilen), içeceklerde hiçbiri; boş liste: hiç gösterme.
+   */
+  pairing?: string[];
 };
 
 export type MenuCategory = {
@@ -42,6 +47,10 @@ export type MenuCategory = {
   image?: string;
   items: MenuItem[];
 };
+
+/** Tatlıların penceresinde "Yanında iyi gider" diye önerilenler, panelden değiştirilene kadar. */
+export const defaultPairing = ["cay", "mirra"];
+export const MAX_PAIRING = 4;
 
 /** Başlangıç menüsünün tarihi (YYYY-AA-GG). Panelden kaydedince güncellenir. */
 export const defaultMenuUpdatedAt = "2026-10-11";

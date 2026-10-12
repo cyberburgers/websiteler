@@ -7,6 +7,7 @@ import { allergenIds, allergens, tagIds, tags, type MenuCategory, type MenuItem 
 import type { SiteContent } from "@/lib/content";
 import { Bilingual, Field, PhotoField, Toggle, buttonClass, inputClass } from "./fields";
 import { TEMP_PREFIX, allIds, blankCategory, blankItem, formatTl, move, uniqueId } from "./menu-utils";
+import { ItemPairingField } from "./PairingEditor";
 
 type Update = (change: (draft: SiteContent) => void) => void;
 
@@ -237,10 +238,18 @@ function ItemDialog({
             onChange={(next) => edit((d) => void (d.tags = next))}
           />
           <Chips
-            label="İçerdiği alerjenler"
+            label="İçerdiği alerjenler (sitede gösterilmez; müşteri sorarsa buradan bakılır)"
             options={allergenIds.map((id) => ({ id, label: allergens[id].tr }))}
             selected={item.allergens}
             onChange={(next) => edit((d) => void (d.allergens = next))}
+          />
+
+          <ItemPairingField
+            key={item.id}
+            content={content}
+            item={item}
+            dessert={category.layout === "cards"}
+            onChange={(next) => edit((d) => void (next === undefined ? delete d.pairing : (d.pairing = next)))}
           />
 
           <Field label="Kategori">

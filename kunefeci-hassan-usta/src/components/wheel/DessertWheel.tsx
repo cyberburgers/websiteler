@@ -167,6 +167,7 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
   const frame = useRef(0);
   const lastSlice = useRef(-1);
   const lastBuzz = useRef(0);
+  const tick = useRef<Animation | null>(null);
   const drag = useRef<{ last: number; samples: { t: number; a: number }[] } | null>(null);
 
   const seg = 360 / slices.length;
@@ -199,7 +200,12 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
     const now = sliceAtPointer();
     if (now !== lastSlice.current) {
       lastSlice.current = now;
-      pointerRef.current?.animate([{ rotate: "-16deg" }, { rotate: "0deg" }], { duration: 140, easing: "ease-out" });
+      // The pointer flicks as each slice passes; at full speed it waits for the last flick to finish.
+      if (tick.current?.playState !== "running") {
+        tick.current =
+          pointerRef.current?.animate([{ rotate: "-16deg" }, { rotate: "0deg" }], { duration: 140, easing: "ease-out" }) ??
+          null;
+      }
       const t = performance.now();
       if (t - lastBuzz.current > 70) {
         lastBuzz.current = t;
@@ -227,22 +233,29 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
     );
   };
 
-  /** Lets the wheel coast to a stop; every spin gets a slightly different friction, so no two land alike. */
-  const coast = (velocity: number) => {
+  /**
+   * One smooth spin: it picks where to land first (somewhere well inside a slice, never on a line), then
+   * glides there along a single slowing curve, so the turn is even from the first frame to the last.
+   * `strength` (0–1) adds turns and time: a hard flick spins longer than a lazy one.
+   */
+  const spin = (direction: 1 | -1, strength: number) => {
     cancelAnimationFrame(frame.current);
     setResult(null);
     setConfetti([]);
-    let v = Math.max(-3.2, Math.min(3.2, velocity));
-    // Low friction: a spin runs for roughly five to six and a half seconds before it settles.
-    const friction = 0.0009 + Math.random() * 0.0003;
-    let last = performance.now();
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const k = Math.floor(Math.random() * slices.length);
+    const landing = -k * seg + (Math.random() - 0.5) * seg * 0.6;
+    const from = angle.current;
+    const turns = reduced ? 0 : 2 + Math.round(strength * 2 + Math.random());
+    const rest = direction > 0 ? mod(landing - from, 360) : -mod(from - landing, 360);
+    const delta = rest + direction * turns * 360;
+    const duration = reduced ? 500 : 4200 + strength * 1200 + Math.random() * 400;
+    const start = performance.now();
     const step = (now: number) => {
-      const dt = Math.min(now - last, 40);
-      last = now;
-      angle.current += v * dt;
-      v *= Math.exp(-friction * dt);
+      const t = Math.min(1, (now - start) / duration);
+      angle.current = from + delta * (1 - Math.pow(1 - t, 3));
       render();
-      if (Math.abs(v) > 0.009) frame.current = requestAnimationFrame(step);
+      if (t < 1) frame.current = requestAnimationFrame(step);
       else finish();
     };
     frame.current = requestAnimationFrame(step);
@@ -290,11 +303,11 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
       setHint(labels.faster);
       return;
     }
-    // Even a lazy flick should give a satisfying couple of turns.
-    coast(Math.sign(v) * Math.min(3.2, Math.max(1.4, Math.abs(v) * 2.2)));
+    // Even a lazy flick gives a few satisfying turns; a hard one a few more.
+    spin(v > 0 ? 1 : -1, Math.min(1, (Math.abs(v) - 0.2) / 1.5));
   };
 
-  const spinButton = () => coast((2 + Math.random()) * (Math.random() < 0.15 ? -1 : 1));
+  const spinButton = () => spin(Math.random() < 0.15 ? -1 : 1, 0.4 + Math.random() * 0.6);
 
   const close = () => dialogRef.current?.close();
 
