@@ -60,13 +60,13 @@ export function TableIntro() {
       className="animate-pop-in mt-4 rounded-[22px] bg-krem-50/[0.06] p-3 ring-1 ring-inset ring-fistik-300/25 md:mb-4 md:mt-0"
     >
       <div className="flex items-center justify-between gap-3 ps-1">
-        <h2 id="masa-bilgi-baslik" className="font-display text-[18px] font-semibold leading-tight text-krem-50">
+        <h2 id="masa-bilgi-baslik" className="font-display text-[19px] font-light leading-tight text-krem-50">
           {labels.introTitle}
         </h2>
         <button
           type="button"
           onClick={close}
-          className="h-8 shrink-0 rounded-full bg-fistik-300 px-3.5 text-[12.5px] font-extrabold text-zumrut-925 transition hover:bg-fistik-200 active:scale-95"
+          className="h-8 shrink-0 rounded-full bg-fistik-300 px-3.5 text-[12.5px] font-medium text-zumrut-925 transition hover:bg-fistik-200 active:scale-95"
         >
           {labels.introOk}
         </button>
@@ -77,14 +77,14 @@ export function TableIntro() {
             <span className="mx-auto grid size-7 place-items-center rounded-full bg-fistik-300 text-zumrut-925">
               <Icon className="size-4" strokeWidth={2.4} aria-hidden="true" />
             </span>
-            <span className="mt-1.5 block text-[12px] font-bold leading-tight text-krem-100">
+            <span className="mt-1.5 block text-[12px] font-light leading-tight text-krem-50">
               <span className="sr-only">{i + 1}. </span>
               {text}
             </span>
           </li>
         ))}
       </ol>
-      <p className="mt-2 px-1 text-[11.5px] leading-snug text-krem-100/60">{labels.introNote}</p>
+      <p className="mt-2 px-1 text-[11.5px] font-light leading-snug text-krem-100/65">{labels.introNote}</p>
     </section>
   );
 }
