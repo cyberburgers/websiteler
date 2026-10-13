@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDown, ArrowUp, CalendarX2, Check, EyeOff, ImageIcon, Pencil, Plus, Trash2, Undo2, X } from "lucide-react";
+import { ArrowDown, ArrowUp, CalendarX2, Check, EyeOff, Pencil, Plus, Trash2, Undo2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Photo } from "@/components/ui";
 import { allergenIds, allergens, tagIds, tags, type MenuCategory, type MenuItem } from "@/content/menu";
@@ -351,7 +351,7 @@ function CategoryDialog({
             <div className="mt-2 grid gap-2 sm:grid-cols-2">
               {(
                 [
-                  ["cards", "Kartlar", "Tatlılar için: büyük kartlar, yüklenen fotoğrafla."],
+                  ["cards", "Fotoğraflı", "Tatlılar için: her ürün fotoğrafıyla."],
                   ["list", "Liste", "İçecekler için: fotoğrafsız, kısa satırlar."],
                 ] as const
               ).map(([value, title, hint]) => (
@@ -481,11 +481,7 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
                   <span
                     className={`relative size-14 shrink-0 overflow-hidden rounded-xl bg-zumrut-950 ${hidden ? "opacity-50" : ""}`}
                   >
-                    {item.image ? (
-                      <Photo photo={item.image} alt="" sizes="56px" />
-                    ) : (
-                      <ImageIcon className="absolute inset-0 m-auto size-5 text-krem-100/25" aria-hidden="true" />
-                    )}
+                    {item.image && <Photo photo={item.image} alt="" sizes="56px" />}
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start gap-2">

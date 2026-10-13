@@ -25,7 +25,7 @@ export type MenuItem = {
   prices: Price[];
   allergens: Allergen[];
   tags?: Tag[];
-  /** The address of a photo uploaded from the panel. None: the dish is shown without a photo. */
+  /** A bundled photo's name (see photos.ts) or the address of a photo uploaded from the panel. */
   image?: string;
   available?: boolean;
   /** Panelde "Bugün yok" denen gün (YYYY-AA-GG). Ürün menüde kalır, "Bugün yok" yazar; panelden geri alınana kadar öyle kalır. */
@@ -43,7 +43,7 @@ export type MenuCategory = {
   id: string;
   name: Text;
   description?: Text;
-  /** "cards": büyük kartlar (tatlılar). "list": klasik menü satırları (içecekler gibi). */
+  /** "cards": fotoğraflı kartlar. "list": klasik menü satırları (içecekler gibi). */
   layout: "cards" | "list";
   /** Eskiden kategori sayfasının kapağıydı; menü tek sayfa olunca kullanılmıyor (kayıtlı içerik bozulmasın diye duruyor). */
   image?: string;
@@ -69,6 +69,7 @@ export const defaultMenu: MenuCategory[] = [
       en: "Made to order and served piping hot from the tray.",
     },
     layout: "cards",
+    image: "katKunefe",
     items: [
       {
         id: "kunefe",
@@ -80,6 +81,7 @@ export const defaultMenu: MenuCategory[] = [
         prices: [{ amount: 220 }],
         allergens: ["gluten", "sut", "kabuklu"],
         tags: ["populer"],
+        image: "kunefe1",
       },
       {
         id: "fistikli-kunefe",
@@ -92,6 +94,7 @@ export const defaultMenu: MenuCategory[] = [
         prices: [{ amount: 260 }],
         allergens: ["gluten", "sut", "kabuklu"],
         tags: ["populer"],
+        image: "kunefe2",
       },
       {
         id: "kaymakli-kunefe",
@@ -103,6 +106,7 @@ export const defaultMenu: MenuCategory[] = [
         },
         prices: [{ amount: 280 }],
         allergens: ["gluten", "sut", "kabuklu"],
+        image: "kunefe3",
       },
       {
         id: "dondurmali-kunefe",
@@ -114,6 +118,7 @@ export const defaultMenu: MenuCategory[] = [
         },
         prices: [{ amount: 290 }],
         allergens: ["gluten", "sut", "kabuklu"],
+        image: "kunefe4",
       },
       {
         id: "tepsi-kunefe",
@@ -128,6 +133,7 @@ export const defaultMenu: MenuCategory[] = [
         ],
         allergens: ["gluten", "sut", "kabuklu"],
         tags: ["siparis"],
+        image: "tepsi",
       },
     ],
   },
@@ -139,6 +145,7 @@ export const defaultMenu: MenuCategory[] = [
       en: "Paper-thin pastry, plenty of pistachio, syrup cooked just right.",
     },
     layout: "cards",
+    image: "katSerbetli",
     items: [
       {
         id: "sillik",
@@ -150,6 +157,7 @@ export const defaultMenu: MenuCategory[] = [
         prices: [{ amount: 200 }],
         allergens: ["gluten", "sut", "yumurta", "kabuklu"],
         tags: ["urfa"],
+        image: "sillik",
       },
       {
         id: "fistikli-baklava",
@@ -163,6 +171,7 @@ export const defaultMenu: MenuCategory[] = [
           { amount: 1600, label: kilo },
         ],
         allergens: ["gluten", "sut", "kabuklu"],
+        image: "baklava",
       },
       {
         id: "burma-kadayif",
@@ -176,6 +185,7 @@ export const defaultMenu: MenuCategory[] = [
           { amount: 1500, label: kilo },
         ],
         allergens: ["gluten", "sut", "kabuklu"],
+        image: "burma",
       },
       {
         id: "sobiyet",
@@ -186,6 +196,7 @@ export const defaultMenu: MenuCategory[] = [
         },
         prices: [{ amount: 230, label: portion }],
         allergens: ["gluten", "sut", "kabuklu"],
+        image: "sobiyet",
       },
       {
         id: "fistikli-katmer",
@@ -197,6 +208,7 @@ export const defaultMenu: MenuCategory[] = [
         prices: [{ amount: 280 }],
         allergens: ["gluten", "sut", "kabuklu"],
         tags: ["sicak"],
+        image: "katmer",
       },
     ],
   },
@@ -204,6 +216,7 @@ export const defaultMenu: MenuCategory[] = [
     id: "sutlu-ve-dondurma",
     name: { tr: "Sütlüler & Dondurma", en: "Puddings & Ice Cream" },
     layout: "cards",
+    image: "dondurma",
     items: [
       {
         id: "maras-dondurmasi",
@@ -214,6 +227,7 @@ export const defaultMenu: MenuCategory[] = [
         },
         prices: [{ amount: 140 }],
         allergens: ["sut"],
+        image: "dondurma",
       },
       {
         id: "firin-sutlac",
@@ -225,6 +239,7 @@ export const defaultMenu: MenuCategory[] = [
         },
         prices: [{ amount: 140 }],
         allergens: ["sut"],
+        image: "sutlac",
       },
     ],
   },
@@ -232,6 +247,7 @@ export const defaultMenu: MenuCategory[] = [
     id: "sicak-icecekler",
     name: { tr: "Sıcak İçecekler", en: "Hot Drinks" },
     layout: "list",
+    image: "katSicak",
     items: [
       {
         id: "cay",
@@ -242,6 +258,7 @@ export const defaultMenu: MenuCategory[] = [
         },
         prices: [{ amount: 25 }],
         allergens: [],
+        image: "cay",
       },
       {
         id: "mirra",
@@ -253,6 +270,7 @@ export const defaultMenu: MenuCategory[] = [
         prices: [{ amount: 60 }],
         allergens: [],
         tags: ["urfa"],
+        image: "mirra",
       },
       {
         id: "turk-kahvesi",
@@ -263,6 +281,7 @@ export const defaultMenu: MenuCategory[] = [
         },
         prices: [{ amount: 90 }],
         allergens: [],
+        image: "kahve",
       },
       {
         id: "menengic",
@@ -291,6 +310,7 @@ export const defaultMenu: MenuCategory[] = [
     id: "soguk-icecekler",
     name: { tr: "Soğuk İçecekler", en: "Cold Drinks" },
     layout: "list",
+    image: "katSoguk",
     items: [
       {
         id: "ayran",

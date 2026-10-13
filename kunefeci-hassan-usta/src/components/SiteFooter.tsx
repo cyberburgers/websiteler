@@ -63,6 +63,7 @@ export function SiteFooter({ locale, dict, info }: { locale: Locale; dict: Dicti
           <span>
             © <CopyrightYear /> {site.name}
           </span>
+          <span>{dict.footer.photoNote}</span>
           <Link
             href={localePath(locale, "/gizlilik")}
             className="-my-2 inline-block py-2 underline-offset-4 hover:text-krem-50 hover:underline"

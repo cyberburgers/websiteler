@@ -142,6 +142,7 @@ const en: Dictionary = {
   footer: {
     follow: "Follow us on Instagram",
     privacy: "Privacy notice",
+    photoNote: "Photos are for illustration.",
     makerTitle: "This website was made by Aslan Site.",
     makerAsk: "Would you like a website like this for your business?",
     makerWhatsApp: "Message on WhatsApp",

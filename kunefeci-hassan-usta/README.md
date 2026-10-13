@@ -23,7 +23,7 @@ ya da WhatsApp düğmeleri yoktur; sayfanın altında yalnızca Instagram, adres
 dil ve arama düğmesi yoktur. Yönetici düğmesi şifre penceresini menünün üstünde, arkası bulanık açar; giriş
 yapılmışsa doğrudan panele geçer.
 
-**Ürün penceresi:** fotoğraf (panelden yüklendiyse), fiyat, "Yanında iyi gider" (panelden ayarlanır; başlangıçta çay ve mırra) ve Paylaş.
+**Ürün penceresi:** fotoğraf, fiyat, "Yanında iyi gider" (panelden ayarlanır; başlangıçta çay ve mırra) ve Paylaş.
 Alerjen bilgisi sitede gösterilmez; panelde ürünün içinde tutulur, müşteri sorarsa oradan bakılır. Masada
 **Siparişe ekle** (boy seçimiyle: Porsiyon / 1 kg); masa dışında ya da sipariş kapalıyken **Garsona göster**
 (ürünün Türkçe adını büyük yazıyla gösterir; yabancı misafirler için). Telefonda aşağı kaydırarak ya da
@@ -153,7 +153,7 @@ sonra bu dosyalar okunmaz.
 
 | Dosya | Ne var? |
 | --- | --- |
-| `src/content/photos.ts` | Dükkân fotoğrafı (`src/assets/photos/dukkan.jpg`); ürün fotoğrafları panelden yüklenir |
+| `src/content/photos.ts` | Siteyle gelen fotoğraflar (`src/assets/photos/`) |
 | `src/content/privacy.ts` | Gizlilik / KVKK metni |
 | `src/i18n/dictionaries/` | Sitedeki sabit yazılar (tr, en) |
 
@@ -181,8 +181,7 @@ Bir kez, sırasıyla:
 Yayından sonra:
 
 - [ ] `/yonetim` → giriş → **İşletme bilgileri**: telefon, Instagram, açık adres, harita konumu, çalışma saatleri
-- [ ] **Menü**: örnek fiyatlar yerine gerçek fiyatlar; ürün fotoğrafları (site fotoğrafsız gelir, her ürüne
-  panelden **Fotoğraf yükle**; yüklenmeyen ürün yalnızca yazıyla görünür)
+- [ ] **Menü**: örnek fiyatlar yerine gerçek fiyatlar; dükkânın kendi fotoğrafları
 - [ ] **Masalar**: masa sayısı. Kasadaki tablette paneli açık bırakıp **Sesi aç**'a bir kez dokunun
 - [ ] **Masa kartları**: `/tr/qr?masa=1-12` (kendi masa sayınız). Sayfa kartların hangi adrese götürdüğünü
       yazar; alan adı bağlandıktan sonra basın. Basmadan önce bir kartı telefonla okutup deneyin.

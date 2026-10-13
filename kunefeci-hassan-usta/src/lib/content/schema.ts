@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { MAX_PAIRING, allergenIds, tagIds } from "@/content/menu";
-import { RETIRED_PHOTO, isUploadedPhoto } from "@/content/photos";
+import { isPhotoKey, isUploadedPhoto } from "@/content/photos";
 
 /** Everything the panel can change, checked again on the server before it is stored. */
 
@@ -8,12 +8,9 @@ const text = (max: number) => z.string().trim().max(max);
 const bilingual = (max: number) => z.object({ tr: text(max).min(1, "Türkçe metin boş olamaz"), en: text(max) });
 const optionalBilingual = (max: number) => z.object({ tr: text(max), en: text(max) });
 
-// A photo uploaded from the panel. The names of the stock photos the site used to come with are still
-// accepted, so menus saved back then read, but they are dropped: the dish shows no photo.
 const photo = z
   .string()
-  .refine((v) => isUploadedPhoto(v) || RETIRED_PHOTO.test(v), "Fotoğraf adresi tanınmadı")
-  .transform((v) => (isUploadedPhoto(v) ? v : undefined))
+  .refine((v) => isPhotoKey(v) || isUploadedPhoto(v), "Fotoğraf adresi tanınmadı")
   .optional();
 
 const id = z.string().regex(/^[a-z0-9-]{1,60}$/, "Geçersiz kimlik");

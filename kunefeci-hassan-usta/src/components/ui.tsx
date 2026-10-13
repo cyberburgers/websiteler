@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { isPhotoKey, isUploadedPhoto, photos } from "@/content/photos";
+import { FoodArt } from "@/components/art/FoodArt";
+import { isPhotoKey, isUploadedPhoto, photoArt, photos } from "@/content/photos";
 
 /** Shown wherever a photo hasn't been supplied yet — on-brand instead of an empty grey box. */
 export function PhotoPlaceholder({ className = "", label }: { className?: string; label?: string }) {
@@ -23,13 +24,17 @@ export function PhotoPlaceholder({ className = "", label }: { className?: string
   );
 }
 
-/** A photo slot: a photo uploaded from the panel (by address) or the shop's own photo (by name). */
+/**
+ * A photo slot: a bundled photo (by name), a photo uploaded from the panel (by address),
+ * or else the dish illustration. `fill` crops round dishes to their rim, for circular frames.
+ */
 export function Photo({
   photo,
   alt,
   sizes,
   className = "",
   preload,
+  fill,
   quality,
 }: {
   photo?: string;
@@ -37,6 +42,7 @@ export function Photo({
   sizes: string;
   className?: string;
   preload?: boolean;
+  fill?: boolean;
   /** 85 for a large photo that fills the screen (the shop on the home page); the default 75 elsewhere. */
   quality?: 75 | 85;
 }) {
@@ -53,10 +59,12 @@ export function Photo({
       />
     );
   }
-  if (photo && isPhotoKey(photo)) {
+  const key = photo && isPhotoKey(photo) ? photo : undefined;
+  const src = key ? photos[key] : undefined;
+  if (src) {
     return (
       <Image
-        src={photos[photo]}
+        src={src}
         alt={alt}
         fill
         sizes={sizes}
@@ -67,6 +75,8 @@ export function Photo({
       />
     );
   }
+  const art = key ? photoArt[key] : undefined;
+  if (art) return <FoodArt kind={art} fill={fill} className={className} />;
   return <PhotoPlaceholder label={alt} />;
 }
 

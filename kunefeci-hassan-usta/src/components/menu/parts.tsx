@@ -46,8 +46,7 @@ export function fromPrice(item: MenuViewItem): string {
 }
 
 /**
- * One compact line of the menu on the green background: thumbnail (if the dish has a photo), name, a line
- * of detail and the price.
+ * One compact line of the menu on the green background: thumbnail, name, a line of detail and the price.
  * Used by the search results and the list view of a category.
  */
 export function ItemLine({
@@ -68,7 +67,7 @@ export function ItemLine({
       : item.description;
   return (
     <>
-      {thumb && item.photo && (
+      {thumb && (
         <span className="relative size-[62px] shrink-0 overflow-hidden rounded-[14px] bg-zumrut-800">
           <Photo photo={item.photo} alt="" sizes="62px" />
         </span>
@@ -143,16 +142,6 @@ export function DrinkLine({
 export function SoldOutPill({ label }: { label: string }) {
   return (
     <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-krem-50/[0.1] px-2.5 py-1 text-[12px] font-extrabold text-krem-50 ring-1 ring-inset ring-krem-50/15">
-      <span aria-hidden="true" className="size-1.5 rounded-full bg-karamel-400" />
-      {label}
-    </span>
-  );
-}
-
-/** Where a dish's tags would be, on a card without a photo, when it has run out today. */
-export function SoldOutTag({ label }: { label: string }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-zumrut-800 px-2.5 py-[5px] text-[11px] font-extrabold leading-none tracking-wide text-krem-50">
       <span aria-hidden="true" className="size-1.5 rounded-full bg-karamel-400" />
       {label}
     </span>

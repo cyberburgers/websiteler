@@ -1,43 +1,9 @@
 import type { WheelSlice } from "@/components/wheel/DessertWheel";
 import type { MenuCategory } from "@/content/menu";
-import type { ArtKind } from "@/components/art/FoodArt";
+import { isPhotoKey, photoArt } from "@/content/photos";
 import type { Locale } from "@/i18n/config";
-import { foldForSearch, formatPrice, tx } from "./format";
+import { formatPrice, tx } from "./format";
 import { itemPath } from "./menu-view";
-
-/** The drawing on each dessert's slice, by dish. */
-const ART: Record<string, ArtKind> = {
-  kunefe: "kunefe",
-  "fistikli-kunefe": "kunefe-fistik",
-  "kaymakli-kunefe": "kunefe-kaymak",
-  "dondurmali-kunefe": "kunefe-dondurma",
-  "tepsi-kunefe": "tepsi",
-  sillik: "sillik",
-  "fistikli-baklava": "baklava",
-  "burma-kadayif": "burma",
-  sobiyet: "sobiyet",
-  "fistikli-katmer": "katmer",
-  "maras-dondurmasi": "dondurma",
-  "firin-sutlac": "sutlac",
-};
-
-/** A dessert added in the panel gets the drawing its name suggests, if any. */
-const ART_BY_NAME: [RegExp, ArtKind][] = [
-  [/kunefe/, "kunefe"],
-  [/baklava/, "baklava"],
-  [/kadayif|burma/, "burma"],
-  [/sobiyet|sobie/, "sobiyet"],
-  [/katmer/, "katmer"],
-  [/sillik/, "sillik"],
-  [/dondurma/, "dondurma"],
-  [/sutlac/, "sutlac"],
-];
-
-function artFor(id: string, name: string): ArtKind | undefined {
-  if (ART[id]) return ART[id];
-  const folded = foldForSearch(name);
-  return ART_BY_NAME.find(([pattern]) => pattern.test(folded))?.[1];
-}
 
 /** Splits a name over at most two lines, as evenly as the words allow. */
 function twoLines(name: string): string[] {
@@ -69,7 +35,7 @@ export function wheelSlices(locale: Locale, menu: MenuCategory[]): WheelSlice[] 
       lines: twoLines(tx(item.shortName, locale) || tx(item.name, locale)),
       description: tx(item.description, locale),
       price: formatPrice(item.prices[0].amount, locale),
-      art: artFor(item.id, item.name.tr),
+      art: item.image && isPhotoKey(item.image) ? photoArt[item.image] : undefined,
       href: itemPath(locale, item.id),
     }));
 }

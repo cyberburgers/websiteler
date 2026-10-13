@@ -1,26 +1,116 @@
 import type { StaticImageData } from "next/image";
+import type { ArtKind } from "@/components/art/FoodArt";
+import baklava from "@/assets/photos/baklava.jpg";
+import burma from "@/assets/photos/burma.jpg";
+import cay from "@/assets/photos/cay.jpg";
 import dukkan from "@/assets/photos/dukkan.jpg";
+import dondurma from "@/assets/photos/dondurma.jpg";
+import hero from "@/assets/photos/hero.jpg";
+import kahve from "@/assets/photos/kahve.jpg";
+import katKunefe from "@/assets/photos/kat_kunefe.jpg";
+import katSerbetli from "@/assets/photos/kat_serbetli.jpg";
+import katSicak from "@/assets/photos/kat_sicak.jpg";
+import katSoguk from "@/assets/photos/kat_soguk.jpg";
+import katmer from "@/assets/photos/katmer.jpg";
+import kunefe1 from "@/assets/photos/kunefe1.jpg";
+import kunefe2 from "@/assets/photos/kunefe2.jpg";
+import kunefe3 from "@/assets/photos/kunefe3.jpg";
+import kunefe4 from "@/assets/photos/kunefe4.jpg";
+import mirra from "@/assets/photos/mirra.jpg";
+import sillik from "@/assets/photos/sillik.jpg";
+import sobiyet from "@/assets/photos/sobiyet.jpg";
+import sutlac from "@/assets/photos/sutlac.jpg";
+import tepsi from "@/assets/photos/tepsi.jpg";
 
 /**
- * FOTOĞRAFLAR
+ * FOTOĞRAFLAR — src/assets/photos/ klasöründeki dosyalar.
  *
- * Siteyle gelen tek fotoğraf dükkânın kendisi (src/assets/photos/dukkan.jpg): ana sayfanın en üstünde durur.
- * Ürün fotoğrafları panelden yüklenir (Menü → ürün → Fotoğraf yükle); yüklenmeyen ürün fotoğrafsız görünür.
+ * Şimdilik Pexels ve Unsplash'tan alınmış, ücretsiz kullanılabilen temsili
+ * fotoğraflar duruyor (kaynak listesi: src/assets/photos/KAYNAKLAR.md).
+ * Dükkânın kendi fotoğrafları çekilince aynı adla dosyanın üstüne kaydetmek yeterli.
+ *
+ * "hero" ana sayfanın büyük, yuvarlak fotoğrafıdır; kare ve ortalı olmalı.
+ * Menüde hangi ürünün hangi fotoğrafı kullandığı src/content/menu.ts içindeki
+ * `image` alanında yazar.
  */
-export type PhotoKey = "dukkan";
+export type PhotoKey =
+  | "hero"
+  | "kunefe1"
+  | "kunefe2"
+  | "kunefe3"
+  | "kunefe4"
+  | "tepsi"
+  | "dukkan"
+  | "baklava"
+  | "burma"
+  | "sobiyet"
+  | "katmer"
+  | "sillik"
+  | "dondurma"
+  | "sutlac"
+  | "cay"
+  | "kahve"
+  | "mirra"
+  // Kategori kutuları ve kategori sayfalarının kapakları
+  | "katKunefe"
+  | "katSerbetli"
+  | "katSicak"
+  | "katSoguk";
 
-export const photos: Record<PhotoKey, StaticImageData> = { dukkan };
+export const photos: Partial<Record<PhotoKey, StaticImageData>> = {
+  hero,
+  kunefe1,
+  kunefe2,
+  kunefe3,
+  kunefe4,
+  tepsi,
+  dukkan,
+  baklava,
+  burma,
+  sobiyet,
+  katmer,
+  sillik,
+  dondurma,
+  sutlac,
+  cay,
+  kahve,
+  mirra,
+  katKunefe,
+  katSerbetli,
+  katSicak,
+  katSoguk,
+};
+
+/** Çizimler: tatlı çarkının dilimlerinde ve fotoğrafı silinen yerlerde gösterilir. */
+export const photoArt: Record<PhotoKey, ArtKind | undefined> = {
+  hero: "kunefe-ozel",
+  kunefe1: "kunefe",
+  kunefe2: "kunefe-fistik",
+  kunefe3: "kunefe-kaymak",
+  kunefe4: "kunefe-dondurma",
+  tepsi: "tepsi",
+  dukkan: undefined,
+  baklava: "baklava",
+  burma: "burma",
+  sobiyet: "sobiyet",
+  katmer: "katmer",
+  sillik: "sillik",
+  dondurma: "dondurma",
+  sutlac: "sutlac",
+  cay: "cay",
+  kahve: "kahve",
+  mirra: "mirra",
+  katKunefe: "kunefe",
+  katSerbetli: "baklava",
+  katSicak: "cay",
+  katSoguk: undefined,
+};
+
+export const photoKeys = Object.keys(photoArt) as PhotoKey[];
 
 export function isPhotoKey(value: string): value is PhotoKey {
-  return value === "dukkan";
+  return (photoKeys as string[]).includes(value);
 }
-
-/**
- * Names of the stock photos the site used to come with. Menus saved back then still carry them: they are
- * read without complaint and dropped, so those dishes show no photo until one is uploaded.
- */
-export const RETIRED_PHOTO =
-  /^(hero|kunefe[1-4]|tepsi|baklava|burma|sobiyet|katmer|sillik|dondurma|sutlac|cay|kahve|mirra|kat(Kunefe|Serbetli|Sicak|Soguk))$/;
 
 /** Photos uploaded from the panel: Vercel Blob in production, /medya/… when running on a single server. */
 export function isUploadedPhoto(value: string): boolean {
