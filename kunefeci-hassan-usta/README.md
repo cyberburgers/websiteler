@@ -71,7 +71,7 @@ bir sunucuda Redis gerekmez.
 
 Yalnızca masa QR kartıyla açılan menüde çalışır; masa dışından bakan için site değişmez.
 
-Masada açılan menünün üstünde küçük bir **“Masanızdan sipariş verin”** kartı çıkar (üç satır): “Ekle” ile
+Masada açılan menünün üstünde küçük bir **“Masanızdan sipariş verin”** kartı çıkar (üç küçük kutu): “Ekle” ile
 seçin › Gönderin › Masanıza gelsin; “Paket ya da eve servis yok.” Müşteri **Anladım** deyince ya da ilk
 siparişi gönderince o ziyaret boyunca bir daha çıkmaz. Böylece “Ekle” online/eve sipariş sanılmaz.
 
