@@ -76,16 +76,15 @@ export async function requireAdmin(): Promise<void> {
 }
 
 /**
- * The key in the waiter screen's address (/garson?k=…). It only lets someone see and answer calls, so it
- * can live on the counter tablet without giving the menu away. It is random, not worked out from the
- * password: the address is seen by staff and sits in the tablet's history, and must not be a way to guess
- * the password. Kept in Redis, or in the .data folder on a single server; "Yeni adres" in the panel replaces it.
+ * The key the panel reads and answers the tables' calls and orders with (sent as a header). It only lets
+ * someone see and answer calls, never change the menu. It is random, not worked out from the password,
+ * so it can't be a way to guess it. Kept in Redis, or in the .data folder on a single server.
  * Null until a panel password is set, or on Vercel before Redis is connected (calls don't work there yet).
  */
 const STAFF_KEY = "kunefeci:garson:anahtar";
 const STAFF_KEY_FILE = path.join(process.cwd(), ".data", "garson-anahtari");
-// Only for a disk that can't be written. Read from the file every time otherwise: the panel's actions and
-// the waiter screen's API are separate copies of this module, and a new address must reach both at once.
+// Only for a disk that can't be written. Read from the file every time otherwise: the panel page and the
+// calls API are separate copies of this module, and must agree on the key.
 const memory = globalThis as { __garsonAnahtari?: string };
 
 async function storedStaffKey(): Promise<string | null> {
@@ -99,10 +98,9 @@ async function storedStaffKey(): Promise<string | null> {
   return memory.__garsonAnahtari ?? null;
 }
 
-async function storeStaffKey(value: string, replace: boolean): Promise<string> {
+async function storeStaffKey(value: string): Promise<string> {
   if (redisConfig()) {
-    if (replace) await redis("SET", STAFF_KEY, value);
-    else await redis("SET", STAFF_KEY, value, "NX");
+    await redis("SET", STAFF_KEY, value, "NX");
     return (await redis<string | null>("GET", STAFF_KEY)) ?? value;
   }
   memory.__garsonAnahtari = value;
@@ -120,13 +118,7 @@ const canHaveStaffKey = () => passwordState() === "ok" && (redisConfig() !== nul
 
 export async function staffKey(): Promise<string | null> {
   if (!canHaveStaffKey()) return null;
-  return (await storedStaffKey()) ?? (await storeStaffKey(newKey(), false));
-}
-
-/** A new waiter screen address; the old one stops working at once (a former employee, a lost tablet). */
-export async function replaceStaffKey(): Promise<string | null> {
-  if (!canHaveStaffKey()) return null;
-  return storeStaffKey(newKey(), true);
+  return (await storedStaffKey()) ?? (await storeStaffKey(newKey()));
 }
 
 export async function isStaffKey(value: string | null | undefined): Promise<boolean> {

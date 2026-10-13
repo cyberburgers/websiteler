@@ -17,8 +17,8 @@ function phoneLocale(request: NextRequest): Locale {
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const parts = pathname.split("/").filter(Boolean);
-  // The panel, its uploaded photos and the waiter screen live outside the language prefixes.
-  if (parts[0] === "yonetim" || parts[0] === "medya" || parts[0] === "garson") return;
+  // The panel and its uploaded photos live outside the language prefixes.
+  if (parts[0] === "yonetim" || parts[0] === "medya") return;
   const hasLocale = isLocale(parts[0] ?? "");
   const locale = hasLocale ? parts[0] : phoneLocale(request);
   const rest = hasLocale ? parts.slice(1) : parts;

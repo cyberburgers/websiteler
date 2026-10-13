@@ -6,7 +6,7 @@ import { formatPrice } from "@/lib/format";
 import { noteClass } from "./fields";
 
 /**
- * The "Siparişler" tab: everything waiting at the tables, newest need first, as on the waiter screen.
+ * The "Siparişler" tab: everything waiting at the tables, newest need first.
  * An order: "Onayla" (the guest sees "Hazırlanıyor"), then "Teslim edildi". A call: "Tamam, gidiyorum".
  */
 export function OrdersBoard({

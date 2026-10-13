@@ -6,8 +6,6 @@ import sharp from "sharp";
 import type { z } from "zod";
 import { site } from "@/content/site";
 import { MIN_PASSWORD_LENGTH, checkPassword, endSession, passwordState, requireAdmin, startSession } from "@/lib/admin/auth";
-import { staffSetup } from "@/lib/admin/staff";
-import type { StaffSetup } from "@/components/admin/StaffEditor";
 import { count, counted, visitorAddress } from "@/lib/limits";
 import { CONTENT_TAG, readContentFresh } from "@/lib/content";
 import { contentSchema } from "@/lib/content/schema";
@@ -37,12 +35,6 @@ export async function loginAction(_previous: LoginState, formData: FormData): Pr
   }
   await startSession();
   redirect("/yonetim");
-}
-
-/** "Yeni adres oluştur" in the panel: the waiter screen's old address stops working. */
-export async function renewStaffKeyAction(): Promise<StaffSetup | null> {
-  await requireAdmin();
-  return staffSetup({ renew: true });
 }
 
 export async function logoutAction(): Promise<void> {

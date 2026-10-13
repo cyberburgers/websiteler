@@ -90,7 +90,7 @@ const tr = {
     sending: "Gönderiliyor…",
     sentWaiter: "Garsonunuz geliyor",
     sentBill: "Hesabınız hazırlanıyor",
-    sentHint: "Çağrınız kasadaki ekrana düştü.",
+    sentHint: "Çağrınız iletildi.",
     waiting: "Garson bekleniyor",
     seen: "Garson çağrınızı gördü",
     onTheWay: "Garson geliyor",

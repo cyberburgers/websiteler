@@ -3,7 +3,7 @@ import { site } from "@/content/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/", disallow: ["/tr/qr", "/en/qr", "/yonetim", "/garson"] },
+    rules: { userAgent: "*", allow: "/", disallow: ["/tr/qr", "/en/qr", "/yonetim"] },
     sitemap: new URL("/sitemap.xml", site.url).toString(),
   };
 }

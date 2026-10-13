@@ -3,7 +3,7 @@ import { markDone, markSeen, openCalls } from "@/lib/calls/store";
 
 const noStore = { "Cache-Control": "no-store" };
 
-/** The waiter screen: open calls. Needs the screen's key, sent as a header so it stays out of request logs. */
+/** The panel's "Siparişler" tab: open calls. Needs the panel's key, sent as a header so it stays out of request logs. */
 export async function GET(request: Request) {
   if (!(await isStaffKey(request.headers.get("x-garson-anahtari")))) {
     return Response.json({ error: "Bağlantı geçersiz" }, { status: 401, headers: noStore });

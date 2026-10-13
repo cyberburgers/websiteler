@@ -28,7 +28,7 @@ type Props = {
   initial: SiteContent;
   /** False on Vercel before a Blob store is connected: the panel can look but not save. */
   writable: boolean;
-  /** Null until a panel password is set (the waiter screen key comes from it). */
+  /** Null until a panel password is set (the key for the tables' calls comes with it). */
   staff: StaffSetup | null;
   /** The site's own address, which the table codes lead to. */
   siteUrl: string;
@@ -65,7 +65,7 @@ export function AdminApp({ initial, writable, staff, siteUrl, today }: Props) {
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
   const [saving, startSaving] = useTransition();
   const dirty = JSON.stringify(content) !== saved;
-  const [staffSetup, setStaffSetup] = useState(staff);
+  const staffSetup = staff;
   const calls = usePanelCalls(staffSetup?.enabled ? staffSetup.key : null);
   const waiting = calls.list.filter((c) => !c.seenAt).length;
   const tabs = TABS.filter((t) => t.id !== "siparis" || staffSetup?.enabled);
@@ -206,7 +206,6 @@ export function AdminApp({ initial, writable, staff, siteUrl, today }: Props) {
         {tab === "masalar" && staffSetup && (
           <StaffEditor
             staff={staffSetup}
-            onStaffChange={setStaffSetup}
             siteUrl={siteUrl}
             content={content}
             update={update}

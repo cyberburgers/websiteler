@@ -18,7 +18,6 @@ ya da WhatsApp düğmeleri yoktur; sayfanın altında yalnızca Instagram, adres
 | `/tr/gizlilik` | Gizlilik ve KVKK aydınlatma metni |
 | `/tr/qr` | Masalara konacak yazdırılabilir QR kartları (Google'a kapalı) |
 | `/yonetim` | Yönetici paneli: menü, fiyatlar, fotoğraflar, saatler, iletişim (şifreli, Google'a kapalı) |
-| `/garson?k=…` | Kasadaki tablet için garson ekranı: çağrılar ve siparişler (adresi panelde) |
 
 Üstte ortada logo, sağda anahtarlı **Yönetici** düğmesi durur (ana sayfa dışında solda geri düğmesi);
 dil ve arama düğmesi yoktur. Yönetici düğmesi şifre penceresini menünün üstünde, arkası bulanık açar; giriş
@@ -50,17 +49,14 @@ başlığına yönlenir.
 ## Garson çağırma
 
 Masa QR kartıyla açılan menünün altında **“Garson çağır”** tuşu durur (sayfa kayarken de görünür).
-Müşteri “Garson gelsin” ya da “Hesabı istiyorum”u seçer; çağrı kasadaki tabletteki **garson ekranına**
-sesli düşer. Garson “Tamam, gidiyorum”a basınca müşterinin telefonunda “Garson çağrınızı gördü” yazar.
+Müşteri “Garson gelsin” ya da “Hesabı istiyorum”u seçer; çağrı yönetici panelinin **Siparişler** sekmesine
+sesli düşer. “Tamam, gidiyorum”a basınca müşterinin telefonunda “Garson çağrınızı gördü” yazar.
 
 - Tuş yalnızca masa numarası bilinen menüde çıkar (`/tr?masa=7` gibi; masa kartları `/tr/qr?masa=1-12`).
 - Aynı masa 40 saniyede bir çağırabilir; cevaplanmayan çağrı 2 dakikada sarıya döner, dakikada bir yeniden öter.
-- Garson ekranının adresi ve tabletle okutulacak karekodu: panel → **Masalar**. Adresteki anahtar rastgeledir
-  (şifreden üretilmez, adresten şifre tahmin edilemez) ve Redis'te durur. Biri işten ayrılırsa ya da tablet
-  kaybolursa **Yeni adres oluştur**: eski adres hemen çalışmaz olur. Personel bu adresle menüyü değiştiremez.
-- Yönetici paneli açıkken çağrılar panelde de görünür: üstte “Masa 7 · Garson istiyor” kartı çıkar ve
+- Ayrı bir garson ekranı yok: çağrıları ve siparişleri yönetici paneli gösterir. Panel açıkken her sekmede
   cihaz öter (panelde bir kez dokunmak sesi açar). Telefon kilitliyken ya da panel kapalıyken ses gelmez;
-  sürekli açık duracak cihaz için garson ekranını kullanın.
+  kasada sürekli açık duran bir tablette paneli açık bırakın.
 
 **Kurulum (Vercel'de bir kez):** Vercel → proje → **Storage → Marketplace → Upstash (Redis)** → projeye
 bağlayın (ücretsiz paket bir dükkân için yeter). Vercel `KV_REST_API_URL` ve `KV_REST_API_TOKEN`
@@ -81,7 +77,7 @@ siparişi gönderince o ziyaret boyunca bir daha çıkmaz. Böylece “Ekle” o
    gezerken kaybolmaz.
 3. Sepette adet değiştirilir, kısa bir not yazılır (ör. “şerbeti az olsun”), **Siparişi Masa 7 için gönder**.
    Düğmede masanın adı yazar; siparişin eve değil bu masaya geldiği açıkça görünür.
-4. Sipariş garson ekranına ve açık paneldeki kartlara sesli düşer: kalemler, not, tutar.
+4. Sipariş panelin **Siparişler** sekmesine sesli düşer: kalemler, not, tutar.
    **Onayla** → müşterinin telefonunda “Hazırlanıyor”; **Teslim edildi** → “Afiyet olsun!”.
 
 - Fiyatlar sunucuda menüden hesaplanır; telefondan gelen fiyat kullanılmaz. “Bugün yok” denen ya da
@@ -99,7 +95,7 @@ siparişi gönderince o ziyaret boyunca bir daha çıkmaz. Böylece “Ekle” o
   misafirler için bol; sahte çağrıyla ekranı doldurmayı durdurur). Masa numarası telefonda 4 saat geçerlidir.
 - Fiyat ya da boy sipariş sırasında panelden değiştiyse sipariş gitmez, misafirden sayfayı yenilemesi istenir
   (garson başka, misafir başka fiyat görmesin). Zayıf bağlantıda "Gönder"e iki kez basmak ikinci sipariş açmaz.
-- Garson ekranında bir karta hızlıca iki kez dokunmak siparişi "Onayla"dan "Teslim edildi"ye atlatmaz.
+- Panelde bir karta hızlıca iki kez dokunmak siparişi "Onayla"dan "Teslim edildi"ye atlatmaz.
 
 ## Çalıştırma
 
@@ -121,7 +117,7 @@ ya da doğrudan `https://alanadiniz.com/yonetim` adresiyle girilir.
 | **Menü** | Fiyatlar (doğrudan kutudan), **Bugün yok** düğmesi (ürün menüde kalır, "Bugün yok" yazar; panelden geri alınana kadar öyle kalır, günler geçtiyse panelde "12 Ekim'den beri yok" diye görünür), ürünü menüden gizleme/gösterme, yeni ürün, silme, sıralama, fotoğraf yükleme, ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler (yalnız panelde), ürüne özel "Yanında iyi gider"; kategori ekleme, silme, sıralama |
 | **Öneriler** | Tatlıların altında çıkan "Yanında iyi gider" genel listesi (en çok 4 ürün, seçilen sırayla) |
 | **Duyuru** | Ana sayfanın üstündeki kısa not (ör. bayram kapanışı) |
-| **Masalar** | Masadan sipariş açık/kapalı, garson ekranının adresi ve karekodu, masa sayısı ve her masanın kalıcı karekodu (indir / kartı bastır) |
+| **Masalar** | Masadan sipariş açık/kapalı, masa sayısı ve her masanın kalıcı karekodu (indir / kartı bastır) |
 | **İşletme bilgileri** | Telefon (Google için), Instagram, adres, harita konumu, çalışma saatleri |
 
 Değişiklikler alttaki **Kaydet** ile kaydedilir ve sitede hemen görünür. Panelde yalnızca Türkçe yazılır:
@@ -166,8 +162,8 @@ Bir kez, sırasıyla:
 3. **Environment Variables** → `ADMIN_PASSWORD` = panel şifresi (en az 8 karakter). **Deploy**.
 4. Proje → **Storage → Create Database → Blob** → projeye bağlayın. Panelin kayıt yeri (menü, fiyatlar,
    yüklenen fotoğraflar).
-5. Proje → **Storage → Marketplace → Upstash (Redis)** → ücretsiz plan → projeye bağlayın. Garson çağırma,
-   masadan sipariş ve garson ekranı bununla çalışır.
+5. Proje → **Storage → Marketplace → Upstash (Redis)** → ücretsiz plan → projeye bağlayın. Garson çağırma
+   ve masadan sipariş bununla çalışır.
 6. Proje → **Deployments** → son kaydın yanındaki **⋯ → Redeploy** (4. ve 5. adımdaki ayarlar ancak yeni bir
    yayında devreye girer).
 7. Alan adı varsa: **Settings → Domains** → alan adını ekleyin, Vercel'in gösterdiği DNS kaydını alan adı
@@ -179,7 +175,7 @@ Yayından sonra:
 
 - [ ] `/yonetim` → giriş → **İşletme bilgileri**: telefon, Instagram, açık adres, harita konumu, çalışma saatleri
 - [ ] **Menü**: örnek fiyatlar yerine gerçek fiyatlar; dükkânın kendi fotoğrafları
-- [ ] **Masalar**: masa sayısı; garson ekranının karekodunu kasadaki tabletle okutun, **Sesi aç**
+- [ ] **Masalar**: masa sayısı. Kasadaki tablette paneli açık bırakıp **Sesi aç**'a bir kez dokunun
 - [ ] **Masa kartları**: `/tr/qr?masa=1-12` (kendi masa sayınız). Sayfa kartların hangi adrese götürdüğünü
       yazar; alan adı bağlandıktan sonra basın. Basmadan önce bir kartı telefonla okutup deneyin.
 - [ ] [Google İşletme Profili](https://business.google.com)'nde web sitesi alanına adresi yazın;

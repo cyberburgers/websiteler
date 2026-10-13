@@ -36,7 +36,7 @@ export function usePanelCalls(staffKey: string | null) {
   useEffect(() => {
     if (!staffKey) return;
     title.current ??= document.title;
-    document.title = waiting ? `(${waiting}) Garson ekranı · ${title.current}` : title.current;
+    document.title = waiting ? `(${waiting}) ${title.current}` : title.current;
   }, [staffKey, waiting]);
 
   const toggle = staffKey ? (

@@ -92,7 +92,7 @@ const en: Dictionary = {
     sending: "Sending…",
     sentWaiter: "A waiter is on the way",
     sentBill: "Your bill is being prepared",
-    sentHint: "Your call is on the screen at the counter.",
+    sentHint: "Your call has been passed on.",
     waiting: "Waiting for a waiter",
     seen: "A waiter has seen your call",
     onTheWay: "Waiter on the way",
