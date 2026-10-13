@@ -1,7 +1,10 @@
 import "server-only";
-import { createHash, createHmac, timingSafeEqual } from "node:crypto";
+import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
 import { cookies } from "next/headers";
 import { connection } from "next/server";
+import { redis, redisConfig } from "@/lib/redis";
 
 /**
  * One shared password for the panel, set as ADMIN_PASSWORD in the hosting settings.
@@ -43,7 +46,7 @@ export async function startSession(): Promise<void> {
   const secret = key();
   if (!secret) throw new Error("Panel şifresi ayarlanmamış");
   const expires = Math.floor(Date.now() / 1000) + MAX_AGE;
-  (await cookies()).set(COOKIE, `${expires}.${sign(secret, String(expires))}`, {
+  (await cookies()).set(COOKIE, `${expires}.${sign(secret, `oturum:${expires}`)}`, {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
@@ -63,8 +66,8 @@ export async function isAdmin(): Promise<boolean> {
   const [expires, signature] = value.split(".");
   // The expiry check reads the clock, so it must run for the real request, never in a prerender.
   await connection();
-  if (!expires || !signature || Number(expires) * 1000 < Date.now()) return false;
-  return sameText(signature, sign(secret, expires));
+  if (!/^\d{10}$/.test(expires ?? "") || !signature || Number(expires) * 1000 < Date.now()) return false;
+  return sameText(signature, sign(secret, `oturum:${expires}`));
 }
 
 /** Every panel action calls this first: the actions are public endpoints, the page around them is not a lock. */
@@ -73,15 +76,61 @@ export async function requireAdmin(): Promise<void> {
 }
 
 /**
- * The key in the waiter screen's address (/garson?k=…). It only lets someone see and answer calls,
- * so it can live on the counter tablet without giving the menu away. Changing the password changes it.
+ * The key in the waiter screen's address (/garson?k=…). It only lets someone see and answer calls, so it
+ * can live on the counter tablet without giving the menu away. It is random, not worked out from the
+ * password: the address is seen by staff and sits in the tablet's history, and must not be a way to guess
+ * the password. Kept in Redis, or in the .data folder on a single server; "Yeni adres" in the panel replaces it.
+ * Null until a panel password is set, or on Vercel before Redis is connected (calls don't work there yet).
  */
-export function staffKey(): string | null {
-  const secret = key();
-  return secret ? sign(secret, "garson-ekrani").slice(0, 24) : null;
+const STAFF_KEY = "kunefeci:garson:anahtar";
+const STAFF_KEY_FILE = path.join(process.cwd(), ".data", "garson-anahtari");
+// Only for a disk that can't be written. Read from the file every time otherwise: the panel's actions and
+// the waiter screen's API are separate copies of this module, and a new address must reach both at once.
+const memory = globalThis as { __garsonAnahtari?: string };
+
+async function storedStaffKey(): Promise<string | null> {
+  if (redisConfig()) return redis<string | null>("GET", STAFF_KEY);
+  try {
+    const value = (await readFile(STAFF_KEY_FILE, "utf8")).trim();
+    if (/^[\w-]{24}$/.test(value)) return value;
+  } catch {
+    // Not made yet, or no disk to keep it on.
+  }
+  return memory.__garsonAnahtari ?? null;
 }
 
-export function isStaffKey(value: string | null | undefined): boolean {
-  const expected = staffKey();
-  return Boolean(expected && value && sameText(value, expected));
+async function storeStaffKey(value: string, replace: boolean): Promise<string> {
+  if (redisConfig()) {
+    if (replace) await redis("SET", STAFF_KEY, value);
+    else await redis("SET", STAFF_KEY, value, "NX");
+    return (await redis<string | null>("GET", STAFF_KEY)) ?? value;
+  }
+  memory.__garsonAnahtari = value;
+  try {
+    await mkdir(path.dirname(STAFF_KEY_FILE), { recursive: true });
+    await writeFile(STAFF_KEY_FILE, value);
+  } catch {
+    // A read-only disk: the key lasts until the server restarts.
+  }
+  return value;
+}
+
+const newKey = () => randomBytes(18).toString("base64url");
+const canHaveStaffKey = () => passwordState() === "ok" && (redisConfig() !== null || !process.env.VERCEL);
+
+export async function staffKey(): Promise<string | null> {
+  if (!canHaveStaffKey()) return null;
+  return (await storedStaffKey()) ?? (await storeStaffKey(newKey(), false));
+}
+
+/** A new waiter screen address; the old one stops working at once (a former employee, a lost tablet). */
+export async function replaceStaffKey(): Promise<string | null> {
+  if (!canHaveStaffKey()) return null;
+  return storeStaffKey(newKey(), true);
+}
+
+export async function isStaffKey(value: string | null | undefined): Promise<boolean> {
+  if (!value || !/^[\w-]{24}$/.test(value)) return false;
+  const expected = await staffKey();
+  return Boolean(expected && sameText(value, expected));
 }

@@ -1,9 +1,10 @@
 "use client";
 
-import { Check, Copy, ExternalLink, QrCode } from "lucide-react";
-import { useState } from "react";
+import { Check, Copy, ExternalLink, Loader2, QrCode, RefreshCw } from "lucide-react";
+import { useState, useTransition } from "react";
+import { renewStaffKeyAction } from "@/app/yonetim/actions";
 import type { SiteContent } from "@/lib/content";
-import { Section, Toggle, buttonClass } from "./fields";
+import { Field, Section, Toggle, buttonClass, inputClass } from "./fields";
 
 export type StaffSetup = { key: string; url: string; qrSvg: string; enabled: boolean };
 
@@ -13,14 +14,29 @@ export type StaffSetup = { key: string; url: string; qrSvg: string; enabled: boo
  */
 export function StaffEditor({
   staff,
+  onStaffChange,
   content,
   update,
 }: {
   staff: StaffSetup;
+  /** After "Yeni adres oluştur": the new address, also for this panel's own call alerts. */
+  onStaffChange: (next: StaffSetup) => void;
   content: SiteContent;
   update: (change: (draft: SiteContent) => void) => void;
 }) {
   const [copied, setCopied] = useState(false);
+  const [renewing, startRenew] = useTransition();
+  const renew = () => {
+    if (!window.confirm("Tabletteki eski adres çalışmayı bırakır; tableti yeni karekodla açmanız gerekir. Devam edilsin mi?")) {
+      return;
+    }
+    startRenew(async () => {
+      const next = await renewStaffKeyAction().catch(() => null);
+      if (next?.key) onStaffChange(next);
+      else window.alert("Yeni adres oluşturulamadı. İnternet bağlantısını kontrol edip tekrar deneyin.");
+    });
+  };
+  const tableRange = content.tables ? `1-${content.tables}` : "1-12";
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(staff.url);
@@ -78,33 +94,47 @@ export function StaffEditor({
         title="Garson ekranı"
         hint="Kasadaki tablette ya da telefonda açık durur. Çağrı ya da sipariş gelince sesli uyarı verir; siparişler kalemleri, notu ve tutarıyla görünür."
       >
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <div
-            className="mx-auto w-40 shrink-0 rounded-2xl bg-white p-3 ring-1 ring-zumrut-800/10 sm:mx-0 [&>svg]:h-auto [&>svg]:w-full"
-            role="img"
-            aria-label="Garson ekranının karekodu"
-            dangerouslySetInnerHTML={{ __html: staff.qrSvg }}
-          />
-          <div className="min-w-0 flex-1 space-y-3 text-sm leading-relaxed text-zumrut-900/75">
-            <p className="flex gap-2">
-              <QrCode className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-              <span>Tabletin kamerasıyla bu karekodu okutun ya da bağlantıyı tablete gönderin.</span>
-            </p>
-            <p>
-              Açılınca <b>“Sesi aç”</b>a bir kez dokunun ve sayfayı açık bırakın. Bağlantıyı yalnızca personelle paylaşın;
-              panel şifresini değiştirirseniz bağlantı da değişir.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <a href={staff.url} target="_blank" rel="noopener" className={buttonClass.primary}>
-                Garson ekranını aç <ExternalLink className="size-4" aria-hidden="true" />
-              </a>
-              <button type="button" onClick={copy} className={buttonClass.quiet}>
-                {copied ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
-                {copied ? "Kopyalandı" : "Bağlantıyı kopyala"}
-              </button>
+        {staff.url ? (
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <div
+              className="mx-auto w-40 shrink-0 rounded-2xl bg-white p-3 ring-1 ring-zumrut-800/10 sm:mx-0 [&>svg]:h-auto [&>svg]:w-full"
+              role="img"
+              aria-label="Garson ekranının karekodu"
+              dangerouslySetInnerHTML={{ __html: staff.qrSvg }}
+            />
+            <div className="min-w-0 flex-1 space-y-3 text-sm leading-relaxed text-zumrut-900/75">
+              <p className="flex gap-2">
+                <QrCode className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                <span>Tabletin kamerasıyla bu karekodu okutun ya da bağlantıyı tablete gönderin.</span>
+              </p>
+              <p>
+                Açılınca <b>“Sesi aç”</b>a bir kez dokunun ve sayfayı açık bırakın. Bağlantıyı yalnızca personelle paylaşın.
+                Biri işten ayrılırsa ya da tablet kaybolursa <b>Yeni adres oluştur</b>: eski bağlantı hemen çalışmaz olur.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <a href={staff.url} target="_blank" rel="noopener" className={buttonClass.primary}>
+                  Garson ekranını aç <ExternalLink className="size-4" aria-hidden="true" />
+                </a>
+                <button type="button" onClick={copy} className={buttonClass.quiet}>
+                  {copied ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
+                  {copied ? "Kopyalandı" : "Bağlantıyı kopyala"}
+                </button>
+                <button type="button" onClick={renew} disabled={renewing} className={buttonClass.quiet}>
+                  {renewing ? (
+                    <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+                  ) : (
+                    <RefreshCw className="size-4" aria-hidden="true" />
+                  )}
+                  Yeni adres oluştur
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <p className="text-sm leading-relaxed text-zumrut-900/75">
+            Garson ekranının adresi, garson çağırma kurulunca (yukarıdaki not) burada çıkar.
+          </p>
+        )}
       </Section>
 
       <Section title="Müşteri tuşu" hint="Menünün altında, sayfa kayarken de görünen “Garson çağır” tuşu.">
@@ -112,8 +142,27 @@ export function StaffEditor({
           Tuş yalnızca <b>masa QR kartıyla</b> açılan menüde çıkar, çünkü garsonun hangi masaya gideceğini bilmesi gerekir.
           Her masaya kendi numaralı kartını koyun.
         </p>
-        <a href="/tr/qr?masa=1-12" target="_blank" rel="noopener" className={buttonClass.quiet}>
-          Masa kartlarını bastır <ExternalLink className="size-4" aria-hidden="true" />
+        <div className="mt-3">
+          <Field
+            label="Masa sayısı"
+            hint="Bundan büyük masa numarasıyla gelen çağrı ve sipariş kabul edilmez; adresi elle değiştirip sahte çağrı gönderilemez. Boş bırakılırsa sınır yok."
+          >
+            <input
+              type="number"
+              inputMode="numeric"
+              min={1}
+              max={999}
+              value={content.tables ?? ""}
+              onChange={(e) => {
+                const n = Math.floor(Number(e.target.value));
+                update((d) => void (n >= 1 && n <= 999 ? (d.tables = n) : delete d.tables));
+              }}
+              className={`${inputClass} max-w-32 tabular-nums`}
+            />
+          </Field>
+        </div>
+        <a href={`/tr/qr?masa=${tableRange}`} target="_blank" rel="noopener" className={`${buttonClass.quiet} mt-3`}>
+          Masa kartlarını bastır ({tableRange}) <ExternalLink className="size-4" aria-hidden="true" />
         </a>
       </Section>
     </div>

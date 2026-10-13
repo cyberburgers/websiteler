@@ -16,6 +16,8 @@ export type SiteContent = {
   notice?: Text;
   /** False: guests at a table can only call the waiter, not order from the menu. On unless turned off. */
   tableOrders?: boolean;
+  /** How many tables the shop has: a call or order for a higher table number is refused. Unset: any. */
+  tables?: number;
   /** "Yanında iyi gider" under every dessert (dish ids). Unset: the starting pair, tea and mırra. */
   pairing?: string[];
   menuUpdatedAt: string;
@@ -36,29 +38,35 @@ export async function readContentFresh(): Promise<SiteContent> {
   const parsed = contentSchema.safeParse(raw);
   // Never fall back to the starting menu over a stored one: that would quietly undo the shop's edits.
   if (!parsed.success) throw new Error(`Kayıtlı menü okunamadı: ${parsed.error.issues[0]?.message}`);
-  return parsed.data as SiteContent;
+  return settleSoldOut(parsed.data as SiteContent, serviceDay());
 }
 
-/** "Bugün yok" only holds for the day it was set; from the next morning the dish is back on its own. */
-function dropPastSoldOut(content: SiteContent, today: string): SiteContent {
+/**
+ * "Bugün yok" stays until it is taken off in the panel (soldOutSince). Marks saved by the older panel
+ * (soldOutOn) only ever held for their own day: today's becomes a lasting one, older ones are dropped,
+ * so a dish marked last week doesn't come back as run out.
+ */
+function settleSoldOut(content: SiteContent, today: string): SiteContent {
   return {
     ...content,
     menu: content.menu.map((c) => ({
       ...c,
-      items: c.items.map(({ soldOutOn, ...item }) => (soldOutOn === today ? { ...item, soldOutOn } : item)),
+      items: c.items.map(({ soldOutOn, ...item }) =>
+        soldOutOn === today && !item.soldOutSince ? { ...item, soldOutSince: soldOutOn } : item,
+      ),
     })),
   };
 }
 
 /**
- * The content for the public pages. Cached until the panel saves (which expires the tag), and read
- * again every hour so yesterday's "bugün yok" marks are gone by the time the shop opens.
+ * The content for the public pages. Cached until the panel saves (which expires the tag); read again
+ * every hour all the same, in case the store was changed some other way.
  */
 export async function getContent(): Promise<SiteContent> {
   "use cache";
   cacheTag(CONTENT_TAG);
   cacheLife("hours");
-  return dropPastSoldOut(await readContentFresh(), serviceDay());
+  return readContentFresh();
 }
 
 /** What guests see: hidden dishes and empty categories left out. */

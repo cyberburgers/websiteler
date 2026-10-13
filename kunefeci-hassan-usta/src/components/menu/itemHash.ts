@@ -9,6 +9,17 @@ import { useSyncExternalStore } from "react";
 const HASH_EVENT = "menu-urun:degisti";
 // The address right after we opened a sheet; while it is still current, closing can simply go Back.
 let pushedUrl: string | null = null;
+// Back (or Forward) moved away from it: the next close mustn't go Back again, out of the page.
+if (typeof window !== "undefined") window.addEventListener("popstate", () => (pushedUrl = null));
+
+/** "%C3%A7ay" -> "çay"; a broken one (#50%) is taken as it is rather than throwing. */
+export function safeDecode(text: string): string {
+  try {
+    return decodeURIComponent(text);
+  } catch {
+    return text;
+  }
+}
 
 function subscribe(onChange: () => void) {
   window.addEventListener("popstate", onChange);
@@ -21,7 +32,7 @@ function subscribe(onChange: () => void) {
   };
 }
 
-const read = () => decodeURIComponent(window.location.hash.slice(1));
+const read = () => safeDecode(window.location.hash.slice(1));
 
 export function useItemHash(): string {
   return useSyncExternalStore(subscribe, read, () => "");

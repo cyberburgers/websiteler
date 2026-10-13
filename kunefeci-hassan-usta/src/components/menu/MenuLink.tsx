@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { ComponentProps } from "react";
+import { safeDecode } from "./itemHash";
 import { goToHash } from "./jump";
 
 /**
@@ -19,7 +20,7 @@ export function MenuLink({ href, onClick, ...props }: ComponentProps<typeof Link
         const url = new URL(href, window.location.href);
         if (e.defaultPrevented || !url.hash || url.pathname !== window.location.pathname) return;
         e.preventDefault();
-        goToHash(decodeURIComponent(url.hash.slice(1)));
+        goToHash(safeDecode(url.hash.slice(1)));
       }}
     />
   );

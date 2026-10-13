@@ -1,5 +1,6 @@
 import "server-only";
 import { randomBytes } from "node:crypto";
+import { redis, redisConfig } from "@/lib/redis";
 
 /**
  * Waiter calls and table orders.
@@ -43,34 +44,19 @@ const MAX_OPEN_ORDERS = 80;
 /** An order nobody marks as delivered is cleared after this. */
 const ORDER_OPEN_FOR_MS = 3 * 60 * 60 * 1000;
 
-function redisConfig(): { url: string; token: string } | null {
-  const url = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
-  return url && token ? { url: url.replace(/\/$/, ""), token } : null;
-}
-
 /** False on Vercel before Redis is connected: calls would get lost there, so the button stays hidden. */
 export function callsEnabled(): boolean {
   return redisConfig() !== null || !process.env.VERCEL;
 }
 
-async function redis<T>(...command: (string | number)[]): Promise<T> {
-  const config = redisConfig();
-  if (!config) throw new Error("Redis ayarlı değil");
-  const res = await fetch(config.url, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${config.token}`, "Content-Type": "application/json" },
-    body: JSON.stringify(command.map(String)),
-    cache: "no-store",
-  });
-  const data = (await res.json()) as { result?: T; error?: string };
-  if (!res.ok || data.error) throw new Error(`Redis: ${data.error ?? res.status}`);
-  return data.result as T;
-}
-
 // --- in memory, for a single server -----------------------------------------------------------
-type Memory = { calls: Map<string, Call>; locks: Map<string, number> };
-const memory: Memory = ((globalThis as { __garson?: Memory }).__garson ??= { calls: new Map(), locks: new Map() });
+type Memory = { calls: Map<string, Call>; locks: Map<string, number>; requests: Map<string, string> };
+const memory: Memory = ((globalThis as { __garson?: Memory }).__garson ??= {
+  calls: new Map(),
+  locks: new Map(),
+  requests: new Map(),
+});
+memory.requests ??= new Map();
 
 async function takeLock(name: string, seconds: number): Promise<boolean> {
   if (redisConfig()) {
@@ -143,19 +129,54 @@ export async function createCall(table: string, kind: CallKind): Promise<CreateR
   return { ok: true, id: call.id, at: call.at };
 }
 
+/** The same basket sent again (its answer was lost on the way): the order it already made. */
+const requestKey = (requestId: string) => `istek:${requestId}`;
+
+async function earlierOrder(requestId: string): Promise<{ id: string; at: number } | null> {
+  const saved = redisConfig()
+    ? await redis<string | null>("GET", `${PREFIX}${requestKey(requestId)}`)
+    : (memory.requests.get(requestId) ?? null);
+  if (!saved) return null;
+  const [id, at] = saved.split(":");
+  return id && Number(at) ? { id, at: Number(at) } : null;
+}
+
+async function rememberOrder(requestId: string, call: Call) {
+  const value = `${call.id}:${call.at}`;
+  if (redisConfig()) await redis("SET", `${PREFIX}${requestKey(requestId)}`, value, "EX", ORDER_OPEN_FOR_MS / 1000);
+  else {
+    if (memory.requests.size > 2000) memory.requests.clear();
+    memory.requests.set(requestId, value);
+  }
+}
+
 export async function createOrder(
   table: string,
   order: { lines: OrderLine[]; note?: string; total: number },
+  requestId?: string,
 ): Promise<CreateResult> {
-  if (!(await takeLock(orderLock(table), ORDER_COOLDOWN_SECONDS))) return { ok: false, reason: "sik" };
-  const now = Date.now();
-  const open = (await readAll()).filter((c) => isOrder(c) && isOpen(c, now));
-  if (open.length >= MAX_OPEN_ORDERS || open.filter((c) => c.table === table).length >= ORDERS_PER_TABLE) {
-    return { ok: false, reason: "dolu" };
+  if (requestId) {
+    const earlier = await earlierOrder(requestId);
+    if (earlier) return { ok: true, ...earlier };
   }
-  const call: Call = { id: randomBytes(9).toString("base64url"), table, kind: "siparis", at: now, ...order };
-  await save(call);
-  return { ok: true, id: call.id, at: call.at };
+  if (!(await takeLock(orderLock(table), ORDER_COOLDOWN_SECONDS))) return { ok: false, reason: "sik" };
+  try {
+    const now = Date.now();
+    const open = (await readAll()).filter((c) => isOrder(c) && isOpen(c, now));
+    if (open.length >= MAX_OPEN_ORDERS || open.filter((c) => c.table === table).length >= ORDERS_PER_TABLE) {
+      // As with calls: a refused order mustn't also keep the table waiting for the cooldown.
+      await releaseLock(orderLock(table));
+      return { ok: false, reason: "dolu" };
+    }
+    const call: Call = { id: randomBytes(9).toString("base64url"), table, kind: "siparis", at: now, ...order };
+    await save(call);
+    if (requestId) await rememberOrder(requestId, call);
+    return { ok: true, id: call.id, at: call.at };
+  } catch (error) {
+    // The store failed: let the guest try again straight away rather than see "too soon".
+    await releaseLock(orderLock(table)).catch(() => {});
+    throw error;
+  }
 }
 
 /** What the counter screen shows: open calls and orders, oldest first. Old ones are cleared out on the way. */
@@ -184,7 +205,8 @@ export async function callStatus(id: string): Promise<"bekliyor" | "goruldu" | "
 export async function markSeen(id: string): Promise<boolean> {
   const call = await readOne(id);
   if (!call) return false;
-  if (!call.seenAt) {
+  // Never writes over a delivered order (a late "Onayla" arriving after "Teslim edildi").
+  if (!call.seenAt && !call.doneAt) {
     await save({ ...call, seenAt: Date.now() });
     if (!isOrder(call)) await releaseLock(callLock(call.table));
   }

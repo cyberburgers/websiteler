@@ -28,7 +28,7 @@ export function wheelSlices(locale: Locale, menu: MenuCategory[]): WheelSlice[] 
   return menu
     .filter((c) => c.layout === "cards")
     .flatMap((c) => c.items)
-    .filter((item) => !item.tags?.includes("siparis") && !item.soldOutOn)
+    .filter((item) => !item.tags?.includes("siparis") && !item.soldOutSince)
     .map((item) => ({
       id: item.id,
       name: tx(item.name, locale),

@@ -98,6 +98,7 @@ export function ItemCard({
               type="button"
               onClick={onOpen}
               aria-haspopup="dialog"
+              aria-label={`${detailsLabel}: ${item.name}`}
               className="group/ayrinti ms-auto inline-flex items-center gap-1 text-[13px] font-extrabold text-zumrut-800"
             >
               {detailsLabel}

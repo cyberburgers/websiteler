@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ItemSheet, type SheetLabels, type WaiterLabels } from "./ItemSheet";
-import { closeItem, openItem, useItemHash } from "./itemHash";
+import { closeItem, openItem, safeDecode, useItemHash } from "./itemHash";
 import { jumpTo } from "./jump";
 import { MenuSections } from "./MenuSections";
 import type { MenuViewCategory } from "./types";
@@ -66,7 +66,7 @@ export function HomeMenu({ categories, homeHref, labels, waiter }: Props) {
   // the same way a pill does, so the header can't sit on top of it.
   // Waits a moment first: at a table the "+ Ekle" buttons appear right after load and lengthen the drinks.
   useEffect(() => {
-    const id = decodeURIComponent(window.location.hash.slice(1));
+    const id = safeDecode(window.location.hash.slice(1));
     const section = id.startsWith("kategori-") ? document.getElementById(id) : null;
     if (!section) return;
     const timer = window.setTimeout(() => jumpTo(section), 120);
@@ -101,7 +101,10 @@ export function HomeMenu({ categories, homeHref, labels, waiter }: Props) {
                   setActive(c.id);
                   settleUntil.current = performance.now() + 900;
                   const section = document.getElementById(`kategori-${c.id}`);
-                  if (section) jumpTo(section);
+                  if (section) {
+                    jumpTo(section);
+                    section.focus({ preventScroll: true });
+                  }
                 }}
                 className={`flex h-[38px] shrink-0 items-center rounded-full px-[15px] text-[13.5px] transition-colors ${
                   current

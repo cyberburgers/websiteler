@@ -6,11 +6,17 @@ import sharp from "sharp";
 import type { z } from "zod";
 import { site } from "@/content/site";
 import { MIN_PASSWORD_LENGTH, checkPassword, endSession, passwordState, requireAdmin, startSession } from "@/lib/admin/auth";
+import { staffSetup } from "@/lib/admin/staff";
+import type { StaffSetup } from "@/components/admin/StaffEditor";
+import { count, counted, visitorAddress } from "@/lib/limits";
 import { CONTENT_TAG, readContentFresh } from "@/lib/content";
 import { contentSchema } from "@/lib/content/schema";
 import { storeIsWritable, storePhoto, writeStoredContent } from "@/lib/content/store";
 
 export type LoginState = { error?: string };
+
+const MAX_WRONG = 10;
+const WRONG_WINDOW_SECONDS = 15 * 60;
 
 export async function loginAction(_previous: LoginState, formData: FormData): Promise<LoginState> {
   const state = passwordState();
@@ -18,13 +24,25 @@ export async function loginAction(_previous: LoginState, formData: FormData): Pr
     return { error: "Panel şifresi henüz ayarlanmamış. Barındırma ayarlarına ADMIN_PASSWORD ekleyin." };
   }
   if (state === "short") return { error: `Panel şifresi en az ${MIN_PASSWORD_LENGTH} karakter olmalı.` };
+  // Ten wrong passwords from one address, then a quarter of an hour's wait: guessing it would take years.
+  const tries = `giris:${await visitorAddress()}`;
+  if ((await counted(tries)) >= MAX_WRONG) {
+    return { error: "Çok fazla yanlış deneme. 15 dakika sonra tekrar deneyin." };
+  }
   if (!checkPassword(String(formData.get("sifre") ?? ""))) {
-    // A short pause on every wrong guess makes trying passwords one after another slow.
+    await count(tries, WRONG_WINDOW_SECONDS);
+    // A short pause on every wrong guess as well.
     await new Promise((resolve) => setTimeout(resolve, 900));
     return { error: "Şifre yanlış." };
   }
   await startSession();
   redirect("/yonetim");
+}
+
+/** "Yeni adres oluştur" in the panel: the waiter screen's old address stops working. */
+export async function renewStaffKeyAction(): Promise<StaffSetup | null> {
+  await requireAdmin();
+  return staffSetup({ renew: true });
 }
 
 export async function logoutAction(): Promise<void> {

@@ -49,10 +49,27 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
   useEffect(() => {
     const sheet = sheetRef.current;
     if (!sheet) return;
+    const before = openFor.current;
     openFor.current = item?.id ?? null;
     if (item && !sheet.open) {
-      sheet.showModal();
+      const open = () => {
+        if (openFor.current !== item.id || sheet.open) return;
+        sheet.showModal();
+        sheet.scrollTop = 0;
+      };
+      // A shared dish link opens the site with the opening still playing: the sheet waits for it to fade
+      // (a modal sheet would otherwise be drawn over it).
+      if (document.documentElement.classList.contains("splash-seen") || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        open();
+        return;
+      }
+      const timer = window.setTimeout(open, 1450);
+      return () => window.clearTimeout(timer);
+    }
+    if (item && before !== item.id) {
+      // Another dish in the same sheet ("Yanında iyi gider"): start it from its photo and name.
       sheet.scrollTop = 0;
+      sheet.querySelector<HTMLElement>("[data-sheet-close]")?.focus({ preventScroll: true });
     } else if (!item && sheet.open) {
       waiterRef.current?.close();
       sheet.close();
@@ -160,6 +177,7 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
                 type="button"
                 onClick={() => sheetRef.current?.close()}
                 aria-label={labels.close}
+                data-sheet-close=""
                 className="absolute end-3 top-3.5 grid size-11 place-items-center rounded-full bg-krem-50/90 text-zumrut-900 shadow-lg backdrop-blur transition hover:bg-krem-50"
               >
                 <X className="size-5" />
@@ -195,7 +213,9 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
                   {labels.soldOutHint}
                 </p>
               )}
-              <p className="mt-2 text-[15px] leading-relaxed text-zumrut-800/75">{item.description}</p>
+              {item.description && (
+                <p className="mt-2 text-[15px] leading-relaxed text-zumrut-800/75">{item.description}</p>
+              )}
 
               {item.prices.length > 1 && (
                 <div className="mt-4 grid grid-cols-2 gap-2" role={pickable ? "radiogroup" : undefined}>
@@ -320,6 +340,7 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
       {/* Full screen, big type: the guest turns the phone round and the waiter reads the order. */}
       <dialog
         ref={waiterRef}
+        lang="tr"
         onClick={() => waiterRef.current?.close()}
         aria-labelledby="garson-baslik"
         className="waiter-sheet pattern-star m-0 h-dvh max-h-none w-full max-w-none bg-zumrut-900 p-0 text-krem-50"

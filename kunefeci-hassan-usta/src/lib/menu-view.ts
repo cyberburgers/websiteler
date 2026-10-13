@@ -31,7 +31,7 @@ function pairingFor(
 ): string[] {
   const ids = item.pairing ?? (category.layout === "cards" ? general : []);
   return ids
-    .filter((id) => id !== item.id && onMenu.has(id) && !onMenu.get(id)!.soldOutOn)
+    .filter((id) => id !== item.id && onMenu.has(id) && !onMenu.get(id)!.soldOutSince)
     .slice(0, MAX_PAIRING);
 }
 
@@ -57,7 +57,7 @@ export function menuView(
         prices: item.prices.map((p) => ({ label: tx(p.label, locale) || undefined, formatted: formatPrice(p.amount, locale) })),
         tags: (item.tags ?? []).map((t) => ({ id: t, label: tags[t][locale] })),
         photo: item.image,
-        soldOut: item.soldOutOn !== undefined,
+        soldOut: item.soldOutSince !== undefined,
         pairing: pairingFor(item, category, generalPairing, onMenu),
         filters: filtersFor(item, category),
         search: foldForSearch(

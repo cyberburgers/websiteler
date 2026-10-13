@@ -250,8 +250,11 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
     const rest = direction > 0 ? mod(landing - from, 360) : -mod(from - landing, 360);
     const delta = rest + direction * turns * 360;
     const duration = reduced ? 500 : 4200 + strength * 1200 + Math.random() * 400;
-    const start = performance.now();
+    // Timed from the first frame's own clock: a frame stamped a moment before the tap would otherwise
+    // give a slightly negative start and a tiny backwards twitch.
+    let start = -1;
     const step = (now: number) => {
+      if (start < 0) start = now;
       const t = Math.min(1, (now - start) / duration);
       angle.current = from + delta * (1 - Math.pow(1 - t, 3));
       render();

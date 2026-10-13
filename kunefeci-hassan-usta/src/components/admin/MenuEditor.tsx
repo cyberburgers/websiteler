@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Photo } from "@/components/ui";
 import { allergenIds, allergens, tagIds, tags, type MenuCategory, type MenuItem } from "@/content/menu";
 import type { SiteContent } from "@/lib/content";
+import { serviceDay } from "@/lib/serviceDay";
 import { Bilingual, Field, PhotoField, Toggle, buttonClass, inputClass } from "./fields";
 import { TEMP_PREFIX, allIds, blankCategory, blankItem, formatTl, move, uniqueId } from "./menu-utils";
 import { ItemPairingField } from "./PairingEditor";
@@ -404,9 +405,19 @@ function CategoryDialog({
   );
 }
 
+const MONTHS = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
+/** The ending each month name takes: Ocak'tan, Nisan'dan, Eylül'den. */
+const FROM = ["tan", "tan", "tan", "dan", "tan", "dan", "dan", "tan", "den", "den", "dan", "tan"];
+/** "12 Ekim'den beri" for a "Bugün yok" left on from an earlier day, so a forgotten one is noticed. */
+function sinceLabel(day: string, today: string) {
+  if (day === today) return "Bugün yok";
+  const [, month, date] = day.split("-").map(Number);
+  return `${date} ${MONTHS[month - 1]}'${FROM[month - 1]} beri yok`;
+}
+
 /**
- * @param today The shop's working day (YYYY-MM-DD). A dish marked "Bugün yok" carries this date, so it is
- * back on the menu by itself the next morning.
+ * @param today The shop's working day (YYYY-MM-DD). A dish marked "Bugün yok" carries the day it was
+ * marked and stays that way until it is taken off here.
  */
 export function MenuEditor({ content, update, today }: { content: SiteContent; update: Update; today: string }) {
   const [itemId, setItemId] = useState<string | null>(null);
@@ -416,22 +427,22 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
     setCategoryId(null);
     update(settleIds);
   };
-  const soldOutToday = content.menu.flatMap((c) => c.items).filter((i) => i.soldOutOn === today);
+  const soldOutNow = content.menu.flatMap((c) => c.items).filter((i) => i.soldOutSince && i.available !== false);
 
   return (
     <div className="space-y-4">
-      {soldOutToday.length > 0 && (
+      {soldOutNow.length > 0 && (
         <div className="flex flex-wrap items-center gap-3 rounded-2xl bg-amber-50 p-4 ring-1 ring-amber-200">
           <CalendarX2 className="size-5 shrink-0 text-amber-700" aria-hidden="true" />
           <p className="min-w-0 flex-1 text-sm leading-relaxed text-amber-950">
-            <b>Bugün yok:</b> {soldOutToday.map((i) => i.name.tr).join(", ")}.{" "}
-            <span className="text-amber-900/80">Yarın sabah kendiliğinden menüye döner.</span>
+            <b>Bugün yok:</b> {soldOutNow.map((i) => i.name.tr).join(", ")}.{" "}
+            <span className="text-amber-900/80">Siz geri alana kadar menüde “Bugün yok” yazar.</span>
           </p>
           <button
             type="button"
             onClick={() =>
               update((draft) => {
-                for (const i of draft.menu.flatMap((c) => c.items)) delete i.soldOutOn;
+                for (const i of draft.menu.flatMap((c) => c.items)) delete i.soldOutSince;
               })
             }
             className={buttonClass.quiet}
@@ -477,7 +488,7 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
           <ul className="divide-y divide-zumrut-800/10">
             {category.items.map((item, ii) => {
               const hidden = item.available === false;
-              const soldOut = !hidden && item.soldOutOn === today;
+              const soldOut = !hidden && item.soldOutSince !== undefined;
               return (
                 <li
                   key={item.id}
@@ -499,7 +510,7 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
                         )}
                         {soldOut && (
                           <span className="ms-2 inline-flex items-center gap-1 rounded-full bg-amber-200 px-2 py-0.5 align-middle text-[11px] font-extrabold text-amber-950">
-                            <CalendarX2 className="size-3" aria-hidden="true" /> Bugün yok
+                            <CalendarX2 className="size-3" aria-hidden="true" /> {sinceLabel(item.soldOutSince!, today)}
                           </span>
                         )}
                       </p>
@@ -550,8 +561,8 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
                           onClick={() =>
                             update((draft) => {
                               const target = draft.menu[ci].items[ii];
-                              if (soldOut) delete target.soldOutOn;
-                              else target.soldOutOn = today;
+                              if (soldOut) delete target.soldOutSince;
+                              else target.soldOutSince = serviceDay();
                             })
                           }
                           className={`inline-flex h-9 items-center gap-1.5 rounded-full px-3.5 text-sm font-extrabold transition active:scale-[.97] ${

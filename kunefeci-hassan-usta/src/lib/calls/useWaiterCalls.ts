@@ -50,8 +50,25 @@ export function since(at: number, now: number): string {
   return `${minutes} dk önce`;
 }
 
+/** A second tap on the same card this soon is the same tap: "Onayla" must not turn into "Teslim edildi". */
+const DOUBLE_TAP_MS = 1500;
+/** For this long after a tap the screen trusts the tap over a check that may have left before it. */
+const ANSWER_SETTLES_MS = 8000;
+const clock = () => Date.now();
+
+type Answer = { action: "gor" | "teslim"; at: number };
+
+/** What the screen shows after taps the server may not have caught up with yet. */
+function withAnswers(calls: OpenCall[], answers: Map<string, Answer>, now: number): OpenCall[] {
+  return calls.flatMap((c) => {
+    const answer = answers.get(c.id);
+    if (!answer || now - answer.at > ANSWER_SETTLES_MS) return [c];
+    if (answer.action === "teslim" || c.kind !== "siparis") return [];
+    return [{ ...c, seenAt: c.seenAt ?? answer.at }];
+  });
+}
+
 /**
- * The open waiter calls, checked every few seconds, with a chime when a new one comes in.
  * Used by the counter screen and by the panel. Pass null to stay quiet (calls not set up).
  */
 export function useWaiterCalls(staffKey: string | null) {
@@ -63,6 +80,7 @@ export function useWaiterCalls(staffKey: string | null) {
   const sound = useRef(false);
   const known = useRef<Set<string> | null>(null);
   const lastRing = useRef(0);
+  const answers = useRef(new Map<string, Answer>());
 
   const ring = useCallback(() => {
     lastRing.current = Date.now();
@@ -74,12 +92,17 @@ export function useWaiterCalls(staffKey: string | null) {
   useEffect(() => {
     if (!staffKey) return;
     let stopped = false;
+    let busy = false;
     const poll = async () => {
+      // One check at a time: a slow answer must not land after a newer one and bring back old cards.
+      if (busy) return;
+      busy = true;
       try {
-        const res = await fetch(`/api/garson/cagrilar?k=${encodeURIComponent(staffKey)}`, { cache: "no-store" });
+        const res = await fetch("/api/garson/cagrilar", { cache: "no-store", headers: { "x-garson-anahtari": staffKey } });
         if (!res.ok) throw new Error(String(res.status));
         const data = (await res.json()) as { calls: OpenCall[]; now: number };
         if (stopped) return;
+        data.calls = withAnswers(data.calls, answers.current, clock());
         const ids = new Set(data.calls.map((c) => c.id));
         const fresh = known.current !== null && data.calls.some((c) => !known.current!.has(c.id));
         const stillWaiting = data.calls.some((c) => !c.seenAt) && Date.now() - lastRing.current > RING_AGAIN_MS;
@@ -90,6 +113,8 @@ export function useWaiterCalls(staffKey: string | null) {
         setOnline(true);
       } catch {
         if (!stopped) setOnline(false);
+      } finally {
+        busy = false;
       }
     };
     void poll();
@@ -125,6 +150,11 @@ export function useWaiterCalls(staffKey: string | null) {
    */
   const answer = useCallback(
     async (id: string, action: "gor" | "teslim" = "gor") => {
+      const at = clock();
+      const last = answers.current.get(id);
+      if (last && at - last.at < DOUBLE_TAP_MS) return;
+      answers.current.set(id, { action, at });
+      for (const [key, answer] of answers.current) if (at - answer.at > ANSWER_SETTLES_MS) answers.current.delete(key);
       setCalls((list) =>
         list.flatMap((c) => {
           if (c.id !== id) return [c];

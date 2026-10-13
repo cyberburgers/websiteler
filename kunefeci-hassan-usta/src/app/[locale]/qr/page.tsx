@@ -53,7 +53,7 @@ async function TableCard({ table }: { table: number | null }) {
         <span className="text-[3mm] text-krem-100/70">Türkçe · English</span>
       </div>
       <p className="relative mt-auto text-[2.7mm] tracking-[0.08em] text-krem-100/60">
-        @{info.instagram} · {info.address.district}, {info.address.city}
+        @{info.instagram} · {[info.address.district, info.address.city].filter(Boolean).join(", ")}
       </p>
     </article>
   );

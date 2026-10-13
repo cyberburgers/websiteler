@@ -30,8 +30,10 @@ export function MenuSections({
       key={category.id}
       id={`kategori-${category.id}`}
       aria-labelledby={`baslik-${category.id}`}
+      // Focused by the category bar, for the keyboard; not a stop of its own when tabbing.
+      tabIndex={-1}
       // Lands with the heading just under the category bar (see jumpTo): bar alone on phones, header too on wide screens.
-      className="scroll-mt-11 pt-8 md:scroll-mt-7 md:pt-12 lg:scroll-mt-[108px]"
+      className="scroll-mt-11 pt-8 outline-none md:scroll-mt-7 md:pt-12 lg:scroll-mt-[108px]"
     >
       <h3 id={`baslik-${category.id}`} className="font-display text-[28px] font-semibold text-krem-50 md:text-4xl">
         {category.name}

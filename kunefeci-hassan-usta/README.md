@@ -55,8 +55,9 @@ sesli düşer. Garson “Tamam, gidiyorum”a basınca müşterinin telefonunda 
 
 - Tuş yalnızca masa numarası bilinen menüde çıkar (`/tr?masa=7` gibi; masa kartları `/tr/qr?masa=1-12`).
 - Aynı masa 40 saniyede bir çağırabilir; cevaplanmayan çağrı 2 dakikada sarıya döner, dakikada bir yeniden öter.
-- Garson ekranının adresi ve tabletle okutulacak karekodu: panel → **Garson**. Adres panel şifresinden
-  üretilir; şifre değişirse adres de değişir. Personel bu adresle menüyü değiştiremez.
+- Garson ekranının adresi ve tabletle okutulacak karekodu: panel → **Garson**. Adresteki anahtar rastgeledir
+  (şifreden üretilmez, adresten şifre tahmin edilemez) ve Redis'te durur. Biri işten ayrılırsa ya da tablet
+  kaybolursa **Yeni adres oluştur**: eski adres hemen çalışmaz olur. Personel bu adresle menüyü değiştiremez.
 - Yönetici paneli açıkken çağrılar panelde de görünür: üstte “Masa 7 · Garson istiyor” kartı çıkar ve
   cihaz öter (panelde bir kez dokunmak sesi açar). Telefon kilitliyken ya da panel kapalıyken ses gelmez;
   sürekli açık duracak cihaz için garson ekranını kullanın.
@@ -82,12 +83,19 @@ Yalnızca masa QR kartıyla açılan menüde çalışır; masa dışından bakan
 - Fiyatlar sunucuda menüden hesaplanır; telefondan gelen fiyat kullanılmaz. “Bugün yok” denen ya da
   gizlenen ürün sipariş edilemez (sepetten çıkarılır, müşteriye söylenir).
 - Ödeme her zamanki gibi masada ya da kasada alınır; sitede ödeme yok.
+- Dükkân kapalıyken (paneldeki çalışma saatlerine göre) “+ Ekle” görünmez ve sunucu siparişi kabul etmez;
+  garson çağırma ve hesap isteme açık kalır (kapanışta masada oturan misafir için).
 - Aynı masadan 20 saniyede bir sipariş; bir masada en çok 6 açık sipariş. Teslim edilmeyen sipariş 3 saat
   sonra ekrandan kalkar.
 - Panel → **Garson** → “Müşteriler masadan sipariş verebilsin” ile kapatılır; kapalıyken yalnızca garson
   çağırma kalır.
-- Masa numarası QR'dan gelir ve kontrol edilemez: biri adresi elle değiştirirse başka masa adına sipariş
-  verebilir. Garson masaya gittiğinde anlaşılır; küçük bir dükkân için kabul edilebilir.
+- Masa numarası QR'dan gelir: biri adresi elle değiştirirse başka masa adına sipariş verebilir. Garson
+  masaya gittiğinde anlaşılır. Panel → **Garson** → **Masa sayısı** yazılırsa ondan büyük masa numarası
+  kabul edilmez. Bir bağlantıdan dakikada en çok 30 çağrı/sipariş gelir (dükkânın wifi'sini paylaşan
+  misafirler için bol; sahte çağrıyla ekranı doldurmayı durdurur). Masa numarası telefonda 4 saat geçerlidir.
+- Fiyat ya da boy sipariş sırasında panelden değiştiyse sipariş gitmez, misafirden sayfayı yenilemesi istenir
+  (garson başka, misafir başka fiyat görmesin). Zayıf bağlantıda "Gönder"e iki kez basmak ikinci sipariş açmaz.
+- Garson ekranında bir karta hızlıca iki kez dokunmak siparişi "Onayla"dan "Teslim edildi"ye atlatmaz.
 
 ## Çalıştırma
 
@@ -105,7 +113,7 @@ ya da doğrudan `https://alanadiniz.com/yonetim` adresiyle girilir.
 
 | Bölüm | Neler değişir? |
 | --- | --- |
-| **Menü** | Fiyatlar (doğrudan kutudan), **Bugün yok** düğmesi (ürün menüde kalır, "Bugün yok" yazar, ertesi sabah 05:00'te kendiliğinden geri gelir), ürünü menüden gizleme/gösterme, yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler (yalnız panelde), ürüne özel "Yanında iyi gider"; kategori ekleme, silme, sıralama |
+| **Menü** | Fiyatlar (doğrudan kutudan), **Bugün yok** düğmesi (ürün menüde kalır, "Bugün yok" yazar; panelden geri alınana kadar öyle kalır, günler geçtiyse panelde "12 Ekim'den beri yok" diye görünür), ürünü menüden gizleme/gösterme, yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler (yalnız panelde), ürüne özel "Yanında iyi gider"; kategori ekleme, silme, sıralama |
 | **Öneriler** | Tatlıların altında çıkan "Yanında iyi gider" genel listesi (en çok 4 ürün, seçilen sırayla); ürüne özel listelerin özeti |
 | **Duyuru** | Ana sayfanın üstündeki kısa not (ör. bayram kapanışı) |
 | **Garson** | Masadan sipariş açık/kapalı, garson ekranının adresi ve karekodu, masa kartlarına bağlantı (çağrılar ve siparişler panel açıkken her sekmede sesli gelir) |
@@ -119,7 +127,8 @@ düzeltilir ve içindeki konum bilgisi silinir.
 
 1. **Şifre:** Vercel → proje → **Settings → Environment Variables** → `ADMIN_PASSWORD` ekleyin.
    En az 8 karakter; uzun ve tahmin edilmesi zor olsun (ör. üç-dört kelimelik bir cümle).
-   Şifreyi değiştirince herkesin oturumu kapanır.
+   Şifreyi değiştirince herkesin oturumu kapanır. Aynı bağlantıdan 10 yanlış denemeden sonra giriş
+   15 dakika kapanır.
 2. **Kayıt yeri:** Vercel → proje → **Storage → Create → Blob** → projeye bağlayın.
    Vercel `BLOB_READ_WRITE_TOKEN` ayarını kendisi ekler. Menü ve yüklenen fotoğraflar burada durur;
    her kayıtta son 20 sürüm yedek olarak saklanır.

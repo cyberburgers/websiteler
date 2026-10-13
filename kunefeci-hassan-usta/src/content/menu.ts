@@ -28,7 +28,9 @@ export type MenuItem = {
   /** A bundled photo's name (see photos.ts) or the address of a photo uploaded from the panel. */
   image?: string;
   available?: boolean;
-  /** Panelde "Bugün yok" denen gün (YYYY-AA-GG). Ürün menüde kalır ama "Bugün yok" yazar; ertesi sabah kendiliğinden geri gelir. */
+  /** Panelde "Bugün yok" denen gün (YYYY-AA-GG). Ürün menüde kalır, "Bugün yok" yazar; panelden geri alınana kadar öyle kalır. */
+  soldOutSince?: string;
+  /** Eski panelin işareti: yalnızca o gün geçerliydi. Okunurken soldOutSince'e çevrilir ya da düşer (lib/content). */
   soldOutOn?: string;
   /**
    * Ürün penceresindeki "Yanında iyi gider" (ürün kimlikleri, en çok 4). Yazılmazsa tatlılarda genel liste

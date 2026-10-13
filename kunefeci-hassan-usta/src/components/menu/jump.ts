@@ -25,7 +25,8 @@ export function goToHash(id: string) {
     if (target) jumpTo(target);
     return;
   }
-  // Closing the sheet goes Back, which also brings the page back to where the guest was reading.
-  const sheetOpen = window.location.hash.length > 1 && !window.location.hash.startsWith("#kategori-");
+  // From an open sheet the new dish takes its place in the history; otherwise it is a new step, so
+  // closing it goes Back to where the guest was reading. (The address alone can't tell: #icerik, an old link.)
+  const sheetOpen = document.querySelector("dialog.menu-sheet[open]") !== null;
   openItem(id, { replace: sheetOpen });
 }

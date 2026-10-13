@@ -35,6 +35,8 @@ type Status = "bekliyor" | "goruldu";
 const WATCH_MS = 5 * 60 * 1000;
 const SEEN_SHOWN_MS = 45 * 1000;
 
+const phoneClock = () => Date.now();
+
 /**
  * "Garson çağır" in the bar at the bottom of a table's menu (see TableDock), and the sheet it opens.
  * `compact`: just the bell, when the basket or an order needs the room next to it.
@@ -101,7 +103,8 @@ export function WaiterCall({
     const result = await callWaiterAction(table, kind).catch(() => ({ ok: false as const, reason: "hata" as const }));
     if (result.ok) {
       navigator.vibrate?.(30);
-      setCall({ id: result.id, kind, at: result.at });
+      // Timed by this phone's own clock: a phone set wrong would otherwise stop watching at once.
+      setCall({ id: result.id, kind, at: phoneClock() });
       setStatus("bekliyor");
       setPhase("sent");
       return;

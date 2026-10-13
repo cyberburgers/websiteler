@@ -24,7 +24,10 @@ export function shopClock(date: Date): { day: number; minutes: number } {
   return { day: weekdayIndex[get("weekday")] ?? 1, minutes: Number(get("hour")) * 60 + Number(get("minute")) };
 }
 
-export type OpenState = { open: true; closes: string } | { open: false; opens: string | null };
+/** `inDays`: 0 when it opens later today, 1 tomorrow, and so on; `day` is that day (1 = Monday). */
+export type OpenState =
+  | { open: true; closes: string }
+  | { open: false; opens: string | null; inDays?: number; day?: number };
 
 export function openState(date: Date, hours: DayHours[]): OpenState {
   const { day, minutes } = shopClock(date);
@@ -41,12 +44,13 @@ export function openState(date: Date, hours: DayHours[]): OpenState {
     const close = toMinutes(today.close);
     const crossesMidnight = close <= open;
     if (minutes >= open && (crossesMidnight || minutes < close)) return { open: true, closes: today.close };
-    if (minutes < open) return { open: false, opens: today.open };
+    if (minutes < open) return { open: false, opens: today.open, inDays: 0, day };
   }
 
   for (let i = 1; i <= 7; i++) {
-    const next = hoursFor(hours, ((day - 1 + i) % 7) + 1);
-    if (next) return { open: false, opens: next.open };
+    const nextDay = ((day - 1 + i) % 7) + 1;
+    const next = hoursFor(hours, nextDay);
+    if (next) return { open: false, opens: next.open, inDays: i, day: nextDay };
   }
   return { open: false, opens: null };
 }

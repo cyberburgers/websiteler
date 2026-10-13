@@ -59,7 +59,8 @@ export function AdminApp({ initial, writable, staff, today }: Props) {
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
   const [saving, startSaving] = useTransition();
   const dirty = JSON.stringify(content) !== saved;
-  const calls = usePanelCalls(staff?.enabled ? staff.key : null);
+  const [staffSetup, setStaffSetup] = useState(staff);
+  const calls = usePanelCalls(staffSetup?.enabled ? staffSetup.key : null);
 
   // Leaving with unsaved changes asks first.
   useEffect(() => {
@@ -80,14 +81,16 @@ export function AdminApp({ initial, writable, staff, today }: Props) {
 
   const save = () =>
     startSaving(async () => {
-      const result = await saveContentAction(content, JSON.parse(saved).savedAt ?? null).catch(() => ({
+      const sent = content;
+      const result = await saveContentAction(sent, JSON.parse(saved).savedAt ?? null).catch(() => ({
         ok: false as const,
         error: "Sunucuya ulaşılamadı. İnternet bağlantısını kontrol edip tekrar deneyin.",
       }));
       if (result.ok) {
-        const next = { ...content, savedAt: result.savedAt, menuUpdatedAt: result.menuUpdatedAt };
-        setContent(next);
-        setSaved(JSON.stringify(next));
+        const stamp = { savedAt: result.savedAt, menuUpdatedAt: result.menuUpdatedAt };
+        // Changes made while saving are kept (and still show as unsaved), not replaced by what was sent.
+        setContent((current) => ({ ...current, ...stamp }));
+        setSaved(JSON.stringify({ ...sent, ...stamp }));
         setMessage({ ok: true, text: "Kaydedildi. Değişiklikler sitede görünüyor." });
         warmPages();
       } else {
@@ -161,8 +164,8 @@ export function AdminApp({ initial, writable, staff, today }: Props) {
         {tab === "menu" && (
           <>
             <p className="mb-3 text-sm text-zumrut-900/65">
-              Fiyatı doğrudan kutudan değiştirin. O gün biten ürüne <b>Bugün yok</b> deyin: menüde kalır, “Bugün yok”
-              yazar ve ertesi sabah kendiliğinden geri gelir. Artık satılmayan ürünü <b>Menüde</b> düğmesiyle gizleyin.
+              Fiyatı doğrudan kutudan değiştirin. Biten ürüne <b>Bugün yok</b> deyin: menüde kalır, “Bugün yok” yazar
+              ve siz düğmeye tekrar basana kadar öyle kalır. Artık satılmayan ürünü <b>Menüde</b> düğmesiyle gizleyin.
               Ayrıntılar için kalem simgesine basın. Bitince alttan <b>Kaydet</b>.
             </p>
             <MenuEditor content={content} update={update} today={today} />
@@ -170,7 +173,9 @@ export function AdminApp({ initial, writable, staff, today }: Props) {
         )}
         {tab === "oneri" && <PairingEditor content={content} update={update} />}
         {tab === "duyuru" && <HighlightsEditor content={content} update={update} />}
-        {tab === "garson" && staff && <StaffEditor staff={staff} content={content} update={update} />}
+        {tab === "garson" && staffSetup && (
+          <StaffEditor staff={staffSetup} onStaffChange={setStaffSetup} content={content} update={update} />
+        )}
         {tab === "isletme" && <InfoEditor content={content} update={update} />}
       </main>
 

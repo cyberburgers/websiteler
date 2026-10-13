@@ -13,6 +13,8 @@ export type Cart = { lines: CartLine[]; note: string };
 export type SentOrder = {
   id: string;
   at: number;
+  /** When this phone got the answer, by its own clock (the server's `at` may not match a phone set wrong). */
+  localAt?: number;
   lines: { name: string; qty: number; total: string }[];
   total: string;
   status: "bekliyor" | "goruldu" | "teslim";
@@ -20,6 +22,7 @@ export type SentOrder = {
 
 const CART_KEY = "siparis-sepeti";
 const ORDER_KEY = "siparis-son";
+const REQUEST_KEY = "siparis-istek";
 const EVENT = "siparis:degisti";
 const EMPTY: Cart = { lines: [], note: "" };
 
@@ -49,6 +52,8 @@ function writeJson(key: string, value: unknown) {
   try {
     if (value === null) sessionStorage.removeItem(key);
     else sessionStorage.setItem(key, JSON.stringify(value));
+    // Any change to the basket makes it a different order.
+    if (key === CART_KEY) sessionStorage.removeItem(REQUEST_KEY);
   } catch {
     // Private mode without storage: the basket still works until the page changes.
   }
@@ -102,12 +107,42 @@ export function removeItems(ids: string[]) {
   writeJson(CART_KEY, { ...cart, lines: cart.lines.filter((l) => !ids.includes(l.id)) });
 }
 
+/** Drops these lines (a dish, in one size) and keeps the rest. */
+export function removeLines(gone: { id: string; option: number }[]) {
+  const cart = readJson(CART_KEY, EMPTY);
+  writeJson(CART_KEY, { ...cart, lines: cart.lines.filter((l) => !gone.some((g) => sameLine(l, g.id, g.option))) });
+}
+
+/**
+ * One id per basket as it stands, sent with the order: if the answer is lost on a weak connection and
+ * the guest taps again, the server hands back the same order instead of making a second one.
+ */
+export function basketRequestId(): string {
+  try {
+    const saved = sessionStorage.getItem(REQUEST_KEY);
+    if (saved) return saved;
+  } catch {
+    // No storage: a fresh id each time, which is how it worked before.
+  }
+  const id = Array.from(crypto.getRandomValues(new Uint8Array(12)), (b) => b.toString(16).padStart(2, "0")).join("");
+  try {
+    sessionStorage.setItem(REQUEST_KEY, id);
+  } catch {}
+  return id;
+}
+
+/** Lines whose dish (or size) is no longer on the menu: run out, hidden, or its sizes were changed. */
+export function missingLines(cart: Cart, catalog: OrderCatalog): CartLine[] {
+  return cart.lines.filter((line) => !catalog[line.id]?.options[line.option]);
+}
+
 export function clearCart() {
   writeJson(CART_KEY, null);
 }
 
+/** A new order gets this phone's time (localAt); status updates keep the one it has. */
 export function saveSentOrder(order: SentOrder | null) {
-  writeJson(ORDER_KEY, order);
+  writeJson(ORDER_KEY, order && { localAt: Date.now(), ...order });
 }
 
 export function qtyOf(cart: Cart, id: string, option = 0): number {

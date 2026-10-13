@@ -30,6 +30,7 @@ const item = z.object({
   tags: z.array(z.enum(tagIds as [string, ...string[]])).max(6).optional(),
   image: photo,
   available: z.boolean().optional(),
+  soldOutSince: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
   soldOutOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
   pairing: z.array(id).max(MAX_PAIRING).optional(),
 });
@@ -71,6 +72,7 @@ export const contentSchema = z
     featuredId: id.optional(),
     notice: optionalBilingual(160).optional(),
     tableOrders: z.boolean().optional(),
+    tables: z.number().int().min(1).max(999).optional(),
     pairing: z.array(id).max(MAX_PAIRING).optional(),
     menuUpdatedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     savedAt: z.string().optional(),

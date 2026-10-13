@@ -22,6 +22,7 @@ const en: Dictionary = {
     opens: "Opens",
     dayOff: "Closed",
     today: "Today",
+    tomorrow: "tomorrow",
   },
   days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
   wheel: {
@@ -126,6 +127,9 @@ const en: Dictionary = {
     tooSoon: "You've just sent an order. Please try again in a few seconds.",
     soldOut: "{names} has run out today; we took it out of your order.",
     busy: "We're very busy right now. Please tell your waiter what you'd like.",
+    closedNow: "We're closed right now, so we can't take orders.",
+    changed: "The menu was just updated and a price or size has changed. Please reload the page and check your order.",
+    cartMissing: "Something in your order is no longer on the menu, so it won't be sent.",
     error: "The order couldn't be sent. Please tell your waiter what you'd like.",
     close: "Close",
     done: "OK",

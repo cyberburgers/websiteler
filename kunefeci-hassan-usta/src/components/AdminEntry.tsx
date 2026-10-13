@@ -48,6 +48,7 @@ export function AdminEntry({ label, text, className = "" }: { label: string; tex
       </button>
       <dialog
         ref={dialogRef}
+        lang="tr"
         onClick={(e) => {
           if (e.target === e.currentTarget) e.currentTarget.close();
         }}

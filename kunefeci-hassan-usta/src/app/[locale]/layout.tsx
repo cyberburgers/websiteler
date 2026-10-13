@@ -70,6 +70,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
         />
         <OrderProvider
           enabled={callsEnabled() && content.tableOrders !== false}
+          hours={info.hours}
           catalog={orderCatalog(locale, availableMenu(content.menu))}
           labels={dict.order}
           locale={locale}

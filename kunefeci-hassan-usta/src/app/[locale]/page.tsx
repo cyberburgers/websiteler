@@ -34,6 +34,9 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const notice = tx(content.notice, locale);
   const categories = menuView(locale, menu, content.pairing);
   const searchHref = localePath(locale, "/ara");
+  // With fewer than two desserts left (all run out, say) there is nothing to choose between: no wheel.
+  const slices = wheelSlices(locale, menu);
+  const wheel = slices.length >= 2;
   const intro = (ms: number) => ({ animationDelay: `calc(var(--intro-delay, 0s) + ${ms}ms)` });
 
   return (
@@ -70,7 +73,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             style={intro(0)}
           >
             <div className="flex flex-wrap gap-2">
-              <OpenStatus labels={dict.status} hours={content.info.hours} tone="glass" />
+              <OpenStatus labels={dict.status} days={dict.days} hours={content.info.hours} tone="glass" />
               <TableChip label={dict.home.table} />
             </div>
             <h1
@@ -115,7 +118,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
               })}
             </nav>
 
-            <WheelBanner title={dict.wheel.trigger} action={dict.home.spin} className="mt-5" />
+            {wheel && <WheelBanner title={dict.wheel.trigger} action={dict.home.spin} className="mt-5" />}
           </div>
         </div>
 
@@ -145,7 +148,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         </section>
       </div>
 
-      <DessertWheel slices={wheelSlices(locale, menu)} labels={dict.wheel} />
+      {wheel && <DessertWheel slices={slices} labels={dict.wheel} />}
     </>
   );
 }

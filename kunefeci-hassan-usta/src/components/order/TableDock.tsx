@@ -46,7 +46,7 @@ export function TableDock({
   useEffect(() => {
     if (!sent || sent.status === "teslim") return;
     const check = async () => {
-      if (Date.now() - sent.at > FOLLOW_MS) return saveSentOrder(null);
+      if (Date.now() - (sent.localAt ?? sent.at) > FOLLOW_MS) return saveSentOrder(null);
       try {
         const res = await fetch(`/api/garson/durum?id=${encodeURIComponent(sent.id)}`, { cache: "no-store" });
         const data = (await res.json()) as { status?: string };
@@ -73,10 +73,11 @@ export function TableDock({
   if (!visible || !table) return null;
 
   const tableText = tableLabel.replace("{n}", table);
-  const canOrder = Boolean(ordering?.canOrder);
+  // At closing time the basket and an order on its way stay in view; only adding and sending stop.
+  const atTable = Boolean(ordering?.atTable);
   const { count, total } = ordering ? pricedCart(cart, ordering.catalog) : { count: 0, total: 0 };
-  const showCart = canOrder && count > 0;
-  const status = canOrder && !showCart && sent && ordering ? statusText(ordering.labels, sent.status) : null;
+  const showCart = atTable && count > 0;
+  const status = atTable && !showCart && sent && ordering ? statusText(ordering.labels, sent.status) : null;
 
   return (
     <>
@@ -129,7 +130,7 @@ export function TableDock({
           )}
         </div>
       </div>
-      {canOrder && <CartSheet dialogRef={cartRef} table={table} tableText={tableText} />}
+      {atTable && <CartSheet dialogRef={cartRef} table={table} tableText={tableText} />}
     </>
   );
 }

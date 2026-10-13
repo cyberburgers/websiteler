@@ -20,7 +20,7 @@ export function proxy(request: NextRequest) {
   // The panel, its uploaded photos and the waiter screen live outside the language prefixes.
   if (parts[0] === "yonetim" || parts[0] === "medya" || parts[0] === "garson") return;
   const hasLocale = isLocale(parts[0] ?? "");
-  const locale = hasLocale ? parts[0] : defaultLocale;
+  const locale = hasLocale ? parts[0] : phoneLocale(request);
   const rest = hasLocale ? parts.slice(1) : parts;
 
   const url = request.nextUrl.clone();
@@ -28,11 +28,15 @@ export function proxy(request: NextRequest) {
     url.pathname = `/${locale}`;
     // A category had its own page once; now the menu is one page and opens at that category's heading.
     if (rest[1]) url.hash = `kategori-${rest[1]}`;
-    return NextResponse.redirect(url, 308);
+    // Without a language in the address the answer depends on the phone, so it mustn't be kept as permanent.
+    if (hasLocale) return NextResponse.redirect(url, 308);
+    const response = NextResponse.redirect(url, 307);
+    response.headers.set("Vary", "Accept-Language");
+    return response;
   }
   if (hasLocale) return;
 
-  url.pathname = `/${phoneLocale(request)}${pathname === "/" ? "" : pathname}`;
+  url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`;
   const response = NextResponse.redirect(url);
   response.headers.set("Vary", "Accept-Language");
   return response;

@@ -15,10 +15,11 @@ export default function StaffPage({ searchParams }: PageProps<"/garson">) {
 async function Screen({ searchParams }: { searchParams: PageProps<"/garson">["searchParams"] }) {
   const k = (await searchParams).k;
   const key = Array.isArray(k) ? k[0] : k;
-  if (!isStaffKey(key)) {
+  if (!(await isStaffKey(key))) {
     return (
       <Notice title="Bağlantı geçersiz">
-        Garson ekranını yönetim panelindeki <b>Garson</b> bölümünden açın. Şifre değiştiyse bağlantı da değişir.
+        Garson ekranını yönetim panelindeki <b>Garson</b> bölümünden açın. Panelde yeni adres oluşturulduysa eski
+        bağlantı çalışmaz.
       </Notice>
     );
   }

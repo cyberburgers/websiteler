@@ -6,9 +6,12 @@ import { placeOrderAction } from "@/lib/calls/actions";
 import { formatPrice } from "@/lib/format";
 import {
   addOne,
+  basketRequestId,
   clearCart,
+  missingLines,
   pricedCart,
   removeItems,
+  removeLines,
   saveSentOrder,
   setNote,
   setQty,
@@ -46,8 +49,9 @@ export function CartSheet({
   const [sending, setSending] = useState(false);
   const [message, setMessage] = useState("");
   if (!ordering) return null;
-  const { catalog, labels, locale } = ordering;
+  const { catalog, labels, locale, canOrder } = ordering;
   const { lines, total } = pricedCart(cart, catalog);
+  const missing = missingLines(cart, catalog);
   const money = (amount: number) => formatPrice(amount, locale);
   const close = () => dialogRef.current?.close();
 
@@ -55,10 +59,13 @@ export function CartSheet({
     if (lines.length === 0 || sending) return;
     setSending(true);
     setMessage("");
+    // Lines no longer on the menu go now, as the note above the button said they would.
+    if (missing.length > 0) removeLines(missing);
     const result = await placeOrderAction(
       table,
-      lines.map(({ id, option, qty }) => ({ id, option, qty })),
+      lines.map(({ id, option, qty, price }) => ({ id, option, qty, amount: price.amount })),
       cart.note,
+      basketRequestId(),
     ).catch(() => ({ ok: false as const, reason: "hata" as const }));
     setSending(false);
     if (result.ok) {
@@ -83,7 +90,14 @@ export function CartSheet({
       setMessage(labels.soldOut.replace("{names}", names.join(", ")));
       return;
     }
-    setMessage(result.reason === "sik" ? labels.tooSoon : result.reason === "dolu" ? labels.busy : labels.error);
+    if (result.reason === "degisti") {
+      setMessage(labels.changed);
+      return;
+    }
+    const reason = result.reason;
+    setMessage(
+      reason === "sik" ? labels.tooSoon : reason === "dolu" ? labels.busy : reason === "saat" ? labels.closedNow : labels.error,
+    );
   };
 
   const status = sent ? statusText(labels, sent.status) : null;
@@ -175,16 +189,16 @@ export function CartSheet({
             </div>
             <p className="mt-0.5 text-[13px] text-zumrut-800/60">{labels.payHint}</p>
 
-            {message && (
+            {(message || missing.length > 0 || !canOrder) && (
               <p role="alert" className="mt-3 rounded-2xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-950 ring-1 ring-amber-200">
-                {message}
+                {!canOrder ? labels.closedNow : message || labels.cartMissing}
               </p>
             )}
 
             <button
               type="button"
               onClick={send}
-              disabled={sending}
+              disabled={sending || !canOrder}
               data-siparis-gonder=""
               className="mt-4 flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-zumrut-900 text-[16px] font-extrabold text-krem-50 transition hover:bg-zumrut-800 active:scale-[.98] disabled:opacity-70"
             >

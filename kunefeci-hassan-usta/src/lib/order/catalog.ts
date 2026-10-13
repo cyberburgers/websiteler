@@ -8,7 +8,7 @@ export function orderCatalog(locale: Locale, menu: MenuCategory[]): OrderCatalog
   return Object.fromEntries(
     menu
       .flatMap((c) => c.items)
-      .filter((item) => !item.soldOutOn)
+      .filter((item) => !item.soldOutSince)
       .map((item) => [
         item.id,
         {

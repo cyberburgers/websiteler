@@ -38,7 +38,9 @@ export function SiteFooter({ locale, dict, info }: { locale: Locale; dict: Dicti
           <p className="flex gap-2">
             <MapPin className="mt-0.5 size-4 shrink-0 text-karamel-300" aria-hidden="true" />
             <span>
-              {info.address.street}, {info.address.district} / {info.address.city}
+              {[info.address.street, [info.address.district, info.address.city].filter(Boolean).join(" / ")]
+                .filter(Boolean)
+                .join(", ")}
             </span>
           </p>
           <p className="flex gap-2">
