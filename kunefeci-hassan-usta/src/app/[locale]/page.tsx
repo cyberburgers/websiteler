@@ -1,10 +1,7 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Megaphone } from "lucide-react";
 import { TableChip } from "@/components/home/TableChip";
 import { HomeMenu } from "@/components/menu/HomeMenu";
-import { filterIcons } from "@/components/menu/icons";
-import { filterIds, type FilterId } from "@/components/menu/types";
 import { OpenStatus } from "@/components/OpenStatus";
 import { TableIntro } from "@/components/order/TableIntro";
 import { Photo } from "@/components/ui";
@@ -18,13 +15,7 @@ import { menuView } from "@/lib/menu-view";
 import { JsonLd, menuJsonLd, restaurantJsonLd } from "@/lib/structured-data";
 import { wheelSlices } from "@/lib/wheel";
 
-/** Each quick filter keeps a little of its own colour: pistachio green, syrup amber. */
-const filterTone: Partial<Record<FilterId, string>> = {
-  fistikli: "bg-fistik-300 text-zumrut-925",
-  sicak: "bg-karamel-400/[0.16] text-karamel-300",
-};
-
-/** The menu's front page: welcome card, quick filters, the wheel, then every dish on the menu. */
+/** The menu's front page: welcome card, the wheel, then every dish on the menu. */
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
@@ -34,7 +25,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const menu = availableMenu(content.menu);
   const notice = tx(content.notice, locale);
   const categories = menuView(locale, menu, content.pairing);
-  const searchHref = localePath(locale, "/ara");
   // With fewer than two desserts left (all run out, say) there is nothing to choose between: no wheel.
   const slices = wheelSlices(locale, menu);
   const wheel = slices.length >= 2;
@@ -99,27 +89,6 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
                 {notice}
               </p>
             )}
-            <nav
-              aria-label={dict.search.filters}
-              className="no-scrollbar -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 sm:-mx-6 sm:px-6 md:mx-0 md:mt-0 md:flex-wrap md:px-0"
-            >
-              {filterIds.map((id) => {
-                const Icon = filterIcons[id];
-                return (
-                  <Link
-                    key={id}
-                    href={`${searchHref}?f=${id}`}
-                    className={`inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full px-3.5 text-[13px] font-bold transition-colors hover:brightness-125 ${
-                      filterTone[id] ?? "bg-krem-50/[0.08] text-krem-100/85"
-                    }`}
-                  >
-                    <Icon className="size-3.5" aria-hidden="true" />
-                    {dict.search.filterNames[id]}
-                  </Link>
-                );
-              })}
-            </nav>
-
             {wheel && <WheelBanner title={dict.wheel.trigger} action={dict.home.spin} className="mt-5" />}
           </div>
         </div>
