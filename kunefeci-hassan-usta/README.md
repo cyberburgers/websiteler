@@ -155,10 +155,10 @@ sonra bu dosyalar okunmaz.
 Bir kez, sırasıyla:
 
 1. [vercel.com](https://vercel.com) → **Add New → Project** → GitHub'daki `websiteler` deposunu seçin.
-2. **Project Name**: `hassanusta` (adres `hassanusta.vercel.app` olur; kısa, karışık harfsiz). **Root Directory**:
-   `kunefeci-hassan-usta`. Framework kendiliğinden Next.js seçilir. Yayından sonra adres yine de sonu karışık
-   harfli çıkarsa (ad başkasında demektir): **Settings → Domains → Add** → `hassanusta.vercel.app` ya da boşta
-   olan başka bir kısa ad (ör. `kunefecihassan.vercel.app`) → kaydedip **Redeploy**.
+2. **Project Name**: `kunefecihassanusta` (adres `kunefecihassanusta.vercel.app` olur, karışık harfsiz; adreste
+   ü kullanılamaz). **Root Directory**: `kunefeci-hassan-usta`. Framework kendiliğinden Next.js seçilir. Yayından
+   sonra adres yine de sonu karışık harfli çıkarsa: **Settings → Domains → Add** →
+   `kunefecihassanusta.vercel.app` → kaydedip **Redeploy**.
 3. **Environment Variables** → `ADMIN_PASSWORD` = panel şifresi (en az 8 karakter). **Deploy**.
 4. Proje → **Storage → Create Database → Blob** → projeye bağlayın. Panelin kayıt yeri (menü, fiyatlar,
    yüklenen fotoğraflar).
