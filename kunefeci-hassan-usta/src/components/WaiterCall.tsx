@@ -62,6 +62,7 @@ export function WaiterCall({
   useEffect(() => {
     if (!call || status !== "bekliyor") return;
     const check = async () => {
+      if (document.hidden) return;
       if (Date.now() - call.at > WATCH_MS) {
         setStatus(null);
         return;
@@ -80,7 +81,12 @@ export function WaiterCall({
       }
     };
     const timer = window.setInterval(check, 4000);
-    return () => window.clearInterval(timer);
+    // Phone unlocked again: check at once.
+    document.addEventListener("visibilitychange", check);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", check);
+    };
   }, [call, status]);
 
   // "On the way" stays on the button for a while, then it goes back to normal.

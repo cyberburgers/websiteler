@@ -57,6 +57,12 @@ sesli düşer. “Tamam, gidiyorum”a basınca müşterinin telefonunda “Gars
 - Ayrı bir garson ekranı yok: çağrıları ve siparişleri yönetici paneli gösterir. Panel açıkken her sekmede
   cihaz öter (panelde bir kez dokunmak sesi açar). Telefon kilitliyken ya da panel kapalıyken ses gelmez;
   kasada sürekli açık duran bir tablette paneli açık bırakın.
+- Panel, ekrandayken bir hareket varsa (bekleyen sipariş/çağrı, son 5 dakikada dokunma ya da yeni çağrı)
+  5 saniyede bir, diğer her durumda (sakin, başka sekmede, ekran başka yerde) 15 saniyede bir yeni çağrı var
+  mı diye bakar; arka planda da öter. Gece 01:00–11:00 arası kimse kullanmıyorken dakikada bir bakar
+  (bekleyen sipariş varsa ya da az önce hareket olduysa gece de 15 saniyede bir).
+  Ekrana dönünce hemen bakar. Müşteri telefonu kilitliyken hiç sormaz.
+  Bütün gün açık duran bir panel bile Upstash'in ücretsiz planına (ayda 500.000 komut) rahat sığar.
 
 **Kurulum (Vercel'de bir kez):** Vercel → proje → **Storage → Marketplace → Upstash (Redis)** → projeye
 bağlayın (ücretsiz paket bir dükkân için yeter). Vercel `KV_REST_API_URL` ve `KV_REST_API_TOKEN`

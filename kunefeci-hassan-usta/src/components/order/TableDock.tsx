@@ -49,6 +49,8 @@ export function TableDock({
   useEffect(() => {
     if (!sent || sent.status === "teslim") return;
     const check = async () => {
+      // Not while the phone is locked or the menu is in the background; at once when it is back.
+      if (document.hidden) return;
       if (Date.now() - (sent.localAt ?? sent.at) > FOLLOW_MS) return saveSentOrder(null);
       try {
         const res = await fetch(`/api/garson/durum?id=${encodeURIComponent(sent.id)}`, { cache: "no-store" });
@@ -62,8 +64,12 @@ export function TableDock({
         // Offline for a moment; the next check will try again.
       }
     };
-    const timer = window.setInterval(check, 5000);
-    return () => window.clearInterval(timer);
+    const timer = window.setInterval(check, 8000);
+    document.addEventListener("visibilitychange", check);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", check);
+    };
   }, [sent]);
 
   // "Afiyet olsun" stays a minute, then the bar is back to normal.

@@ -83,8 +83,7 @@ export async function requireAdmin(): Promise<void> {
  */
 const STAFF_KEY = "kunefeci:garson:anahtar";
 const STAFF_KEY_FILE = path.join(process.cwd(), ".data", "garson-anahtari");
-// Only for a disk that can't be written. Read from the file every time otherwise: the panel page and the
-// calls API are separate copies of this module, and must agree on the key.
+// Only for a disk that can't be written.
 const memory = globalThis as { __garsonAnahtari?: string };
 
 async function storedStaffKey(): Promise<string | null> {
@@ -116,13 +115,21 @@ async function storeStaffKey(value: string): Promise<string> {
 const newKey = () => randomBytes(18).toString("base64url");
 const canHaveStaffKey = () => passwordState() === "ok" && (redisConfig() !== null || !process.env.VERCEL);
 
+// The key never changes once made, so each server copy reads it once instead of on every check of the
+// panel (every few seconds, each one a command of the free Redis plan).
+let knownStaffKey: string | null = null;
+
 export async function staffKey(): Promise<string | null> {
   if (!canHaveStaffKey()) return null;
-  return (await storedStaffKey()) ?? (await storeStaffKey(newKey()));
+  knownStaffKey ??= (await storedStaffKey()) ?? (await storeStaffKey(newKey()));
+  return knownStaffKey;
 }
 
 export async function isStaffKey(value: string | null | undefined): Promise<boolean> {
   if (!value || !/^[\w-]{24}$/.test(value)) return false;
-  const expected = await staffKey();
-  return Boolean(expected && sameText(value, expected));
+  if (sameText(value, (await staffKey()) ?? "")) return true;
+  // The panel page and the calls API are separate copies of this module: if the store was emptied and a new
+  // key made since this copy read it, look once more before saying no.
+  knownStaffKey = null;
+  return sameText(value, (await staffKey()) ?? "");
 }

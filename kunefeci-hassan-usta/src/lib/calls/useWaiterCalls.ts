@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { shopClock } from "@/lib/hours";
 
 export type OpenCall = {
   id: string;
@@ -19,7 +20,24 @@ export function byUrgency(calls: OpenCall[]): OpenCall[] {
   return [...calls].sort((a, b) => Number(Boolean(a.seenAt)) - Number(Boolean(b.seenAt)) || a.at - b.at);
 }
 
-const POLL_MS = 3000;
+/**
+ * How often the panel asks for new calls. Each ask is a read of the free Redis plan (500,000 a month):
+ * every 5 seconds while it is on screen and something is going on (open calls, a tap or a new call in the
+ * last few minutes), every 15 seconds otherwise, also behind another tab, so it still chimes there; at night
+ * (01:00–11:00, shop time) every minute, but only while nothing is going on: a late shift with open orders
+ * keeps the day pace. A panel open day and night stays well inside the free plan.
+ */
+const BUSY_POLL_MS = 5000;
+const QUIET_POLL_MS = 15 * 1000;
+const NIGHT_POLL_MS = 60 * 1000;
+/** A tap or a new call keeps the panel on the quick pace this long. */
+const BUSY_FOR_MS = 5 * 60 * 1000;
+/** 01:00 to 11:00 in the shop's time zone. */
+const isNight = () => {
+  const { minutes } = shopClock(new Date());
+  return minutes >= 60 && minutes < 11 * 60;
+};
+
 /** An unanswered call rings again this often, in case nobody heard it the first time. */
 const RING_AGAIN_MS = 60 * 1000;
 /** After this a call is shown as late: someone has been waiting too long. */
@@ -78,7 +96,7 @@ function withAnswers(calls: OpenCall[], answers: Map<string, Answer>, now: numbe
 }
 
 /**
- * Used by the counter screen and by the panel. Pass null to stay quiet (calls not set up).
+ * Used by the panel. Pass null to stay quiet (calls not set up).
  */
 export function useWaiterCalls(staffKey: string | null) {
   const [calls, setCalls] = useState<OpenCall[]>([]);
@@ -102,6 +120,8 @@ export function useWaiterCalls(staffKey: string | null) {
     if (!staffKey) return;
     let stopped = false;
     let busy = false;
+    let openNow = 0;
+    let lastActivity = Date.now();
     const poll = async () => {
       // One check at a time: a slow answer must not land after a newer one and bring back old cards.
       if (busy) return;
@@ -116,6 +136,8 @@ export function useWaiterCalls(staffKey: string | null) {
         const fresh = known.current !== null && data.calls.some((c) => !known.current!.has(c.id));
         const stillWaiting = data.calls.some((c) => !c.seenAt) && Date.now() - lastRing.current > RING_AGAIN_MS;
         if (fresh || (known.current !== null && stillWaiting)) ring();
+        if (fresh) lastActivity = Date.now();
+        openNow = data.calls.length;
         known.current = ids;
         setCalls(data.calls);
         setNow(data.now);
@@ -126,11 +148,41 @@ export function useWaiterCalls(staffKey: string | null) {
         busy = false;
       }
     };
-    void poll();
-    const timer = window.setInterval(poll, POLL_MS);
+    let timer = 0;
+    let dueAt = 0;
+    const schedule = () => {
+      window.clearTimeout(timer);
+      // Work going on (open calls, a tap or a new call lately): quick on screen, never the night pace.
+      const working = openNow > 0 || Date.now() - lastActivity < BUSY_FOR_MS;
+      const delay = working && !document.hidden ? BUSY_POLL_MS : !working && isNight() ? NIGHT_POLL_MS : QUIET_POLL_MS;
+      dueAt = Date.now() + delay;
+      timer = window.setTimeout(tick, delay);
+    };
+    const tick = async () => {
+      await poll();
+      if (!stopped) schedule();
+    };
+    // Back on screen: someone is looking, so ask at once.
+    const onShow = () => {
+      if (document.hidden) return;
+      lastActivity = Date.now();
+      void tick();
+    };
+    // A tap or a key on the panel: back to the quick pace.
+    const onUse = () => {
+      lastActivity = Date.now();
+      if (dueAt - Date.now() > BUSY_POLL_MS) schedule();
+    };
+    void tick();
+    document.addEventListener("visibilitychange", onShow);
+    window.addEventListener("pointerdown", onUse, true);
+    window.addEventListener("keydown", onUse, true);
     return () => {
       stopped = true;
-      window.clearInterval(timer);
+      window.clearTimeout(timer);
+      document.removeEventListener("visibilitychange", onShow);
+      window.removeEventListener("pointerdown", onUse, true);
+      window.removeEventListener("keydown", onUse, true);
     };
   }, [staffKey, ring]);
 
