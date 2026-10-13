@@ -134,7 +134,7 @@ const tr = {
     introStep1: "“Ekle” ile seçin",
     introStep2: "Gönderin",
     introStep3: "Masanıza gelsin",
-    introNote: "Paket ya da eve servis yok. Ödeme masada veya kasada.",
+    introNote: "Sadece masada oturanlar için. Ödeme masada veya kasada.",
     introOk: "Anladım",
   },
   footer: {

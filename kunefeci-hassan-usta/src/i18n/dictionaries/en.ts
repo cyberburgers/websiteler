@@ -136,7 +136,7 @@ const en: Dictionary = {
     introStep1: "Pick with “Add”",
     introStep2: "Send it",
     introStep3: "We bring it over",
-    introNote: "No takeaway or delivery. Pay at the table or the counter.",
+    introNote: "Only for guests at a table. Pay at the table or the counter.",
     introOk: "Got it",
   },
   footer: {

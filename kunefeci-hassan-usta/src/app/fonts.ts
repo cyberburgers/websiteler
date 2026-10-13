@@ -8,13 +8,14 @@ export const berkshire = Berkshire_Swash({
 });
 
 /**
- * Headings. Only what the site uses (Latin and Turkish letters, weights 300–700, the soft cut built in):
- * two files of ~156 KB instead of four of ~500 KB from Google, the biggest part of the first visit. See fonts/README.md.
+ * Headings. Only what the site uses (Latin and Turkish letters, the soft cut built in): upright in weights
+ * 300–700, italic only in the one weight it is set in ("Hoş geldiniz.", the table card), ~117 KB for both
+ * instead of four files of ~500 KB from Google, the biggest part of the first visit. See fonts/README.md.
  */
 export const fraunces = localFont({
   src: [
     { path: "./fonts/fraunces.woff2", weight: "300 700", style: "normal" },
-    { path: "./fonts/fraunces-italic.woff2", weight: "300 700", style: "italic" },
+    { path: "./fonts/fraunces-italic.woff2", weight: "500", style: "italic" },
   ],
   variable: "--font-fraunces",
   display: "swap",

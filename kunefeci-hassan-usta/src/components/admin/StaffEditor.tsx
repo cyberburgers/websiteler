@@ -29,10 +29,7 @@ export function StaffEditor({
         </p>
       )}
 
-      <Section
-        title="Masadan sipariş"
-        hint="Masanın karekoduyla açılan menüde ürünlerin yanında “Ekle” çıkar; siparişler Siparişler sekmesine sesli düşer."
-      >
+      <Section title="Masadan sipariş">
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-zumrut-950/50 p-3 ring-1 ring-white/10">
           <Toggle
             checked={content.tableOrders !== false}
@@ -43,11 +40,8 @@ export function StaffEditor({
         </div>
       </Section>
 
-      <Section
-        title="Masa karekodları"
-        hint="Her masanın kodu sabittir: masa numarası ve site adresi değişmedikçe hiç değişmez. Kaybolan kartı buradan yeniden basın."
-      >
-        <Field label="Masa sayısı" hint="Bundan büyük masa numarasıyla gelen çağrı ve sipariş kabul edilmez.">
+      <Section title="Masa karekodları">
+        <Field label="Masa sayısı">
           <input
             type="number"
             inputMode="numeric"

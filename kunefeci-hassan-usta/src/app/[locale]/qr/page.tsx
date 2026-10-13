@@ -88,9 +88,6 @@ export default async function QrPage({ params, searchParams }: PageProps<"/[loca
       <div className="container-page flex flex-col items-center gap-10 print:px-0">
         <div className="print-hidden flex max-w-md flex-col items-center gap-4 text-center">
           <h1 className="font-display text-4xl text-krem-50">Masa QR kartları</h1>
-          <p className="text-krem-100/70">
-            Masa numarasını yazın, kartları yazdırıp masalara koyun. Birden fazla masa için aralık yazın, ör. 1-12.
-          </p>
           <form className="flex w-full gap-2">
             <label className="flex-1">
               <span className="sr-only">Masa numarası</span>
@@ -106,15 +103,6 @@ export default async function QrPage({ params, searchParams }: PageProps<"/[loca
             </button>
           </form>
           <PrintButton label="Yazdır" />
-          {/* The cards carry the site's address; worth a look before printing a batch of them. */}
-          <p className="text-sm text-krem-100/60">
-            Kartlar <b className="font-bold text-krem-50">{new URL(site.url).host}</b> adresine götürür.
-            {!/^https:/.test(site.url) || new URL(site.url).host.endsWith(".vercel.app") ? (
-              <span className="mt-1 block text-amber-200">
-                Kendi alan adınız varsa önce onu Vercel’de bağlayın, kartları sonra basın.
-              </span>
-            ) : null}
-          </p>
         </div>
 
         <Suspense fallback={<CardGrid tables={[null]} />}>
