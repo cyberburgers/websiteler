@@ -6,6 +6,7 @@ import { HomeMenu } from "@/components/menu/HomeMenu";
 import { filterIcons } from "@/components/menu/icons";
 import { filterIds, type FilterId } from "@/components/menu/types";
 import { OpenStatus } from "@/components/OpenStatus";
+import { TableIntro } from "@/components/order/TableIntro";
 import { Photo } from "@/components/ui";
 import { DessertWheel, WheelBanner } from "@/components/wheel/DessertWheel";
 import { availableMenu } from "@/content/menu";
@@ -88,6 +89,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           </section>
 
           <div className="animate-rise flex flex-col md:col-start-2 md:row-start-2 md:justify-end" style={intro(120)}>
+            <TableIntro />
             {notice && (
               <p
                 role="note"

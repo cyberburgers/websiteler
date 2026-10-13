@@ -38,4 +38,12 @@ export type OrderLabels = {
   error: string;
   close: string;
   done: string;
+  /** The card at the top of the menu at a table: ordering here is for this table, not takeaway or delivery. */
+  introTable: string;
+  introTitle: string;
+  introStep1: string;
+  introStep2: string;
+  introStep3: string;
+  introNote: string;
+  introOk: string;
 };

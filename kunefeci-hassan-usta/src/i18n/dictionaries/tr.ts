@@ -130,6 +130,13 @@ const tr = {
     error: "Sipariş gönderilemedi. Lütfen siparişinizi garsonumuza söyleyin.",
     close: "Kapat",
     done: "Tamam",
+    introTable: "Masa {n}",
+    introTitle: "Masanızdan sipariş verin",
+    introStep1: "“Ekle” ile seçin",
+    introStep2: "Siparişi gönderin",
+    introStep3: "Masanıza gelsin",
+    introNote: "Paket ya da eve servis yok. Ödeme masada veya kasada.",
+    introOk: "Anladım",
   },
   footer: {
     follow: "Bizi Instagram'da takip edin",

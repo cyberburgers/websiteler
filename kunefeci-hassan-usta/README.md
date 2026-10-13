@@ -71,6 +71,10 @@ bir sunucuda Redis gerekmez.
 
 Yalnızca masa QR kartıyla açılan menüde çalışır; masa dışından bakan için site değişmez.
 
+Masada açılan menünün üstünde kısa bir **“Masanızdan sipariş verin”** kartı çıkar: “Ekle” ile seçin →
+siparişi gönderin → masanıza gelsin; “Paket ya da eve servis yok.” Müşteri **Anladım** deyince ya da ilk
+siparişi gönderince o ziyaret boyunca bir daha çıkmaz. Böylece “Ekle” online/eve sipariş sanılmaz.
+
 1. Kartlarda “Ayrıntı” yerine **+ Ekle** çıkar; eklenince **− 2 +** olur. Boy seçilen ürünlerde (Porsiyon /
    1 kg) **+ Seç** ürün penceresini açar.
 2. Alttaki çubukta garson tuşunun yanına **Siparişi gör** gelir (adet, masa ve tutar). Sepet sayfalar arasında
