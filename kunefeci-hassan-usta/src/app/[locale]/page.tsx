@@ -35,8 +35,9 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <JsonLd data={restaurantJsonLd(locale, content.info)} />
       <JsonLd data={menuJsonLd(locale, menu)} />
 
-      {/* Behind the top of the page: the faint star pattern and a warm glow, both fading out below. */}
-      <div aria-hidden="true" className="home-top pointer-events-none absolute inset-x-0 top-0 h-[34rem] md:h-[40rem]">
+      {/* Behind the top of the page: the faint star pattern, down to the category bar (which carries it on
+          to its bottom line, see HomeMenu), and a warm glow from above. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[var(--menu-bar-top,34rem)]">
         <div className="pattern-star absolute inset-0" />
         <div className="home-glow absolute inset-0" />
       </div>

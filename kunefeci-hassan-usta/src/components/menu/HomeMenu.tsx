@@ -17,6 +17,9 @@ type Props = {
   waiter: WaiterLabels;
 };
 
+/** The size of the star pattern's tile (pattern-star in globals.css). */
+const PATTERN_TILE = 88;
+
 /** The whole menu on the home page: category pills that follow the scroll, every dish, and its detail sheet. */
 export function HomeMenu({ categories, homeHref, labels, waiter }: Props) {
   const [active, setActive] = useState(categories[0]?.id ?? "");
@@ -73,6 +76,31 @@ export function HomeMenu({ categories, homeHref, labels, waiter }: Props) {
     return () => window.clearTimeout(timer);
   }, []);
 
+  // The star pattern behind the top of the page runs down to this bar's bottom line: the page's pattern
+  // stops where the bar starts (--menu-bar-top), and the bar carries on with it, lined up with the tiles
+  // above. The spot just above the bar keeps the bar's place in the page even while the bar is stuck.
+  const navRef = useRef<HTMLElement>(null);
+  const spotRef = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const nav = navRef.current;
+    const spot = spotRef.current;
+    if (!nav || !spot) return;
+    const root = document.documentElement;
+    const place = () => {
+      const top = spot.getBoundingClientRect().top + window.scrollY;
+      const left = nav.getBoundingClientRect().left + window.scrollX;
+      root.style.setProperty("--menu-bar-top", `${top}px`);
+      nav.style.backgroundPosition = `${-(left % PATTERN_TILE)}px ${-(top % PATTERN_TILE)}px`;
+    };
+    place();
+    const observer = new ResizeObserver(place);
+    observer.observe(document.body);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--menu-bar-top");
+    };
+  }, []);
+
   // Keep the active pill in view inside the horizontally scrolling bar.
   useEffect(() => {
     const bar = barRef.current;
@@ -83,9 +111,11 @@ export function HomeMenu({ categories, homeHref, labels, waiter }: Props) {
 
   return (
     <>
+      <span ref={spotRef} aria-hidden="true" className="block" />
       <nav
+        ref={navRef}
         aria-label={labels.tabs}
-        className="under-header sticky top-16 z-30 -mx-4 border-b border-krem-50/[0.08] bg-zumrut-925/95 backdrop-blur-xl sm:-mx-6 md:top-20 lg:-mx-8"
+        className="under-header pattern-star sticky top-16 z-30 -mx-4 border-b border-krem-50/[0.08] bg-zumrut-925/95 backdrop-blur-xl sm:-mx-6 md:top-20 lg:-mx-8"
       >
         <div ref={barRef} className="no-scrollbar relative flex h-[60px] items-center gap-2 overflow-x-auto px-4 sm:px-6 lg:px-8">
           {categories.map((c) => {
@@ -109,7 +139,7 @@ export function HomeMenu({ categories, homeHref, labels, waiter }: Props) {
                 className={`flex h-[38px] shrink-0 items-center rounded-full px-[15px] text-[13.5px] transition-colors ${
                   current
                     ? "bg-fistik-300 font-extrabold text-zumrut-925"
-                    : "bg-krem-50/[0.08] font-bold text-krem-100/85 hover:bg-krem-50/15"
+                    : "bg-krem-100 font-bold text-zumrut-900 hover:bg-krem-50"
                 }`}
               >
                 {c.name}

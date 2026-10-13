@@ -134,16 +134,16 @@ export function WheelBanner({ title, action, className = "" }: { title: string; 
       aria-haspopup="dialog"
       data-wheel-trigger=""
       onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}
-      className={`group flex w-full items-center gap-3.5 rounded-3xl bg-[radial-gradient(circle_at_15%_50%,#2a5a3d,#1b422c)] p-2.5 pe-4 text-start text-fistik-300 ring-1 ring-inset ring-fistik-300/25 transition hover:ring-fistik-300/50 active:scale-[.99] ${className}`}
+      className={`wheel-pieces group flex w-full items-center gap-3.5 rounded-3xl bg-krem-100 p-2.5 pe-4 text-start text-zumrut-900 shadow-[0_18px_34px_-22px_rgba(0,0,0,.7)] ring-1 ring-inset ring-karamel-300/45 transition hover:ring-karamel-300/80 active:scale-[.99] ${className}`}
     >
       <MiniWheel className="size-14 shrink-0 animate-[spin_14s_linear_infinite] group-hover:animate-[spin_1.6s_linear_infinite] motion-reduce:animate-none" />
       <span className="min-w-0 flex-1">
         <span className="font-display block text-[19px] font-semibold leading-tight">{title}</span>
-        <span className="mt-0.5 block text-xs text-krem-100/70">{action}</span>
+        <span className="mt-0.5 block text-xs text-zumrut-800/75">{action}</span>
       </span>
       <span
         aria-hidden="true"
-        className="grid size-9 shrink-0 place-items-center rounded-full bg-fistik-300 text-zumrut-925 transition-transform group-hover:translate-x-0.5"
+        className="grid size-9 shrink-0 place-items-center rounded-full bg-zumrut-800 text-krem-50 transition-transform group-hover:translate-x-0.5"
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" className="size-4">
           <path d="M5 12h14M13 6l6 6-6 6" />
