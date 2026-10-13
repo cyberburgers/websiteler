@@ -1,6 +1,6 @@
 "use client";
 
-import { HandPlatter, Plus, Send } from "lucide-react";
+import { ChevronRight, HandPlatter } from "lucide-react";
 import { useEffect, useSyncExternalStore } from "react";
 import { useSentOrder } from "@/lib/order/cart";
 import { useOrdering } from "./OrderProvider";
@@ -46,47 +46,40 @@ export function TableIntro() {
 
   if (!ordering?.canOrder || !ordering.table || hidden || sent) return null;
   const { labels } = ordering;
-  const steps = [
-    { Icon: Plus, text: labels.introStep1 },
-    { Icon: Send, text: labels.introStep2 },
-    { Icon: HandPlatter, text: labels.introStep3 },
-  ];
+  const steps = [labels.introStep1, labels.introStep2, labels.introStep3];
 
+  // Small on purpose: one line with the title, one with the steps, one with the note.
   return (
     <section
       aria-labelledby="masa-bilgi-baslik"
       data-masa-bilgi=""
-      className="animate-pop-in mt-4 rounded-[26px] bg-krem-50/[0.06] p-4 ring-1 ring-inset ring-fistik-300/25 md:mb-4 md:mt-0"
+      className="animate-pop-in mt-4 rounded-2xl bg-krem-50/[0.06] px-3.5 py-3 ring-1 ring-inset ring-fistik-300/25 md:mb-4 md:mt-0"
     >
-      <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-fistik-300">
-        {labels.introTable.replace("{n}", ordering.table)}
-      </p>
-      <h2 id="masa-bilgi-baslik" className="font-display mt-1 text-[21px] font-semibold leading-tight text-krem-50">
-        {labels.introTitle}
-      </h2>
-      <ol className="mt-3 grid grid-cols-3 gap-2">
-        {steps.map(({ Icon, text }, i) => (
-          <li key={i} className="rounded-2xl bg-zumrut-950/45 px-2 pb-3 pt-3.5 text-center">
-            <span className="mx-auto grid size-9 place-items-center rounded-full bg-fistik-300 text-zumrut-925">
-              <Icon className="size-[18px]" strokeWidth={2.4} aria-hidden="true" />
-            </span>
-            <span className="mt-2 block text-[12.5px] font-bold leading-snug text-krem-100">
-              <span className="sr-only">{i + 1}. </span>
-              {text}
-            </span>
-          </li>
-        ))}
-      </ol>
-      <div className="mt-3.5 flex items-center justify-between gap-3">
-        <p className="text-[12.5px] leading-snug text-krem-100/65">{labels.introNote}</p>
+      <div className="flex items-center gap-2.5">
+        <span className="grid size-7 shrink-0 place-items-center rounded-full bg-fistik-300 text-zumrut-925">
+          <HandPlatter className="size-4" strokeWidth={2.4} aria-hidden="true" />
+        </span>
+        <h2 id="masa-bilgi-baslik" className="min-w-0 flex-1 text-[15px] font-extrabold leading-tight text-krem-50">
+          {labels.introTitle}
+        </h2>
         <button
           type="button"
           onClick={close}
-          className="h-10 shrink-0 rounded-full bg-fistik-300 px-4 text-[13px] font-extrabold text-zumrut-925 transition hover:bg-fistik-200 active:scale-95"
+          className="h-8 shrink-0 rounded-full bg-fistik-300 px-3.5 text-[12.5px] font-extrabold text-zumrut-925 transition hover:bg-fistik-200 active:scale-95"
         >
           {labels.introOk}
         </button>
       </div>
+      <ol className="mt-2 flex flex-wrap items-center gap-x-1 gap-y-0.5 text-[12.5px] font-bold leading-snug text-krem-100">
+        {steps.map((text, i) => (
+          <li key={i} className="inline-flex items-center gap-1">
+            {i > 0 && <ChevronRight className="size-3.5 text-fistik-300" strokeWidth={2.6} aria-hidden="true" />}
+            <span className="sr-only">{i + 1}. </span>
+            {text}
+          </li>
+        ))}
+      </ol>
+      <p className="mt-0.5 text-[12px] leading-snug text-krem-100/60">{labels.introNote}</p>
     </section>
   );
 }
