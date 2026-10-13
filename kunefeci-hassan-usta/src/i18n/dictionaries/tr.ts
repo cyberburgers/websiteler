@@ -141,6 +141,7 @@ const tr = {
     follow: "Bizi Instagram'da takip edin",
     privacy: "Gizlilik ve KVKK",
     photoNote: "Fotoğraflar temsilidir.",
+    madeBy: "Bu web sitesi Aslan Site tarafından yapılmıştır. Siz de bir web sitesi ister misiniz?",
   },
   notFound: {
     title: "Bu sayfa tepside kalmamış.",

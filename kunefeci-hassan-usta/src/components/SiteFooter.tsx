@@ -7,6 +7,9 @@ import { localePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { groupedHours } from "@/lib/hours";
 
+/** Who made the site, with a number to call for one of your own. */
+const MAKER_PHONE = { shown: "0543 863 45 80", tel: "+905438634580" };
+
 async function CopyrightYear() {
   "use cache";
   // Once a day is plenty for the year; the default (15 minutes) would rebuild every menu page that often.
@@ -68,6 +71,16 @@ export function SiteFooter({ locale, dict, info }: { locale: Locale; dict: Dicti
             {dict.footer.privacy}
           </Link>
         </div>
+
+        <p className="mt-3 text-xs leading-relaxed text-krem-100/45">
+          {dict.footer.madeBy}{" "}
+          <a
+            href={`tel:${MAKER_PHONE.tel}`}
+            className="-my-2 inline-block whitespace-nowrap py-2 font-bold text-krem-100/75 underline-offset-4 hover:text-krem-50 hover:underline"
+          >
+            {MAKER_PHONE.shown}
+          </a>
+        </p>
       </div>
     </footer>
   );

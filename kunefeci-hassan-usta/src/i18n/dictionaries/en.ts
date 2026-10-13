@@ -143,6 +143,7 @@ const en: Dictionary = {
     follow: "Follow us on Instagram",
     privacy: "Privacy notice",
     photoNote: "Photos are for illustration.",
+    madeBy: "This website was made by Aslan Site. Would you like one too?",
   },
   notFound: {
     title: "This page didn't make it out of the oven.",
