@@ -82,11 +82,6 @@
     outline-offset: 3px;
     border-radius: 6px;
   }
-
-  /* Fraunces' soft cut gives headings a hand-made, warm feel. */
-  .font-display {
-    font-variation-settings: "SOFT" 100;
-  }
 }
 
 /* Outside @layer on purpose: an embedding page's own body colour must not win over the theme. */

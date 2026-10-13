@@ -6,6 +6,11 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [75, 85],
+    // No 2048/3840 versions: no photo is shown wider than ~600px, so 1920 covers sharp screens too.
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    // A photo's address never changes (an uploaded one gets a new name each time), so a resized copy can be
+    // kept a month instead of being made again: fewer resizes on the free plan, quicker photos.
+    minimumCacheTTL: 31 * 24 * 60 * 60,
     // Photos uploaded from the panel live in Vercel Blob.
     remotePatterns: [{ protocol: "https", hostname: "*.public.blob.vercel-storage.com", pathname: "/foto/**" }],
   },

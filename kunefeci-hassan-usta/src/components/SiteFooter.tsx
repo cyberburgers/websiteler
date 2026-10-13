@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cacheLife } from "next/cache";
 import { Clock, MapPin } from "lucide-react";
 import { InstagramIcon } from "./BrandIcons";
 import { linksFor, site, type ShopInfo } from "@/content/site";
@@ -8,6 +9,8 @@ import { groupedHours } from "@/lib/hours";
 
 async function CopyrightYear() {
   "use cache";
+  // Once a day is plenty for the year; the default (15 minutes) would rebuild every menu page that often.
+  cacheLife("days");
   return <>{new Date().getFullYear()}</>;
 }
 
