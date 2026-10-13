@@ -23,20 +23,20 @@ export function byUrgency(calls: OpenCall[]): OpenCall[] {
 /**
  * How often the panel asks for new calls. Each ask is a read of the free Redis plan (500,000 a month):
  * every 5 seconds while it is on screen and something is going on (open calls, a tap or a new call in the
- * last few minutes), every 15 seconds otherwise, also behind another tab, so it still chimes there; at night
- * (01:00–11:00, shop time) every minute, but only while nothing is going on: a late shift with open orders
- * keeps the day pace. A panel open day and night stays well inside the free plan.
+ * last few minutes), every 15 seconds otherwise, also behind another tab, so it still chimes there.
+ * At night (01:00–10:00, shop time) not at all, unless someone is using the panel (a late shift): a tap or
+ * bringing it on screen starts the asking again for a few minutes, and 10:00 does too.
  */
 const BUSY_POLL_MS = 5000;
 const QUIET_POLL_MS = 15 * 1000;
-const NIGHT_POLL_MS = 60 * 1000;
 /** A tap or a new call keeps the panel on the quick pace this long. */
 const BUSY_FOR_MS = 5 * 60 * 1000;
-/** 01:00 to 11:00 in the shop's time zone. */
-const isNight = () => {
-  const { minutes } = shopClock(new Date());
-  return minutes >= 60 && minutes < 11 * 60;
-};
+const NIGHT_FROM = 60; // 01:00
+const NIGHT_UNTIL = 10 * 60; // 10:00
+const shopMinutes = () => shopClock(new Date()).minutes;
+const isNight = () => shopMinutes() >= NIGHT_FROM && shopMinutes() < NIGHT_UNTIL;
+/** Until 10:00 (at least a minute: the shop clock has no seconds). */
+const untilMorning = () => Math.max(60 * 1000, (NIGHT_UNTIL - shopMinutes()) * 60 * 1000);
 
 /** An unanswered call rings again this often, in case nobody heard it the first time. */
 const RING_AGAIN_MS = 60 * 1000;
@@ -152,9 +152,15 @@ export function useWaiterCalls(staffKey: string | null) {
     let dueAt = 0;
     const schedule = () => {
       window.clearTimeout(timer);
-      // Work going on (open calls, a tap or a new call lately): quick on screen, never the night pace.
-      const working = openNow > 0 || Date.now() - lastActivity < BUSY_FOR_MS;
-      const delay = working && !document.hidden ? BUSY_POLL_MS : !working && isNight() ? NIGHT_POLL_MS : QUIET_POLL_MS;
+      const inUse = Date.now() - lastActivity < BUSY_FOR_MS;
+      if (isNight() && !inUse) {
+        // Nobody at the panel at night: no asks until someone taps it or brings it on screen, or 10:00.
+        dueAt = Infinity;
+        timer = window.setTimeout(tick, untilMorning());
+        return;
+      }
+      // Work going on (open calls, a tap or a new call lately): quick while on screen.
+      const delay = (openNow > 0 || inUse) && !document.hidden ? BUSY_POLL_MS : QUIET_POLL_MS;
       dueAt = Date.now() + delay;
       timer = window.setTimeout(tick, delay);
     };
@@ -171,7 +177,9 @@ export function useWaiterCalls(staffKey: string | null) {
     // A tap or a key on the panel: back to the quick pace.
     const onUse = () => {
       lastActivity = Date.now();
-      if (dueAt - Date.now() > BUSY_POLL_MS) schedule();
+      // Asleep for the night: someone is here, look at once.
+      if (dueAt === Infinity) void tick();
+      else if (dueAt - Date.now() > BUSY_POLL_MS) schedule();
     };
     void tick();
     document.addEventListener("visibilitychange", onShow);

@@ -59,8 +59,9 @@ sesli düşer. “Tamam, gidiyorum”a basınca müşterinin telefonunda “Gars
   kasada sürekli açık duran bir tablette paneli açık bırakın.
 - Panel, ekrandayken bir hareket varsa (bekleyen sipariş/çağrı, son 5 dakikada dokunma ya da yeni çağrı)
   5 saniyede bir, diğer her durumda (sakin, başka sekmede, ekran başka yerde) 15 saniyede bir yeni çağrı var
-  mı diye bakar; arka planda da öter. Gece 01:00–11:00 arası kimse kullanmıyorken dakikada bir bakar
-  (bekleyen sipariş varsa ya da az önce hareket olduysa gece de 15 saniyede bir).
+  mı diye bakar; arka planda da öter. Gece 01:00–10:00 arası kendiliğinden hiç bakmaz; o saatte biri panele
+  dokunursa ya da paneli açarsa (geç kapanış) kullanıldığı sürece bakar, 10:00'da kendiliğinden başlar.
+  Not: gece kimse panelde değilken gelen sipariş 10:00'a ya da birinin panele dokunmasına kadar görünmez.
   Ekrana dönünce hemen bakar. Müşteri telefonu kilitliyken hiç sormaz.
   Bütün gün açık duran bir panel bile Upstash'in ücretsiz planına (ayda 500.000 komut) rahat sığar.
 
