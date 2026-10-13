@@ -9,6 +9,10 @@ import type { Text } from "@/content/menu";
 export const inputClass =
   "h-11 w-full rounded-xl bg-white px-3.5 text-[15px] text-zumrut-950 outline-none ring-1 ring-zumrut-800/20 placeholder:text-zumrut-900/35 focus:ring-2 focus:ring-zumrut-600";
 
+/** The panel's header buttons: an icon on a phone, the name next to it from tablet width. */
+export const headerButton =
+  "inline-flex h-9 min-w-9 items-center justify-center gap-1.5 rounded-lg bg-white/10 px-2.5 transition-colors hover:bg-white/15 sm:px-3";
+
 export const buttonClass = {
   primary:
     "inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-zumrut-800 px-4 text-sm font-extrabold text-krem-50 transition hover:bg-zumrut-700 disabled:opacity-50",

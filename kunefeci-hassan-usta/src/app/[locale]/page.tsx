@@ -59,7 +59,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
               sizes="(min-width: 1024px) 38rem, (min-width: 768px) 50vw, 100vw"
               preload
               quality={85}
-              className="animate-settle object-[50%_30%] brightness-120"
+              className="animate-settle object-[50%_4%] brightness-120 lg:object-[50%_24%]"
             />
             <div
               aria-hidden="true"

@@ -83,8 +83,8 @@ Yalnızca masa QR kartıyla açılan menüde çalışır; masa dışından bakan
 - Fiyatlar sunucuda menüden hesaplanır; telefondan gelen fiyat kullanılmaz. “Bugün yok” denen ya da
   gizlenen ürün sipariş edilemez (sepetten çıkarılır, müşteriye söylenir).
 - Ödeme her zamanki gibi masada ya da kasada alınır; sitede ödeme yok.
-- Dükkân kapalıyken (paneldeki çalışma saatlerine göre) “+ Ekle” görünmez ve sunucu siparişi kabul etmez;
-  garson çağırma ve hesap isteme açık kalır (kapanışta masada oturan misafir için).
+- Sipariş çalışma saatlerine bağlı değildir: dükkân kapanış saatinden sonra da çalışabildiği için masadaki
+  misafir her zaman sipariş verebilir. Kapatmak için panel → **Garson** → “Müşteriler masadan sipariş verebilsin”.
 - Aynı masadan 20 saniyede bir sipariş; bir masada en çok 6 açık sipariş. Teslim edilmeyen sipariş 3 saat
   sonra ekrandan kalkar.
 - Panel → **Garson** → “Müşteriler masadan sipariş verebilsin” ile kapatılır; kapalıyken yalnızca garson
@@ -149,29 +149,34 @@ sonra bu dosyalar okunmaz.
 | `src/content/privacy.ts` | Gizlilik / KVKK metni |
 | `src/i18n/dictionaries/` | Sitedeki sabit yazılar (tr, en) |
 
-## Yayına almadan önce yapılacaklar
-
-Panelden:
-
-- [ ] Telefon, Instagram, açık adres ve harita konumu
-- [ ] Çalışma saatleri
-- [ ] **Örnek fiyatlar** → gerçek fiyatlar
-- [ ] Dükkânın kendi fotoğrafları
-
-Kodda / Vercel'de:
-
-- [ ] Alan adı: Vercel'de `NEXT_PUBLIC_SITE_URL` ortam değişkeni
-- [ ] Gizlilik metnini bir hukukçuya kontrol ettirin
-
 ## Yayına alma (Vercel)
 
-1. [vercel.com](https://vercel.com) → **Add New Project** → bu GitHub deposunu seçin.
-2. **Root Directory** olarak `kunefeci-hassan-usta` klasörünü seçin.
-3. Ortam değişkenleri: `NEXT_PUBLIC_SITE_URL=https://alanadiniz.com` ve `ADMIN_PASSWORD=…`
-4. **Storage → Blob** deposu oluşturup projeye bağlayın (panelin kayıt yeri).
-5. **Deploy**. Sonra alan adını Vercel'den bağlayın.
-6. [Google İşletme Profili](https://business.google.com)'nde web sitesi alanına adresi yazın ve
-   [Search Console](https://search.google.com/search-console)'a `https://alanadiniz.com/sitemap.xml` ekleyin.
+Bir kez, sırasıyla:
+
+1. [vercel.com](https://vercel.com) → **Add New → Project** → GitHub'daki `websiteler` deposunu seçin.
+2. **Root Directory**: `kunefeci-hassan-usta`. Framework kendiliğinden Next.js seçilir.
+3. **Environment Variables** → `ADMIN_PASSWORD` = panel şifresi (en az 8 karakter). **Deploy**.
+4. Proje → **Storage → Create Database → Blob** → projeye bağlayın. Panelin kayıt yeri (menü, fiyatlar,
+   yüklenen fotoğraflar).
+5. Proje → **Storage → Marketplace → Upstash (Redis)** → ücretsiz plan → projeye bağlayın. Garson çağırma,
+   masadan sipariş ve garson ekranı bununla çalışır.
+6. Proje → **Deployments** → son kaydın yanındaki **⋯ → Redeploy** (4. ve 5. adımdaki ayarlar ancak yeni bir
+   yayında devreye girer).
+7. Alan adı varsa: **Settings → Domains** → alan adını ekleyin, Vercel'in gösterdiği DNS kaydını alan adı
+   firmanızın panelinde girin, sonra bir kez daha **Redeploy**. Site kendi adresini Vercel'den öğrenir; QR
+   kartları, site haritası ve Google bağlantıları o adresi kullanır. (`NEXT_PUBLIC_SITE_URL` yalnızca başka
+   bir adres zorlamak için gerekir.)
+
+Yayından sonra:
+
+- [ ] `/yonetim` → giriş → **İşletme bilgileri**: telefon, Instagram, açık adres, harita konumu, çalışma saatleri
+- [ ] **Menü**: örnek fiyatlar yerine gerçek fiyatlar; dükkânın kendi fotoğrafları
+- [ ] **Garson**: masa sayısı; garson ekranının karekodunu kasadaki tabletle okutun, **Sesi aç**
+- [ ] **Masa kartları**: `/tr/qr?masa=1-12` (kendi masa sayınız). Sayfa kartların hangi adrese götürdüğünü
+      yazar; alan adı bağlandıktan sonra basın. Basmadan önce bir kartı telefonla okutup deneyin.
+- [ ] [Google İşletme Profili](https://business.google.com)'nde web sitesi alanına adresi yazın;
+      [Search Console](https://search.google.com/search-console)'a `https://alanadiniz.com/sitemap.xml` ekleyin.
+- [ ] Gizlilik metnini bir hukukçuya kontrol ettirin.
 
 ## Notlar
 

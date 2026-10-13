@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { WaiterCall, type WaiterLabels } from "@/components/WaiterCall";
 import { formatPrice } from "@/lib/format";
@@ -27,10 +28,12 @@ export function TableDock({
 }) {
   const table = useTable();
   const ordering = useOrdering();
+  // The QR card page is for the staff printing cards; the bar would sit on top of them.
+  const onCardsPage = usePathname().endsWith("/qr");
   const cart = useCart();
   const sent = useSentOrder();
   const cartRef = useRef<HTMLDialogElement>(null);
-  const visible = callsOn && Boolean(table);
+  const visible = callsOn && Boolean(table) && !onCardsPage;
 
   // Room at the bottom of the page so the bar never hides the last lines.
   useEffect(() => {
@@ -73,11 +76,10 @@ export function TableDock({
   if (!visible || !table) return null;
 
   const tableText = tableLabel.replace("{n}", table);
-  // At closing time the basket and an order on its way stay in view; only adding and sending stop.
-  const atTable = Boolean(ordering?.atTable);
+  const canOrder = Boolean(ordering?.canOrder);
   const { count, total } = ordering ? pricedCart(cart, ordering.catalog) : { count: 0, total: 0 };
-  const showCart = atTable && count > 0;
-  const status = atTable && !showCart && sent && ordering ? statusText(ordering.labels, sent.status) : null;
+  const showCart = canOrder && count > 0;
+  const status = canOrder && !showCart && sent && ordering ? statusText(ordering.labels, sent.status) : null;
 
   return (
     <>
@@ -130,7 +132,7 @@ export function TableDock({
           )}
         </div>
       </div>
-      {atTable && <CartSheet dialogRef={cartRef} table={table} tableText={tableText} />}
+      {canOrder && <CartSheet dialogRef={cartRef} table={table} tableText={tableText} />}
     </>
   );
 }

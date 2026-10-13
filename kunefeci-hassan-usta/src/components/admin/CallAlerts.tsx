@@ -52,10 +52,14 @@ export function usePanelCalls(staffKey: string | null) {
         void setSound(!soundOn);
       }}
       title={soundOn ? "Garson çağrısı gelince bu cihaz öter" : "Garson çağrısı gelince ses çıksın diye dokunun"}
-      className={`inline-flex h-9 items-center gap-1.5 rounded-lg px-3 ${soundOn ? "bg-white/10" : "bg-amber-300 text-zumrut-950"}`}
+      aria-label={soundOn ? "Ses açık" : "Sesi aç"}
+      className={`inline-flex h-9 min-w-9 items-center justify-center gap-1.5 rounded-lg px-2.5 transition-colors sm:px-3 ${
+        soundOn ? "bg-white/10 hover:bg-white/15" : "bg-amber-300 text-zumrut-950"
+      }`}
     >
       {soundOn ? <BellRing className="size-4" aria-hidden="true" /> : <BellOff className="size-4" aria-hidden="true" />}
-      {soundOn ? "Ses açık" : "Sesi aç"}
+      {/* Off is worth the words even on a phone; on, the bell says it. */}
+      <span className={soundOn ? "hidden sm:inline" : "hidden min-[380px]:inline"}>{soundOn ? "Ses açık" : "Sesi aç"}</span>
     </button>
   ) : null;
 

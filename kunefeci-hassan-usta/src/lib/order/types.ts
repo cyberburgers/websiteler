@@ -33,7 +33,6 @@ export type OrderLabels = {
   tooSoon: string;
   soldOut: string;
   busy: string;
-  closedNow: string;
   changed: string;
   cartMissing: string;
   error: string;

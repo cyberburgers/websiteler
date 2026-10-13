@@ -106,6 +106,15 @@ export default async function QrPage({ params, searchParams }: PageProps<"/[loca
             </button>
           </form>
           <PrintButton label="Yazdır" />
+          {/* The cards carry the site's address; worth a look before printing a batch of them. */}
+          <p className="text-sm text-krem-100/60">
+            Kartlar <b className="font-bold text-krem-50">{new URL(site.url).host}</b> adresine götürür.
+            {!/^https:/.test(site.url) || new URL(site.url).host.endsWith(".vercel.app") ? (
+              <span className="mt-1 block text-amber-200">
+                Kendi alan adınız varsa önce onu Vercel’de bağlayın, kartları sonra basın.
+              </span>
+            ) : null}
+          </p>
         </div>
 
         <Suspense fallback={<CardGrid tables={[null]} />}>

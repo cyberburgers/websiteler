@@ -3,9 +3,10 @@
 import { AlertTriangle, CheckCircle2, ExternalLink, LogOut, QrCode } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
 import { logoutAction, saveContentAction } from "@/app/yonetim/actions";
+import { Logo } from "@/components/Logo";
 import type { SiteContent } from "@/lib/content";
 import { usePanelCalls } from "./CallAlerts";
-import { buttonClass } from "./fields";
+import { buttonClass, headerButton } from "./fields";
 import { HighlightsEditor } from "./HighlightsEditor";
 import { InfoEditor } from "./InfoEditor";
 import { MenuEditor } from "./MenuEditor";
@@ -108,30 +109,38 @@ export function AdminApp({ initial, writable, staff, today }: Props) {
 
   return (
     <div className="min-h-dvh pb-32">
+      {/* One row on a phone: the logo, the title, and the buttons as icons (with their names from tablet width). */}
       <header className="bg-zumrut-925 text-krem-50">
-        <div className="mx-auto flex max-w-3xl flex-col gap-2.5 px-4 py-3 sm:flex-row sm:items-center sm:gap-4">
+        <div className="mx-auto flex max-w-3xl items-center gap-2.5 px-4 pb-2 pt-3 sm:gap-4">
+          <Logo id="panel-logo" className="hidden h-auto w-11 shrink-0 sm:block" />
           <div className="min-w-0 flex-1">
-            <p className="font-display text-lg font-semibold leading-tight">Künefeci Hassan Usta</p>
-            <p className="text-xs text-krem-100/65">
-              Yönetim paneli{lastSaved ? ` · Son kayıt ${lastSaved}` : " · Henüz panelden kayıt yapılmadı"}
+            <p className="font-display truncate text-[17px] font-semibold leading-tight sm:text-lg">Yönetim paneli</p>
+            <p className="truncate text-xs text-krem-100/65">
+              {lastSaved ? `Son kayıt ${lastSaved}` : "Henüz panelden kayıt yapılmadı"}
             </p>
           </div>
-          <nav className="flex flex-wrap items-center gap-1.5 text-sm font-bold">
+          <nav aria-label="Panel" className="flex shrink-0 items-center gap-1.5 text-sm font-bold">
             {calls.toggle}
-            <a href="/tr" target="_blank" rel="noopener" className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-white/10 px-3">
-              Siteyi aç <ExternalLink className="size-3.5" aria-hidden="true" />
+            <a href="/tr" target="_blank" rel="noopener" aria-label="Siteyi aç" title="Siteyi aç" className={headerButton}>
+              <ExternalLink className="size-4" aria-hidden="true" />
+              <span className="hidden sm:inline">Siteyi aç</span>
             </a>
-            <a href="/tr/qr" target="_blank" rel="noopener" className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-white/10 px-3">
-              <QrCode className="size-4" aria-hidden="true" /> QR
+            <a href="/tr/qr" target="_blank" rel="noopener" aria-label="Masa QR kartları" title="Masa QR kartları" className={headerButton}>
+              <QrCode className="size-4" aria-hidden="true" />
+              <span className="hidden sm:inline">QR</span>
             </a>
             <form action={logoutAction}>
-              <button type="submit" className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-white/10 px-3">
-                <LogOut className="size-4" aria-hidden="true" /> Çıkış
+              <button type="submit" aria-label="Çıkış" title="Çıkış" className={headerButton}>
+                <LogOut className="size-4" aria-hidden="true" />
+                <span className="hidden sm:inline">Çıkış</span>
               </button>
             </form>
           </nav>
         </div>
-        <div role="tablist" aria-label="Bölümler" className="no-scrollbar mx-auto flex max-w-3xl gap-1 overflow-x-auto px-3">
+      </header>
+      {/* The sections stay in reach while scrolling down a long menu. */}
+      <div className="sticky top-0 z-40 bg-zumrut-925 shadow-[0_10px_24px_-18px_rgba(0,0,0,.7)]">
+        <div role="tablist" aria-label="Bölümler" className="no-scrollbar mx-auto flex max-w-3xl gap-1 overflow-x-auto px-3 pt-1">
           {TABS.map((t) => (
             <button
               key={t.id}
@@ -147,7 +156,7 @@ export function AdminApp({ initial, writable, staff, today }: Props) {
             </button>
           ))}
         </div>
-      </header>
+      </div>
 
       {calls.alerts}
 

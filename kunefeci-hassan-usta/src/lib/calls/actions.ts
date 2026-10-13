@@ -2,7 +2,6 @@
 
 import { availableMenu } from "@/content/menu";
 import { getContent, readContentFresh } from "@/lib/content";
-import { openState } from "@/lib/hours";
 import { count, visitorAddress } from "@/lib/limits";
 import { callsEnabled, createCall, createOrder, type CallKind, type OrderLine } from "./store";
 
@@ -48,8 +47,7 @@ export type OrderResult =
   | { ok: false; reason: "bitti"; ids: string[] }
   /** "degisti": the price or the sizes of these dishes changed since the guest's menu was loaded. */
   | { ok: false; reason: "degisti"; ids: string[] }
-  /** "saat": the shop is closed now (by the hours set in the panel). Calling the waiter still works. */
-  | { ok: false; reason: "sik" | "dolu" | "kapali" | "saat" | "hata" };
+  | { ok: false; reason: "sik" | "dolu" | "kapali" | "hata" };
 
 const MAX_LINES = 20;
 const MAX_QTY = 20;
@@ -76,7 +74,6 @@ export async function placeOrderAction(
   try {
     const content = await readContentFresh();
     if (!callsEnabled() || content.tableOrders === false) return { ok: false, reason: "kapali" };
-    if (!openState(new Date(), content.info.hours).open) return { ok: false, reason: "saat" };
     if (!tableExists(table, content.tables)) return { ok: false, reason: "hata" };
     if (await tooMany()) return { ok: false, reason: "sik" };
     const items = new Map(availableMenu(content.menu).flatMap((c) => c.items).map((i) => [i.id, i]));

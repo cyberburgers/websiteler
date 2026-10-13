@@ -49,7 +49,7 @@ export function CartSheet({
   const [sending, setSending] = useState(false);
   const [message, setMessage] = useState("");
   if (!ordering) return null;
-  const { catalog, labels, locale, canOrder } = ordering;
+  const { catalog, labels, locale } = ordering;
   const { lines, total } = pricedCart(cart, catalog);
   const missing = missingLines(cart, catalog);
   const money = (amount: number) => formatPrice(amount, locale);
@@ -95,9 +95,7 @@ export function CartSheet({
       return;
     }
     const reason = result.reason;
-    setMessage(
-      reason === "sik" ? labels.tooSoon : reason === "dolu" ? labels.busy : reason === "saat" ? labels.closedNow : labels.error,
-    );
+    setMessage(reason === "sik" ? labels.tooSoon : reason === "dolu" ? labels.busy : labels.error);
   };
 
   const status = sent ? statusText(labels, sent.status) : null;
@@ -189,16 +187,16 @@ export function CartSheet({
             </div>
             <p className="mt-0.5 text-[13px] text-zumrut-800/60">{labels.payHint}</p>
 
-            {(message || missing.length > 0 || !canOrder) && (
+            {(message || missing.length > 0) && (
               <p role="alert" className="mt-3 rounded-2xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-950 ring-1 ring-amber-200">
-                {!canOrder ? labels.closedNow : message || labels.cartMissing}
+                {message || labels.cartMissing}
               </p>
             )}
 
             <button
               type="button"
               onClick={send}
-              disabled={sending || !canOrder}
+              disabled={sending}
               data-siparis-gonder=""
               className="mt-4 flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-zumrut-900 text-[16px] font-extrabold text-krem-50 transition hover:bg-zumrut-800 active:scale-[.98] disabled:opacity-70"
             >

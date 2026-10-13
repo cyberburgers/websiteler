@@ -125,7 +125,6 @@ const tr = {
     tooSoon: "Siparişiniz az önce gönderildi. Birkaç saniye sonra tekrar deneyin.",
     soldOut: "{names} bugün kalmadı, sepetten çıkardık.",
     busy: "Şu an çok yoğunuz. Siparişinizi lütfen garsonumuza söyleyin.",
-    closedNow: "Şu an kapalıyız, sipariş alamıyoruz.",
     changed: "Menü az önce güncellendi; fiyatı ya da boyu değişen ürün var. Sayfayı yenileyip sepetinize tekrar bakın.",
     cartMissing: "Sepetinizdeki bir ürün şu an menüde yok; siparişe eklenmeyecek.",
     error: "Sipariş gönderilemedi. Lütfen siparişinizi garsonumuza söyleyin.",

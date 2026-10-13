@@ -5,8 +5,16 @@
  */
 export const site = {
   name: "Künefeci Hassan Usta",
-  /** Sitenin yayında olacağı adres. Vercel'de NEXT_PUBLIC_SITE_URL ile de verilebilir. */
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://kunefecihassanusta.com", // DOLDURULACAK
+  /**
+   * Sitenin adresi (QR kartları, Google bağlantıları, site haritası). NEXT_PUBLIC_SITE_URL verilmişse o;
+   * yoksa Vercel'in projeye verdiği yayın adresi (alan adı bağlıysa o, değilse ….vercel.app). Hiçbir zaman
+   * sahibi olunmayan bir örnek adres değil: basılmış bir QR kartı yanlış siteye götürmesin.
+   */
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "http://localhost:3000"),
   timeZone: "Europe/Istanbul",
   priceRange: "₺₺",
   foundingYear: null as number | null, // DOLDURULACAK — biliniyorsa ör. 1998

@@ -339,7 +339,7 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
               <X className="size-5" />
             </button>
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-fistik-300">{labels.trigger}</p>
-            <h2 id="cark-baslik" className="font-display mt-2 pe-10 text-[1.75rem] font-medium leading-tight">
+            <h2 id="cark-baslik" className="font-display mt-2 text-balance pe-10 text-[1.75rem] font-medium leading-tight">
               {labels.title}
             </h2>
 
