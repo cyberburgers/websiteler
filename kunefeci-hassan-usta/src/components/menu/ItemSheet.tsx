@@ -265,11 +265,13 @@ export function ItemSheet({ item, pairing, labels, waiter, onDismiss }: Props) {
                       <MenuLink
                         key={drink.id}
                         href={href}
-                        className="flex items-center gap-2.5 rounded-2xl bg-krem-50 p-[7px] shadow-[0_1px_0_rgba(44,68,54,.06)] ring-1 ring-zumrut-800/[0.06] transition hover:ring-karamel-300"
+                        className={`flex items-center gap-2.5 rounded-2xl bg-krem-50 shadow-[0_1px_0_rgba(44,68,54,.06)] ring-1 ring-zumrut-800/[0.06] transition hover:ring-karamel-300 ${drink.photo ? "p-[7px]" : "px-3.5 py-2.5"}`}
                       >
-                        <span className="relative size-11 shrink-0 overflow-hidden rounded-xl bg-krem-200">
-                          <Photo photo={drink.photo} alt="" sizes="44px" />
-                        </span>
+                        {drink.photo && (
+                          <span className="relative size-11 shrink-0 overflow-hidden rounded-xl bg-krem-200">
+                            <Photo photo={drink.photo} alt="" sizes="44px" />
+                          </span>
+                        )}
                         <span className="min-w-0">
                           <span className="block truncate text-sm font-extrabold">{drink.name}</span>
                           <span className="block text-[12.5px] font-bold text-karamel-600">

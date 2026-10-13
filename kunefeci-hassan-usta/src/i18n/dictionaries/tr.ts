@@ -140,7 +140,6 @@ const tr = {
   footer: {
     follow: "Bizi Instagram'da takip edin",
     privacy: "Gizlilik ve KVKK",
-    photoNote: "Fotoğraflar temsilidir.",
     makerTitle: "Bu web sitesi Aslan Site tarafından yapıldı.",
     makerAsk: "Siz de işletmeniz için böyle bir web sitesi ister misiniz?",
     makerWhatsApp: "WhatsApp'tan yazın",

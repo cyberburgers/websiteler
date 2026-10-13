@@ -5,13 +5,14 @@ import { AddControl } from "@/components/order/AddControl";
 import { useOrdering } from "@/components/order/OrderProvider";
 import { Photo } from "@/components/ui";
 import { TagBadge } from "./icons";
-import { SoldOutBadge } from "./parts";
+import { SoldOutBadge, SoldOutTag } from "./parts";
 import type { MenuViewItem } from "./types";
 
 /**
- * One dish as a big card: a large photo, then the name and price, and under them what the dish is.
+ * One dish as a big card: its photo if one was uploaded in the panel, then the name and price, and under
+ * them what the dish is. Without a photo the card is the text alone, its labels above the name.
  * Sizes with several prices (Porsiyon / 1 kg) are listed as menu lines with dotted leaders.
- * A dish that has run out today stays as it is, with "Bugün yok" on its photo.
+ * A dish that has run out today stays as it is, marked "Bugün yok".
  * At a table (menu opened from its QR card) "Ayrıntı" makes way for "+ Ekle".
  */
 export function ItemCard({
@@ -42,28 +43,40 @@ export function ItemCard({
   return (
     <li id={item.id} className={`reveal scroll-mt-36 ${span}`}>
       <div className="flex h-full flex-col rounded-[28px] bg-krem-100 p-2.5 text-zumrut-800 shadow-[0_28px_50px_-34px_rgba(0,0,0,.9)]">
-        <button type="button" onClick={onOpen} aria-haspopup="dialog" className="group block w-full flex-1 text-start">
-          <span className={`relative block aspect-square overflow-hidden rounded-[22px] bg-krem-200 ${shape}`}>
-            <Photo
-              photo={item.photo}
-              alt={item.name}
-              sizes={sizes}
-              preload={priority}
-              className="transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]"
-            />
-            {out ? (
-              <SoldOutBadge label={soldOutLabel} />
-            ) : (
-              item.tags.length > 0 && (
-                <span className="absolute start-3 top-3 flex flex-wrap gap-1.5">
-                  {item.tags.map((t) => (
-                    <TagBadge key={t.id} id={t.id} label={t.label} onPhoto />
-                  ))}
-                </span>
-              )
-            )}
-          </span>
-          <span className="block px-2.5 pt-4">
+        <button type="button" onClick={onOpen} aria-haspopup="dialog" className="group flex w-full flex-1 flex-col text-start">
+          {item.photo ? (
+            <span className={`relative block aspect-square overflow-hidden rounded-[22px] bg-krem-200 ${shape}`}>
+              <Photo
+                photo={item.photo}
+                alt={item.name}
+                sizes={sizes}
+                preload={priority}
+                className="transition-transform duration-[1.2s] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]"
+              />
+              {out ? (
+                <SoldOutBadge label={soldOutLabel} />
+              ) : (
+                item.tags.length > 0 && (
+                  <span className="absolute start-3 top-3 flex flex-wrap gap-1.5">
+                    {item.tags.map((t) => (
+                      <TagBadge key={t.id} id={t.id} label={t.label} onPhoto />
+                    ))}
+                  </span>
+                )
+              )}
+            </span>
+          ) : (
+            (out || item.tags.length > 0) && (
+              <span className="flex flex-wrap gap-1.5 px-2.5 pt-2.5">
+                {out ? (
+                  <SoldOutTag label={soldOutLabel} />
+                ) : (
+                  item.tags.map((t) => <TagBadge key={t.id} id={t.id} label={t.label} />)
+                )}
+              </span>
+            )
+          )}
+          <span className={`block px-2.5 ${item.photo ? "pt-4" : out || item.tags.length > 0 ? "pt-3" : "pt-3.5"}`}>
             <span className="flex items-start justify-between gap-4">
               <span className="font-display text-[25px] font-semibold leading-[1.1] text-zumrut-900">{item.name}</span>
               {single && (
