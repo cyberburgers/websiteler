@@ -35,7 +35,13 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <JsonLd data={restaurantJsonLd(locale, content.info)} />
       <JsonLd data={menuJsonLd(locale, menu)} />
 
-      <div className="container-page max-w-6xl pb-12 pt-[4.25rem] md:pt-24">
+      {/* Behind the top of the page: the faint star pattern and a warm glow, both fading out below. */}
+      <div aria-hidden="true" className="home-top pointer-events-none absolute inset-x-0 top-0 h-[34rem] md:h-[40rem]">
+        <div className="pattern-star absolute inset-0" />
+        <div className="home-glow absolute inset-0" />
+      </div>
+
+      <div className="container-page relative max-w-6xl pb-12 pt-[4.25rem] md:pt-24">
         {/* Phones: the welcome sits on the shop photo, the search and the wheel below it.
             Tablets and up: the photo stands alone on the left, whole and clear of text; the welcome heads the
             right column and the search and the wheel close it, level with the photo's bottom edge. */}
