@@ -64,7 +64,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
             />
             <div
               aria-hidden="true"
-              className="absolute inset-0 bg-[linear-gradient(180deg,rgba(29,49,38,.05)_30%,rgba(29,49,38,.92))] md:hidden"
+              className="absolute inset-0 bg-[linear-gradient(180deg,rgba(22,56,37,.05)_30%,rgba(22,56,37,.92))] md:hidden"
             />
           </div>
 

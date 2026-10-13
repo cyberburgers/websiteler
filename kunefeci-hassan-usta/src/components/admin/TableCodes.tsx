@@ -24,7 +24,7 @@ export function TableCodes({ siteUrl, count }: { siteUrl: string; count: number 
           type: "svg",
           margin: 1,
           errorCorrectionLevel: "M",
-          color: { dark: "#142319", light: "#ffffff" },
+          color: { dark: "#0f2817", light: "#ffffff" },
         }),
       ),
     ).then((svgs) => {

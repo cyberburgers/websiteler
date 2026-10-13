@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
 }
 
 export const viewport: Viewport = {
-  themeColor: "#1d3126",
+  themeColor: "#163825",
   colorScheme: "light",
   viewportFit: "cover",
 };
@@ -64,7 +64,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
           {dict.nav.skip}
         </a>
         <SiteHeader
-          logo={<Logo id="header-logo" className="h-auto w-full drop-shadow-[0_8px_14px_rgba(20,35,25,.45)]" />}
+          logo={<Logo id="header-logo" className="h-auto w-full drop-shadow-[0_8px_14px_rgba(15,40,23,.45)]" />}
           homeHref={home}
           labels={{ back: dict.category.back, admin: dict.nav.admin, adminShort: dict.nav.adminShort }}
         />

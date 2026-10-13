@@ -1,19 +1,19 @@
 @import "tailwindcss";
 
 /*
- * Tema: koyu, mat orman yeşili zemin; yumuşak nane yeşili vurgular.
+ * Tema: koyu, canlı orman yeşili zemin; yumuşak nane yeşili vurgular.
  * Krem ve karamel tabeladaki logodan, şerbet turuncusu ürünlerden gelir.
  * Logonun kendisi tabeladaki gibi lacivert-sarı kalır.
  */
 @theme {
-  --color-zumrut-950: #142319;
+  --color-zumrut-950: #0f2817;
   /* Page background of the menu. */
-  --color-zumrut-925: #1d3126;
-  --color-zumrut-900: #233a2d;
-  --color-zumrut-800: #2c4436;
-  --color-zumrut-700: #375544;
-  --color-zumrut-600: #4a6e59;
-  --color-zumrut-400: #8fb8a0;
+  --color-zumrut-925: #163825;
+  --color-zumrut-900: #1b422c;
+  --color-zumrut-800: #244c35;
+  --color-zumrut-700: #2d6043;
+  --color-zumrut-600: #3d7b57;
+  --color-zumrut-400: #81c69e;
 
   --color-krem-50: #fffdf6;
   --color-krem-100: #fbf6e7;

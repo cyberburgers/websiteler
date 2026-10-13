@@ -28,10 +28,10 @@ export type WheelLabels = {
 };
 
 const COLORS = [
-  { fill: "#2c4436", text: "#a1dbb5" },
-  { fill: "#cb9452", text: "#233a2d" },
-  { fill: "#fbf6e7", text: "#2c4436" },
-  { fill: "#7cc795", text: "#142319" },
+  { fill: "#244c35", text: "#a1dbb5" },
+  { fill: "#cb9452", text: "#1b422c" },
+  { fill: "#fbf6e7", text: "#244c35" },
+  { fill: "#7cc795", text: "#0f2817" },
 ];
 
 const R = 182;
@@ -52,7 +52,7 @@ function WheelFace({ slices }: { slices: WheelSlice[] }) {
             <path
               d={`M200 200L${toXY(i * seg - seg / 2, R)}A${R} ${R} 0 0 1 ${toXY(i * seg + seg / 2, R)}Z`}
               fill={c.fill}
-              stroke="#142319"
+              stroke="#0f2817"
               strokeOpacity=".3"
               strokeWidth="1.5"
             />
@@ -118,7 +118,7 @@ function MiniWheel({ className }: { className?: string }) {
         );
       })}
       <circle cx="20" cy="20" r="18" fill="none" stroke="#cb9452" strokeWidth="2.5" />
-      <circle cx="20" cy="20" r="4" fill="#a1dbb5" stroke="#2c4436" strokeWidth="1.5" />
+      <circle cx="20" cy="20" r="4" fill="#a1dbb5" stroke="#244c35" strokeWidth="1.5" />
     </svg>
   );
 }
@@ -134,7 +134,7 @@ export function WheelBanner({ title, action, className = "" }: { title: string; 
       aria-haspopup="dialog"
       data-wheel-trigger=""
       onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}
-      className={`group flex w-full items-center gap-3.5 rounded-3xl bg-[radial-gradient(circle_at_15%_50%,#34503f,#233a2d)] p-2.5 pe-4 text-start text-fistik-300 ring-1 ring-inset ring-fistik-300/25 transition hover:ring-fistik-300/50 active:scale-[.99] ${className}`}
+      className={`group flex w-full items-center gap-3.5 rounded-3xl bg-[radial-gradient(circle_at_15%_50%,#2a5a3d,#1b422c)] p-2.5 pe-4 text-start text-fistik-300 ring-1 ring-inset ring-fistik-300/25 transition hover:ring-fistik-300/50 active:scale-[.99] ${className}`}
     >
       <MiniWheel className="size-14 shrink-0 animate-[spin_14s_linear_infinite] group-hover:animate-[spin_1.6s_linear_infinite] motion-reduce:animate-none" />
       <span className="min-w-0 flex-1">
@@ -362,8 +362,8 @@ export function DessertWheel({ slices, labels }: { slices: WheelSlice[]; labels:
                 className="absolute left-1/2 top-[-3%] z-10 -ml-4 w-8 origin-[50%_20%] drop-shadow-[0_6px_8px_rgba(0,0,0,.45)]"
               >
                 <svg viewBox="0 0 32 44">
-                  <path d="M16 42 3 16a13 13 0 1 1 26 0Z" fill="#a1dbb5" stroke="#2c4436" strokeWidth="2.5" />
-                  <circle cx="16" cy="14" r="5" fill="#2c4436" />
+                  <path d="M16 42 3 16a13 13 0 1 1 26 0Z" fill="#a1dbb5" stroke="#244c35" strokeWidth="2.5" />
+                  <circle cx="16" cy="14" r="5" fill="#244c35" />
                 </svg>
               </div>
               <button

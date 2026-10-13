@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#142319",
+  themeColor: "#0f2817",
 };
 
 /** The panel has its own page shell: no menu header or footer, dark and calm, in the shop's colours. */
