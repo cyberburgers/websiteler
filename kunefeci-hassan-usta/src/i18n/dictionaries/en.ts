@@ -143,7 +143,10 @@ const en: Dictionary = {
     follow: "Follow us on Instagram",
     privacy: "Privacy notice",
     photoNote: "Photos are for illustration.",
-    madeBy: "This website was made by Aslan Site. Would you like one too?",
+    makerTitle: "This website was made by Aslan Site.",
+    makerAsk: "Would you like a website like this for your business?",
+    makerWhatsApp: "Message on WhatsApp",
+    makerMessage: "Hello, I saw the Künefeci Hassan Usta website and I'd like a website too.",
   },
   notFound: {
     title: "This page didn't make it out of the oven.",

@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { cacheLife } from "next/cache";
-import { Clock, MapPin } from "lucide-react";
-import { InstagramIcon } from "./BrandIcons";
+import { Clock, MapPin, Phone } from "lucide-react";
+import { InstagramIcon, WhatsAppIcon } from "./BrandIcons";
 import { linksFor, site, type ShopInfo } from "@/content/site";
 import { localePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { groupedHours } from "@/lib/hours";
 
-/** Who made the site, with a number to call for one of your own. */
-const MAKER_PHONE = { shown: "0543 863 45 80", tel: "+905438634580" };
+/** Who made the site, and how to reach them for one of your own. */
+const MAKER = { name: "Aslan Site", phone: "0543 863 45 80", tel: "+905438634580", whatsapp: "905438634580" };
 
 async function CopyrightYear() {
   "use cache";
@@ -72,15 +72,33 @@ export function SiteFooter({ locale, dict, info }: { locale: Locale; dict: Dicti
           </Link>
         </div>
 
-        <p className="mt-3 text-xs leading-relaxed text-krem-100/45">
-          {dict.footer.madeBy}{" "}
-          <a
-            href={`tel:${MAKER_PHONE.tel}`}
-            className="-my-2 inline-block whitespace-nowrap py-2 font-bold text-krem-100/75 underline-offset-4 hover:text-krem-50 hover:underline"
-          >
-            {MAKER_PHONE.shown}
-          </a>
-        </p>
+        {/* The maker's card: last on the page, after the shop's own details. */}
+        <div
+          data-yapan=""
+          className="mt-6 rounded-2xl bg-karamel-300/[0.08] p-4 ring-1 ring-inset ring-karamel-300/30 sm:max-w-md"
+        >
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-karamel-300">{MAKER.name}</p>
+          <p className="mt-1 text-[15px] font-bold leading-snug text-krem-50">{dict.footer.makerTitle}</p>
+          <p className="mt-0.5 text-[13px] leading-snug text-krem-100/70">{dict.footer.makerAsk}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <a
+              href={`tel:${MAKER.tel}`}
+              className="inline-flex h-11 items-center gap-2 rounded-full bg-karamel-300 pe-4 ps-3.5 text-sm font-extrabold tabular-nums text-zumrut-950 transition hover:bg-krem-300 active:scale-[.97]"
+            >
+              <Phone className="size-4" aria-hidden="true" />
+              {MAKER.phone}
+            </a>
+            <a
+              href={`https://wa.me/${MAKER.whatsapp}?text=${encodeURIComponent(dict.footer.makerMessage)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-11 items-center gap-2 rounded-full bg-krem-50/[0.06] pe-4 ps-3.5 text-sm font-bold text-krem-50 ring-1 ring-inset ring-krem-50/15 transition hover:bg-krem-50/[0.1] active:scale-[.97]"
+            >
+              <WhatsAppIcon className="size-4" />
+              {dict.footer.makerWhatsApp}
+            </a>
+          </div>
+        </div>
       </div>
     </footer>
   );
