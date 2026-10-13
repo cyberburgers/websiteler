@@ -48,8 +48,8 @@ export function TableCodes({ siteUrl, count }: { siteUrl: string; count: number 
     <div className="space-y-3">
       <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
         {Array.from({ length: count }, (_, i) => i + 1).map((table) => (
-          <li key={table} data-masa-kodu={table} className="rounded-2xl bg-krem-100 p-2.5 ring-1 ring-zumrut-800/10">
-            <p className="px-1 text-sm font-extrabold">Masa {table}</p>
+          <li key={table} data-masa-kodu={table} className="rounded-2xl bg-zumrut-950/60 p-2.5 ring-1 ring-white/10">
+            <p className="px-1 text-sm font-extrabold text-krem-50">Masa {table}</p>
             <div
               role="img"
               aria-label={`Masa ${table} karekodu`}
@@ -61,7 +61,7 @@ export function TableCodes({ siteUrl, count }: { siteUrl: string; count: number 
                 type="button"
                 onClick={() => void download(table)}
                 aria-label={`Masa ${table} karekodunu indir`}
-                className="inline-flex h-9 items-center justify-center gap-1 rounded-lg bg-white text-xs font-bold ring-1 ring-zumrut-800/15 hover:bg-krem-50"
+                className="inline-flex h-9 items-center justify-center gap-1 rounded-lg text-xs font-bold bg-white/5 text-krem-50 ring-1 ring-white/15 hover:bg-white/10"
               >
                 <Download className="size-3.5" aria-hidden="true" /> İndir
               </button>
@@ -70,7 +70,7 @@ export function TableCodes({ siteUrl, count }: { siteUrl: string; count: number 
                 target="_blank"
                 rel="noopener"
                 aria-label={`Masa ${table} kartını bastır`}
-                className="inline-flex h-9 items-center justify-center gap-1 rounded-lg bg-white text-xs font-bold ring-1 ring-zumrut-800/15 hover:bg-krem-50"
+                className="inline-flex h-9 items-center justify-center gap-1 rounded-lg text-xs font-bold bg-white/5 text-krem-50 ring-1 ring-white/15 hover:bg-white/10"
               >
                 <ExternalLink className="size-3.5" aria-hidden="true" /> Kart
               </a>

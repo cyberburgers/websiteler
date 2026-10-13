@@ -97,7 +97,7 @@ export function InfoEditor({ content, update }: { content: SiteContent; update: 
           hint={
             <>
               Google Haritalar&apos;da dükkâna basılı tutun, çıkan <b>37.15…, 38.79…</b> sayılarını kopyalayıp buraya
-              yapıştırın. {geoMatch ? null : <b className="text-red-700">Konum anlaşılamadı.</b>}
+              yapıştırın. {geoMatch ? null : <b className="text-red-300">Konum anlaşılamadı.</b>}
             </>
           }
         >
@@ -115,7 +115,7 @@ export function InfoEditor({ content, update }: { content: SiteContent; update: 
               href={`https://www.google.com/maps/search/?api=1&query=${info.geo.lat},${info.geo.lng}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-xl bg-white px-3 text-sm font-bold ring-1 ring-zumrut-800/15"
+              className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-xl px-3 text-sm font-bold bg-white/5 text-krem-50 ring-1 ring-white/15 hover:bg-white/10"
             >
               Haritada aç <ExternalLink className="size-3.5" aria-hidden="true" />
             </a>
@@ -127,7 +127,7 @@ export function InfoEditor({ content, update }: { content: SiteContent; update: 
         title="Çalışma saatleri"
         hint="Gece yarısından sonra kapanıyorsa kapanışa 01:00 gibi yazın. Kapalı günü kapatın."
       >
-        <ul className="divide-y divide-zumrut-800/10">
+        <ul className="divide-y divide-white/10">
           {DAYS.map((name, index) => {
             const day = index + 1;
             const hours = info.hours.find((h) => h.day === day);

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { MAX_PAIRING, defaultPairing, type MenuItem } from "@/content/menu";
 import type { SiteContent } from "@/lib/content";
-import { Section, buttonClass } from "./fields";
+import { Section, buttonClass, chipClass } from "./fields";
 
 type Update = (change: (draft: SiteContent) => void) => void;
 
@@ -34,7 +34,7 @@ export function PairingPicker({
 
   return (
     <div className="space-y-3">
-      <p className="text-sm text-zumrut-900/70">
+      <p className="text-sm text-krem-100/70">
         {picked.length > 0 ? (
           <>
             Sırasıyla: <b>{names(content, picked).join(", ")}</b>
@@ -42,7 +42,7 @@ export function PairingPicker({
         ) : (
           "Hiçbiri seçilmedi."
         )}{" "}
-        <span className="tabular-nums text-zumrut-900/50">
+        <span className="tabular-nums text-krem-100/50">
           ({picked.length}/{MAX_PAIRING})
         </span>
       </p>
@@ -51,7 +51,7 @@ export function PairingPicker({
         if (items.length === 0) return null;
         return (
           <fieldset key={category.id}>
-            <legend className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-zumrut-900/55">
+            <legend className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-karamel-300/80">
               {category.name.tr || "Adsız kategori"}
             </legend>
             <div className="mt-1.5 flex flex-wrap gap-2">
@@ -64,11 +64,9 @@ export function PairingPicker({
                     aria-pressed={on}
                     disabled={!on && full}
                     onClick={() => toggle(item.id)}
-                    className={`h-10 rounded-full px-4 text-sm font-bold transition-colors disabled:opacity-40 ${
-                      on ? "bg-zumrut-800 text-krem-50" : "bg-white text-zumrut-900 ring-1 ring-zumrut-800/15"
-                    }`}
+                    className={`h-10 rounded-full px-4 text-sm font-bold transition-colors disabled:opacity-40 ${chipClass(on)}`}
                   >
-                    {on && <span className="me-1.5 tabular-nums text-fistik-300">{picked.indexOf(item.id) + 1}.</span>}
+                    {on && <span className="me-1.5 tabular-nums text-karamel-700">{picked.indexOf(item.id) + 1}.</span>}
                     {item.name.tr || "Adsız ürün"}
                   </button>
                 );
@@ -139,7 +137,7 @@ export function ItemPairingField({
 
   return (
     <fieldset className="space-y-3">
-      <legend className="text-sm font-bold text-zumrut-900">Yanında iyi gider</legend>
+      <legend className="text-sm font-bold text-krem-100">Yanında iyi gider</legend>
       <div role="radiogroup" className="grid gap-2 sm:grid-cols-3">
         {options.map((o) => (
           <button
@@ -148,12 +146,10 @@ export function ItemPairingField({
             role="radio"
             aria-checked={mode === o.id}
             onClick={() => choose(o.id)}
-            className={`rounded-2xl p-3 text-start transition-colors ${
-              mode === o.id ? "bg-zumrut-800 text-krem-50" : "bg-white text-zumrut-900 ring-1 ring-zumrut-800/15"
-            }`}
+            className={`rounded-2xl p-3 text-start transition-colors ${chipClass(mode === o.id)}`}
           >
             <span className="block text-sm font-extrabold">{o.title}</span>
-            <span className={`mt-0.5 block text-xs ${mode === o.id ? "text-krem-100/75" : "text-zumrut-900/60"}`}>
+            <span className={`mt-0.5 block text-xs ${mode === o.id ? "text-zumrut-950/70" : "text-krem-100/55"}`}>
               {o.hint}
             </span>
           </button>

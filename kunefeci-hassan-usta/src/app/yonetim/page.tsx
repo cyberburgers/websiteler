@@ -11,7 +11,7 @@ import { serviceDay } from "@/lib/serviceDay";
 export default function AdminPage() {
   return (
     <Suspense
-      fallback={<p className="grid min-h-dvh place-items-center text-sm font-bold text-zumrut-900/60">Yükleniyor…</p>}
+      fallback={<p className="grid min-h-dvh place-items-center text-sm font-bold text-krem-100/60">Yükleniyor…</p>}
     >
       <Panel />
     </Suspense>

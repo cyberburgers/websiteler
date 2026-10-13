@@ -3,6 +3,7 @@
 import { BellRing, ChefHat, ReceiptText, ShoppingBag, WifiOff } from "lucide-react";
 import { LATE_MS, byUrgency, since, type OpenCall } from "@/lib/calls/useWaiterCalls";
 import { formatPrice } from "@/lib/format";
+import { noteClass } from "./fields";
 
 /**
  * The "Siparişler" tab: everything waiting at the tables, newest need first, as on the waiter screen.
@@ -22,13 +23,13 @@ export function OrdersBoard({
   return (
     <div className="space-y-3">
       {!online && (
-        <p className="flex items-center gap-2 rounded-2xl bg-amber-50 px-4 py-3 text-sm font-bold text-amber-900 ring-1 ring-amber-200">
+        <p className={`${noteClass} flex items-center gap-2 px-4 py-3 text-sm font-bold`}>
           <WifiOff className="size-4 shrink-0" aria-hidden="true" /> Bağlantı koptu, yeniden deneniyor…
         </p>
       )}
       {calls.length === 0 ? (
-        <div className="rounded-3xl bg-white/[0.06] px-6 py-10 text-center ring-1 ring-white/10">
-          <ShoppingBag className="mx-auto size-8 text-fistik-300" aria-hidden="true" />
+        <div className="rounded-3xl bg-zumrut-900/60 px-6 py-10 text-center ring-1 ring-karamel-300/15">
+          <ShoppingBag className="mx-auto size-8 text-karamel-300" aria-hidden="true" />
           <p className="font-display mt-3 text-xl font-semibold text-krem-50">Şu an bekleyen yok</p>
           <p className="mt-1 text-sm text-krem-100/65">Masadan gelen siparişler ve garson çağrıları burada belirir.</p>
         </div>
@@ -45,19 +46,19 @@ export function OrdersBoard({
               <li
                 key={call.id}
                 data-pano-cagri={call.table}
-                className={`animate-pop-in flex flex-col rounded-3xl bg-white p-4 text-zumrut-900 ring-2 ${
-                  late ? "ring-amber-400" : making ? "ring-transparent" : "ring-fistik-400"
+                className={`animate-pop-in flex flex-col rounded-3xl bg-zumrut-900 p-4 text-krem-50 shadow-[0_18px_40px_-28px_rgba(0,0,0,.9)] ${
+                  late ? "ring-2 ring-amber-400" : making ? "ring-1 ring-white/10" : "ring-2 ring-karamel-300"
                 }`}
               >
                 <div className="flex items-center justify-between gap-3">
                   <span
                     className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-extrabold ${
-                      making ? "bg-krem-200 text-zumrut-800" : "bg-fistik-300/60 text-zumrut-950"
+                      making ? "bg-white/10 text-krem-100" : "bg-karamel-300 text-zumrut-950"
                     }`}
                   >
                     <Icon className="size-3.5" aria-hidden="true" /> {what}
                   </span>
-                  <span className={`text-xs font-bold ${late ? "text-amber-700" : "text-zumrut-900/55"}`}>
+                  <span className={`text-xs font-bold ${late ? "text-amber-300" : "text-krem-100/55"}`}>
                     {since(call.at, now)}
                   </span>
                 </div>
@@ -66,17 +67,17 @@ export function OrdersBoard({
                   <ul className="mt-2 space-y-1 text-[15px]">
                     {call.lines.map((line, i) => (
                       <li key={i} className="flex gap-2">
-                        <span className="min-w-7 font-extrabold tabular-nums text-fistik-600">{line.qty}×</span>
+                        <span className="min-w-7 font-extrabold tabular-nums text-karamel-300">{line.qty}×</span>
                         <span className="font-semibold">
                           {line.name}
-                          {line.option && <span className="text-zumrut-900/55"> · {line.option}</span>}
+                          {line.option && <span className="text-krem-100/55"> · {line.option}</span>}
                         </span>
                       </li>
                     ))}
                   </ul>
                 )}
                 {order && call.note && (
-                  <p className="mt-2 rounded-xl bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-950 ring-1 ring-amber-200">
+                  <p className="mt-2 rounded-xl bg-amber-300/10 px-3 py-2 text-sm font-semibold text-amber-100 ring-1 ring-amber-300/25">
                     Not: {call.note}
                   </p>
                 )}
@@ -87,7 +88,7 @@ export function OrdersBoard({
                   type="button"
                   onClick={() => answer(call.id, making ? "teslim" : "gor")}
                   className={`mt-3 h-12 rounded-2xl text-base font-extrabold transition active:scale-[.98] ${
-                    making ? "bg-fistik-300 text-zumrut-950 hover:bg-fistik-200" : "bg-zumrut-800 text-krem-50 hover:bg-zumrut-700"
+                    making ? "bg-fistik-300 text-zumrut-950 hover:bg-fistik-200" : "bg-karamel-300 text-zumrut-950 hover:bg-krem-300"
                   }`}
                 >
                   {order ? (making ? "Teslim edildi" : "Onayla") : "Tamam, gidiyorum"}

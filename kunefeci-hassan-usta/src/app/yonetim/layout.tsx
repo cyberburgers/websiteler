@@ -8,14 +8,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1d3126",
+  themeColor: "#142319",
 };
 
-/** The panel has its own page shell: no menu header or footer, light and plain for editing. */
+/** The panel has its own page shell: no menu header or footer, dark and calm, in the shop's colours. */
 export default function AdminLayout({ children }: LayoutProps<"/yonetim">) {
   return (
     <html lang="tr" className={`panel ${fontVariables} antialiased`}>
-      <body className="min-h-dvh text-zumrut-900">{children}</body>
+      <body className="min-h-dvh text-krem-50">{children}</body>
     </html>
   );
 }

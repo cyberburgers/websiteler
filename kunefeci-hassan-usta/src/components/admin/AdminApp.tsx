@@ -6,7 +6,7 @@ import { logoutAction, saveContentAction } from "@/app/yonetim/actions";
 import { Logo } from "@/components/Logo";
 import type { SiteContent } from "@/lib/content";
 import { usePanelCalls } from "./CallAlerts";
-import { buttonClass, headerButton } from "./fields";
+import { buttonClass, headerButton, noteClass } from "./fields";
 import { HighlightsEditor } from "./HighlightsEditor";
 import { InfoEditor } from "./InfoEditor";
 import { MenuEditor } from "./MenuEditor";
@@ -117,7 +117,7 @@ export function AdminApp({ initial, writable, staff, siteUrl, today }: Props) {
   return (
     <div className="min-h-dvh pb-32">
       {/* One row on a phone: the logo, the title, and the buttons as icons (with their names from tablet width). */}
-      <header className="bg-zumrut-925 text-krem-50">
+      <header className="bg-zumrut-950 text-krem-50">
         <div className="mx-auto flex max-w-3xl items-center gap-2.5 px-4 pb-2 pt-3 sm:gap-4">
           <Logo id="panel-logo" className="hidden h-auto w-11 shrink-0 sm:block" />
           <div className="min-w-0 flex-1">
@@ -146,7 +146,7 @@ export function AdminApp({ initial, writable, staff, siteUrl, today }: Props) {
         </div>
       </header>
       {/* The sections stay in reach while scrolling down a long menu. */}
-      <div className="sticky top-0 z-40 bg-zumrut-925 shadow-[0_10px_24px_-18px_rgba(0,0,0,.7)]">
+      <div className="sticky top-0 z-40 border-b border-karamel-300/10 bg-zumrut-950/95 shadow-[0_10px_24px_-18px_rgba(0,0,0,.8)] backdrop-blur">
         <div role="tablist" aria-label="Bölümler" className="no-scrollbar mx-auto flex max-w-3xl gap-1 overflow-x-auto px-3 py-2">
           {tabs.map((t) => (
             <button
@@ -156,12 +156,16 @@ export function AdminApp({ initial, writable, staff, siteUrl, today }: Props) {
               aria-selected={tab === t.id}
               onClick={() => setTab(t.id)}
               className={`inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full px-4 text-sm font-extrabold transition-colors ${
-                tab === t.id ? "bg-krem-50 text-zumrut-950" : "text-krem-100/75 hover:bg-white/10 hover:text-krem-50"
+                tab === t.id ? "bg-karamel-300 text-zumrut-950" : "text-krem-100/70 hover:bg-white/5 hover:text-krem-50"
               }`}
             >
               {t.label}
               {t.id === "siparis" && waiting > 0 && (
-                <span className="grid min-w-5 place-items-center rounded-full bg-amber-400 px-1.5 text-xs font-extrabold tabular-nums text-zumrut-950">
+                <span
+                  className={`grid min-w-5 place-items-center rounded-full px-1.5 text-xs font-extrabold tabular-nums ${
+                    tab === t.id ? "bg-zumrut-950 text-karamel-300" : "bg-amber-400 text-zumrut-950"
+                  }`}
+                >
                   {waiting}
                 </span>
               )}
@@ -185,7 +189,7 @@ export function AdminApp({ initial, writable, staff, siteUrl, today }: Props) {
 
       <main className="mx-auto max-w-3xl px-3 pt-4 sm:px-4">
         {!writable && (
-          <p className="mb-4 flex gap-2.5 rounded-2xl bg-amber-50 p-4 text-sm leading-relaxed text-amber-900 ring-1 ring-amber-200">
+          <p className={`${noteClass} mb-4 flex gap-2.5 p-4 text-sm leading-relaxed`}>
             <AlertTriangle className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
             <span>
               Kaydetme henüz kurulmadı: Vercel&apos;de projeye <b>Blob</b> depolaması bağlanmalı. Değişiklik yapabilirsiniz
@@ -212,12 +216,12 @@ export function AdminApp({ initial, writable, staff, siteUrl, today }: Props) {
       </main>
 
       {(dirty || message) && (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-zumrut-800/15 bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_30px_-18px_rgba(20,35,25,.5)] backdrop-blur">
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-karamel-300/20 bg-zumrut-925/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-16px_36px_-18px_rgba(0,0,0,.9)] backdrop-blur">
           <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-3 px-4 py-3">
             <p
               role="status"
               className={`min-w-0 flex-1 text-sm font-bold ${
-                message ? (message.ok ? "text-zumrut-700" : "text-red-700") : "text-zumrut-900"
+                message ? (message.ok ? "text-fistik-300" : "text-red-300") : "text-krem-100"
               }`}
             >
               {message ? (

@@ -6,7 +6,7 @@ import { Photo } from "@/components/ui";
 import { allergenIds, allergens, tagIds, tags, type MenuCategory, type MenuItem } from "@/content/menu";
 import type { SiteContent } from "@/lib/content";
 import { serviceDay } from "@/lib/serviceDay";
-import { Bilingual, Field, PhotoField, Toggle, buttonClass, inputClass } from "./fields";
+import { Bilingual, Field, PhotoField, Toggle, buttonClass, cardClass, chipClass, inputClass, noteClass } from "./fields";
 import { TEMP_PREFIX, allIds, blankCategory, blankItem, formatTl, move, uniqueId } from "./menu-utils";
 import { ItemPairingField } from "./PairingEditor";
 
@@ -17,7 +17,7 @@ const digits = (value: string) => Number(value.replace(/\D/g, "").slice(0, 7) ||
 function PriceInput({ value, onChange, label }: { value: number; onChange: (n: number) => void; label: string }) {
   return (
     <span className="relative block">
-      <span className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-sm font-bold text-zumrut-900/50">
+      <span className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-sm font-bold text-krem-100/45">
         ₺
       </span>
       <input
@@ -72,11 +72,11 @@ function ModalShell({
     <dialog
       ref={ref}
       onClose={onClose}
-      className="m-0 h-dvh max-h-none w-full max-w-none bg-krem-100 p-0 text-zumrut-900 backdrop:bg-zumrut-950/60 sm:m-auto sm:h-auto sm:max-h-[90dvh] sm:max-w-2xl sm:rounded-3xl"
+      className="m-0 h-dvh max-h-none w-full max-w-none bg-zumrut-925 p-0 text-krem-50 backdrop:bg-black/65 sm:m-auto sm:h-auto sm:max-h-[90dvh] sm:max-w-2xl sm:rounded-3xl sm:ring-1 sm:ring-karamel-300/20"
     >
       {open && (
         <div className="flex min-h-full flex-col">
-          <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-zumrut-800/10 bg-krem-100/95 px-4 py-3 backdrop-blur">
+          <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-karamel-300/15 bg-zumrut-925/95 px-4 py-3 backdrop-blur">
             <h2 className="text-lg font-extrabold">{title}</h2>
             <button type="button" onClick={() => ref.current?.close()} className={buttonClass.primary}>
               Tamam
@@ -102,7 +102,7 @@ function Chips<T extends string>({
 }) {
   return (
     <fieldset>
-      <legend className="text-sm font-bold text-zumrut-900">{label}</legend>
+      <legend className="text-sm font-bold text-krem-100">{label}</legend>
       <div className="mt-2 flex flex-wrap gap-2">
         {options.map((o) => {
           const on = selected.includes(o.id);
@@ -112,9 +112,7 @@ function Chips<T extends string>({
               type="button"
               aria-pressed={on}
               onClick={() => onChange(on ? selected.filter((s) => s !== o.id) : [...selected, o.id])}
-              className={`h-10 rounded-full px-4 text-sm font-bold transition-colors ${
-                on ? "bg-zumrut-800 text-krem-50" : "bg-white text-zumrut-900 ring-1 ring-zumrut-800/15"
-              }`}
+              className={`h-10 rounded-full px-4 text-sm font-bold transition-colors ${chipClass(on)}`}
             >
               {o.label}
             </button>
@@ -165,36 +163,22 @@ function ItemDialog({
           />
 
           <fieldset>
-            <legend className="text-sm font-bold text-zumrut-900">Fiyat</legend>
-            <p className="text-xs text-zumrut-900/55">
+            <legend className="text-sm font-bold text-krem-100">Fiyat</legend>
+            <p className="text-xs text-krem-100/55">
               Tek fiyat yeterli. Porsiyon / 1 kg gibi seçenekler için yeni satır ekleyin.
             </p>
             <div className="mt-2 space-y-2">
               {item.prices.map((price, pi) => (
-                <div key={pi} className="flex flex-wrap items-end gap-2 rounded-xl bg-white/60 p-2 ring-1 ring-zumrut-800/10">
+                <div key={pi} className="flex flex-wrap items-end gap-2 rounded-xl bg-white/5 p-2 ring-1 ring-white/10">
                   {item.prices.length > 1 && (
-                    <>
-                      <Field label="Seçenek (Türkçe)">
-                        <input
-                          value={price.label?.tr ?? ""}
-                          placeholder="Ör. Porsiyon"
-                          onChange={(e) =>
-                            edit((d) => void (d.prices[pi].label = { tr: e.target.value, en: d.prices[pi].label?.en ?? "" }))
-                          }
-                          className={`${inputClass} w-36`}
-                        />
-                      </Field>
-                      <Field label="İngilizce">
-                        <input
-                          value={price.label?.en ?? ""}
-                          placeholder="Portion"
-                          onChange={(e) =>
-                            edit((d) => void (d.prices[pi].label = { tr: d.prices[pi].label?.tr ?? "", en: e.target.value }))
-                          }
-                          className={`${inputClass} w-32`}
-                        />
-                      </Field>
-                    </>
+                    <Field label="Seçenek">
+                      <input
+                        value={price.label?.tr ?? ""}
+                        placeholder="Ör. Porsiyon"
+                        onChange={(e) => edit((d) => void (d.prices[pi].label = { tr: e.target.value, en: "" }))}
+                        className={`${inputClass} w-40`}
+                      />
+                    </Field>
                   )}
                   <span className="w-28">
                     <PriceInput
@@ -272,7 +256,7 @@ function ItemDialog({
             </select>
           </Field>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white p-3 ring-1 ring-zumrut-800/10">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-zumrut-900 p-3 ring-1 ring-white/10">
             <Toggle
               checked={item.available !== false}
               onChange={(on) => edit((d) => void (on ? delete d.available : (d.available = false)))}
@@ -301,7 +285,7 @@ function ItemDialog({
             </span>
           </div>
 
-          <details className="rounded-xl bg-white p-3 ring-1 ring-zumrut-800/10">
+          <details className="rounded-xl bg-zumrut-900 p-3 ring-1 ring-white/10">
             <summary className="cursor-pointer text-sm font-bold">Çarkta görünen kısa ad (isteğe bağlı)</summary>
             <div className="mt-3">
               <Bilingual
@@ -363,7 +347,7 @@ function CategoryDialog({
             }
           />
           <fieldset>
-            <legend className="text-sm font-bold text-zumrut-900">Görünüm</legend>
+            <legend className="text-sm font-bold text-krem-100">Görünüm</legend>
             <div className="mt-2 grid gap-2 sm:grid-cols-2">
               {(
                 [
@@ -377,7 +361,7 @@ function CategoryDialog({
                   aria-pressed={category.layout === value}
                   onClick={() => edit((d) => void (d.layout = value))}
                   className={`rounded-xl p-3 text-start ring-1 transition ${
-                    category.layout === value ? "bg-zumrut-800 text-krem-50 ring-zumrut-800" : "bg-white ring-zumrut-800/15"
+                    category.layout === value ? "bg-karamel-300 text-zumrut-950 ring-karamel-300" : "bg-white/5 ring-white/15 hover:bg-white/10"
                   }`}
                 >
                   <span className="block text-sm font-extrabold">{title}</span>
@@ -432,11 +416,11 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
   return (
     <div className="space-y-4">
       {soldOutNow.length > 0 && (
-        <div className="flex flex-wrap items-center gap-3 rounded-2xl bg-amber-50 p-4 ring-1 ring-amber-200">
-          <CalendarX2 className="size-5 shrink-0 text-amber-700" aria-hidden="true" />
-          <p className="min-w-0 flex-1 text-sm leading-relaxed text-amber-950">
+        <div className={`${noteClass} flex flex-wrap items-center gap-3 p-4`}>
+          <CalendarX2 className="size-5 shrink-0 text-amber-300" aria-hidden="true" />
+          <p className="min-w-0 flex-1 text-sm leading-relaxed">
             <b>Bugün yok:</b> {soldOutNow.map((i) => i.name.tr).join(", ")}.{" "}
-            <span className="text-amber-900/80">Siz geri alana kadar menüde “Bugün yok” yazar.</span>
+            <span className="text-amber-100/70">Siz geri alana kadar menüde “Bugün yok” yazar.</span>
           </p>
           <button
             type="button"
@@ -452,18 +436,18 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
         </div>
       )}
       {content.menu.map((category, ci) => (
-        <section key={category.id} className="overflow-hidden rounded-2xl bg-white ring-1 ring-zumrut-800/10">
-          <header className="flex items-center gap-2 border-b border-zumrut-800/10 bg-zumrut-800 px-3 py-2.5 text-krem-50">
+        <section key={category.id} className={`${cardClass} overflow-hidden`}>
+          <header className="flex items-center gap-2 border-b border-karamel-300/15 bg-gradient-to-r from-zumrut-800 to-zumrut-900 px-3 py-2.5 text-krem-50">
             <h2 className="min-w-0 flex-1 truncate text-base font-extrabold">
               {category.name.tr || "Adsız kategori"}
-              <span className="ms-2 text-xs font-semibold text-krem-100/70">{category.items.length} ürün</span>
+              <span className="ms-2 text-xs font-semibold text-karamel-300/80">{category.items.length} ürün</span>
             </h2>
             <button
               type="button"
               aria-label={`${category.name.tr} kategorisini yukarı taşı`}
               disabled={ci === 0}
               onClick={() => update((draft) => move(draft.menu, ci, ci - 1))}
-              className="grid size-9 place-items-center rounded-lg bg-white/10 disabled:opacity-30"
+              className="grid size-9 place-items-center rounded-lg bg-white/5 ring-1 ring-white/10 hover:bg-white/10 disabled:opacity-30"
             >
               <ArrowUp className="size-4" />
             </button>
@@ -472,44 +456,44 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
               aria-label={`${category.name.tr} kategorisini aşağı taşı`}
               disabled={ci === content.menu.length - 1}
               onClick={() => update((draft) => move(draft.menu, ci, ci + 1))}
-              className="grid size-9 place-items-center rounded-lg bg-white/10 disabled:opacity-30"
+              className="grid size-9 place-items-center rounded-lg bg-white/5 ring-1 ring-white/10 hover:bg-white/10 disabled:opacity-30"
             >
               <ArrowDown className="size-4" />
             </button>
             <button
               type="button"
               onClick={() => setCategoryId(category.id)}
-              className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-white/15 px-3 text-sm font-bold"
+              className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-white/5 px-3 text-sm font-bold text-karamel-300 ring-1 ring-karamel-300/30 hover:bg-karamel-300/10"
             >
               <Pencil className="size-3.5" aria-hidden="true" /> Düzenle
             </button>
           </header>
 
-          <ul className="divide-y divide-zumrut-800/10">
+          <ul className="divide-y divide-white/[0.07]">
             {category.items.map((item, ii) => {
               const hidden = item.available === false;
               const soldOut = !hidden && item.soldOutSince !== undefined;
               return (
                 <li
                   key={item.id}
-                  className={`flex gap-3 p-3 ${hidden ? "bg-krem-100/70" : soldOut ? "bg-amber-50/80" : ""}`}
+                  className={`flex gap-3 p-3 ${hidden ? "bg-black/15" : soldOut ? "bg-amber-300/[0.06]" : ""}`}
                 >
                   <span
-                    className={`relative size-14 shrink-0 overflow-hidden rounded-xl bg-krem-200 ${hidden ? "opacity-50" : ""}`}
+                    className={`relative size-14 shrink-0 overflow-hidden rounded-xl bg-zumrut-950 ${hidden ? "opacity-50" : ""}`}
                   >
                     {item.image && <Photo photo={item.image} alt="" sizes="56px" />}
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start gap-2">
-                      <p className={`min-w-0 flex-1 font-bold leading-snug ${hidden ? "text-zumrut-900/50" : ""}`}>
+                      <p className={`min-w-0 flex-1 font-bold leading-snug ${hidden ? "text-krem-100/45" : ""}`}>
                         {item.name.tr || "Adsız ürün"}
                         {hidden && (
-                          <span className="ms-2 inline-flex items-center gap-1 rounded-full bg-zumrut-900/10 px-2 py-0.5 align-middle text-[11px] font-extrabold text-zumrut-900/70">
+                          <span className="ms-2 inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 align-middle text-[11px] font-extrabold text-krem-100/70">
                             <EyeOff className="size-3" aria-hidden="true" /> Gizli
                           </span>
                         )}
                         {soldOut && (
-                          <span className="ms-2 inline-flex items-center gap-1 rounded-full bg-amber-200 px-2 py-0.5 align-middle text-[11px] font-extrabold text-amber-950">
+                          <span className="ms-2 inline-flex items-center gap-1 rounded-full bg-amber-300/15 px-2 py-0.5 align-middle text-[11px] font-extrabold text-amber-200 ring-1 ring-amber-300/30">
                             <CalendarX2 className="size-3" aria-hidden="true" /> {sinceLabel(item.soldOutSince!, today)}
                           </span>
                         )}
@@ -536,7 +520,7 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
                         <button
                           type="button"
                           onClick={() => setItemId(item.id)}
-                          className="text-start text-sm font-bold text-zumrut-800 underline decoration-zumrut-800/30 underline-offset-4"
+                          className="text-start text-sm font-bold text-karamel-300 underline decoration-karamel-300/40 underline-offset-4"
                         >
                           {item.prices.map((p) => `${p.label?.tr || "?"} ${formatTl(p.amount)}`).join(" · ")}
                         </button>
@@ -568,7 +552,7 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
                           className={`inline-flex h-9 items-center gap-1.5 rounded-full px-3.5 text-sm font-extrabold transition active:scale-[.97] ${
                             soldOut
                               ? "bg-amber-400 text-zumrut-950 ring-1 ring-amber-500"
-                              : "bg-white text-zumrut-900 ring-1 ring-zumrut-800/20 hover:bg-krem-100"
+                              : "bg-white/5 text-krem-100 ring-1 ring-white/15 hover:bg-white/10"
                           }`}
                         >
                           {soldOut ? (
@@ -585,7 +569,7 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
               );
             })}
           </ul>
-          <div className="border-t border-zumrut-800/10 p-3">
+          <div className="border-t border-white/[0.07] p-3">
             <button
               type="button"
               onClick={() => {
@@ -608,7 +592,7 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
           update((draft) => void draft.menu.push(category));
           setCategoryId(category.id);
         }}
-        className={`${buttonClass.quiet} w-full border-2 border-dashed border-zumrut-800/20 ring-0`}
+        className={`${buttonClass.quiet} w-full border-2 border-dashed border-karamel-300/30 ring-0`}
       >
         <Plus className="size-4" aria-hidden="true" /> Yeni kategori ekle
       </button>

@@ -4,7 +4,7 @@ import { Check, Copy, ExternalLink, Loader2, QrCode, RefreshCw } from "lucide-re
 import { useState, useTransition } from "react";
 import { renewStaffKeyAction } from "@/app/yonetim/actions";
 import type { SiteContent } from "@/lib/content";
-import { Field, Section, Toggle, buttonClass, inputClass } from "./fields";
+import { Field, Section, Toggle, buttonClass, inputClass, noteClass } from "./fields";
 import { TableCodes } from "./TableCodes";
 
 export type StaffSetup = { key: string; url: string; qrSvg: string; enabled: boolean };
@@ -53,7 +53,7 @@ export function StaffEditor({
   return (
     <div className="space-y-4">
       {!staff.enabled && (
-        <p className="rounded-2xl bg-amber-50 p-4 text-sm leading-relaxed text-amber-900 ring-1 ring-amber-200">
+        <p className={`${noteClass} p-4 text-sm leading-relaxed`}>
           Garson çağırma henüz kurulmadı: Vercel&apos;de projeye <b>Upstash Redis</b> bağlanmalı. O zamana kadar müşteriler
           tuşu görmez. Adımlar README dosyasında.
         </p>
@@ -63,7 +63,7 @@ export function StaffEditor({
         title="Masadan sipariş"
         hint="Masanın karekoduyla açılan menüde ürünlerin yanında “Ekle” çıkar; siparişler Siparişler sekmesine ve garson ekranına sesli düşer."
       >
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white p-3 ring-1 ring-zumrut-800/10">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-zumrut-950/50 p-3 ring-1 ring-white/10">
           <Toggle
             checked={content.tableOrders !== false}
             onChange={(on) => update((d) => void (on ? delete d.tableOrders : (d.tableOrders = false)))}
@@ -80,12 +80,12 @@ export function StaffEditor({
         {staff.url ? (
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <div
-              className="mx-auto w-40 shrink-0 rounded-2xl bg-white p-3 ring-1 ring-zumrut-800/10 sm:mx-0 [&>svg]:h-auto [&>svg]:w-full"
+              className="mx-auto w-40 shrink-0 rounded-2xl bg-white p-3 sm:mx-0 [&>svg]:h-auto [&>svg]:w-full"
               role="img"
               aria-label="Garson ekranının karekodu"
               dangerouslySetInnerHTML={{ __html: staff.qrSvg }}
             />
-            <div className="min-w-0 flex-1 space-y-3 text-sm leading-relaxed text-zumrut-900/75">
+            <div className="min-w-0 flex-1 space-y-3 text-sm leading-relaxed text-krem-100/75">
               <p className="flex gap-2">
                 <QrCode className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
                 <span>Tabletin kamerasıyla bu karekodu okutun ya da bağlantıyı tablete gönderin.</span>
@@ -114,7 +114,7 @@ export function StaffEditor({
             </div>
           </div>
         ) : (
-          <p className="text-sm leading-relaxed text-zumrut-900/75">
+          <p className="text-sm leading-relaxed text-krem-100/75">
             Garson ekranının adresi, garson çağırma kurulunca (yukarıdaki not) burada çıkar.
           </p>
         )}
