@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { AdminApp } from "@/components/admin/AdminApp";
+import { site } from "@/content/site";
 import { isAdmin, passwordState } from "@/lib/admin/auth";
 import { staffSetup } from "@/lib/admin/staff";
 import { readContentFresh } from "@/lib/content";
@@ -22,6 +23,8 @@ async function Panel() {
   // Read straight from the store, not the site's cache, so the panel always edits the latest version.
   const content = await readContentFresh();
   return (
-    <AdminApp initial={content} writable={storeIsWritable()} staff={passwordState() === "ok" ? await staffSetup() : null} today={serviceDay()} />
+    <AdminApp initial={content} writable={storeIsWritable()} staff={passwordState() === "ok" ? await staffSetup() : null} siteUrl={site.url}
+      today={serviceDay()}
+    />
   );
 }

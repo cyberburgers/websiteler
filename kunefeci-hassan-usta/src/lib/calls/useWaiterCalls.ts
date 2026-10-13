@@ -25,22 +25,31 @@ const RING_AGAIN_MS = 60 * 1000;
 /** After this a call is shown as late: someone has been waiting too long. */
 export const LATE_MS = 2 * 60 * 1000;
 
-/** A short two-note chime made in the browser, so no sound file is needed. */
+/**
+ * A soft two-note bell (G5, then D5), made in the browser so no sound file is needed. Each note is a pure
+ * tone with a quieter overtone that fades first, a gentle start and a long tail: it carries across a busy
+ * shop without the shrill beep of an alarm.
+ */
 function chime(context: AudioContext | null) {
   if (!context) return;
   const start = context.currentTime;
-  for (const [i, freq] of [988, 740].entries()) {
-    const osc = context.createOscillator();
-    const gain = context.createGain();
-    osc.type = "sine";
-    osc.frequency.value = freq;
-    const t = start + i * 0.28;
-    gain.gain.setValueAtTime(0.0001, t);
-    gain.gain.exponentialRampToValueAtTime(0.5, t + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.6);
-    osc.connect(gain).connect(context.destination);
-    osc.start(t);
-    osc.stop(t + 0.65);
+  for (const [i, freq] of [784, 587].entries()) {
+    const t = start + i * 0.32;
+    for (const [mult, level, length] of [
+      [1, 0.32, 1.4],
+      [2.01, 0.07, 0.5],
+    ]) {
+      const osc = context.createOscillator();
+      const gain = context.createGain();
+      osc.type = "sine";
+      osc.frequency.value = freq * mult;
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(level, t + 0.012);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + length);
+      osc.connect(gain).connect(context.destination);
+      osc.start(t);
+      osc.stop(t + length + 0.05);
+    }
   }
 }
 

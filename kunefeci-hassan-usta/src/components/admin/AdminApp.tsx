@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, CheckCircle2, ExternalLink, LogOut, QrCode } from "lucide-react";
+import { AlertTriangle, BellRing, CheckCircle2, ExternalLink, LogOut, QrCode } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
 import { logoutAction, saveContentAction } from "@/app/yonetim/actions";
 import { Logo } from "@/components/Logo";
@@ -10,15 +10,17 @@ import { buttonClass, headerButton } from "./fields";
 import { HighlightsEditor } from "./HighlightsEditor";
 import { InfoEditor } from "./InfoEditor";
 import { MenuEditor } from "./MenuEditor";
+import { OrdersBoard } from "./OrdersBoard";
 import { PairingEditor } from "./PairingEditor";
 import { StaffEditor, type StaffSetup } from "./StaffEditor";
 
-type Tab = "menu" | "oneri" | "duyuru" | "garson" | "isletme";
+type Tab = "siparis" | "menu" | "oneri" | "duyuru" | "masalar" | "isletme";
 const TABS: { id: Tab; label: string }[] = [
+  { id: "siparis", label: "Siparişler" },
   { id: "menu", label: "Menü" },
   { id: "oneri", label: "Öneriler" },
   { id: "duyuru", label: "Duyuru" },
-  { id: "garson", label: "Garson" },
+  { id: "masalar", label: "Masalar" },
   { id: "isletme", label: "İşletme bilgileri" },
 ];
 
@@ -28,6 +30,8 @@ type Props = {
   writable: boolean;
   /** Null until a panel password is set (the waiter screen key comes from it). */
   staff: StaffSetup | null;
+  /** The site's own address, which the table codes lead to. */
+  siteUrl: string;
   /** The shop's working day, for "Bugün yok". */
   today: string;
 };
@@ -53,15 +57,18 @@ const savedTime = (iso?: string) =>
       }).format(new Date(iso))
     : null;
 
-export function AdminApp({ initial, writable, staff, today }: Props) {
+export function AdminApp({ initial, writable, staff, siteUrl, today }: Props) {
   const [content, setContent] = useState(initial);
   const [saved, setSaved] = useState(() => JSON.stringify(initial));
-  const [tab, setTab] = useState<Tab>("menu");
+  // During service the panel opens on the orders; before calls are set up there are none to show.
+  const [tab, setTab] = useState<Tab>(staff?.enabled ? "siparis" : "menu");
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
   const [saving, startSaving] = useTransition();
   const dirty = JSON.stringify(content) !== saved;
   const [staffSetup, setStaffSetup] = useState(staff);
   const calls = usePanelCalls(staffSetup?.enabled ? staffSetup.key : null);
+  const waiting = calls.list.filter((c) => !c.seenAt).length;
+  const tabs = TABS.filter((t) => t.id !== "siparis" || staffSetup?.enabled);
 
   // Leaving with unsaved changes asks first.
   useEffect(() => {
@@ -140,25 +147,41 @@ export function AdminApp({ initial, writable, staff, today }: Props) {
       </header>
       {/* The sections stay in reach while scrolling down a long menu. */}
       <div className="sticky top-0 z-40 bg-zumrut-925 shadow-[0_10px_24px_-18px_rgba(0,0,0,.7)]">
-        <div role="tablist" aria-label="Bölümler" className="no-scrollbar mx-auto flex max-w-3xl gap-1 overflow-x-auto px-3 pt-1">
-          {TABS.map((t) => (
+        <div role="tablist" aria-label="Bölümler" className="no-scrollbar mx-auto flex max-w-3xl gap-1 overflow-x-auto px-3 py-2">
+          {tabs.map((t) => (
             <button
               key={t.id}
               type="button"
               role="tab"
               aria-selected={tab === t.id}
               onClick={() => setTab(t.id)}
-              className={`h-11 shrink-0 rounded-t-xl px-4 text-sm font-extrabold transition-colors ${
-                tab === t.id ? "bg-krem-100 text-zumrut-950" : "text-krem-100/75 hover:text-krem-50"
+              className={`inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full px-4 text-sm font-extrabold transition-colors ${
+                tab === t.id ? "bg-krem-50 text-zumrut-950" : "text-krem-100/75 hover:bg-white/10 hover:text-krem-50"
               }`}
             >
               {t.label}
+              {t.id === "siparis" && waiting > 0 && (
+                <span className="grid min-w-5 place-items-center rounded-full bg-amber-400 px-1.5 text-xs font-extrabold tabular-nums text-zumrut-950">
+                  {waiting}
+                </span>
+              )}
             </button>
           ))}
         </div>
+        {/* Elsewhere in the panel, one slim line says something is waiting (the device chimes as well). */}
+        {tab !== "siparis" && waiting > 0 && (
+          <button
+            type="button"
+            onClick={() => setTab("siparis")}
+            data-bekleyen=""
+            className="flex w-full items-center justify-center gap-2 bg-amber-300 px-4 py-2 text-sm font-extrabold text-zumrut-950"
+          >
+            <BellRing className="size-4 animate-bell" aria-hidden="true" />
+            {waiting} bekleyen sipariş ya da çağrı · Göster
+          </button>
+        )}
       </div>
 
-      {calls.alerts}
 
       <main className="mx-auto max-w-3xl px-3 pt-4 sm:px-4">
         {!writable && (
@@ -170,20 +193,20 @@ export function AdminApp({ initial, writable, staff, today }: Props) {
             </span>
           </p>
         )}
-        {tab === "menu" && (
-          <>
-            <p className="mb-3 text-sm text-zumrut-900/65">
-              Fiyatı doğrudan kutudan değiştirin. Biten ürüne <b>Bugün yok</b> deyin: menüde kalır, “Bugün yok” yazar
-              ve siz düğmeye tekrar basana kadar öyle kalır. Artık satılmayan ürünü <b>Menüde</b> düğmesiyle gizleyin.
-              Ayrıntılar için kalem simgesine basın. Bitince alttan <b>Kaydet</b>.
-            </p>
-            <MenuEditor content={content} update={update} today={today} />
-          </>
+        {tab === "siparis" && (
+          <OrdersBoard calls={calls.list} now={calls.now} online={calls.online} answer={calls.answer} />
         )}
+        {tab === "menu" && <MenuEditor content={content} update={update} today={today} />}
         {tab === "oneri" && <PairingEditor content={content} update={update} />}
         {tab === "duyuru" && <HighlightsEditor content={content} update={update} />}
-        {tab === "garson" && staffSetup && (
-          <StaffEditor staff={staffSetup} onStaffChange={setStaffSetup} content={content} update={update} />
+        {tab === "masalar" && staffSetup && (
+          <StaffEditor
+            staff={staffSetup}
+            onStaffChange={setStaffSetup}
+            siteUrl={siteUrl}
+            content={content}
+            update={update}
+          />
         )}
         {tab === "isletme" && <InfoEditor content={content} update={update} />}
       </main>

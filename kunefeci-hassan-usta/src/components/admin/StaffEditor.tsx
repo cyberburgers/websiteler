@@ -5,6 +5,7 @@ import { useState, useTransition } from "react";
 import { renewStaffKeyAction } from "@/app/yonetim/actions";
 import type { SiteContent } from "@/lib/content";
 import { Field, Section, Toggle, buttonClass, inputClass } from "./fields";
+import { TableCodes } from "./TableCodes";
 
 export type StaffSetup = { key: string; url: string; qrSvg: string; enabled: boolean };
 
@@ -15,10 +16,13 @@ export type StaffSetup = { key: string; url: string; qrSvg: string; enabled: boo
 export function StaffEditor({
   staff,
   onStaffChange,
+  siteUrl,
   content,
   update,
 }: {
   staff: StaffSetup;
+  /** The site's own address, which the table codes lead to. */
+  siteUrl: string;
   /** After "Yeni adres oluştur": the new address, also for this panel's own call alerts. */
   onStaffChange: (next: StaffSetup) => void;
   content: SiteContent;
@@ -36,7 +40,6 @@ export function StaffEditor({
       else window.alert("Yeni adres oluşturulamadı. İnternet bağlantısını kontrol edip tekrar deneyin.");
     });
   };
-  const tableRange = content.tables ? `1-${content.tables}` : "1-12";
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(staff.url);
@@ -58,7 +61,7 @@ export function StaffEditor({
 
       <Section
         title="Masadan sipariş"
-        hint="Masa QR kartıyla açılan menüde ürünlerin yanında “Ekle” çıkar. Müşteri sepetini gönderir; sipariş garson ekranına ve bu panele sesli düşer."
+        hint="Masanın karekoduyla açılan menüde ürünlerin yanında “Ekle” çıkar; siparişler Siparişler sekmesine ve garson ekranına sesli düşer."
       >
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white p-3 ring-1 ring-zumrut-800/10">
           <Toggle
@@ -68,26 +71,6 @@ export function StaffEditor({
             showLabel
           />
         </div>
-        <ul className="mt-3 list-disc space-y-1 ps-5 text-sm leading-relaxed text-zumrut-900/75">
-          <li>
-            Sipariş gelince <b>Onayla</b>: müşterinin telefonunda “Hazırlanıyor” yazar. Masaya götürünce{" "}
-            <b>Teslim edildi</b>.
-          </li>
-          <li>Fiyatlar menüden hesaplanır; “Bugün yok” denen ürün sipariş edilemez.</li>
-          <li>Ödeme her zamanki gibi masada ya da kasada alınır.</li>
-          <li>Kapalıyken müşteri yalnızca garson çağırabilir. Değişiklik için alttan Kaydet.</li>
-        </ul>
-      </Section>
-
-      <Section
-        title="Bu panelde"
-        hint="Panel açıkken çağrılar ve siparişler burada da gelir: üstte “Masa 7 · Sipariş” çıkar ve cihaz öter."
-      >
-        <p className="text-sm leading-relaxed text-zumrut-900/75">
-          Sesin çıkması için panelde herhangi bir yere bir kez dokunmanız yeterli; üstteki düğme <b>“Ses açık”</b> olur.
-          Telefon kilitlenirse ya da panel kapatılırsa ses gelmez; dükkânda sürekli açık duracak bir cihaz için aşağıdaki
-          garson ekranını kullanın.
-        </p>
       </Section>
 
       <Section
@@ -137,33 +120,26 @@ export function StaffEditor({
         )}
       </Section>
 
-      <Section title="Müşteri tuşu" hint="Menünün altında, sayfa kayarken de görünen “Garson çağır” tuşu.">
-        <p className="text-sm leading-relaxed text-zumrut-900/75">
-          Tuş yalnızca <b>masa QR kartıyla</b> açılan menüde çıkar, çünkü garsonun hangi masaya gideceğini bilmesi gerekir.
-          Her masaya kendi numaralı kartını koyun.
-        </p>
-        <div className="mt-3">
-          <Field
-            label="Masa sayısı"
-            hint="Bundan büyük masa numarasıyla gelen çağrı ve sipariş kabul edilmez; adresi elle değiştirip sahte çağrı gönderilemez. Boş bırakılırsa sınır yok."
-          >
-            <input
-              type="number"
-              inputMode="numeric"
-              min={1}
-              max={999}
-              value={content.tables ?? ""}
-              onChange={(e) => {
-                const n = Math.floor(Number(e.target.value));
-                update((d) => void (n >= 1 && n <= 999 ? (d.tables = n) : delete d.tables));
-              }}
-              className={`${inputClass} max-w-32 tabular-nums`}
-            />
-          </Field>
-        </div>
-        <a href={`/tr/qr?masa=${tableRange}`} target="_blank" rel="noopener" className={`${buttonClass.quiet} mt-3`}>
-          Masa kartlarını bastır ({tableRange}) <ExternalLink className="size-4" aria-hidden="true" />
-        </a>
+      <Section
+        title="Masa karekodları"
+        hint="Her masanın kodu sabittir: masa numarası ve site adresi değişmedikçe hiç değişmez. Kaybolan kartı buradan yeniden basın."
+      >
+        <Field label="Masa sayısı" hint="Bundan büyük masa numarasıyla gelen çağrı ve sipariş kabul edilmez.">
+          <input
+            type="number"
+            inputMode="numeric"
+            min={1}
+            max={999}
+            value={content.tables ?? ""}
+            placeholder="12"
+            onChange={(e) => {
+              const n = Math.floor(Number(e.target.value));
+              update((d) => void (n >= 1 && n <= 999 ? (d.tables = n) : delete d.tables));
+            }}
+            className={`${inputClass} max-w-32 tabular-nums`}
+          />
+        </Field>
+        <TableCodes siteUrl={siteUrl} count={Math.min(content.tables ?? 12, 60)} />
       </Section>
     </div>
   );

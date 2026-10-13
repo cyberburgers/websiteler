@@ -55,7 +55,7 @@ sesli düşer. Garson “Tamam, gidiyorum”a basınca müşterinin telefonunda 
 
 - Tuş yalnızca masa numarası bilinen menüde çıkar (`/tr?masa=7` gibi; masa kartları `/tr/qr?masa=1-12`).
 - Aynı masa 40 saniyede bir çağırabilir; cevaplanmayan çağrı 2 dakikada sarıya döner, dakikada bir yeniden öter.
-- Garson ekranının adresi ve tabletle okutulacak karekodu: panel → **Garson**. Adresteki anahtar rastgeledir
+- Garson ekranının adresi ve tabletle okutulacak karekodu: panel → **Masalar**. Adresteki anahtar rastgeledir
   (şifreden üretilmez, adresten şifre tahmin edilemez) ve Redis'te durur. Biri işten ayrılırsa ya da tablet
   kaybolursa **Yeni adres oluştur**: eski adres hemen çalışmaz olur. Personel bu adresle menüyü değiştiremez.
 - Yönetici paneli açıkken çağrılar panelde de görünür: üstte “Masa 7 · Garson istiyor” kartı çıkar ve
@@ -84,13 +84,13 @@ Yalnızca masa QR kartıyla açılan menüde çalışır; masa dışından bakan
   gizlenen ürün sipariş edilemez (sepetten çıkarılır, müşteriye söylenir).
 - Ödeme her zamanki gibi masada ya da kasada alınır; sitede ödeme yok.
 - Sipariş çalışma saatlerine bağlı değildir: dükkân kapanış saatinden sonra da çalışabildiği için masadaki
-  misafir her zaman sipariş verebilir. Kapatmak için panel → **Garson** → “Müşteriler masadan sipariş verebilsin”.
+  misafir her zaman sipariş verebilir. Kapatmak için panel → **Masalar** → “Müşteriler masadan sipariş verebilsin”.
 - Aynı masadan 20 saniyede bir sipariş; bir masada en çok 6 açık sipariş. Teslim edilmeyen sipariş 3 saat
   sonra ekrandan kalkar.
-- Panel → **Garson** → “Müşteriler masadan sipariş verebilsin” ile kapatılır; kapalıyken yalnızca garson
+- Panel → **Masalar** → “Müşteriler masadan sipariş verebilsin” ile kapatılır; kapalıyken yalnızca garson
   çağırma kalır.
 - Masa numarası QR'dan gelir: biri adresi elle değiştirirse başka masa adına sipariş verebilir. Garson
-  masaya gittiğinde anlaşılır. Panel → **Garson** → **Masa sayısı** yazılırsa ondan büyük masa numarası
+  masaya gittiğinde anlaşılır. Panel → **Masalar** → **Masa sayısı** yazılırsa ondan büyük masa numarası
   kabul edilmez. Bir bağlantıdan dakikada en çok 30 çağrı/sipariş gelir (dükkânın wifi'sini paylaşan
   misafirler için bol; sahte çağrıyla ekranı doldurmayı durdurur). Masa numarası telefonda 4 saat geçerlidir.
 - Fiyat ya da boy sipariş sırasında panelden değiştiyse sipariş gitmez, misafirden sayfayı yenilemesi istenir
@@ -113,14 +113,15 @@ ya da doğrudan `https://alanadiniz.com/yonetim` adresiyle girilir.
 
 | Bölüm | Neler değişir? |
 | --- | --- |
-| **Menü** | Fiyatlar (doğrudan kutudan), **Bugün yok** düğmesi (ürün menüde kalır, "Bugün yok" yazar; panelden geri alınana kadar öyle kalır, günler geçtiyse panelde "12 Ekim'den beri yok" diye görünür), ürünü menüden gizleme/gösterme, yeni ürün, silme, sıralama, fotoğraf yükleme, Türkçe/İngilizce ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler (yalnız panelde), ürüne özel "Yanında iyi gider"; kategori ekleme, silme, sıralama |
-| **Öneriler** | Tatlıların altında çıkan "Yanında iyi gider" genel listesi (en çok 4 ürün, seçilen sırayla); ürüne özel listelerin özeti |
+| **Siparişler** | Masalardan gelen siparişler ve garson çağrıları: **Onayla** (misafirin telefonunda "Hazırlanıyor") → **Teslim edildi**; çağrıda **Tamam, gidiyorum**. Panel açıkken her sekmede yumuşak bir zil çalar, üstte "bekleyen" satırı çıkar |
+| **Menü** | Fiyatlar (doğrudan kutudan), **Bugün yok** düğmesi (ürün menüde kalır, "Bugün yok" yazar; panelden geri alınana kadar öyle kalır, günler geçtiyse panelde "12 Ekim'den beri yok" diye görünür), ürünü menüden gizleme/gösterme, yeni ürün, silme, sıralama, fotoğraf yükleme, ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler (yalnız panelde), ürüne özel "Yanında iyi gider"; kategori ekleme, silme, sıralama |
+| **Öneriler** | Tatlıların altında çıkan "Yanında iyi gider" genel listesi (en çok 4 ürün, seçilen sırayla) |
 | **Duyuru** | Ana sayfanın üstündeki kısa not (ör. bayram kapanışı) |
-| **Garson** | Masadan sipariş açık/kapalı, garson ekranının adresi ve karekodu, masa kartlarına bağlantı (çağrılar ve siparişler panel açıkken her sekmede sesli gelir) |
+| **Masalar** | Masadan sipariş açık/kapalı, garson ekranının adresi ve karekodu, masa sayısı ve her masanın kalıcı karekodu (indir / kartı bastır) |
 | **İşletme bilgileri** | Telefon (Google için), Instagram, adres, harita konumu, çalışma saatleri |
 
-Değişiklikler alttaki **Kaydet** ile kaydedilir ve sitede hemen görünür. İngilizce alanlar boş
-bırakılırsa İngilizce menüde Türkçesi gösterilir. Telefondan yüklenen fotoğraflar küçültülür,
+Değişiklikler alttaki **Kaydet** ile kaydedilir ve sitede hemen görünür. Panelde yalnızca Türkçe yazılır:
+İngilizce menüde, panelden değiştirilen ad ve açıklamaların Türkçesi görünür (eski çeviri kalmaz). Telefondan yüklenen fotoğraflar küçültülür,
 düzeltilir ve içindeki konum bilgisi silinir.
 
 ### Kurulum (bir kez)
@@ -171,7 +172,7 @@ Yayından sonra:
 
 - [ ] `/yonetim` → giriş → **İşletme bilgileri**: telefon, Instagram, açık adres, harita konumu, çalışma saatleri
 - [ ] **Menü**: örnek fiyatlar yerine gerçek fiyatlar; dükkânın kendi fotoğrafları
-- [ ] **Garson**: masa sayısı; garson ekranının karekodunu kasadaki tabletle okutun, **Sesi aç**
+- [ ] **Masalar**: masa sayısı; garson ekranının karekodunu kasadaki tabletle okutun, **Sesi aç**
 - [ ] **Masa kartları**: `/tr/qr?masa=1-12` (kendi masa sayınız). Sayfa kartların hangi adrese götürdüğünü
       yazar; alan adı bağlandıktan sonra basın. Basmadan önce bir kartı telefonla okutup deneyin.
 - [ ] [Google İşletme Profili](https://business.google.com)'nde web sitesi alanına adresi yazın;

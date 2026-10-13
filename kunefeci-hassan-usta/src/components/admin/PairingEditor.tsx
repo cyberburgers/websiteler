@@ -81,10 +81,9 @@ export function PairingPicker({
   );
 }
 
-/** The "Öneriler" tab: what is suggested under every dessert, and which dishes have their own list. */
+/** The "Öneriler" tab: what is suggested under every dessert (a dish can have its own list, in its edit window). */
 export function PairingEditor({ content, update }: { content: SiteContent; update: Update }) {
   const general = content.pairing ?? defaultPairing;
-  const custom = content.menu.flatMap((c) => c.items).filter((i) => i.pairing !== undefined);
 
   return (
     <div className="space-y-4">
@@ -97,24 +96,6 @@ export function PairingEditor({ content, update }: { content: SiteContent; updat
           <button type="button" onClick={() => update((d) => void delete d.pairing)} className={buttonClass.quiet}>
             Başlangıçtakine dön (çay, mırra)
           </button>
-        )}
-      </Section>
-
-      <Section
-        title="Ürüne özel öneriler"
-        hint="Bir ürüne kendi önerilerini vermek için Menü sekmesinde o ürünün kalemine basın; en altta “Yanında iyi gider”."
-      >
-        {custom.length > 0 ? (
-          <ul className="space-y-1.5 text-sm text-zumrut-900/80">
-            {custom.map((item) => (
-              <li key={item.id}>
-                <b>{item.name.tr || "Adsız ürün"}:</b>{" "}
-                {item.pairing!.length > 0 ? names(content, item.pairing!).join(", ") : "öneri gösterilmiyor"}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-sm text-zumrut-900/70">Henüz yok; bütün tatlılarda yukarıdaki liste görünür.</p>
         )}
       </Section>
     </div>

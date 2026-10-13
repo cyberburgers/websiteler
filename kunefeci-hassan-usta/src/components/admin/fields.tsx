@@ -43,7 +43,11 @@ export function Section({ title, hint, children }: { title: string; hint?: strin
   );
 }
 
-/** Turkish first (required where it matters); English may stay empty and then shows the Turkish. */
+/**
+ * A text the guests read. Only Turkish is written in the panel: the English menu shows the Turkish wherever
+ * no English is kept. Editing the Turkish drops the English that came with the starting menu, so a changed
+ * name or price label never shows an outdated translation on the English menu.
+ */
 export function Bilingual({
   label,
   value,
@@ -61,32 +65,16 @@ export function Bilingual({
   const Input = multiline ? "textarea" : "input";
   const cls = multiline ? `${inputClass} h-auto min-h-20 py-2.5 leading-relaxed` : inputClass;
   return (
-    <fieldset>
-      <legend className="text-sm font-bold text-zumrut-900">{label}</legend>
-      <div className="mt-1.5 grid gap-2 sm:grid-cols-2">
-        <label className="block">
-          <span className="text-[11px] font-extrabold uppercase tracking-wider text-zumrut-900/50">Türkçe</span>
-          <Input
-            value={current.tr}
-            placeholder={placeholder}
-            onChange={(e) => onChange({ ...current, tr: e.target.value })}
-            className={`${cls} mt-1`}
-            rows={multiline ? 3 : undefined}
-          />
-        </label>
-        <label className="block">
-          <span className="text-[11px] font-extrabold uppercase tracking-wider text-zumrut-900/50">
-            İngilizce <span className="font-semibold normal-case tracking-normal">(boşsa Türkçesi görünür)</span>
-          </span>
-          <Input
-            value={current.en}
-            onChange={(e) => onChange({ ...current, en: e.target.value })}
-            className={`${cls} mt-1`}
-            rows={multiline ? 3 : undefined}
-          />
-        </label>
-      </div>
-    </fieldset>
+    <label className="block">
+      <span className="text-sm font-bold text-zumrut-900">{label}</span>
+      <Input
+        value={current.tr}
+        placeholder={placeholder}
+        onChange={(e) => onChange({ tr: e.target.value, en: "" })}
+        className={`${cls} mt-1.5`}
+        rows={multiline ? 3 : undefined}
+      />
+    </label>
   );
 }
 

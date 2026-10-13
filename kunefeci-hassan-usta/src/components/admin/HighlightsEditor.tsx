@@ -19,7 +19,7 @@ export function HighlightsEditor({ content, update }: { content: SiteContent; up
           label="Duyuru metni"
           multiline
           value={notice}
-          onChange={(next) => update((d) => void (next.tr || next.en ? (d.notice = next) : delete d.notice))}
+          onChange={(next) => update((d) => void (next.tr ? (d.notice = next) : delete d.notice))}
         />
         {notice.tr && (
           <>
