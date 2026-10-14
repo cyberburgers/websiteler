@@ -16,7 +16,7 @@ export type SiteContent = {
   notice?: Text;
   /** False: guests at a table can only call the waiter, not order from the menu. On unless turned off. */
   tableOrders?: boolean;
-  /** How many tables the shop has: a call or order for a higher table number is refused. Unset: any. */
+  /** How many tables the shop has: a call or order for a higher table number is refused. Unset: DEFAULT_TABLES. */
   tables?: number;
   /** "Yanında iyi gider" under every dessert (dish ids). Unset: the starting pair, tea and mırra. */
   pairing?: string[];

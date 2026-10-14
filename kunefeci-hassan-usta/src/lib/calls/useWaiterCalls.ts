@@ -24,18 +24,18 @@ export function byUrgency(calls: OpenCall[]): OpenCall[] {
  * How often the panel asks for new calls. Each ask is a read of the free Redis plan (500,000 a month):
  * every 5 seconds while it is on screen and something is going on (open calls, a tap or a new call in the
  * last few minutes), every 15 seconds otherwise, also behind another tab, so it still chimes there.
- * At night (01:00–10:00, shop time) not at all, unless someone is using the panel (a late shift): a tap or
- * bringing it on screen starts the asking again for a few minutes, and 10:00 does too.
+ * At night (01:00–11:00, shop time) not at all, unless someone is using the panel (a late shift): a tap or
+ * bringing it on screen starts the asking again for a few minutes, and 11:00 does too.
  */
 const BUSY_POLL_MS = 5000;
 const QUIET_POLL_MS = 15 * 1000;
 /** A tap or a new call keeps the panel on the quick pace this long. */
 const BUSY_FOR_MS = 5 * 60 * 1000;
 const NIGHT_FROM = 60; // 01:00
-const NIGHT_UNTIL = 10 * 60; // 10:00
+const NIGHT_UNTIL = 11 * 60; // 11:00
 const shopMinutes = () => shopClock(new Date()).minutes;
 const isNight = () => shopMinutes() >= NIGHT_FROM && shopMinutes() < NIGHT_UNTIL;
-/** Until 10:00 (at least a minute: the shop clock has no seconds). */
+/** Until 11:00 (at least a minute: the shop clock has no seconds). */
 const untilMorning = () => Math.max(60 * 1000, (NIGHT_UNTIL - shopMinutes()) * 60 * 1000);
 
 /** An unanswered call rings again this often, in case nobody heard it the first time. */
@@ -154,7 +154,7 @@ export function useWaiterCalls(staffKey: string | null) {
       window.clearTimeout(timer);
       const inUse = Date.now() - lastActivity < BUSY_FOR_MS;
       if (isNight() && !inUse) {
-        // Nobody at the panel at night: no asks until someone taps it or brings it on screen, or 10:00.
+        // Nobody at the panel at night: no asks until someone taps it or brings it on screen, or 11:00.
         dueAt = Infinity;
         timer = window.setTimeout(tick, untilMorning());
         return;

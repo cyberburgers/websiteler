@@ -4,6 +4,7 @@ import { availableMenu } from "@/content/menu";
 import { getContent, readContentFresh } from "@/lib/content";
 import { count, visitorAddress } from "@/lib/limits";
 import { callsEnabled, createCall, createOrder, type CallKind, type OrderLine } from "./store";
+import { DEFAULT_TABLES } from "@/content/tables";
 
 export type CallResult =
   | { ok: true; id: string; at: number }
@@ -12,7 +13,7 @@ export type CallResult =
 const KINDS: CallKind[] = ["garson", "hesap"];
 const validTable = (table: string) => /^\d{1,3}$/.test(table) && Number(table) >= 1;
 /** Above the shop's table count (set in the panel), a table number can only have been typed in by hand. */
-const tableExists = (table: string, tables: number | undefined) => !tables || Number(table) <= tables;
+const tableExists = (table: string, tables: number | undefined) => Number(table) <= (tables ?? DEFAULT_TABLES);
 
 /**
  * Calls and orders from one visitor's address per minute. Generous, because a busy evening's guests

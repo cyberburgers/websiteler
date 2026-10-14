@@ -3,6 +3,7 @@
 import type { SiteContent } from "@/lib/content";
 import { Field, Section, Toggle, inputClass, noteClass } from "./fields";
 import { TableCodes } from "./TableCodes";
+import { DEFAULT_TABLES } from "@/content/tables";
 
 /** The key this panel reads and answers the tables' calls and orders with; empty until calls are set up. */
 export type StaffSetup = { key: string; enabled: boolean };
@@ -48,7 +49,7 @@ export function StaffEditor({
             min={1}
             max={999}
             value={content.tables ?? ""}
-            placeholder="12"
+            placeholder={String(DEFAULT_TABLES)}
             onChange={(e) => {
               const n = Math.floor(Number(e.target.value));
               update((d) => void (n >= 1 && n <= 999 ? (d.tables = n) : delete d.tables));
@@ -56,7 +57,7 @@ export function StaffEditor({
             className={`${inputClass} max-w-32 tabular-nums`}
           />
         </Field>
-        <TableCodes siteUrl={siteUrl} count={Math.min(content.tables ?? 12, 60)} />
+        <TableCodes siteUrl={siteUrl} count={Math.min(content.tables ?? DEFAULT_TABLES, 60)} />
       </Section>
     </div>
   );

@@ -5,6 +5,7 @@ import QRCode from "qrcode";
 import { Logo } from "@/components/Logo";
 import { PrintButton } from "@/components/menu/PrintButton";
 import { site } from "@/content/site";
+import { DEFAULT_TABLES } from "@/content/tables";
 import { getContent } from "@/lib/content";
 import { isLocale } from "@/i18n/config";
 
@@ -14,14 +15,16 @@ export const metadata: Metadata = {
 };
 
 /** "7" → [7], "1-12" → [1 … 12]. At most 60 cards at once; anything else gives one card without a number. */
-function parseTables(value: string | string[] | undefined): (number | null)[] {
+/** The tables asked for, never beyond the shop's last table (a card for it would not take orders). */
+function parseTables(value: string | string[] | undefined, last: number): (number | null)[] {
   const text = (Array.isArray(value) ? value[0] : value)?.trim() ?? "";
   const range = /^(\d{1,3})\s*-\s*(\d{1,3})$/.exec(text);
   if (range) {
     const [from, to] = [Number(range[1]), Number(range[2])].sort((a, b) => a - b);
-    return Array.from({ length: Math.min(to - from + 1, 60) }, (_, i) => from + i);
+    const [first, end] = [Math.max(from, 1), Math.min(to, last)];
+    return end >= first ? Array.from({ length: Math.min(end - first + 1, 60) }, (_, i) => first + i) : [null];
   }
-  return /^\d{1,3}$/.test(text) ? [Number(text)] : [null];
+  return /^\d{1,3}$/.test(text) && Number(text) >= 1 && Number(text) <= last ? [Number(text)] : [null];
 }
 
 async function TableCard({ table }: { table: number | null }) {
@@ -60,7 +63,7 @@ async function TableCard({ table }: { table: number | null }) {
 }
 
 async function Cards({ searchParams }: { searchParams: PageProps<"/[locale]/qr">["searchParams"] }) {
-  const tables = parseTables((await searchParams).masa);
+  const tables = parseTables((await searchParams).masa, (await getContent()).tables ?? DEFAULT_TABLES);
   return <CardGrid tables={tables} />;
 }
 
