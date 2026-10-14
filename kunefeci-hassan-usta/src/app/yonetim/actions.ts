@@ -7,7 +7,8 @@ import type { z } from "zod";
 import { site } from "@/content/site";
 import { MIN_PASSWORD_LENGTH, checkPassword, endSession, passwordState, requireAdmin, startSession } from "@/lib/admin/auth";
 import { count, counted, visitorAddress } from "@/lib/limits";
-import { CONTENT_TAG, readContentFresh } from "@/lib/content";
+import { CONTENT_TAG, readContentFresh, type SiteContent } from "@/lib/content";
+import { mergeEdits } from "@/lib/content/merge";
 import { contentSchema } from "@/lib/content/schema";
 import { storeIsWritable, storePhoto, writeStoredContent } from "@/lib/content/store";
 
@@ -76,11 +77,15 @@ function shopDate(date: Date): string {
 }
 
 export type SaveResult =
-  | { ok: true; savedAt: string; menuUpdatedAt: string }
-  | { ok: false; error: string; conflict?: boolean };
+  | { ok: true; savedAt: string; menuUpdatedAt: string; merged?: SiteContent }
+  | { ok: false; error: string };
 
-/** Stores the whole menu and shop details at once, then refreshes every page that shows them. */
-export async function saveContentAction(input: unknown, baseSavedAt: string | null): Promise<SaveResult> {
+/**
+ * Stores the whole menu and shop details at once, then refreshes every page that shows them.
+ * @param base What this panel last loaded or saved. If the store has been saved from somewhere else since,
+ * both sides' changes are kept (see mergeEdits) and the result comes back as `merged`.
+ */
+export async function saveContentAction(input: unknown, base: unknown): Promise<SaveResult> {
   const blocked = await guard();
   if (blocked) return { ok: false, error: blocked };
 
@@ -89,18 +94,22 @@ export async function saveContentAction(input: unknown, baseSavedAt: string | nu
 
   try {
     const current = await readContentFresh();
-    if ((current.savedAt ?? null) !== baseSavedAt) {
-      return {
-        ok: false,
-        conflict: true,
-        error: "Menü siz düzenlerken başka bir yerden kaydedildi. Sayfayı yenileyip değişikliklerinizi tekrar yapın.",
-      };
+    const from = contentSchema.safeParse(base);
+    const start = from.success ? (from.data as SiteContent) : null;
+    let next = parsed.data as SiteContent;
+    const elsewhere = (current.savedAt ?? null) !== (start?.savedAt ?? null);
+    if (elsewhere) {
+      const together = contentSchema.safeParse(mergeEdits(start ?? { ...current, menu: [] }, next, current));
+      if (!together.success) {
+        return { ok: false, error: "Başka yerden yapılan değişikliklerle birleştirilemedi. Sayfayı yenileyip tekrar deneyin." };
+      }
+      next = together.data as SiteContent;
     }
     const now = new Date();
-    const content = { ...parsed.data, savedAt: now.toISOString(), menuUpdatedAt: shopDate(now) };
+    const content = { ...next, savedAt: now.toISOString(), menuUpdatedAt: shopDate(now) };
     await writeStoredContent(JSON.stringify(content));
     updateTag(CONTENT_TAG);
-    return { ok: true, savedAt: content.savedAt, menuUpdatedAt: content.menuUpdatedAt };
+    return { ok: true, savedAt: content.savedAt, menuUpdatedAt: content.menuUpdatedAt, merged: elsewhere ? content : undefined };
   } catch (error) {
     console.error("Panel kaydı başarısız", error);
     return { ok: false, error: "Kaydedilemedi. İnternet bağlantısını kontrol edip tekrar deneyin." };

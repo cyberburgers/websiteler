@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDown, ArrowUp, CalendarX2, Check, EyeOff, Pencil, Plus, Trash2, Undo2, X } from "lucide-react";
+import { ArrowDown, ArrowUp, CalendarX2, EyeOff, Pencil, Plus, Trash2, Undo2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Photo } from "@/components/ui";
 import { allergenIds, allergens, tagIds, tags, type MenuCategory, type MenuItem } from "@/content/menu";
@@ -127,11 +127,13 @@ function ItemDialog({
   content,
   update,
   itemId,
+  today,
   onClose,
 }: {
   content: SiteContent;
   update: Update;
   itemId: string | null;
+  today: string;
   onClose: () => void;
 }) {
   const ci = content.menu.findIndex((c) => c.items.some((i) => i.id === itemId));
@@ -284,6 +286,27 @@ function ItemDialog({
               </button>
             </span>
           </div>
+
+          {/* Stays as set, day after day, until it is switched off here. */}
+          {item.available !== false && (
+            <div
+              className={`flex flex-wrap items-center justify-between gap-3 rounded-xl p-3 ring-1 ${
+                item.soldOutSince ? "bg-amber-300/[0.08] ring-amber-300/30" : "bg-zumrut-900 ring-white/10"
+              }`}
+            >
+              <Toggle
+                checked={item.soldOutSince !== undefined}
+                onChange={(on) => edit((d) => void (on ? (d.soldOutSince = serviceDay()) : delete d.soldOutSince))}
+                label="Bugün yok"
+                showLabel
+              />
+              {item.soldOutSince && item.soldOutSince !== today && (
+                <span className="inline-flex items-center gap-1 text-xs font-extrabold text-amber-200">
+                  <CalendarX2 className="size-3.5" aria-hidden="true" /> {sinceLabel(item.soldOutSince, today)}
+                </span>
+              )}
+            </div>
+          )}
 
           <details className="rounded-xl bg-zumrut-900 p-3 ring-1 ring-white/10">
             <summary className="cursor-pointer text-sm font-bold">Çarkta görünen kısa ad (isteğe bağlı)</summary>
@@ -537,32 +560,6 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
                         label="Menüde"
                         showLabel
                       />
-                      {!hidden && (
-                        <button
-                          type="button"
-                          aria-pressed={soldOut}
-                          aria-label={`${item.name.tr}: bugün yok`}
-                          onClick={() =>
-                            update((draft) => {
-                              const target = draft.menu[ci].items[ii];
-                              if (soldOut) delete target.soldOutSince;
-                              else target.soldOutSince = serviceDay();
-                            })
-                          }
-                          className={`inline-flex h-9 items-center gap-1.5 rounded-full px-3.5 text-sm font-extrabold transition active:scale-[.97] ${
-                            soldOut
-                              ? "bg-amber-400 text-zumrut-950 ring-1 ring-amber-500"
-                              : "bg-white/5 text-krem-100 ring-1 ring-white/15 hover:bg-white/10"
-                          }`}
-                        >
-                          {soldOut ? (
-                            <Check className="size-4" aria-hidden="true" />
-                          ) : (
-                            <CalendarX2 className="size-4" aria-hidden="true" />
-                          )}
-                          Bugün yok
-                        </button>
-                      )}
                     </div>
                   </div>
                 </li>
@@ -597,7 +594,7 @@ export function MenuEditor({ content, update, today }: { content: SiteContent; u
         <Plus className="size-4" aria-hidden="true" /> Yeni kategori ekle
       </button>
 
-      <ItemDialog content={content} update={update} itemId={itemId} onClose={close} />
+      <ItemDialog content={content} update={update} itemId={itemId} today={today} onClose={close} />
       <CategoryDialog content={content} update={update} categoryId={categoryId} onClose={close} />
     </div>
   );

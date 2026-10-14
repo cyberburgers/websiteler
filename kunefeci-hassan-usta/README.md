@@ -121,7 +121,7 @@ ya da doğrudan `https://alanadiniz.com/yonetim` adresiyle girilir.
 | Bölüm | Neler değişir? |
 | --- | --- |
 | **Siparişler** | Masalardan gelen siparişler ve garson çağrıları: **Onayla** (misafirin telefonunda "Hazırlanıyor") → **Teslim edildi**; çağrıda **Tamam, gidiyorum**. Panel açıkken her sekmede yumuşak bir zil çalar, üstte "bekleyen" satırı çıkar |
-| **Menü** | Fiyatlar (doğrudan kutudan), **Bugün yok** düğmesi (ürün menüde kalır, "Bugün yok" yazar; panelden geri alınana kadar öyle kalır, günler geçtiyse panelde "12 Ekim'den beri yok" diye görünür), ürünü menüden gizleme/gösterme, yeni ürün, silme, sıralama, fotoğraf yükleme, ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler (yalnız panelde), ürüne özel "Yanında iyi gider"; kategori ekleme, silme, sıralama |
+| **Menü** | Fiyatlar (doğrudan kutudan), **Bugün yok** (ürünün kalemine dokunup açılan pencerede; ürün menüde kalır, "Bugün yok" yazar; panelden geri alınana kadar öyle kalır, günler geçtiyse panelde "12 Ekim'den beri yok" diye görünür), ürünü menüden gizleme/gösterme, yeni ürün, silme, sıralama, fotoğraf yükleme, ad ve açıklama, Porsiyon / 1 kg gibi fiyat seçenekleri, etiketler, alerjenler (yalnız panelde), ürüne özel "Yanında iyi gider"; kategori ekleme, silme, sıralama. İki cihazdan aynı anda düzenlenebilir: kaydederken öbür cihazın kaydettikleri korunur, aynı şey iki yerde değiştiyse son kaydeden geçerli olur |
 | **Öneriler** | Tatlıların altında çıkan "Yanında iyi gider" genel listesi (en çok 4 ürün, seçilen sırayla) |
 | **Duyuru** | Ana sayfanın üstündeki kısa not (ör. bayram kapanışı) |
 | **Masalar** | Masadan sipariş açık/kapalı, masa sayısı ve her masanın kalıcı karekodu (indir / kartı bastır) |

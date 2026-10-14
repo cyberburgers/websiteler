@@ -13,6 +13,7 @@ import { MenuEditor } from "./MenuEditor";
 import { OrdersBoard } from "./OrdersBoard";
 import { PairingEditor } from "./PairingEditor";
 import { StaffEditor, type StaffSetup } from "./StaffEditor";
+import { mergeEdits } from "@/lib/content/merge";
 
 type Tab = "siparis" | "menu" | "oneri" | "duyuru" | "masalar" | "isletme";
 const TABS: { id: Tab; label: string }[] = [
@@ -90,11 +91,19 @@ export function AdminApp({ initial, writable, staff, siteUrl, today }: Props) {
   const save = () =>
     startSaving(async () => {
       const sent = content;
-      const result = await saveContentAction(sent, JSON.parse(saved).savedAt ?? null).catch(() => ({
+      const result = await saveContentAction(sent, JSON.parse(saved)).catch(() => ({
         ok: false as const,
         error: "Sunucuya ulaşılamadı. İnternet bağlantısını kontrol edip tekrar deneyin.",
       }));
-      if (result.ok) {
+      if (result.ok && result.merged) {
+        // Saved from another phone or tablet meanwhile: both sides' changes are in what was stored.
+        // Anything changed here while saving is laid over it again.
+        const stored = result.merged;
+        setContent((current) => (current === sent ? stored : mergeEdits(sent, current, stored)));
+        setSaved(JSON.stringify(stored));
+        setMessage({ ok: true, text: "Kaydedildi. Başka yerden yapılan değişiklikler de korundu." });
+        warmPages();
+      } else if (result.ok) {
         const stamp = { savedAt: result.savedAt, menuUpdatedAt: result.menuUpdatedAt };
         // Changes made while saving are kept (and still show as unsaved), not replaced by what was sent.
         setContent((current) => ({ ...current, ...stamp }));
