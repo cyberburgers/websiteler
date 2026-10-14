@@ -94,12 +94,7 @@ export function InfoEditor({ content, update }: { content: SiteContent; update: 
         </div>
         <Field
           label="Harita konumu"
-          hint={
-            <>
-              Google Haritalar&apos;da dükkâna basılı tutun, çıkan <b>37.15…, 38.79…</b> sayılarını kopyalayıp buraya
-              yapıştırın. {geoMatch ? null : <b className="text-red-300">Konum anlaşılamadı.</b>}
-            </>
-          }
+          hint={geoMatch ? undefined : <b className="text-red-300">Konum anlaşılamadı.</b>}
         >
           <span className="flex gap-2">
             <input
