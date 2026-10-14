@@ -1,12 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { AlertTriangle, BellRing, CheckCircle2, ExternalLink, LogOut, QrCode } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
 import { logoutAction, saveContentAction } from "@/app/yonetim/actions";
 import { Logo } from "@/components/Logo";
 import type { SiteContent } from "@/lib/content";
 import { usePanelCalls } from "./CallAlerts";
-import { buttonClass, headerButton, noteClass } from "./fields";
+import { buttonClass, cardClass, headerButton, noteClass } from "./fields";
 import { HighlightsEditor } from "./HighlightsEditor";
 import { InfoEditor } from "./InfoEditor";
 import { MenuEditor } from "./MenuEditor";
@@ -125,6 +126,29 @@ export function AdminApp({ initial, writable, staff, siteUrl, today }: Props) {
 
   return (
     <div className="min-h-dvh pb-32">
+      {/* One device at a time: someone signed in elsewhere after this one was closed for a while (or the sign-in ran out). */}
+      {calls.signedOut && (
+        <div
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="baska-cihaz"
+          className="fixed inset-0 z-[100] grid place-items-center bg-zumrut-950/90 p-6 backdrop-blur"
+        >
+          <div className={`${cardClass} w-full max-w-sm p-6 text-center`}>
+            <p id="baska-cihaz" className="font-display text-xl font-semibold text-krem-50">
+              {calls.signedOut === "taken" ? "Panel başka bir cihazda açıldı" : "Oturum kapandı"}
+            </p>
+            <p className="mt-2 text-sm text-krem-100/70">
+              {calls.signedOut === "taken"
+                ? "Panele aynı anda tek cihazdan girilebilir. Buradan çıkış yapıldı."
+                : "Devam etmek için yeniden giriş yapın."}
+            </p>
+            <Link href="/yonetim/giris" className={`${buttonClass.primary} mt-5 w-full`}>
+              Giriş sayfasına git
+            </Link>
+          </div>
+        </div>
+      )}
       {/* One row on a phone: the logo, the title, and the buttons as icons (with their names from tablet width). */}
       <header className="bg-zumrut-950 text-krem-50">
         <div className="mx-auto flex max-w-3xl items-center gap-2.5 px-4 pb-2 pt-3 sm:gap-4">

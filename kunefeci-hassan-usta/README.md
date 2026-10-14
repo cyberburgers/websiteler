@@ -131,6 +131,12 @@ Değişiklikler alttaki **Kaydet** ile kaydedilir ve sitede hemen görünür. Pa
 İngilizce menüde, panelden değiştirilen ad ve açıklamaların Türkçesi görünür (eski çeviri kalmaz). Telefondan yüklenen fotoğraflar küçültülür,
 düzeltilir ve içindeki konum bilgisi silinir.
 
+**Panele aynı anda tek cihazdan girilir.** Panel bir cihazda açıkken başka cihaz doğru şifreyle bile giremez
+("Panel şu an başka bir cihazda açık"); önce açık olan cihazdan **Çıkış** yapılır. Açık cihaz kapatılır, şarjı biter
+ya da kaybolursa (15 dakika boyunca panelden ses gelmezse) başka cihaz girebilir; o zaman eski cihazda
+"Panel başka bir cihazda açıldı" yazar. Kasadaki tablet panelde kaldıkça telefondan girilemez: telefondan
+düzenlemek için önce tabletten çıkış yapın.
+
 ### Kurulum (bir kez)
 
 1. **Şifre:** Vercel → proje → **Settings → Environment Variables** → `ADMIN_PASSWORD` ekleyin.

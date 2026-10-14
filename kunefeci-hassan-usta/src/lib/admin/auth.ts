@@ -42,37 +42,106 @@ export function checkPassword(attempt: string): boolean {
   return passwordState() === "ok" && sameText(attempt, process.env.ADMIN_PASSWORD ?? "");
 }
 
-export async function startSession(): Promise<void> {
+/**
+ * One device at a time in the panel. Every sign-in gets its own id, kept in its cookie; the store keeps
+ * which id holds the panel and when that device was last heard from (its panel checks in every few
+ * minutes while open, see keepPanel). A sign-in from another device, even with the right password, is
+ * turned away while the panel is in use there. Once that device signs out, or hasn't been heard from for
+ * PANEL_IDLE_MINUTES (closed, switched off, lost), the next sign-in takes over and the old one is out.
+ */
+export const PANEL_IDLE_MINUTES = 15;
+const HOLDER = "kunefeci:panel:acik";
+type Holder = { sid: string; seen: number };
+const holderMemory = globalThis as { __panelSahibi?: Holder | null };
+
+async function readHolder(): Promise<Holder | null> {
+  if (!redisConfig()) return holderMemory.__panelSahibi ?? null;
+  const m = /^([\w-]{16})\|(\d{10,})$/.exec((await redis<string | null>("GET", HOLDER)) ?? "");
+  return m ? { sid: m[1], seen: Number(m[2]) } : null;
+}
+
+async function writeHolder(holder: Holder | null): Promise<void> {
+  if (!redisConfig()) {
+    holderMemory.__panelSahibi = holder;
+    return;
+  }
+  if (holder) await redis("SET", HOLDER, `${holder.sid}|${holder.seen}`, "EX", MAX_AGE);
+  else await redis("DEL", HOLDER);
+}
+
+/** This browser's sign-in, if its cookie is genuine and not expired (whether or not it still holds the panel). */
+async function cookieSession(): Promise<{ sid: string } | null> {
+  const secret = key();
+  const value = (await cookies()).get(COOKIE)?.value;
+  if (!secret || !value) return null;
+  const [expires, sid, signature] = value.split(".");
+  // The expiry check reads the clock, so it must run for the real request, never in a prerender.
+  await connection();
+  if (!/^\d{10}$/.test(expires ?? "") || !/^[\w-]{16}$/.test(sid ?? "") || !signature) return null;
+  if (Number(expires) * 1000 < Date.now()) return null;
+  return sameText(signature, sign(secret, `oturum:${expires}:${sid}`)) ? { sid: sid! } : null;
+}
+
+/** Signs this browser in, unless the panel is open on another device. */
+export async function startSession(): Promise<"ok" | "busy"> {
   const secret = key();
   if (!secret) throw new Error("Panel şifresi ayarlanmamış");
-  const expires = Math.floor(Date.now() / 1000) + MAX_AGE;
-  (await cookies()).set(COOKIE, `${expires}.${sign(secret, `oturum:${expires}`)}`, {
+  const mine = await cookieSession();
+  const holder = await readHolder();
+  const now = Date.now();
+  if (holder && holder.sid !== mine?.sid && now - holder.seen < PANEL_IDLE_MINUTES * 60 * 1000) return "busy";
+  const sid = mine && holder?.sid === mine.sid ? mine.sid : randomBytes(12).toString("base64url");
+  await writeHolder({ sid, seen: now });
+  const expires = Math.floor(now / 1000) + MAX_AGE;
+  (await cookies()).set(COOKIE, `${expires}.${sid}.${sign(secret, `oturum:${expires}:${sid}`)}`, {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
     path: "/",
     maxAge: MAX_AGE,
   });
+  return "ok";
 }
 
 export async function endSession(): Promise<void> {
+  const mine = await cookieSession();
+  if (mine && (await readHolder())?.sid === mine.sid) await writeHolder(null);
   (await cookies()).delete(COOKIE);
 }
 
+/**
+ * Signed in and holding the panel. With nobody holding it (the last one signed out), a still-valid
+ * sign-in picks it up again.
+ */
 export async function isAdmin(): Promise<boolean> {
-  const secret = key();
-  const value = (await cookies()).get(COOKIE)?.value;
-  if (!secret || !value) return false;
-  const [expires, signature] = value.split(".");
-  // The expiry check reads the clock, so it must run for the real request, never in a prerender.
-  await connection();
-  if (!/^\d{10}$/.test(expires ?? "") || !signature || Number(expires) * 1000 < Date.now()) return false;
-  return sameText(signature, sign(secret, `oturum:${expires}`));
+  const mine = await cookieSession();
+  if (!mine) return false;
+  const holder = await readHolder();
+  if (holder && holder.sid !== mine.sid) return false;
+  if (!holder) await writeHolder({ sid: mine.sid, seen: Date.now() });
+  return true;
 }
+
+/**
+ * The panel is still open here: keeps its hold. "taken" once another device has taken the panel over,
+ * "out" when this browser isn't signed in (any more).
+ */
+export async function keepPanel(): Promise<"ok" | "taken" | "out"> {
+  const mine = await cookieSession();
+  if (!mine) return "out";
+  const holder = await readHolder();
+  if (holder && holder.sid !== mine.sid) return "taken";
+  await writeHolder({ sid: mine.sid, seen: Date.now() });
+  return "ok";
+}
+
+export const TAKEN_OVER = "Panel başka bir cihazda açıldı. Buradan yeniden girmek için önce oradan çıkış yapılmalı.";
 
 /** Every panel action calls this first: the actions are public endpoints, the page around them is not a lock. */
 export async function requireAdmin(): Promise<void> {
-  if (!(await isAdmin())) throw new Error("Oturum kapandı. Lütfen yeniden giriş yapın.");
+  const state = await keepPanel();
+  if (state === "ok") return;
+  throw new Error(state === "taken" ? TAKEN_OVER : "Oturum kapandı. Lütfen yeniden giriş yapın.");
 }
 
 /**

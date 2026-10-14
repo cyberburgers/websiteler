@@ -40,6 +40,8 @@ const untilMorning = () => Math.max(60 * 1000, (NIGHT_UNTIL - shopMinutes()) * 6
 
 /** An unanswered call rings again this often, in case nobody heard it the first time. */
 const RING_AGAIN_MS = 60 * 1000;
+/** How often a check also says "the panel is still open here" (it holds the panel; see keepPanel). */
+const HOLD_EVERY_MS = 3 * 60 * 1000;
 /** After this a call is shown as late: someone has been waiting too long. */
 export const LATE_MS = 2 * 60 * 1000;
 
@@ -103,6 +105,8 @@ export function useWaiterCalls(staffKey: string | null) {
   const [now, setNow] = useState(0);
   const [online, setOnline] = useState(true);
   const [soundOn, setSoundOn] = useState(false);
+  // Signed out here (the panel was opened on another device, one at a time: "taken"): this one stops asking.
+  const [signedOut, setSignedOut] = useState<"taken" | "out" | null>(null);
   const audio = useRef<AudioContext | null>(null);
   const sound = useRef(false);
   const known = useRef<Set<string> | null>(null);
@@ -122,13 +126,27 @@ export function useWaiterCalls(staffKey: string | null) {
     let busy = false;
     let openNow = 0;
     let lastActivity = Date.now();
+    let lastHold = 0;
     const poll = async () => {
       // One check at a time: a slow answer must not land after a newer one and bring back old cards.
-      if (busy) return;
+      if (busy || stopped) return;
       busy = true;
       try {
-        const res = await fetch("/api/garson/cagrilar", { cache: "no-store", headers: { "x-garson-anahtari": staffKey } });
+        const hold = Date.now() - lastHold >= HOLD_EVERY_MS;
+        const res = await fetch("/api/garson/cagrilar", {
+          cache: "no-store",
+          headers: { "x-garson-anahtari": staffKey, ...(hold ? { "x-panel-acik": "1" } : {}) },
+        });
+        if (res.status === 401) {
+          const why = ((await res.json().catch(() => ({}))) as { signedOut?: "taken" | "out" }).signedOut;
+          if (why) {
+            stopped = true;
+            setSignedOut(why);
+            return;
+          }
+        }
         if (!res.ok) throw new Error(String(res.status));
+        if (hold) lastHold = Date.now();
         const data = (await res.json()) as { calls: OpenCall[]; now: number };
         if (stopped) return;
         data.calls = withAnswers(data.calls, answers.current, clock());
@@ -243,5 +261,5 @@ export function useWaiterCalls(staffKey: string | null) {
     [staffKey],
   );
 
-  return { calls, now, online, soundOn, setSound, ring, answer };
+  return { calls, now, online, soundOn, setSound, ring, answer, signedOut };
 }

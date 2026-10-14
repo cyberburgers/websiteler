@@ -5,7 +5,15 @@ import { redirect } from "next/navigation";
 import sharp from "sharp";
 import type { z } from "zod";
 import { site } from "@/content/site";
-import { MIN_PASSWORD_LENGTH, checkPassword, endSession, passwordState, requireAdmin, startSession } from "@/lib/admin/auth";
+import {
+  MIN_PASSWORD_LENGTH,
+  PANEL_IDLE_MINUTES,
+  checkPassword,
+  endSession,
+  passwordState,
+  requireAdmin,
+  startSession,
+} from "@/lib/admin/auth";
 import { count, counted, visitorAddress } from "@/lib/limits";
 import { CONTENT_TAG, readContentFresh, type SiteContent } from "@/lib/content";
 import { mergeEdits } from "@/lib/content/merge";
@@ -34,7 +42,11 @@ export async function loginAction(_previous: LoginState, formData: FormData): Pr
     await new Promise((resolve) => setTimeout(resolve, 900));
     return { error: "Şifre yanlış." };
   }
-  await startSession();
+  if ((await startSession()) === "busy") {
+    return {
+      error: `Panel şu an başka bir cihazda açık. Önce oradan çıkış yapın; o cihaz kapalıysa ${PANEL_IDLE_MINUTES} dakika sonra buradan girebilirsiniz.`,
+    };
+  }
   redirect("/yonetim");
 }
 

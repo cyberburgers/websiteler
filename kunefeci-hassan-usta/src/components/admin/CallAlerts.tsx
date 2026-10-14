@@ -9,7 +9,7 @@ import { useWaiterCalls } from "@/lib/calls/useWaiterCalls";
  * chime. Returns the sound switch for the header and the open calls for the "Siparişler" tab.
  */
 export function usePanelCalls(staffKey: string | null) {
-  const { calls, now, online, soundOn, setSound, answer } = useWaiterCalls(staffKey);
+  const { calls, now, online, soundOn, setSound, answer, signedOut } = useWaiterCalls(staffKey);
   const tried = useRef(false);
 
   // Browsers keep a page silent until it is tapped. The owner taps around the panel anyway,
@@ -60,5 +60,5 @@ export function usePanelCalls(staffKey: string | null) {
     </button>
   ) : null;
 
-  return { toggle, list: calls, now, online, answer };
+  return { toggle, list: calls, now, online, answer, signedOut };
 }

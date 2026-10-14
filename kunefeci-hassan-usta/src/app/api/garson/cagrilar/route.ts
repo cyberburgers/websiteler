@@ -1,4 +1,4 @@
-import { isStaffKey } from "@/lib/admin/auth";
+import { isStaffKey, keepPanel } from "@/lib/admin/auth";
 import { markDone, markSeen, openCalls } from "@/lib/calls/store";
 
 const noStore = { "Cache-Control": "no-store" };
@@ -7,6 +7,11 @@ const noStore = { "Cache-Control": "no-store" };
 export async function GET(request: Request) {
   if (!(await isStaffKey(request.headers.get("x-garson-anahtari")))) {
     return Response.json({ error: "Bağlantı geçersiz" }, { status: 401, headers: noStore });
+  }
+  // Every few minutes the panel says it is still open here; if another device has taken it over, it stops.
+  if (request.headers.has("x-panel-acik")) {
+    const state = await keepPanel();
+    if (state !== "ok") return Response.json({ error: "Oturum yok", signedOut: state }, { status: 401, headers: noStore });
   }
   try {
     return Response.json({ calls: await openCalls(), now: Date.now() }, { headers: noStore });

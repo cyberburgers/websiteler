@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { AdminApp } from "@/components/admin/AdminApp";
 import { site } from "@/content/site";
-import { isAdmin, passwordState } from "@/lib/admin/auth";
+import { keepPanel, passwordState } from "@/lib/admin/auth";
 import { staffSetup } from "@/lib/admin/staff";
 import { readContentFresh } from "@/lib/content";
 import { storeIsWritable } from "@/lib/content/store";
@@ -19,7 +19,8 @@ export default function AdminPage() {
 }
 
 async function Panel() {
-  if (!(await isAdmin())) redirect("/yonetim/giris");
+  // Signed in and still holding the panel (one device at a time); opening it counts as using it.
+  if ((await keepPanel()) !== "ok") redirect("/yonetim/giris");
   // Read straight from the store, not the site's cache, so the panel always edits the latest version.
   const content = await readContentFresh();
   return (
