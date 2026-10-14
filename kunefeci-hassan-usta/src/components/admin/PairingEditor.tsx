@@ -85,10 +85,7 @@ export function PairingEditor({ content, update }: { content: SiteContent; updat
 
   return (
     <div className="space-y-4">
-      <Section
-        title="Yanında iyi gider"
-        hint="Tatlıların penceresinin altında önerilen ürünler. En çok 4 tane, seçtiğiniz sırayla görünür. “Bugün yok” denen ya da gizlenen ürün önerilmez."
-      >
+      <Section title="Yanında iyi gider">
         <PairingPicker content={content} selected={general} onChange={(next) => update((d) => void (d.pairing = next))} />
         {content.pairing && (
           <button type="button" onClick={() => update((d) => void delete d.pairing)} className={buttonClass.quiet}>
